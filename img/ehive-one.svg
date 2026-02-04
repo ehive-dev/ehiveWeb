@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b1220"/>
+      <stop offset="1" stop-color="#111827"/>
+    </linearGradient>
+    <linearGradient id="a" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#22c55e"/>
+      <stop offset="1" stop-color="#06b6d4"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#g)"/>
+  <g transform="translate(130 140)">
+    <rect x="0" y="0" rx="28" ry="28" width="940" height="520" fill="#0f172a" stroke="#334155" stroke-width="3"/>
+    <rect x="40" y="60" rx="18" ry="18" width="860" height="170" fill="#0b1220" stroke="#334155" stroke-width="2"/>
+    <rect x="40" y="260" rx="18" ry="18" width="520" height="220" fill="#0b1220" stroke="#334155" stroke-width="2"/>
+    <rect x="590" y="260" rx="18" ry="18" width="310" height="220" fill="#0b1220" stroke="#334155" stroke-width="2"/>
+    <rect x="70" y="90" rx="10" ry="10" width="260" height="40" fill="url(#a)"/>
+    <circle cx="840" cy="110" r="14" fill="#22c55e"/>
+    <circle cx="800" cy="110" r="14" fill="#06b6d4"/>
+    <circle cx="760" cy="110" r="14" fill="#94a3b8"/>
+    <text x="70" y="185" font-family="Arial, Helvetica, sans-serif" font-size="46" fill="#e5e7eb" font-weight="700">eHive One</text>
+    <text x="70" y="225" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#94a3b8">DIN-Rail Mini-PC • OpenArc OS • 12–30VDC</text>
+    <g transform="translate(70 310)">
+      <text x="0" y="0" font-family="Arial, Helvetica, sans-serif" font-size="22" fill="#94a3b8">Highlights</text>
+      <g transform="translate(0 30)" fill="#e5e7eb" font-family="Arial, Helvetica, sans-serif" font-size="20">
+        <text x="0" y="0">• 3W low power</text>
+        <text x="0" y="34">• IP20 enclosure</text>
+        <text x="0" y="68">• optional NVMe expansion</text>
+        <text x="0" y="102">• dashboard + modules</text>
+      </g>
+    </g>
+    <g transform="translate(620 310)">
+      <rect x="0" y="0" rx="14" ry="14" width="250" height="160" fill="#111827" stroke="#334155" stroke-width="2"/>
+      <text x="22" y="46" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#94a3b8">Ports</text>
+      <text x="22" y="82" font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#e5e7eb">LAN • USB • GPIO</text>
+      <text x="22" y="118" font-family="Arial, Helvetica, sans-serif" font-size="16" fill="#94a3b8">Model depends on build</text>
+    </g>
+  </g>
+  <text x="80" y="740" font-family="Arial, Helvetica, sans-serif" font-size="18" fill="#64748b">Placeholder artwork — replace with real product photos.</text>
+</svg>

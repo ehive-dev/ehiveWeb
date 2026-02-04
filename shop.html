@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Shop-Seite: eHive One + Zubehör, PayPal-hosted Warenkorb." />
+  <title>eHive One Shop • Shop</title>
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="header">
+  <div class="container">
+    <nav class="nav" aria-label="Hauptnavigation">
+      <a class="brand" href="index.html">
+        <span class="brand-badge" aria-hidden="true"></span>
+        <span><span data-brand-name>eHive One</span> <small data-brand-subtitle>OpenArc Shop</small></span>
+      </a>
+
+      <div class="nav-links" role="navigation" aria-label="Navigation">
+        <a href="index.html">Home</a>
+        <a href="shop.html">Shop</a>
+        <a href="sproduct.html">Produkt</a>
+        <a href="about.html">Über</a>
+        <a href="contact.html">Kontakt</a>
+      </div>
+
+      <div class="nav-actions">
+        <a class="icon-btn" href="cart.html" aria-label="PayPal-Warenkorb">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h-2l-1 2v2h2l3.6 7.59-1.35 2.44A2 2 0 0 0 10 22h10v-2H10l1.1-2h7.45a2 2 0 0 0 1.8-1.1l3.58-6.49A1 1 0 0 0 23 9H7.42L6.7 7H22V5H7.21L7 4z"/></svg>
+          <span style="font-weight:900">Warenkorb</span>
+        </a>
+
+        <button id="mobileToggle" class="icon-btn mobile-toggle" type="button" aria-label="Menü öffnen" aria-expanded="false">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v2H4V6zm0 5h16v2H4v-2zm0 5h16v2H4v-2z"/></svg>
+        </button>
+      </div>
+    </nav>
+
+    <div id="mobilePanel" class="mobile-panel" aria-label="Mobile Navigation">
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="sproduct.html">Produkt</a>
+      <a href="about.html">Über</a>
+      <a href="contact.html">Kontakt</a>
+      <a href="cart.html">Warenkorb</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section class="section">
+  <div class="container">
+    <div class="section-title">
+      <h2>Shop</h2>
+      <p>eHive One ist das Hauptprodukt. Zubehör kannst du in config.js hinzufügen.</p>
+    </div>
+
+    <div class="products">
+      <div class="pro">
+        <img src="img/ehive-one.svg" alt="eHive One" />
+        <div class="des">
+          <span>OpenArc</span>
+          <h5>eHive One – DIN‑Rail Mini‑PC</h5>
+          <div class="price-line">Preis: <span data-price="ehive-one">399,00 €</span></div>
+          <div class="note">PayPal‑Cart Buttons sind hosted. Betrag wird bei PayPal geführt.</div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="variantShop">Variante</label>
+            <select id="variantShop" data-variant-select="ehive-one">
+              <option value="ehive-one-base">Basis (ohne NVMe)</option>
+              <option value="ehive-one-nvme-256">Basis + NVMe 256GB</option>
+              <option value="ehive-one-nvme-512">Basis + NVMe 512GB</option>
+            </select>
+          </div>
+          <div class="field" style="max-width:120px">
+            <label for="qtyShop">Stück</label>
+            <input id="qtyShop" type="number" min="1" max="99" value="1" data-qty-input="ehive-one" />
+          </div>
+        </div>
+
+        <div class="paypal-slot" data-paypal-slot="ehive-one"></div>
+
+        <div class="row">
+          <a class="btn" href="sproduct.html">Details</a>
+          <a class="btn" href="cart.html">Warenkorb</a>
+        </div>
+      </div>
+
+      <div class="pro" data-addon-id="din-clip">
+        <img src="img/accessory.svg" alt="DIN-Rail Clip Zubehör" />
+        <div class="des">
+          <span>Zubehör</span>
+          <h5>DIN‑Rail Clip (Ersatz/Set)</h5>
+          <div class="price-line">Preis: 9,90 €</div>
+        </div>
+        <div class="row">
+          <div class="field" style="max-width:120px">
+            <label>Stück</label>
+            <input type="number" min="1" max="99" value="1" data-addon-qty />
+          </div>
+        </div>
+        <div class="paypal-slot" data-addon-slot></div>
+      </div>
+
+      <div class="pro" data-addon-id="power-cable">
+        <img src="img/accessory.svg" alt="DC Anschlusskabel Zubehör" />
+        <div class="des">
+          <span>Zubehör</span>
+          <h5>DC Anschlusskabel 12–30V (1m)</h5>
+          <div class="price-line">Preis: 7,90 €</div>
+        </div>
+        <div class="row">
+          <div class="field" style="max-width:120px">
+            <label>Stück</label>
+            <input type="number" min="1" max="99" value="1" data-addon-qty />
+          </div>
+        </div>
+        <div class="paypal-slot" data-addon-slot></div>
+      </div>
+
+      <div class="pro" data-addon-id="nvme-1tb">
+        <img src="img/accessory.svg" alt="NVMe SSD Zubehör" />
+        <div class="des">
+          <span>Upgrade</span>
+          <h5>NVMe SSD 1TB (Upgrade)</h5>
+          <div class="price-line">Preis: 129,00 €</div>
+        </div>
+        <div class="row">
+          <div class="field" style="max-width:120px">
+            <label>Stück</label>
+            <input type="number" min="1" max="99" value="1" data-addon-qty />
+          </div>
+        </div>
+        <div class="paypal-slot" data-addon-slot></div>
+      </div>
+    </div>
+
+    <section class="section" style="padding-top:28px">
+      <div class="banner">
+        <div>
+          <h3>Newsletter (optional)</h3>
+          <p>Für GitHub Pages kannst du ein externes Formular (z.B. Mailchimp) verlinken. Dieses Feld ist nur ein Platzhalter.</p>
+        </div>
+        <a class="btn primary" href="contact.html">Kontakt</a>
+      </div>
+    </section>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="brand" style="margin-bottom:10px">
+          <span class="brand-badge" aria-hidden="true"></span>
+          <span><span data-brand-name>eHive One</span> <small data-brand-subtitle>OpenArc Shop</small></span>
+        </div>
+        <div class="copy">
+          Statischer Shop für GitHub Pages. Checkout & Warenkorb laufen über PayPal.
+        </div>
+      </div>
+      <div>
+        <strong>Rechtliches</strong>
+        <div class="copy">
+          <a href="impressum.html">Impressum</a><br/>
+          <a href="datenschutz.html">Datenschutz</a>
+        </div>
+      </div>
+      <div>
+        <strong>Kontakt</strong>
+        <div class="copy">
+          <span id="footerEmail">sales@example.com</span><br/>
+          <a href="contact.html">Kontakt</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="copy" style="margin-top:16px">
+      © <span id="year"></span> <span data-brand-name>eHive One</span>
+    </div>
+  </div>
+</footer>
+
+<script src="config.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
