@@ -118,6 +118,9 @@ button, input, select{ font:inherit; }
   color: var(--muted);
   font-weight: 700;
   padding: 8px 2px;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
   border-bottom: 2px solid transparent;
 }
 
