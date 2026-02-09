@@ -1483,16 +1483,19 @@ body.lightbox-open{
   .hero-ehive-frame{
     --hero-frame-pad-top: 96px;
     --hero-frame-pad-bottom: 28px;
+    overflow: visible;
   }
   .hero-ehive-bg{
     width: 100%;
     max-width: 100%;
     opacity: .4;
     transform: translateX(0) translateY(calc(-1 * var(--hero-bg-crop)));
+    max-height: 260px;
   }
   .hero-ehive-content{
     position: relative;
     padding: 0;
+    overflow: visible;
   }
   .hero-ehive-pretext,
   .hero-ehive.hero-text-active .hero-ehive-pretext{
@@ -1506,6 +1509,10 @@ body.lightbox-open{
   .hero-ehive-copy{
     margin-left: 0;
     grid-column: 1 / -1;
+  }
+  .hero-ehive-copy-inner{
+    margin-top: 16px !important;
+    transform: none !important;
   }
   .hero-ehive h1,
   .hero-ehive-pretext--title{
