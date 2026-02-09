@@ -1490,11 +1490,12 @@ body.lightbox-open{
     max-width: 100%;
     opacity: .4;
     transform: translateX(0) translateY(calc(-1 * var(--hero-bg-crop)));
-    max-height: 260px;
+    max-height: 210px;
   }
   .hero-ehive-content{
-    position: relative;
-    padding: 0;
+    position: absolute;
+    inset: 0;
+    padding: 16px 0 0;
     overflow: visible;
   }
   .hero-ehive-pretext,
@@ -1511,8 +1512,9 @@ body.lightbox-open{
     grid-column: 1 / -1;
   }
   .hero-ehive-copy-inner{
-    margin-top: 16px !important;
+    margin-top: 8px !important;
     transform: none !important;
+    top: 0 !important;
   }
   .hero-ehive h1,
   .hero-ehive-pretext--title{
