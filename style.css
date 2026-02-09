@@ -1490,7 +1490,7 @@ body.lightbox-open{
     max-width: 100%;
     opacity: .4;
     transform: translateX(0) translateY(calc(-1 * var(--hero-bg-crop)));
-    max-height: 210px;
+    max-height: none;
   }
   .hero-ehive-content{
     position: absolute;
