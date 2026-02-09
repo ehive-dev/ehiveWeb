@@ -15,9 +15,9 @@
 
 window.EHIVE_SHOP_CONFIG = {
   brand: {
-    name: "eHive One",
-    subtitle: "OpenArc Shop",
-    contactEmail: "sales@example.com"
+    name: "eHive",
+    subtitle: "HEMS but smart",
+    contactEmail: "ehive@gmx.com"
   },
 
   paypal: {
