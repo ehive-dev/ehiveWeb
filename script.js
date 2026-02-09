@@ -96,7 +96,7 @@
     if (isPlaceholderId(buttonId)) {
       const warn = document.createElement("div");
       warn.className = "note";
-      warn.textContent = "PayPal Button-ID fehlt. Bitte in config.js eintragen.";
+      warn.textContent = "Der Kauf ist aktuell nicht verfügbar.";
       return warn;
     }
 
@@ -131,10 +131,57 @@
     const submit = document.createElement("button");
     submit.type = "submit";
     submit.className = "btn primary";
-    submit.textContent = "In den PayPal-Warenkorb";
+    submit.textContent = "In den Warenkorb";
     form.appendChild(submit);
 
     return form;
+  }
+  function salesEmail() {
+    return (cfg().brand && cfg().brand.contactEmail) || "";
+  }
+
+  function salesSubject() {
+    return (cfg().brand && cfg().brand.salesSubject) || "[Sales] Pre-Order";
+  }
+
+  function buildMailto(email, subject, body) {
+    const parts = [];
+    if (subject) parts.push("subject=" + encodeURIComponent(subject));
+    if (body) parts.push("body=" + encodeURIComponent(body));
+    return "mailto:" + encodeURIComponent(email) + (parts.length ? "?" + parts.join("&") : "");
+  }
+
+  function renderPreorderSlot(mountEl, itemName, variantLabel) {
+    if (!mountEl) return;
+    const email = salesEmail();
+    if (!email) {
+      const warn = document.createElement("div");
+      warn.className = "note";
+      warn.textContent = "Sales E-Mail fehlt. Bitte in config.js eintragen.";
+      mountEl.replaceChildren(warn);
+      return;
+    }
+
+    const label = [itemName, variantLabel].filter(Boolean).join(" – ");
+    const body = label ? `Bitte um Vorbestellung: ${label}` : "Bitte um Vorbestellung.";
+    const link = buildMailto(email, salesSubject(), body);
+
+    const wrap = document.createElement("div");
+    wrap.className = "preorder-card";
+
+    const note = document.createElement("div");
+    note.className = "note";
+    note.textContent = "Ausverkauft – Pre‑Order anfragen.";
+
+    const btn = document.createElement("a");
+    btn.className = "btn primary";
+    btn.href = link;
+    btn.textContent = "Pre‑Order anfragen";
+    btn.setAttribute("rel", "nofollow");
+
+    wrap.appendChild(note);
+    wrap.appendChild(btn);
+    mountEl.replaceChildren(wrap);
   }
 
   function createPaypalViewCartForm(mountEl) {
@@ -143,7 +190,7 @@
     if (!mountEl) return;
 
     if (!business || /^YOUR_PAYPAL_MERCHANT_ID$/i.test(business)) {
-      mountEl.innerHTML = '<p class="note">PayPal business/merchant ID fehlt. Bitte in config.js eintragen.</p>';
+      mountEl.innerHTML = '<p class="note">Warenkorb aktuell nicht verfügbar.</p>';
       return;
     }
 
@@ -162,7 +209,7 @@
     const btn = document.createElement("button");
     btn.type = "submit";
     btn.className = "btn primary";
-    btn.textContent = "PayPal-Warenkorb öffnen";
+    btn.textContent = "Warenkorb öffnen";
     form.appendChild(btn);
 
     mountEl.replaceChildren(form);
@@ -193,7 +240,13 @@
 
     const email = (cfg().brand && cfg().brand.contactEmail) || "sales@example.com";
     const fe = byId("footerEmail");
-    if (fe) fe.textContent = email;
+    if (fe) {
+      fe.textContent = email;
+      if (fe.tagName === "A") {
+        const subject = "[Sales] Anfrage";
+        fe.href = `mailto:${email}?subject=${encodeURIComponent(subject)}`;
+      }
+    }
   }
 
   function initCommunityStats() {
@@ -406,37 +459,59 @@
     return getCatalog().products.find(p => p.id === id);
   }
 
+  function findAddon(id) {
+    return getCatalog().addons.find(a => a.id === id);
+  }
+
+  function isSoldOut(item, variant) {
+    return Boolean((variant && variant.soldOut) || (item && item.soldOut));
+  }
+
   function renderDynamicPaypalAdd(mountEl, buttonKey, qty, extraVars) {
     if (!mountEl) return;
     mountEl.replaceChildren(createPaypalAddToCartForm(buttonKey, qty, extraVars));
   }
 
   function wireShopCard() {
-    // Shop page: product card with variant selector
-    const select = document.querySelector("[data-variant-select='ehive-one']");
-    const qtyInput = document.querySelector("[data-qty-input='ehive-one']");
-    const slot = document.querySelector("[data-paypal-slot='ehive-one']");
+    // Shop page: support multiple product cards
+    const selects = document.querySelectorAll("[data-variant-select]");
+    if (!selects.length) return;
 
-    if (!select || !qtyInput || !slot) return;
+    selects.forEach(select => {
+      const card = select.closest(".pro");
+      if (!card) return;
 
-    function refresh() {
-      const variantId = select.value;
-      const qty = qtyInput.value;
-      const p = findProduct("ehive-one");
-      const v = p && p.variants ? p.variants.find(x => x.id === variantId) : null;
+      const productId = select.getAttribute("data-variant-select");
+      const qtyInput = card.querySelector("[data-qty-input]");
+      const slot = card.querySelector("[data-paypal-slot]");
+      const priceEl = card.querySelector("[data-price]");
 
-      // Optional: pass a visible option value to PayPal (tracking)
-      const extra = v ? { on0: "variant", os0: v.label } : undefined;
+      if (!productId || !qtyInput || !slot) return;
 
-      renderDynamicPaypalAdd(slot, variantId, qty, extra);
+      function refresh() {
+        const variantId = select.value;
+        const qty = qtyInput.value;
+        const p = findProduct(productId);
+        const v = p && p.variants ? p.variants.find(x => x.id === variantId) : null;
 
-      const priceEl = document.querySelector("[data-price='ehive-one']");
-      if (priceEl && v) priceEl.textContent = money(v.price, (cfg().paypal && cfg().paypal.currency) || "EUR");
-    }
+        // Optional: pass a visible option value to PayPal (tracking)
+        const extra = v ? { on0: "variant", os0: v.label } : undefined;
 
-    select.addEventListener("change", refresh);
-    qtyInput.addEventListener("input", refresh);
-    refresh();
+        if (isSoldOut(p, v)) {
+          renderPreorderSlot(slot, p && p.name, v && v.label);
+        } else {
+          renderDynamicPaypalAdd(slot, variantId, qty, extra);
+        }
+
+        if (priceEl && v) {
+          priceEl.textContent = money(v.price, (cfg().paypal && cfg().paypal.currency) || "EUR");
+        }
+      }
+
+      select.addEventListener("change", refresh);
+      qtyInput.addEventListener("input", refresh);
+      refresh();
+    });
   }
 
   function wireProductPage() {
@@ -457,7 +532,11 @@
       if (priceEl && v) priceEl.textContent = money(v.price, (cfg().paypal && cfg().paypal.currency) || "EUR");
 
       const extra = v ? { on0: "variant", os0: v.label } : undefined;
-      renderDynamicPaypalAdd(slot, variantId, qty, extra);
+      if (isSoldOut(p, v)) {
+        renderPreorderSlot(slot, p && p.name, v && v.label);
+      } else {
+        renderDynamicPaypalAdd(slot, variantId, qty, extra);
+      }
     }
 
     select.addEventListener("change", refresh);
@@ -471,13 +550,18 @@
       const addonId = card.getAttribute("data-addon-id");
       if (!addonId) return;
 
+      const addon = findAddon(addonId);
       const qtyInput = card.querySelector("[data-addon-qty]");
       const slot = card.querySelector("[data-addon-slot]");
       if (!slot) return;
 
       function refresh() {
         const qty = qtyInput ? qtyInput.value : 1;
-        renderDynamicPaypalAdd(slot, addonId, qty);
+        if (isSoldOut(addon)) {
+          renderPreorderSlot(slot, addon && addon.name);
+        } else {
+          renderDynamicPaypalAdd(slot, addonId, qty);
+        }
       }
 
       if (qtyInput) qtyInput.addEventListener("input", refresh);
@@ -488,6 +572,35 @@
   function wireCartPage() {
     const mount = document.querySelector("[data-paypal-view-cart]");
     if (mount) createPaypalViewCartForm(mount);
+  }
+
+  function initAddonDetails() {
+    const cards = document.querySelectorAll("[data-addon-toggle]");
+    if (!cards.length) return;
+
+    cards.forEach(card => {
+      const details = card.querySelector(".addon-details");
+      if (!details) return;
+
+      const toggle = () => {
+        const open = !card.classList.contains("is-open");
+        card.classList.toggle("is-open", open);
+        card.setAttribute("aria-expanded", open ? "true" : "false");
+      };
+
+      card.addEventListener("click", (event) => {
+        const interactive = event.target.closest("input, select, button, a, label");
+        if (interactive) return;
+        toggle();
+      });
+
+      card.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          toggle();
+        }
+      });
+    });
   }
 
   function initScrollReveal() {
@@ -701,7 +814,7 @@
     const nameEls = document.querySelectorAll("[data-brand-name]");
     const subEls = document.querySelectorAll("[data-brand-subtitle]");
     nameEls.forEach(el => { el.textContent = b.name || "eHive One"; });
-    subEls.forEach(el => { el.textContent = b.subtitle || "OpenArc Shop"; });
+    subEls.forEach(el => { el.textContent = b.subtitle || "eHive Shop"; });
   }
 
   function syncHeaderHeight() {
@@ -860,6 +973,7 @@
         initHeroHideOnScroll();
         initLogoLightbox();
         initVideoLightbox();
+        initAddonDetails();
         window.addEventListener("resize", syncHeaderHeight);
         window.addEventListener("resize", syncHeroPretextOffset);
         window.addEventListener("load", syncHeroPretextOffset, { once: true });
@@ -872,6 +986,9 @@
     });
   });
 })();
+
+
+
 
 
 

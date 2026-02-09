@@ -1,4 +1,4 @@
-/*
+﻿/*
   eHive One Shop – configuration (edit this file)
   Main parts:
     - paypal: environment + IDs for PayPal-hosted cart buttons
@@ -17,7 +17,8 @@ window.EHIVE_SHOP_CONFIG = {
   brand: {
     name: "eHive",
     subtitle: "HEMS but smart",
-    contactEmail: "ehive@gmx.com"
+    contactEmail: "ehive@gmx.de",
+    salesSubject: "[Sales] Pre-Order"
   },
 
   paypal: {
@@ -44,14 +45,11 @@ window.EHIVE_SHOP_CONFIG = {
     // Replace the placeholder IDs.
     hostedButtons: {
       // eHive One variants
-      "ehive-one-base": "PASTE_HOSTED_BUTTON_ID_HERE",
-      "ehive-one-nvme-256": "PASTE_HOSTED_BUTTON_ID_HERE",
-      "ehive-one-nvme-512": "PASTE_HOSTED_BUTTON_ID_HERE",
+      "ehive-one-no-license": "PASTE_HOSTED_BUTTON_ID_HERE",
+      "ehive-one-with-license": "PASTE_HOSTED_BUTTON_ID_HERE",
 
       // Add-ons (examples)
-      "din-clip": "PASTE_HOSTED_BUTTON_ID_HERE",
-      "power-cable": "PASTE_HOSTED_BUTTON_ID_HERE",
-      "nvme-1tb": "PASTE_HOSTED_BUTTON_ID_HERE"
+      "psu-24v": "PASTE_HOSTED_BUTTON_ID_HERE"
     }
   },
 
@@ -60,28 +58,48 @@ window.EHIVE_SHOP_CONFIG = {
       {
         id: "ehive-one",
         name: "eHive One – DIN‑Rail Mini‑PC",
-        maker: "OpenArc",
-        image: "img/ehive-one.svg",
-        descriptionShort: "Linux-basierte Hardwareplattform (OpenArc OS, DietPi-basiert). 12–30VDC, ~3W, IP20, optional NVMe.",
+        maker: "eHive",
+        soldOut: false,
+        image: "products/ehive-one.png",
+      descriptionShort: "Hutschienen‑Mini‑PC fürs Energiemanagement. 12–30VDC, ~3W, IP20.",
         descriptionLong: "Der eHive One ist ein Hutschienengerät‑PC für Open‑Source‑Software. Er eignet sich ideal als zentrale Smart‑Home Plattform mit Modulen wie EVCC, Home Assistant, Node‑RED, Grafana und mehr (je nach Setup).",
         bullets: [
           "12–30VDC, ca. 3W (typ.) • IP20",
-          "OpenArc OS (DietPi‑Basis) mit Dashboard",
+          "Linux OS mit Dashboard",
           "Optional NVMe-Erweiterung",
           "CE / EMV / RoHS (gemäß Planung/Zertifizierung)"
         ],
         variants: [
-          { id: "ehive-one-base", label: "Basis (ohne NVMe)", price: 399.00 },
-          { id: "ehive-one-nvme-256", label: "Basis + NVMe 256GB", price: 449.00 },
-          { id: "ehive-one-nvme-512", label: "Basis + NVMe 512GB", price: 489.00 }
+          { id: "ehive-one-no-license", label: "Ohne Lizenz", price: 199.00, soldOut: false },
+          { id: "ehive-one-with-license", label: "Mit evcc", price: 299.00, soldOut: false }
+        ]
+      },
+      {
+        id: "ehive-one-preorder",
+        name: "eHive One – Pre‑Order",
+        maker: "eHive",
+        soldOut: true,
+        image: "products/ehive-one.png",
+      descriptionShort: "Hutschienen‑Mini‑PC fürs Energiemanagement. 12–30VDC, ~3W, IP20.",
+        descriptionLong: "Der eHive One ist ein Hutschienengerät‑PC für Open‑Source‑Software. Er eignet sich ideal als zentrale Smart‑Home Plattform mit Modulen wie EVCC, Home Assistant, Node‑RED, Grafana und mehr (je nach Setup).",
+        bullets: [
+          "12–30VDC, ca. 3W (typ.) • IP20",
+          "Linux OS mit Dashboard",
+          "Optional NVMe-Erweiterung",
+          "CE / EMV / RoHS (gemäß Planung/Zertifizierung)"
+        ],
+        variants: [
+          { id: "ehive-one-pre-no-license", label: "Ohne Lizenz", price: 199.00, soldOut: true },
+          { id: "ehive-one-pre-with-license", label: "Mit evcc", price: 299.00, soldOut: true }
         ]
       }
     ],
 
     addons: [
-      { id: "din-clip", name: "DIN‑Rail Clip (Ersatz/Set)", price: 9.90, image: "img/accessory.svg" },
-      { id: "power-cable", name: "DC Anschlusskabel 12–30V (1m)", price: 7.90, image: "img/accessory.svg" },
-      { id: "nvme-1tb", name: "NVMe SSD 1TB (Upgrade)", price: 129.00, image: "img/accessory.svg" }
+      { id: "psu-24v", name: "MEAN WELL HDR-15-24", price: 24.99, image: "products/MEAN-WELL-HDR-15-24.png", soldOut: true }
     ]
   }
 };
+
+
+

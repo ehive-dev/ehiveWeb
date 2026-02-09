@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Produktdetails eHive One mit Varianten und PayPal-Button." />
+  <meta name="description" content="Produktdetails eHive One mit Varianten." />
   <title>eHive One Shop • Produkt</title>
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="style.css" />
@@ -18,29 +18,28 @@
   <div class="container">
     <div class="section-title">
       <h2>Produkt</h2>
-      <p>eHive One – Varianten auswählen und direkt in den PayPal-Warenkorb legen.</p>
+      <p>eHive One – Varianten auswählen und direkt bestellen.</p>
     </div>
 
     <div class="product-grid">
       <div class="product-media">
-        <img src="img/ehive-one.svg" alt="eHive One" />
+        <img src="products/ehive-one.png" alt="eHive One" />
       </div>
 
       <div class="product-info">
-        <div class="meta">OpenArc • DIN‑Rail Mini‑PC • GitHub Pages Checkout via PayPal</div>
+        <div class="meta">eHive • DIN‑Rail Mini‑PC</div>
         <h2>eHive One – DIN‑Rail Mini‑PC</h2>
 
         <p style="color:var(--muted); margin-top:0">
-          Linux-basierte Hardwareplattform (OpenArc OS). Die Zahlung läuft über den PayPal‑hosted Warenkorb.
+          Kompakter Hutschienen‑Mini‑PC für intelligentes Energiemanagement.
         </p>
 
         <div class="row" style="margin-top:12px">
           <div class="field">
             <label for="variantDetail">Variante</label>
             <select id="variantDetail" data-variant-select="ehive-one-detail">
-              <option value="ehive-one-base">Basis (ohne NVMe)</option>
-              <option value="ehive-one-nvme-256">Basis + NVMe 256GB</option>
-              <option value="ehive-one-nvme-512">Basis + NVMe 512GB</option>
+              <option value="ehive-one-no-license">Ohne Lizenz</option>
+              <option value="ehive-one-with-license">Mit evcc</option>
             </select>
           </div>
           <div class="field" style="max-width:120px">
@@ -51,7 +50,7 @@
 
         <div class="price" style="margin-top:12px">
           Preis: <span data-price="ehive-one-detail">399,00 €</span>
-          <small>Anzeige-Preis (Checkout-Preis kommt aus PayPal)</small>
+          <small>Preise können je nach Konfiguration variieren.</small>
         </div>
 
         <div class="paypal-slot" data-paypal-slot="ehive-one-detail"></div>
@@ -61,17 +60,38 @@
           <a class="btn" href="cart.html">Warenkorb</a>
         </div>
 
-        <div class="note" style="margin-top:14px">
-          Tipp: In PayPal kannst du die Button-Einstellungen so setzen, dass Käufer die Menge im PayPal‑Warenkorb anpassen dürfen.
-        </div>
+        <h3 style="margin-top:18px">Produktbeschreibung</h3>
+        <div class="product-description">
+          <p><strong>Überblick</strong></p>
+          <ul>
+            <li>Hutschienen‑Mini‑PC für ihr intelligentes Zuhause</li>
+            <li>Versorgung: 12–30 V DC / PoE • Verbrauch: max. 5 W</li>
+            <li>Schnittstellen: RS485 + DI (EnWG §14a)</li>
+            <li>Schutzart: IP20 • Montage: DIN‑Schiene</li>
+          </ul>
 
-        <h3 style="margin-top:18px">Technische Eckdaten (Beispiel)</h3>
-        <ul>
-          <li>Versorgung: 12–30VDC • Verbrauch: ca. 3W (typ.)</li>
-          <li>Schutzart: IP20 • Montage: Hutschiene</li>
-          <li>OS: OpenArc (DietPi‑Basis)</li>
-          <li>Module: EVCC, Home Assistant, Grafana, Node‑RED, …</li>
-        </ul>
+          <p><strong>Beschreibung</strong></p>
+          <p>
+            Der eHive One ist ein kompaktes Hutschienen‑Gerät, das evcc als zentrales Open‑Source‑Herzstück nutzt
+            und sich je nach Bedarf mit weiteren Modulen erweitern lässt. So entsteht eine zentrale Smart‑Home‑Plattform
+            für Energieflüsse, Ladepunkte und Automatisierungen.
+          </p>
+          <p>
+            Durch die robuste DIN‑Rail‑Montage und den geringen Energieverbrauch eignet sich der eHive One ideal
+            für den dauerhaften Betrieb im Schaltschrank.
+          </p>
+
+          <p><strong>Technische Daten</strong></p>
+          <div class="addon-specs">
+            <div class="addon-specs-row"><span>Versorgung</span><span>12–30 V DC / PoE</span></div>
+            <div class="addon-specs-row"><span>Verbrauch (max.)</span><span>5 W</span></div>
+            <div class="addon-specs-row"><span>Schnittstellen</span><span>RS485 + DI (EnWG §14a)</span></div>
+            <div class="addon-specs-row"><span>Schutzart</span><span>IP20</span></div>
+            <div class="addon-specs-row"><span>Montage</span><span>DIN‑Schiene</span></div>
+            <div class="addon-specs-row"><span>Module</span><span>EVCC, Home Assistant, Grafana, Node‑RED</span></div>
+            <div class="addon-specs-row"><span>Varianten</span><span>Ohne Lizenz / Mit evcc</span></div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
