@@ -369,6 +369,10 @@ button, input, select{ font:inherit; }
   top: 8px;
   z-index: 300;
 }
+.debug-panel,
+.debug-header{
+  display: none;
+}
 
 .hero-ehive-frame .container{
   position: relative;
@@ -1448,6 +1452,10 @@ body.lightbox-open{
   .nav-links{ display:none; }
   .mobile-toggle{ display:inline-flex; }
   .mobile-panel.show{ display:block; }
+  .nav{ gap: 10px; }
+  .nav-actions{ gap: 6px; }
+  .nav-actions .icon-btn{ padding: 8px 10px; }
+  .nav-actions .icon-btn span{ display:none; }
   .features{ grid-template-columns: repeat(2, 1fr); }
   .products{ grid-template-columns: 1fr; }
   .footer-grid{ grid-template-columns: 1fr; }
@@ -1456,10 +1464,13 @@ body.lightbox-open{
   .spec-grid{ grid-template-columns: 1fr; }
 
   .brand-badge{
-    width: 150px;
-    height: 44px;
-    border-radius: 12px;
-    background-size: 92%;
+    width: 120px;
+    height: 34px;
+    border-radius: 10px;
+    background-size: 96%;
+  }
+  .brand-tagline{
+    font-size: 12px;
   }
 
   .hero-ehive{
