@@ -22,6 +22,7 @@
 
 *{ box-sizing:border-box; }
 html,body{ margin:0; padding:0; }
+html{ scrollbar-gutter: stable; }
 
 body{
   font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
@@ -29,6 +30,7 @@ body{
   background: #f8fafc;
   line-height: 1.55;
   padding-top: var(--header-h);
+  overflow-y: scroll;
 }
 
 a{ color:inherit; text-decoration:none; }
