@@ -234,6 +234,43 @@
     });
   }
 
+  function initMenuStyleSwitch() {
+    const buttons = document.querySelectorAll("[data-menu-style]");
+    if (!buttons.length) return;
+    const body = document.body;
+    const classes = ["menu-style-1", "menu-style-2", "menu-style-3", "menu-style-4"];
+    const key = "ehiveMenuStyle";
+
+    const apply = (value) => {
+      classes.forEach(c => body.classList.remove(c));
+      body.classList.add(`menu-style-${value}`);
+      buttons.forEach(btn => {
+        btn.classList.toggle("is-active", btn.getAttribute("data-menu-style") === String(value));
+      });
+    };
+
+    let stored = null;
+    try {
+      stored = localStorage.getItem(key);
+    } catch (err) {
+      stored = null;
+    }
+    if (!stored || !/^[1-4]$/.test(stored)) stored = "1";
+    apply(stored);
+
+    buttons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const value = btn.getAttribute("data-menu-style") || "1";
+        try {
+          localStorage.setItem(key, value);
+        } catch (err) {
+          // ignore
+        }
+        apply(value);
+      });
+    });
+  }
+
   function wireFooter() {
     const y = byId("year");
     if (y) y.textContent = String(new Date().getFullYear());
@@ -965,6 +1002,7 @@
         syncHeroPretextOffset();
         initMobileNav();
         setActiveNav();
+        initMenuStyleSwitch();
         wireFooter();
         wireBrand();
         initCommunityStats();

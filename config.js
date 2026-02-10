@@ -27,7 +27,7 @@ window.EHIVE_SHOP_CONFIG = {
 
     // Used for the "View Cart" button (cmd=_cart&display=1).
     // Prefer your PayPal Merchant ID instead of an email address.
-    business: "YOUR_PAYPAL_MERCHANT_ID",
+    business: "WL4UJPJ62Y972",
 
     // Locale + currency shown at PayPal checkout.
     locale: "DE",
@@ -45,11 +45,11 @@ window.EHIVE_SHOP_CONFIG = {
     // Replace the placeholder IDs.
     hostedButtons: {
       // eHive One variants
-      "ehive-one-no-license": "PASTE_HOSTED_BUTTON_ID_HERE",
-      "ehive-one-with-license": "PASTE_HOSTED_BUTTON_ID_HERE",
+      "ehive-one-no-license": "4EM9UUJZRTK8U",
+      "ehive-one-with-license": "SNKJV66HSBEMC",
 
       // Add-ons (examples)
-      "psu-24v": "PASTE_HOSTED_BUTTON_ID_HERE"
+      "psu-24v": "C8P6NNSWGT3KA"
     }
   },
 

@@ -6,7 +6,7 @@
 :root{
   --bg: #ffffff;
   --bg-soft: #f7f8fa;
-  --hero-bg: var(--hero-bg);
+  --hero-bg: #f8fafc;
   --text: #0b1220;
   --muted: #5b6472;
   --border: #e6e8ec;
@@ -19,6 +19,7 @@
 
   --shadow: 0 1px 2px rgba(0,0,0,.05);
 }
+
 
 *{ box-sizing:border-box; }
 html,body{ margin:0; padding:0; }
@@ -142,6 +143,7 @@ button, input, select{ font:inherit; }
   gap: 10px;
 }
 
+
 .icon-btn{
   display:inline-flex;
   align-items:center;
@@ -172,13 +174,79 @@ button, input, select{ font:inherit; }
 }
 .mobile-panel a{
   display:block;
-  padding: 12px 12px;
-  border-radius: var(--radius);
-  margin-top: 8px;
-  background: var(--bg-soft);
-  border: 1px solid var(--border);
+  padding: 12px 10px;
+  border-radius: 0;
+  margin-top: 0;
+  background: transparent;
+  border: 0;
   font-weight: 700;
   color: var(--text);
+}
+.menu-style-switch{
+  margin-top: 12px;
+  display:flex;
+  align-items:center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.menu-style-label{
+  font-size: 10px;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+}
+.menu-style-switch button{
+  width: 32px;
+  height: 28px;
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 0;
+  font-weight: 700;
+  cursor: pointer;
+}
+.menu-style-switch button.is-active{
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+body.menu-style-1 .mobile-panel{
+  padding: 8px 0 12px;
+  border-top: 1px solid var(--border);
+}
+body.menu-style-1 .mobile-panel a{
+  padding: 12px 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+body.menu-style-2 .mobile-panel{
+  padding: 8px 0 12px;
+}
+body.menu-style-2 .mobile-panel a{
+  margin-top: 8px;
+  background: #fff;
+  border: 1px solid var(--border);
+}
+
+body.menu-style-3 .mobile-panel{
+  padding: 10px 0 14px;
+}
+body.menu-style-3 .mobile-panel a{
+  margin-top: 8px;
+  background: var(--text);
+  color: #fff;
+  border: 1px solid var(--text);
+}
+
+body.menu-style-4 .mobile-panel{
+  padding: 6px 0 12px;
+}
+body.menu-style-4 .mobile-panel a{
+  padding: 10px 4px;
+  border-bottom: 2px solid transparent;
+}
+body.menu-style-4 .mobile-panel a:hover{
+  border-bottom-color: var(--accent);
 }
 
 /* Sections */
@@ -199,6 +267,19 @@ button, input, select{ font:inherit; }
   color: var(--muted);
   max-width: 70ch;
 }
+
+.shop-title{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.shop-cart{
+  flex: 0 0 auto;
+}
+
 
 /* Hero */
 .hero{
@@ -256,6 +337,7 @@ button, input, select{ font:inherit; }
   border-bottom: 1px solid var(--border);
   --hero-copy-max-up: 24px;
   --hero-pretext-gap: 28px;
+  --hero-text-top: 112px;
   --hero-bg-shift: 0px;
   --hero-bg-delay: 0px;
   --hero-bg-shift-max: 90px;
@@ -266,7 +348,7 @@ button, input, select{ font:inherit; }
     var(--hero-bg);
   position: relative;
   overflow: hidden;
-  margin-top: calc(-1 * var(--header-h));
+  margin-top: 0;
 }
 
 .hero-ehive .container{
@@ -306,7 +388,7 @@ button, input, select{ font:inherit; }
   margin: 0 auto;
   transform: translateX(26%) translateY(calc(-1 * var(--hero-bg-crop) + var(--hero-bg-shift, 0px)));
   object-fit: contain;
-  opacity: .55;
+  opacity: 1;
   filter: saturate(1.05) contrast(1.05);
   clip-path: inset(var(--hero-bg-crop) 0 0 0);
   -webkit-clip-path: inset(var(--hero-bg-crop) 0 0 0);
@@ -321,21 +403,13 @@ button, input, select{ font:inherit; }
 
 .hero-ehive-pretext{
   position: absolute;
-  top: 112px;
+  top: var(--hero-text-top);
   left: 0;
   margin: 0;
   display: grid;
   gap: 10px;
   max-width: 60ch;
   transition: opacity .25s ease, transform .25s ease;
-}
-
-.hero-ehive.hero-text-active .hero-ehive-pretext{
-  position: absolute;
-  top: 0;
-  left: 0;
-  margin: 0;
-  transition: opacity .35s ease, transform .35s ease;
 }
 
 .hero-ehive-pretext--title{
@@ -379,6 +453,11 @@ button, input, select{ font:inherit; }
   display: none;
 }
 
+body.debug-on .debug-panel,
+body.debug-on .debug-header{
+  display: block;
+}
+
 .hero-ehive-frame .container{
   position: relative;
   z-index: 1;
@@ -419,7 +498,7 @@ button, input, select{ font:inherit; }
 }
 
 .hero-ehive-copy{
-  margin-left: -72px;
+  margin-left: 0;
   grid-column: 1 / 2;
   display: grid;
   gap: 10px;
@@ -427,11 +506,25 @@ button, input, select{ font:inherit; }
 }
 
 .hero-ehive-copy-inner{
-  margin-top: var(--hero-pretext-offset, 0px);
+  position: absolute;
+  top: var(--hero-pretext-offset, var(--hero-text-top));
+  left: 0;
+  right: 0;
+  margin-top: 0;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity .25s ease, transform .25s ease;
+  pointer-events: none;
+}
+
+.hero-ehive.hero-text-active .hero-ehive-copy-inner{
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .hero-ehive-copy{
-  margin-left: -72px;
+  margin-left: 0;
   grid-column: 1 / 2;
   display: grid;
   gap: 10px;
@@ -470,8 +563,6 @@ button, input, select{ font:inherit; }
   transition: opacity .25s ease, transform .25s ease;
 }
 
-.hero-ehive.hide-on-scroll .hero-ehive-pretext,
-.hero-ehive.hide-on-scroll h1,
 .hero-ehive.hide-on-scroll .lead{
   opacity: 0;
   transform: translateY(-6px);
@@ -1481,6 +1572,9 @@ body.lightbox-open{
   .hero-ehive{
     margin-top: 0;
   }
+  .hero-ehive{
+    --hero-text-top: 72px;
+  }
   .hero-ehive-pin{
     position: relative;
     top: 0;
@@ -1503,9 +1597,7 @@ body.lightbox-open{
     padding: 16px 0 0;
     overflow: visible;
   }
-  .hero-ehive-pretext,
-  .hero-ehive.hero-text-active .hero-ehive-pretext{
-    position: static;
+  .hero-ehive-pretext{
     max-width: 100%;
   }
   .hero-ehive-pretext-sub{
@@ -1517,9 +1609,8 @@ body.lightbox-open{
     grid-column: 1 / -1;
   }
   .hero-ehive-copy-inner{
-    margin-top: 8px !important;
-    transform: none !important;
-    top: 0 !important;
+    transform: translateY(6px) !important;
+    top: var(--hero-pretext-offset, var(--hero-text-top)) !important;
   }
   .hero-ehive h1,
   .hero-ehive-pretext--title{
@@ -1539,6 +1630,15 @@ body.lightbox-open{
   .micro-specs span{
     width: 100%;
     text-align: center;
+  }
+
+  .shop-title{
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .shop-cart{
+    align-self: flex-end;
+    margin-top: 8px;
   }
 
   .products[data-layout="split"] .pro{
@@ -1564,9 +1664,9 @@ body.lightbox-open{
     align-items: flex-start;
   }
 
-  .debug-panel,
-  .debug-header{
-    display: none !important;
+  body.debug-on .debug-panel,
+  body.debug-on .debug-header{
+    display: block !important;
   }
 }
 
