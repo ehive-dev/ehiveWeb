@@ -18,7 +18,7 @@ window.EHIVE_SHOP_CONFIG = {
     name: "eHive",
     subtitle: "HEMS but smart",
     contactEmail: "ehive@gmx.de",
-    salesSubject: "[Sales] Pre-Order"
+    salesSubject: "[Sales] Bestellung"
   },
 
   paypal: {
@@ -72,25 +72,6 @@ window.EHIVE_SHOP_CONFIG = {
         variants: [
           { id: "ehive-one-no-license", label: "Ohne Lizenz", price: 199.00, soldOut: false },
           { id: "ehive-one-with-license", label: "Mit evcc", price: 299.00, soldOut: false }
-        ]
-      },
-      {
-        id: "ehive-one-preorder",
-        name: "eHive One – Pre‑Order",
-        maker: "eHive",
-        soldOut: true,
-        image: "products/ehive-one.png",
-      descriptionShort: "Hutschienen‑Mini‑PC fürs Energiemanagement. 12–30VDC, ~3W, IP20.",
-        descriptionLong: "Der eHive One ist ein Hutschienengerät‑PC für Open‑Source‑Software. Er eignet sich ideal als zentrale Smart‑Home Plattform mit Modulen wie EVCC, Home Assistant, Node‑RED, Grafana und mehr (je nach Setup).",
-        bullets: [
-          "12–30VDC, ca. 3W (typ.) • IP20",
-          "Linux OS mit Dashboard",
-          "Optional NVMe-Erweiterung",
-          "CE / EMV / RoHS (gemäß Planung/Zertifizierung)"
-        ],
-        variants: [
-          { id: "ehive-one-pre-no-license", label: "Ohne Lizenz", price: 199.00, soldOut: true },
-          { id: "ehive-one-pre-with-license", label: "Mit evcc", price: 299.00, soldOut: true }
         ]
       }
     ],
