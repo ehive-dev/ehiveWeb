@@ -131,6 +131,42 @@
     if (!init()) window.addEventListener("load", init, { once: true });
   }
 
+  function fixPaypalCartQuantityLabel() {
+    const targets = new Set(["Quantity", "Menge", "Stück"]);
+    const applyStyles = el => {
+      el.style.whiteSpace = "nowrap";
+      el.style.wordBreak = "normal";
+      el.style.overflowWrap = "normal";
+      el.style.minWidth = "8ch";
+    };
+
+    const scan = root => {
+      if (!root || root.nodeType !== 1) return;
+      const text = root.textContent ? root.textContent.trim() : "";
+      if (targets.has(text)) {
+        applyStyles(root);
+        if (root.parentElement) applyStyles(root.parentElement);
+      }
+      if (!root.querySelectorAll) return;
+      root.querySelectorAll("*").forEach(el => {
+        const label = el.textContent ? el.textContent.trim() : "";
+        if (!targets.has(label)) return;
+        applyStyles(el);
+        if (el.parentElement) applyStyles(el.parentElement);
+      });
+    };
+
+    scan(document.body);
+
+    const observer = new MutationObserver(mutations => {
+      mutations.forEach(mutation => {
+        mutation.addedNodes.forEach(node => scan(node));
+      });
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+
   function createPaypalAddToCartForm(buttonKey) {
     const buttonId = hostedButtonId(buttonKey);
     const wrap = document.createElement("div");
@@ -478,11 +514,11 @@
       const slot = card.querySelector("[data-paypal-slot]");
       const priceEl = card.querySelector("[data-price]");
 
-      if (!productId || !qtyInput || !slot) return;
+      if (!productId || !slot) return;
 
       function refresh() {
         const variantId = select.value;
-        const qty = qtyInput.value;
+        const qty = qtyInput ? qtyInput.value : 1;
         const p = findProduct(productId);
         const v = p && p.variants ? p.variants.find(x => x.id === variantId) : null;
 
@@ -501,7 +537,7 @@
       }
 
       select.addEventListener("change", refresh);
-      qtyInput.addEventListener("input", refresh);
+      if (qtyInput) qtyInput.addEventListener("input", refresh);
       refresh();
     });
   }
@@ -513,11 +549,11 @@
     const slot = document.querySelector("[data-paypal-slot='ehive-one-detail']");
     const priceEl = document.querySelector("[data-price='ehive-one-detail']");
 
-    if (!select || !qtyInput || !slot) return;
+    if (!select || !slot) return;
 
     function refresh() {
       const variantId = select.value;
-      const qty = qtyInput.value;
+      const qty = qtyInput ? qtyInput.value : 1;
 
       const p = findProduct("ehive-one");
       const v = p && p.variants ? p.variants.find(x => x.id === variantId) : null;
@@ -532,7 +568,7 @@
     }
 
     select.addEventListener("change", refresh);
-    qtyInput.addEventListener("input", refresh);
+    if (qtyInput) qtyInput.addEventListener("input", refresh);
     refresh();
   }
 
@@ -958,6 +994,7 @@
         initMobileNav();
         setActiveNav();
         initPaypalCartButtons();
+        fixPaypalCartQuantityLabel();
         wireFooter();
         wireBrand();
         initCommunityStats();
@@ -973,9 +1010,9 @@
 
         // Page-specific bindings
         wireShopCard();
-      wireProductPage();
-      wireAddonButtons();
-      wireCartPage();
+        wireProductPage();
+        wireAddonButtons();
+        wireCartPage();
     });
   });
 })();
