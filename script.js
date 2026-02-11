@@ -86,55 +86,56 @@
     return i;
   }
 
-  function createPaypalAddToCartForm(buttonKey, qty, extraVars) {
-    const buttonId = hostedButtonId(buttonKey);
-    const form = document.createElement("form");
-    form.method = "post";
-    form.action = paypalActionUrl();
-    form.target = "_top";
+  function initPaypalCartButtons() {
+    const nodes = document.querySelectorAll("paypal-cart-button[data-id]");
+    if (!nodes.length) return;
+    const run = () => {
+      if (!window.cartPaypal || typeof window.cartPaypal.Cart !== "function") return false;
+      nodes.forEach(node => {
+        const id = node.getAttribute("data-id");
+        if (!id) return;
+        try {
+          window.cartPaypal.Cart({ id });
+        } catch (err) {
+          // ignore
+        }
+      });
+      return true;
+    };
+    if (!run()) window.addEventListener("load", run, { once: true });
+  }
 
+  function renderPaypalAddButton(mountEl, buttonId) {
+    if (!mountEl) return;
     if (isPlaceholderId(buttonId)) {
       const warn = document.createElement("div");
       warn.className = "note";
       warn.textContent = "Der Kauf ist aktuell nicht verfügbar.";
-      return warn;
+      mountEl.replaceChildren(warn);
+      return;
     }
 
-    // Hosted (saved) button. PayPal decides if it’s Add-to-Cart/Buy-Now based on the saved button.
-    form.appendChild(createHidden("cmd", "_s-xclick"));
-    form.appendChild(createHidden("hosted_button_id", buttonId));
+    const btn = document.createElement("paypal-add-to-cart-button");
+    btn.setAttribute("data-id", buttonId);
+    mountEl.replaceChildren(btn);
 
-    const p = cfg().paypal || {};
-    const urls = p.urls || {};
+    const init = () => {
+      if (!window.cartPaypal || typeof window.cartPaypal.AddToCart !== "function") return false;
+      try {
+        window.cartPaypal.AddToCart({ id: buttonId });
+      } catch (err) {
+        // ignore
+      }
+      return true;
+    };
+    if (!init()) window.addEventListener("load", init, { once: true });
+  }
 
-    // Optional: control checkout language + currency
-    if (p.locale) form.appendChild(createHidden("lc", p.locale));
-    if (p.currency) form.appendChild(createHidden("currency_code", p.currency));
-
-    // Optional: "Continue shopping" + return/cancel URLs
-    if (urls.shopping_url) form.appendChild(createHidden("shopping_url", urls.shopping_url));
-    if (urls.return_url) form.appendChild(createHidden("return", urls.return_url));
-    if (urls.cancel_return_url) form.appendChild(createHidden("cancel_return", urls.cancel_return_url));
-
-    // Quantity (positive integer)
-    const q = Math.max(1, Math.min(99, Number(qty) || 1));
-    form.appendChild(createHidden("quantity", q));
-
-    // Extra variables (optional): on0/os0, custom, etc.
-    if (extraVars && typeof extraVars === "object") {
-      Object.entries(extraVars).forEach(([k, v]) => {
-        if (v === undefined || v === null || v === "") return;
-        form.appendChild(createHidden(k, v));
-      });
-    }
-
-    const submit = document.createElement("button");
-    submit.type = "submit";
-    submit.className = "btn primary";
-    submit.textContent = "In den Warenkorb";
-    form.appendChild(submit);
-
-    return form;
+  function createPaypalAddToCartForm(buttonKey) {
+    const buttonId = hostedButtonId(buttonKey);
+    const wrap = document.createElement("div");
+    renderPaypalAddButton(wrap, buttonId);
+    return wrap.firstChild ? wrap.firstChild : wrap;
   }
   function salesEmail() {
     return (cfg().brand && cfg().brand.contactEmail) || "";
@@ -185,34 +186,23 @@
   }
 
   function createPaypalViewCartForm(mountEl) {
-    const p = cfg().paypal || {};
-    const business = p.business || "";
     if (!mountEl) return;
-
-    if (!business || /^YOUR_PAYPAL_MERCHANT_ID$/i.test(business)) {
-      mountEl.innerHTML = '<p class="note">Warenkorb aktuell nicht verfügbar.</p>';
-      return;
+    const btn = document.createElement("paypal-cart-button");
+    btn.setAttribute("data-id", "pp-view-cart");
+    mountEl.replaceChildren(btn);
+    if (window.cartPaypal && typeof window.cartPaypal.Cart === "function") {
+      try {
+        window.cartPaypal.Cart({ id: "pp-view-cart" });
+      } catch (err) {
+        // ignore
+      }
+    } else {
+      window.addEventListener("load", () => {
+        if (window.cartPaypal && typeof window.cartPaypal.Cart === "function") {
+          window.cartPaypal.Cart({ id: "pp-view-cart" });
+        }
+      }, { once: true });
     }
-
-    const form = document.createElement("form");
-    form.method = "post";
-    form.action = paypalActionUrl();
-    form.target = "_top";
-
-    form.appendChild(createHidden("cmd", "_cart"));
-    form.appendChild(createHidden("business", business));
-    form.appendChild(createHidden("display", "1"));
-
-    if (p.locale) form.appendChild(createHidden("lc", p.locale));
-    if (p.currency) form.appendChild(createHidden("currency_code", p.currency));
-
-    const btn = document.createElement("button");
-    btn.type = "submit";
-    btn.className = "btn primary";
-    btn.textContent = "Warenkorb öffnen";
-    form.appendChild(btn);
-
-    mountEl.replaceChildren(form);
   }
 
   function initMobileNav() {
@@ -234,42 +224,6 @@
     });
   }
 
-  function initMenuStyleSwitch() {
-    const buttons = document.querySelectorAll("[data-menu-style]");
-    if (!buttons.length) return;
-    const body = document.body;
-    const classes = ["menu-style-1", "menu-style-2", "menu-style-3", "menu-style-4"];
-    const key = "ehiveMenuStyle";
-
-    const apply = (value) => {
-      classes.forEach(c => body.classList.remove(c));
-      body.classList.add(`menu-style-${value}`);
-      buttons.forEach(btn => {
-        btn.classList.toggle("is-active", btn.getAttribute("data-menu-style") === String(value));
-      });
-    };
-
-    let stored = null;
-    try {
-      stored = localStorage.getItem(key);
-    } catch (err) {
-      stored = null;
-    }
-    if (!stored || !/^[1-4]$/.test(stored)) stored = "1";
-    apply(stored);
-
-    buttons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        const value = btn.getAttribute("data-menu-style") || "1";
-        try {
-          localStorage.setItem(key, value);
-        } catch (err) {
-          // ignore
-        }
-        apply(value);
-      });
-    });
-  }
 
   function wireFooter() {
     const y = byId("year");
@@ -504,9 +458,10 @@
     return Boolean((variant && variant.soldOut) || (item && item.soldOut));
   }
 
-  function renderDynamicPaypalAdd(mountEl, buttonKey, qty, extraVars) {
+  function renderDynamicPaypalAdd(mountEl, buttonKey) {
     if (!mountEl) return;
-    mountEl.replaceChildren(createPaypalAddToCartForm(buttonKey, qty, extraVars));
+    const buttonId = hostedButtonId(buttonKey);
+    renderPaypalAddButton(mountEl, buttonId);
   }
 
   function wireShopCard() {
@@ -1002,7 +957,7 @@
         syncHeroPretextOffset();
         initMobileNav();
         setActiveNav();
-        initMenuStyleSwitch();
+        initPaypalCartButtons();
         wireFooter();
         wireBrand();
         initCommunityStats();

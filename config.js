@@ -77,7 +77,7 @@ window.EHIVE_SHOP_CONFIG = {
     ],
 
     addons: [
-      { id: "psu-24v", name: "MEAN WELL HDR-15-24", price: 24.99, image: "products/MEAN-WELL-HDR-15-24.png", soldOut: true }
+      { id: "psu-24v", name: "MEAN WELL HDR-15-24", price: 24.99, image: "products/MEAN-WELL-HDR-15-24.png", soldOut: false }
     ]
   }
 };

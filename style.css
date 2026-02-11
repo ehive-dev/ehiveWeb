@@ -142,6 +142,10 @@ button, input, select{ font:inherit; }
   align-items:center;
   gap: 10px;
 }
+.nav-actions .icon-btn{
+  border: none;
+  padding: 8px;
+}
 
 
 .icon-btn{
@@ -168,85 +172,25 @@ button, input, select{ font:inherit; }
 }
 
 .mobile-toggle{ display:none; }
+.mobile-toggle{
+  border: none;
+  padding: 8px;
+}
 .mobile-panel{
   display:none;
-  padding: 0 0 14px;
+  padding: 8px 0 12px;
+  border-top: 1px solid var(--border);
 }
 .mobile-panel a{
   display:block;
-  padding: 12px 10px;
+  padding: 12px 8px;
   border-radius: 0;
   margin-top: 0;
   background: transparent;
   border: 0;
+  border-bottom: 1px solid var(--border);
   font-weight: 700;
   color: var(--text);
-}
-.menu-style-switch{
-  margin-top: 12px;
-  display:flex;
-  align-items:center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.menu-style-label{
-  font-size: 10px;
-  letter-spacing: .2em;
-  text-transform: uppercase;
-  color: var(--muted);
-  font-weight: 700;
-}
-.menu-style-switch button{
-  width: 32px;
-  height: 28px;
-  border: 1px solid var(--border);
-  background: #fff;
-  border-radius: 0;
-  font-weight: 700;
-  cursor: pointer;
-}
-.menu-style-switch button.is-active{
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
-body.menu-style-1 .mobile-panel{
-  padding: 8px 0 12px;
-  border-top: 1px solid var(--border);
-}
-body.menu-style-1 .mobile-panel a{
-  padding: 12px 8px;
-  border-bottom: 1px solid var(--border);
-}
-
-body.menu-style-2 .mobile-panel{
-  padding: 8px 0 12px;
-}
-body.menu-style-2 .mobile-panel a{
-  margin-top: 8px;
-  background: #fff;
-  border: 1px solid var(--border);
-}
-
-body.menu-style-3 .mobile-panel{
-  padding: 10px 0 14px;
-}
-body.menu-style-3 .mobile-panel a{
-  margin-top: 8px;
-  background: var(--text);
-  color: #fff;
-  border: 1px solid var(--text);
-}
-
-body.menu-style-4 .mobile-panel{
-  padding: 6px 0 12px;
-}
-body.menu-style-4 .mobile-panel a{
-  padding: 10px 4px;
-  border-bottom: 2px solid transparent;
-}
-body.menu-style-4 .mobile-panel a:hover{
-  border-bottom-color: var(--accent);
 }
 
 /* Sections */
@@ -1727,3 +1671,14 @@ body.lightbox-open{
   margin: 0;
 }
 
+.cart-btn,
+.shop-cart{
+  border: none;
+  background: transparent;
+  padding: 8px;
+}
+.cart-btn .icon,
+.shop-cart .icon{
+  width: 24px;
+  height: 24px;
+}
