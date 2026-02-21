@@ -132,7 +132,17 @@
   }
 
   function fixPaypalCartQuantityLabel() {
-    const targets = new Set(["Quantity", "Menge", "Stück"]);
+    const targets = new Set([
+      "Quantity",
+      "Menge",
+      "Stück",
+      "Price",
+      "Preis",
+      "Subtotal",
+      "Zwischensumme",
+      "Total",
+      "Summe"
+    ]);
     const applyStyles = el => {
       el.style.whiteSpace = "nowrap";
       el.style.wordBreak = "normal";
@@ -142,6 +152,19 @@
 
     const scan = root => {
       if (!root || root.nodeType !== 1) return;
+      // Remove product thumbnails that PayPal may inject in the add-to-cart area.
+      if (root.matches && root.matches(".paypal-slot img")) {
+        root.remove();
+        return;
+      }
+      if (root.matches && root.matches(".paypal-slot [id^='carousel-container-']")) {
+        root.remove();
+        return;
+      }
+      if (root.querySelectorAll) {
+        root.querySelectorAll(".paypal-slot img").forEach(img => img.remove());
+        root.querySelectorAll(".paypal-slot [id^='carousel-container-']").forEach(el => el.remove());
+      }
       const text = root.textContent ? root.textContent.trim() : "";
       if (targets.has(text)) {
         applyStyles(root);
@@ -150,9 +173,13 @@
       if (!root.querySelectorAll) return;
       root.querySelectorAll("*").forEach(el => {
         const label = el.textContent ? el.textContent.trim() : "";
-        if (!targets.has(label)) return;
+        const isTarget = targets.has(label);
+        const isMoney = /\d/.test(label) && /(?:€|eur|\$|usd|chf)/i.test(label);
+        if (!isTarget && !isMoney) return;
         applyStyles(el);
         if (el.parentElement) applyStyles(el.parentElement);
+        if (el.nextElementSibling) applyStyles(el.nextElementSibling);
+        if (el.previousElementSibling) applyStyles(el.previousElementSibling);
       });
     };
 
@@ -617,7 +644,9 @@
       };
 
       card.addEventListener("click", (event) => {
-        const interactive = event.target.closest("input, select, button, a, label");
+        const interactive = event.target.closest(
+          "input, select, button, a, label, .addon-overview, .addon-details, .addon-specs, .addon-specs-row"
+        );
         if (interactive) return;
         toggle();
       });
