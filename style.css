@@ -1803,11 +1803,11 @@ body.lightbox-open{
     font-size: 10px;
   }
   .hero-ehive-pretext-title{
-    font-size: clamp(19px, 6.4vw, 27px);
+    font-size: clamp(18px, 5.8vw, 24px);
     margin-bottom: 8px;
   }
   .hero-ehive-pretext-sub{
-    font-size: 15px;
+    font-size: 14px;
   }
   .hero-ehive-grid{ gap: 18px; }
   .hero-ehive-copy{
@@ -1820,7 +1820,7 @@ body.lightbox-open{
   }
   .hero-ehive h1,
   .hero-ehive-pretext--title{
-    font-size: clamp(22px, 7vw, 32px);
+    font-size: clamp(20px, 6.2vw, 28px);
   }
   .hero-ehive .lead{
     font-size: 15px;
