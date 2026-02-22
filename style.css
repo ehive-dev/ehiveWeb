@@ -362,7 +362,7 @@ button, input, select{ font:inherit; }
   height: auto;
   display: block;
   margin: 0 auto;
-  transform: translateX(26%) translateY(calc(-1 * var(--hero-bg-crop) + var(--hero-bg-shift, 0px)));
+  transform: translateX(0) translateY(calc(-1 * var(--hero-bg-crop) + var(--hero-bg-shift, 0px)));
   object-fit: contain;
   opacity: 1;
   filter: saturate(1.05) contrast(1.05);
