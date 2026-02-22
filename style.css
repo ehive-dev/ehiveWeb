@@ -357,7 +357,7 @@ button, input, select{ font:inherit; }
   border: none;
   background: transparent;
   overflow: hidden;
-  --hero-frame-pad-top: 120px;
+  --hero-frame-pad-top: clamp(84px, calc(146px - 3.2vw), 120px);
   --hero-frame-pad-bottom: 60px;
   --hero-copy-top-ratio: 0.24;
   --hero-bg-max-width: 1536px;
