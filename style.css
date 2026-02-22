@@ -365,7 +365,7 @@ button, input, select{ font:inherit; }
 }
 
 .hero-ehive-bg{
-  width: 45%;
+  width: 42%;
   max-width: var(--hero-bg-max-width);
   max-height: var(--hero-bg-max-height);
   --hero-bg-crop: 0%;
@@ -1603,7 +1603,7 @@ body.lightbox-open{
     --hero-bg-shift-x: 10%;
   }
   .hero-ehive-bg{
-    width: 56%;
+    width: 52%;
     opacity: .82;
   }
   .hero-ehive-headline{
