@@ -328,11 +328,13 @@ button, input, select{ font:inherit; }
 .hero-ehive-headline{
   position: relative;
   margin: var(--hero-headline-offset) 0 18px;
-  max-width: 18ch;
+  width: min(100%, 46ch);
+  max-width: 46ch;
   line-height: 1.04;
   font-size: clamp(30px, 4vw, 52px);
   letter-spacing: -0.02em;
-  display: inline-block;
+  display: block;
+  text-align: center;
   padding: 10px 14px;
   border-radius: 14px;
   background: rgba(248,250,252,.78);
@@ -340,6 +342,7 @@ button, input, select{ font:inherit; }
   box-shadow: 0 8px 22px rgba(12,18,32,.06);
   backdrop-filter: blur(2px);
   text-shadow: 0 1px 0 rgba(255,255,255,.45);
+  transform: translateX(var(--hero-copy-shift-x));
 }
 
 .hero-ehive-pin{
@@ -1665,6 +1668,8 @@ body.lightbox-open{
   .hero-ehive-headline{
     max-width: 100%;
     margin-top: 0;
+    width: 100%;
+    transform: none;
   }
 
   .hero-ehive-grid{
