@@ -305,6 +305,8 @@ button, input, select{ font:inherit; }
   --hero-headline-offset: -34px;
   --hero-copy-shift-x: -40px;
   --hero-copy-shift-y: 4px;
+  --hero-content-shift-x: -28px;
+  --hero-bg-shift-x: 14%;
   --hero-bg-shift: 0px;
   --hero-bg-delay: 0px;
   --hero-bg-shift-max: 90px;
@@ -362,7 +364,7 @@ button, input, select{ font:inherit; }
   height: auto;
   display: block;
   margin: 0 auto;
-  transform: translateX(0) translateY(calc(-1 * var(--hero-bg-crop) + var(--hero-bg-shift, 0px)));
+  transform: translateX(var(--hero-bg-shift-x, 0)) translateY(calc(-1 * var(--hero-bg-crop) + var(--hero-bg-shift, 0px)));
   object-fit: contain;
   opacity: 1;
   filter: saturate(1.05) contrast(1.05);
@@ -473,6 +475,7 @@ body.debug-on .debug-header{
 .hero-ehive-frame .container{
   position: relative;
   z-index: 1;
+  transform: translateX(var(--hero-content-shift-x, 0px));
 }
 
 .hero-ehive-grid{
@@ -1634,6 +1637,8 @@ body.lightbox-open{
     --hero-headline-offset: -12px;
     --hero-copy-shift-x: -4px;
     --hero-copy-shift-y: 0px;
+    --hero-content-shift-x: 0px;
+    --hero-bg-shift-x: 0%;
   }
   .hero-ehive-pin{
     position: relative;
