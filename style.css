@@ -1614,6 +1614,74 @@ body.lightbox-open{
 
 /* Responsive */
 
+@media (max-width: 1120px){
+  .hero-ehive{
+    --hero-content-shift-x: 0px;
+    --hero-bg-shift-x: 0%;
+  }
+
+  .hero-ehive-pin{
+    position: relative;
+    top: 0;
+  }
+
+  .hero-ehive-frame{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: visible;
+    --hero-frame-pad-top: 0px;
+    --hero-frame-pad-bottom: 20px;
+  }
+
+  .hero-ehive-content{
+    position: relative;
+    inset: auto;
+    order: 1;
+    padding: 22px 0 0;
+    isolation: auto;
+  }
+
+  .hero-ehive-content::before{
+    display: none;
+  }
+
+  .hero-ehive-bg{
+    order: 2;
+    width: min(100%, 720px);
+    max-width: 100%;
+    margin: 0 auto;
+    opacity: .92;
+    transform: none;
+    clip-path: none;
+    -webkit-clip-path: none;
+  }
+
+  .hero-ehive-frame .container{
+    transform: none;
+  }
+
+  .hero-ehive-headline{
+    max-width: 100%;
+    margin-top: 0;
+  }
+
+  .hero-ehive-grid{
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .hero-ehive-copy{
+    grid-column: 1 / -1;
+    max-width: 100%;
+  }
+
+  .hero-ehive-pretext{
+    max-width: 100%;
+    transform: none;
+  }
+}
+
 @media (max-width: 980px){
   .hero-grid{ grid-template-columns: 1fr; }
   .features{ grid-template-columns: repeat(3, 1fr); }
@@ -1621,15 +1689,15 @@ body.lightbox-open{
   .product-grid{ grid-template-columns: 1fr; }
 
   .hero-ehive{
-    --hero-content-shift-x: -8px;
-    --hero-bg-shift-x: 10%;
+    --hero-content-shift-x: 0px;
+    --hero-bg-shift-x: 0%;
   }
   .hero-ehive-bg{
-    width: 52%;
-    opacity: .82;
+    width: min(100%, 640px);
+    opacity: .92;
   }
   .hero-ehive-headline{
-    max-width: 15ch;
+    max-width: 100%;
   }
 
   .hero-ehive-grid{ grid-template-columns: 1fr; }
@@ -1695,25 +1763,30 @@ body.lightbox-open{
     border-radius: 10px;
   }
   .hero-ehive-frame{
-    --hero-frame-pad-top: 96px;
-    --hero-frame-pad-bottom: 28px;
+    --hero-frame-pad-top: 0px;
+    --hero-frame-pad-bottom: 20px;
     overflow: visible;
   }
   .hero-ehive-bg{
     width: 100%;
     max-width: 100%;
-    opacity: .4;
-    transform: translateX(0) translateY(calc(-1 * var(--hero-bg-crop)));
+    opacity: .95;
+    transform: none;
     max-height: none;
   }
   .hero-ehive-content{
-    position: absolute;
-    inset: 0;
-    padding: 16px 0 0;
+    position: relative;
+    inset: auto;
+    padding: 10px 0 0;
     overflow: visible;
+    isolation: auto;
+  }
+  .hero-ehive-content::before{
+    display: none;
   }
   .hero-ehive-pretext{
     max-width: 100%;
+    transform: none;
   }
   .hero-ehive-pretext-content{
     padding: 10px 11px;
