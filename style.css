@@ -1541,6 +1541,7 @@ body.lightbox-open{
   padding: 18px;
   background:#fff;
   box-shadow: none;
+  min-width: 0;
 }
 .product-info h2{ margin:0 0 10px; line-height:1.15; }
 .product-info .meta{
@@ -1556,11 +1557,19 @@ body.lightbox-open{
   color: var(--muted);
   font-size: 14px;
   line-height: 1.6;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 .product-description strong{ color: var(--text); }
 .product-description p{ margin: 6px 0 0; }
 .product-description p:first-child{ margin-top: 0; }
 .product-description ul{ margin: 6px 0 0; padding-left: 18px; }
+.product-description p,
+.product-description li{
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
 
 /* PayPal slot wrapper */
 .paypal-slot{
@@ -1692,6 +1701,30 @@ body.lightbox-open{
   .hero-grid{ grid-template-columns: 1fr; }
   .features{ grid-template-columns: repeat(3, 1fr); }
   .products[data-layout="split"]{ grid-template-columns: 1fr; }
+  .products[data-layout="split"] .pro{
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+  .products[data-layout="split"] .pro img{
+    max-width: 100%;
+  }
+  .products[data-layout="split"] .des,
+  .products[data-layout="split"] .paypal-slot,
+  .products[data-layout="split"] .row{
+    grid-column: 1 / -1;
+    min-width: 0;
+  }
+  .addon-overview,
+  .addon-details,
+  .product-description{
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+  .addon-overview ul,
+  .addon-details ul,
+  .product-description ul{
+    padding-left: 16px;
+  }
   .product-grid{ grid-template-columns: 1fr; }
 
   .hero-ehive{
