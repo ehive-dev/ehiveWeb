@@ -153,7 +153,6 @@ button, input, select{ font:inherit; }
 }
 
 .paypal-cart-wrap paypal-cart-button,
-.paypal-slot paypal-add-to-cart-button,
 [data-paypal-view-cart] paypal-cart-button{
   display: inline-block;
   min-width: 160px;
@@ -161,6 +160,16 @@ button, input, select{ font:inherit; }
   white-space: nowrap;
   word-break: normal;
   overflow-wrap: normal;
+}
+
+.paypal-slot paypal-add-to-cart-button{
+  display: block;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: anywhere;
 }
 .nav-actions .icon-btn{
   border: none;
@@ -1467,6 +1476,9 @@ body.lightbox-open{
 }
 .field select, .field input{
   padding: 10px 12px;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
   border-radius: 10px;
   border: 1px solid var(--border);
   background: #fff;
@@ -1713,6 +1725,17 @@ body.lightbox-open{
   .products[data-layout="split"] .row{
     grid-column: 1 / -1;
     min-width: 0;
+  }
+  .pro{
+    min-width: 0;
+  }
+  .pro .row{
+    justify-content: stretch;
+    align-items: stretch;
+  }
+  .pro .field{
+    min-width: 0;
+    width: 100%;
   }
   .addon-overview,
   .addon-details,
