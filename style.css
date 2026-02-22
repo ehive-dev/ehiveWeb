@@ -385,6 +385,28 @@ button, input, select{ font:inherit; }
   inset: 0;
   z-index: 1;
   padding: var(--hero-frame-pad-top) 0 var(--hero-frame-pad-bottom);
+  isolation: isolate;
+}
+
+.hero-ehive-content::before{
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: min(100%, calc(var(--max) + 80px));
+  transform: translateX(calc(-50% + var(--hero-content-shift-x, 0px)));
+  pointer-events: none;
+  z-index: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(248,250,252,.985) 0%,
+    rgba(248,250,252,.965) 42%,
+    rgba(248,250,252,.88) 57%,
+    rgba(248,250,252,.56) 68%,
+    rgba(248,250,252,.14) 79%,
+    rgba(248,250,252,0) 89%
+  );
 }
 
 .hero-ehive-pretext{
@@ -482,7 +504,7 @@ body.debug-on .debug-header{
 
 .hero-ehive-frame .container{
   position: relative;
-  z-index: 1;
+  z-index: 2;
   transform: translateX(var(--hero-content-shift-x, 0px));
 }
 
