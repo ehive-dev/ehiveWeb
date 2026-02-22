@@ -372,6 +372,7 @@ button, input, select{ font:inherit; }
   height: auto;
   display: block;
   margin: 0 auto;
+  background: #fff;
   transform: translateX(var(--hero-bg-shift-x, 0)) translateY(calc(-1 * var(--hero-bg-crop) + var(--hero-bg-shift, 0px)));
   object-fit: contain;
   opacity: 1;
@@ -390,6 +391,7 @@ button, input, select{ font:inherit; }
 
 .hero-ehive-content::before{
   content: "";
+  display: none;
   position: absolute;
   top: 0;
   bottom: 0;
@@ -1651,7 +1653,7 @@ body.lightbox-open{
     width: min(100%, 720px);
     max-width: 100%;
     margin: 0 auto;
-    opacity: .92;
+    opacity: 1;
     transform: none;
     clip-path: none;
     -webkit-clip-path: none;
@@ -1694,7 +1696,7 @@ body.lightbox-open{
   }
   .hero-ehive-bg{
     width: min(100%, 640px);
-    opacity: .92;
+    opacity: 1;
   }
   .hero-ehive-headline{
     max-width: 100%;
@@ -1770,7 +1772,7 @@ body.lightbox-open{
   .hero-ehive-bg{
     width: 100%;
     max-width: 100%;
-    opacity: .95;
+    opacity: 1;
     transform: none;
     max-height: none;
   }
