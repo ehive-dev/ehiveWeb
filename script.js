@@ -997,11 +997,22 @@
     };
 
     items.forEach(item => {
-      item.addEventListener("click", () => {
+      const activate = () => {
         const src = item.getAttribute("data-video-src");
         const text = item.getAttribute("data-video-label") || "";
         if (!src) return;
         open(src, text);
+      };
+
+      if (!item.hasAttribute("role")) item.setAttribute("role", "button");
+      if (!item.hasAttribute("tabindex")) item.setAttribute("tabindex", "0");
+
+      item.addEventListener("click", activate);
+      item.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          activate();
+        }
       });
     });
 
