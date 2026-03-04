@@ -468,6 +468,29 @@ button, input, select{ font:inherit; }
   pointer-events: auto;
 }
 
+.hero-product-video-stage.is-stacked{
+  overflow: visible;
+}
+
+.hero-product-video-stage.is-stacked .hero-video-notes{
+  left: 0;
+  right: 0;
+  top: calc(100% + 12px);
+  bottom: auto;
+  width: 100%;
+  max-width: none;
+  padding: 0;
+  transform: translateY(10px);
+}
+
+.hero-product-video-stage.is-stacked.is-ended{
+  margin-bottom: var(--hero-notes-h, 240px);
+}
+
+.hero-product-video-stage.is-stacked.is-ended .hero-video-notes{
+  transform: translateY(0);
+}
+
 .hero-video-notes-title{
   margin: 0 0 16px;
   font-family: inherit;
@@ -2531,6 +2554,9 @@ body.lightbox-open{
   .open-point-card p{
     font-size: 14px;
     line-height: 1.5;
+  }
+  .setup-nowrap{
+    white-space: normal;
   }
   .open-point-media{
     width: min(180px, 100%);

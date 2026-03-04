@@ -874,6 +874,7 @@
     const notesPanel = stage ? stage.querySelector("[data-hero-video-notes]") : null;
     const hotspots = stage ? Array.from(stage.querySelectorAll("[data-video-hotspot]")) : [];
     const noteJumpLinks = stage ? Array.from(stage.querySelectorAll("[data-open-note-jump]")) : [];
+    let playbackCompleted = false;
 
     const ensureAutoplayAttrs = () => {
       video.muted = true;
@@ -892,6 +893,22 @@
 
     ensureAutoplayAttrs();
 
+    const updateStackedNotesLayout = () => {
+      if (!stage || !notesPanel) return;
+      const stageWidth = stage.getBoundingClientRect().width || 0;
+      const shouldStack = stageWidth > 0 && stageWidth < 980;
+      stage.classList.toggle("is-stacked", shouldStack);
+      if (!shouldStack) {
+        stage.style.removeProperty("--hero-notes-h");
+        return;
+      }
+      const measuredHeight = Math.ceil(
+        notesPanel.scrollHeight || notesPanel.getBoundingClientRect().height || 0
+      );
+      const notesHeight = Math.max(120, measuredHeight + 18);
+      stage.style.setProperty("--hero-notes-h", `${notesHeight}px`);
+    };
+
     const closeHotspots = () => {
       hotspots.forEach(node => node.classList.remove("is-open"));
     };
@@ -900,6 +917,7 @@
       if (stage) stage.classList.add("is-ended");
       if (hotspotLayer) hotspotLayer.setAttribute("aria-hidden", "false");
       if (notesPanel) notesPanel.setAttribute("aria-hidden", "false");
+      updateStackedNotesLayout();
     };
 
     const hideHotspots = () => {
@@ -907,19 +925,24 @@
       if (hotspotLayer) hotspotLayer.setAttribute("aria-hidden", "true");
       if (notesPanel) notesPanel.setAttribute("aria-hidden", "true");
       closeHotspots();
+      updateStackedNotesLayout();
     };
 
     const freezeOnLastFrame = () => {
+      if (playbackCompleted) return;
+      playbackCompleted = true;
       const duration = Number(video.duration);
-      if (!Number.isFinite(duration) || duration <= 0) return;
-      const endFrameTime = Math.max(0, duration - 0.04);
-      try {
-        video.currentTime = endFrameTime;
-      } catch (_) {
-        // Ignore browsers that disallow seek at end.
+      if (Number.isFinite(duration) && duration > 0) {
+        const endFrameTime = Math.max(0, duration - 0.04);
+        try {
+          video.currentTime = endFrameTime;
+        } catch (_) {
+          // Ignore browsers that disallow seek at end.
+        }
       }
       video.pause();
       showHotspots();
+      removeGestureRetry();
     };
 
     video.addEventListener("ended", freezeOnLastFrame);
@@ -972,15 +995,10 @@
     };
 
     const startPlayback = () => {
+      if (playbackCompleted) return;
       ensureAutoplayAttrs();
       hideHotspots();
-      if (video.ended) {
-        try {
-          video.currentTime = 0;
-        } catch (_) {
-          // Ignore seek errors.
-        }
-      }
+      if (video.ended) return;
       const playPromise = video.play();
       if (playPromise && typeof playPromise.then === "function") {
         playPromise
@@ -988,6 +1006,7 @@
             removeGestureRetry();
           })
           .catch(() => {
+            if (playbackCompleted) return;
             addGestureRetry();
           });
       } else if (!video.paused) {
@@ -996,6 +1015,7 @@
     };
 
     const retryPlayback = () => {
+      if (playbackCompleted || video.ended) return;
       if (!video.paused) return;
       startPlayback();
     };
@@ -1016,10 +1036,19 @@
       if (!document.hidden) retryPlayback();
     });
 
+    window.addEventListener("resize", updateStackedNotesLayout);
+    window.addEventListener("orientationchange", updateStackedNotesLayout);
+    window.addEventListener("pageshow", updateStackedNotesLayout);
+    if (document.fonts && document.fonts.ready && typeof document.fonts.ready.then === "function") {
+      document.fonts.ready.then(updateStackedNotesLayout).catch(() => {});
+    }
+
     // Extra retries for mobile browsers that delay media activation.
     window.setTimeout(retryPlayback, 120);
     window.setTimeout(retryPlayback, 500);
     window.setTimeout(retryPlayback, 1200);
+    window.setTimeout(updateStackedNotesLayout, 60);
+    window.setTimeout(updateStackedNotesLayout, 240);
   }
 
   function wireBrand() {
