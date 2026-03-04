@@ -875,9 +875,22 @@
     const hotspots = stage ? Array.from(stage.querySelectorAll("[data-video-hotspot]")) : [];
     const noteJumpLinks = stage ? Array.from(stage.querySelectorAll("[data-open-note-jump]")) : [];
 
-    video.muted = true;
-    video.defaultMuted = true;
-    video.playsInline = true;
+    const ensureAutoplayAttrs = () => {
+      video.muted = true;
+      video.defaultMuted = true;
+      video.volume = 0;
+      video.playsInline = true;
+      video.setAttribute("muted", "");
+      video.setAttribute("autoplay", "");
+      video.setAttribute("playsinline", "");
+      video.setAttribute("webkit-playsinline", "");
+      video.setAttribute("x5-playsinline", "");
+      video.setAttribute("x-webkit-airplay", "deny");
+      video.setAttribute("noremoteplayback", "");
+      video.setAttribute("disablepictureinpicture", "");
+    };
+
+    ensureAutoplayAttrs();
 
     const closeHotspots = () => {
       hotspots.forEach(node => node.classList.remove("is-open"));
@@ -939,12 +952,52 @@
       if (event.key === "Escape") closeHotspots();
     });
 
+    let gestureRetryBound = false;
+    const gestureEvents = ["touchstart", "pointerdown", "mousedown", "keydown"];
+
+    const removeGestureRetry = () => {
+      if (!gestureRetryBound) return;
+      gestureRetryBound = false;
+      gestureEvents.forEach((evt) => {
+        window.removeEventListener(evt, startPlayback);
+      });
+    };
+
+    const addGestureRetry = () => {
+      if (gestureRetryBound) return;
+      gestureRetryBound = true;
+      gestureEvents.forEach((evt) => {
+        window.addEventListener(evt, startPlayback, { passive: true });
+      });
+    };
+
     const startPlayback = () => {
+      ensureAutoplayAttrs();
       hideHotspots();
-      const playPromise = video.play();
-      if (playPromise && typeof playPromise.catch === "function") {
-        playPromise.catch(() => {});
+      if (video.ended) {
+        try {
+          video.currentTime = 0;
+        } catch (_) {
+          // Ignore seek errors.
+        }
       }
+      const playPromise = video.play();
+      if (playPromise && typeof playPromise.then === "function") {
+        playPromise
+          .then(() => {
+            removeGestureRetry();
+          })
+          .catch(() => {
+            addGestureRetry();
+          });
+      } else if (!video.paused) {
+        removeGestureRetry();
+      }
+    };
+
+    const retryPlayback = () => {
+      if (!video.paused) return;
+      startPlayback();
     };
 
     if (video.readyState >= 2) {
@@ -952,6 +1005,21 @@
     } else {
       video.addEventListener("canplay", startPlayback, { once: true });
     }
+
+    video.addEventListener("loadedmetadata", retryPlayback, { passive: true });
+    video.addEventListener("loadeddata", retryPlayback, { passive: true });
+    video.addEventListener("canplaythrough", retryPlayback, { passive: true });
+
+    window.addEventListener("pageshow", retryPlayback);
+    window.addEventListener("focus", retryPlayback);
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) retryPlayback();
+    });
+
+    // Extra retries for mobile browsers that delay media activation.
+    window.setTimeout(retryPlayback, 120);
+    window.setTimeout(retryPlayback, 500);
+    window.setTimeout(retryPlayback, 1200);
   }
 
   function wireBrand() {

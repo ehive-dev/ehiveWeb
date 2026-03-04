@@ -320,6 +320,20 @@ button, input, select{ font:inherit; }
   aspect-ratio: 16 / 9;
   margin: 0 auto;
   background: #fff;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.hero-product-video-stage::after{
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: #fff;
+  pointer-events: none;
+  z-index: 40;
 }
 
 .hero-product-video-media{
@@ -332,10 +346,17 @@ button, input, select{ font:inherit; }
   box-shadow: none;
   background: #fff;
   pointer-events: none;
+  transform: translateZ(0);
+  backface-visibility: hidden;
 }
 
 .hero-product-video-media::-webkit-media-controls{
   display: none !important;
+}
+
+.hero-product-video-media::-webkit-media-controls-start-playback-button{
+  display: none !important;
+  -webkit-appearance: none;
 }
 
 .hero-video-hotspots{
