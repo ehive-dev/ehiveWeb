@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 340" role="img" aria-labelledby="title desc">
+  <title id="title">Zero Trust Konzept</title>
+  <desc id="desc">Schematische Darstellung mit Kern, Vertrauenszonen und vernetzten Diensten.</desc>
+  <defs>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0f766e"/>
+      <stop offset="100%" stop-color="#0b3d91"/>
+    </linearGradient>
+    <linearGradient id="core" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1f2937"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="560" height="340" rx="18" fill="#ffffff"/>
+
+  <circle cx="280" cy="170" r="120" fill="none" stroke="url(#ring)" stroke-width="4" stroke-dasharray="9 9"/>
+  <circle cx="280" cy="170" r="84" fill="none" stroke="#dbeafe" stroke-width="2"/>
+
+  <rect x="228" y="126" width="104" height="92" rx="14" fill="url(#core)"/>
+  <rect x="246" y="164" width="68" height="36" rx="8" fill="#0f766e"/>
+  <path d="M258 164v-10c0-12 10-22 22-22s22 10 22 22v10" fill="none" stroke="#e5e7eb" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="280" cy="181" r="6" fill="#e5e7eb"/>
+
+  <g fill="#0f172a" font-family="'SF Pro Display','Avenir Next','Segoe UI',sans-serif" font-size="14" font-weight="700" text-anchor="middle">
+    <text x="280" y="80">Zero Trust</text>
+    <text x="280" y="98" fill="#6b7280" font-size="11" font-weight="600">Verify every request</text>
+  </g>
+
+  <g fill="#0f172a" font-family="'SF Pro Display','Avenir Next','Segoe UI',sans-serif" font-size="11" font-weight="600">
+    <circle cx="104" cy="170" r="9" fill="#0f766e"/>
+    <text x="74" y="194">Device</text>
+
+    <circle cx="180" cy="74" r="9" fill="#0f766e"/>
+    <text x="148" y="62">Identity</text>
+
+    <circle cx="380" cy="74" r="9" fill="#0f766e"/>
+    <text x="352" y="62">Policy</text>
+
+    <circle cx="456" cy="170" r="9" fill="#0f766e"/>
+    <text x="432" y="194">Service</text>
+
+    <circle cx="380" cy="266" r="9" fill="#0f766e"/>
+    <text x="350" y="292">Context</text>
+
+    <circle cx="180" cy="266" r="9" fill="#0f766e"/>
+    <text x="150" y="292">Audit</text>
+  </g>
+
+  <g stroke="#9ca3af" stroke-width="2" fill="none" stroke-linecap="round">
+    <path d="M113 170h43"/>
+    <path d="M188 82l26 27"/>
+    <path d="M371 82l-26 27"/>
+    <path d="M404 170h43"/>
+    <path d="M371 258l-26-27"/>
+    <path d="M188 258l26-27"/>
+  </g>
+</svg>

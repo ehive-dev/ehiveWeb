@@ -873,6 +873,7 @@
     const hotspotLayer = stage ? stage.querySelector("[data-hero-video-hotspots]") : null;
     const notesPanel = stage ? stage.querySelector("[data-hero-video-notes]") : null;
     const hotspots = stage ? Array.from(stage.querySelectorAll("[data-video-hotspot]")) : [];
+    const noteJumpLinks = stage ? Array.from(stage.querySelectorAll("[data-open-note-jump]")) : [];
 
     video.muted = true;
     video.defaultMuted = true;
@@ -916,6 +917,17 @@
         const shouldOpen = !hotspot.classList.contains("is-open");
         closeHotspots();
         if (shouldOpen) hotspot.classList.add("is-open");
+      });
+    });
+
+    noteJumpLinks.forEach(link => {
+      link.addEventListener("click", (event) => {
+        const href = link.getAttribute("href");
+        if (!href || href.charAt(0) !== "#") return;
+        const target = document.querySelector(href);
+        if (!target) return;
+        event.preventDefault();
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
       });
     });
 
