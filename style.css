@@ -336,6 +336,91 @@ button, input, select{ font:inherit; }
   z-index: 40;
 }
 
+.hero-video-qr-trigger{
+  position: absolute;
+  left: var(--x, 12px);
+  top: var(--y, 12px);
+  transform: translate(-50%, -50%);
+  z-index: 45;
+  width: clamp(45px, 6.9%, 122px);
+  height: clamp(57px, 13.9%, 151px);
+  border: 2px solid rgba(15,23,42,.44);
+  border-radius: 8px;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease, border-color .2s ease, box-shadow .2s ease;
+  animation: heroQrPulse 1.15s ease-in-out infinite;
+}
+
+.hero-video-qr-trigger::after{
+  content: "\1F446";
+  position: absolute;
+  right: -14px;
+  bottom: -16px;
+  transform: translate(0, 0);
+  font-size: 26px;
+  line-height: 1;
+  filter: drop-shadow(0 1px 1px rgba(15,23,42,.18));
+  pointer-events: none;
+  animation: heroFingerBlink 1.15s ease-in-out infinite;
+}
+
+.hero-product-video-stage.is-ended .hero-video-qr-trigger{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.hero-video-qr-trigger-inner{
+  display: block;
+  position: absolute;
+  inset: 12%;
+  background:
+    linear-gradient(#0f172a, #0f172a) left top / 34% 2px no-repeat,
+    linear-gradient(#0f172a, #0f172a) left top / 2px 34% no-repeat,
+    linear-gradient(#0f172a, #0f172a) right top / 34% 2px no-repeat,
+    linear-gradient(#0f172a, #0f172a) right top / 2px 34% no-repeat,
+    linear-gradient(#0f172a, #0f172a) left bottom / 34% 2px no-repeat,
+    linear-gradient(#0f172a, #0f172a) left bottom / 2px 34% no-repeat,
+    linear-gradient(#0f172a, #0f172a) right bottom / 34% 2px no-repeat,
+    linear-gradient(#0f172a, #0f172a) right bottom / 2px 34% no-repeat;
+  opacity: .78;
+}
+
+.hero-video-qr-trigger:hover{
+  border-color: rgba(8,129,120,.72);
+  box-shadow: 0 0 0 3px rgba(8,129,120,.16);
+}
+
+.hero-video-qr-trigger:focus-visible{
+  outline: 2px solid rgba(8,129,120,.45);
+  outline-offset: 2px;
+}
+
+@keyframes heroQrPulse{
+  0%, 100%{
+    border-color: rgba(15,23,42,.44);
+    box-shadow: 0 0 0 0 rgba(8,129,120,0);
+  }
+  50%{
+    border-color: rgba(8,129,120,.78);
+    box-shadow: 0 0 0 3px rgba(8,129,120,.16);
+  }
+}
+
+@keyframes heroFingerBlink{
+  0%, 100%{
+    opacity: 1;
+    transform: translate(0, 0);
+  }
+  50%{
+    opacity: .45;
+    transform: translate(-2px, -2px);
+  }
+}
+
 .hero-product-video-media{
   width: 100%;
   height: 100%;
@@ -357,6 +442,76 @@ button, input, select{ font:inherit; }
 .hero-product-video-media::-webkit-media-controls-start-playback-button{
   display: none !important;
   -webkit-appearance: none;
+}
+
+.hero-demo-window{
+  position: fixed;
+  inset: 0;
+  z-index: 220;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .18s ease;
+}
+
+.hero-demo-window.is-open{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.hero-demo-window-backdrop{
+  position: absolute;
+  inset: 0;
+  background: rgba(8,12,18,.24);
+}
+
+.hero-demo-window-panel{
+  position: relative;
+  --demo-scale: 1;
+  --demo-offset-x: 0px;
+  --demo-offset-y: 0px;
+  width: min(929px, 95vw);
+  height: min(81vh, 660px);
+  background: #fff;
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(12,18,32,.16);
+}
+
+.hero-demo-window-close{
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  width: 30px;
+  height: 30px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(255,255,255,.86);
+  color: #111827;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.hero-demo-window-close:hover{
+  background: #fff;
+}
+
+.hero-demo-window-frame{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1366px;
+  height: 900px;
+  border: none;
+  display: block;
+  transform-origin: top left;
+  transform: translate(var(--demo-offset-x), var(--demo-offset-y)) scale(var(--demo-scale));
+  will-change: transform;
 }
 
 .hero-video-hotspots{
@@ -2502,6 +2657,25 @@ body.lightbox-open{
   }
   .hero-video-note-trigger{
     padding: 1px 3px;
+  }
+  .hero-video-qr-trigger{
+    border-radius: 7px;
+  }
+  .hero-video-qr-trigger::after{
+    right: -12px;
+    bottom: -14px;
+    font-size: 22px;
+  }
+  .hero-demo-window-panel{
+    width: min(97vw, 577px);
+    height: min(79vh, 577px);
+    border-radius: 10px;
+  }
+  .hero-demo-window-close{
+    top: 6px;
+    right: 6px;
+    width: 28px;
+    height: 28px;
   }
   .hero-video-hotspot-dot{
     width: 12px;

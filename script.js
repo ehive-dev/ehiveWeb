@@ -427,6 +427,11 @@
       return Math.round(num).toLocaleString("de-DE");
     };
 
+    const isEmptyStat = (value) => {
+      const text = String(value ?? "").trim();
+      return text === "" || text === "-" || text === "—";
+    };
+
     const update = async () => {
       try {
         const res = await fetch(endpoint, { cache: "no-store" });
@@ -448,18 +453,18 @@
           },
           solarShare: {
             fmt: formatPercent,
-            keys: [["solarShare"], ["solarSharePercent"], ["solarPercent"], ["solar_share"], ["solarRatio"]],
-            patterns: ["solar.*share", "share.*solar", "solar.*percent", "percent.*solar", "solar.*ratio", "ratio.*solar"]
+            keys: [["solarShare"], ["solarSharePercent"], ["solarPercent"], ["solar_share"], ["solarRatio"], ["greenShare"], ["greenPercent"], ["greenRatio"]],
+            patterns: ["solar.*share", "share.*solar", "solar.*percent", "percent.*solar", "solar.*ratio", "ratio.*solar", "green.*share", "share.*green", "green.*percent", "percent.*green", "green.*ratio", "ratio.*green"]
           },
           solarEnergy: {
             fmt: formatEnergy,
-            keys: [["solarEnergy"], ["energySolar"], ["solar_total"], ["solarEnergyTotal"], ["solarEnergySum"]],
-            patterns: ["solar.*energy", "energy.*solar"]
+            keys: [["solarEnergy"], ["energySolar"], ["solar_total"], ["solarEnergyTotal"], ["solarEnergySum"], ["greenEnergy"], ["energyGreen"], ["green_total"]],
+            patterns: ["solar.*energy", "energy.*solar", "green.*energy", "energy.*green"]
           },
           energy: {
             fmt: formatEnergy,
-            keys: [["energy"], ["totalEnergy"], ["chargedEnergy"], ["energyTotal"], ["energySum"]],
-            patterns: ["energy", "charged", "charge.*energy"],
+            keys: [["energy"], ["totalEnergy"], ["chargedEnergy"], ["chargeEnergy"], ["energyTotal"], ["energySum"]],
+            patterns: ["charge.*energy", "charged.*energy", "energy", "charged"],
             exclude: ["solar"]
           }
         };
@@ -479,7 +484,7 @@
         });
 
         const solarSlot = slots.solarShare;
-        if (solarSlot && (solarSlot.textContent === "—" || solarSlot.textContent === "")) {
+        if (solarSlot && isEmptyStat(solarSlot.textContent)) {
           const solarEnergy = pick(payload, mappings.solarEnergy.keys) ??
             findByPatterns(candidates, mappings.solarEnergy.patterns || []) ??
             findDeepByPatterns(payload, mappings.solarEnergy.patterns || []);
@@ -1210,6 +1215,63 @@
     });
   }
 
+  function initHeroDemoWindow() {
+    const trigger = document.querySelector("[data-demo-open]");
+    const modal = document.querySelector("[data-demo-window]");
+    if (!trigger || !modal) return;
+
+    const frame = modal.querySelector("[data-demo-frame]");
+    const panel = modal.querySelector(".hero-demo-window-panel");
+    const closeTargets = Array.from(modal.querySelectorAll("[data-demo-close]"));
+    const demoUrl = "https://demo.evcc.io/#/";
+    const baseWidth = 1366;
+    const baseHeight = 900;
+
+    const fitFrame = () => {
+      if (!frame || !panel) return;
+      const availableWidth = panel.clientWidth;
+      const availableHeight = panel.clientHeight;
+      if (!availableWidth || !availableHeight) return;
+
+      const scale = Math.min(availableWidth / baseWidth, availableHeight / baseHeight);
+      const scaledWidth = baseWidth * scale;
+      const scaledHeight = baseHeight * scale;
+      const offsetX = (availableWidth - scaledWidth) / 2;
+      const offsetY = (availableHeight - scaledHeight) / 2;
+
+      panel.style.setProperty("--demo-scale", scale.toFixed(5));
+      panel.style.setProperty("--demo-offset-x", `${offsetX.toFixed(2)}px`);
+      panel.style.setProperty("--demo-offset-y", `${offsetY.toFixed(2)}px`);
+    };
+
+    const open = () => {
+      if (frame) frame.src = demoUrl;
+      modal.classList.add("is-open");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.classList.add("lightbox-open");
+      requestAnimationFrame(fitFrame);
+    };
+
+    const close = () => {
+      modal.classList.remove("is-open");
+      modal.setAttribute("aria-hidden", "true");
+      if (frame) frame.src = "";
+      document.body.classList.remove("lightbox-open");
+    };
+
+    trigger.addEventListener("click", open);
+    closeTargets.forEach((node) => {
+      node.addEventListener("click", close);
+    });
+
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") close();
+    });
+    window.addEventListener("resize", fitFrame);
+    if (frame) frame.addEventListener("load", fitFrame);
+    fitFrame();
+  }
+
 
   // Init
   document.addEventListener("DOMContentLoaded", () => {
@@ -1217,6 +1279,7 @@
         syncHeaderHeight();
         syncHeroPretextOffset();
         initHeroProductVideo();
+        initHeroDemoWindow();
         initMobileNav();
         setActiveNav();
         initPaypalCartButtons();

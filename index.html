@@ -17,6 +17,10 @@
 <section class="hero-product-video" aria-label="Produktpraesentation eHive One">
   <div class="container">
     <div class="hero-product-video-stage" data-hero-video-stage>
+      <button class="hero-video-qr-trigger" type="button" data-demo-open style="--x: 27.5%; --y: 45%;" aria-label="QR Demo öffnen" title="QR Demo">
+        <span class="hero-video-qr-trigger-inner" aria-hidden="true"></span>
+      </button>
+
       <video
         class="hero-product-video-media"
         data-hero-product-video
@@ -114,6 +118,14 @@
     </div>
   </div>
 </section>
+
+<div class="hero-demo-window" data-demo-window aria-hidden="true">
+  <div class="hero-demo-window-backdrop" data-demo-close></div>
+  <div class="hero-demo-window-panel" role="dialog" aria-modal="true" aria-label="evcc Demo">
+    <button class="hero-demo-window-close" type="button" data-demo-close aria-label="Demo schließen">X</button>
+    <iframe class="hero-demo-window-frame" data-demo-frame src="" title="evcc Demo" loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+  </div>
+</div>
 
 <section class="hero-ehive" data-scroll-stage>
   <div class="hero-ehive-pin">
