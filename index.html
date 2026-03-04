@@ -190,27 +190,6 @@
   </div>
 </section>
 
-<section class="screenshots" id="screenshots" aria-label="evcc Screenshots">
-  <div class="screenshots_container">
-    <p class="logo-strip-title screenshots-title">#APP</p>
-    <p class="screenshots-demo-link"><a href="https://demo.evcc.io/#/" target="_blank" rel="noopener noreferrer">Zum Demo</a></p>
-    <div class="screenshots_inner">
-      <div class="screenshot">
-        <img src="img/evcc-screenshots/1_small_main_light.webp" height="1000" width="513" alt="evcc Screenshot Hauptansicht" loading="lazy">
-      </div>
-      <div class="screenshot">
-        <img src="img/evcc-screenshots/2_small_plan_light.webp" height="1000" width="513" alt="evcc Screenshot Planung" loading="lazy">
-      </div>
-      <div class="screenshot">
-        <img src="img/evcc-screenshots/3_small_battery_light.webp" height="1000" width="513" alt="evcc Screenshot Batterie" loading="lazy">
-      </div>
-      <div class="screenshot">
-        <img src="img/evcc-screenshots/4_small_month_cost_light.webp" height="1000" width="513" alt="evcc Screenshot Kosten" loading="lazy">
-      </div>
-    </div>
-  </div>
-</section>
-
 <div class="debug-panel debug-header" data-debug-panel aria-hidden="true"></div>
 
 <section class="logo-strip" id="APPSTORE">
@@ -273,10 +252,78 @@
   </div>
 </section>
 
+<section class="story">
+  <div class="container story-grid">
+    <div class="story-copy">
+      <p class="eyebrow story-eyebrow-mixed">#STORY by evcc</p>
+      <h2>evcc als Schaltzentrale für dein Energiesystem.</h2>
+      <p class="lead">
+        Volle Transparenz über PV, Speicher, Wallbox und Netz. Regeln, Tarife und Automationen
+        bleiben offen und erweiterbar - ohne Lock-in.
+      </p>
+      <ul class="story-list">
+        <li>Realtime-Daten für Verbrauch und Einspeisung.</li>
+        <li>Flexible Automationen für Lastmanagement.</li>
+        <li>Community-getrieben, updatefähig, nachvollziehbar.</li>
+      </ul>
+      <div class="evcc-benefits">
+        <div class="benefit-grid">
+          <div class="benefit-card">
+            <object class="benefit-svg" type="image/svg+xml" data="img/solar-surplus.svg" aria-label="Überschussladen mit Solarstrom">
+              <img src="img/solar-surplus.svg" alt="Überschussladen mit Solarstrom">
+            </object>
+            <p>Dein Ladevorgang startet, sobald genug eigener Sonnenstrom verfügbar ist. Die Ladeleistung passt sich laufend dem Überschuss an.</p>
+          </div>
+          <div class="benefit-card">
+            <object class="benefit-svg" type="image/svg+xml" data="img/dynamic-grid.svg" aria-label="Dynamisches Laden mit erneuerbaren Energien">
+              <img src="img/dynamic-grid.svg" alt="Dynamisches Laden mit erneuerbaren Energien">
+            </object>
+            <p>Keine Sonne? Dann laden, wenn viel Erneuerbare im Netz sind - gut fürs Klima, gut für den Geldbeutel.<br><br>Mit dynamischem Tarif sparst du extra.</p>
+          </div>
+        </div>
+        <div class="benefit-summary">
+          <p>Und das Beste ist: evcc vereint beides ohne Extrakosten - einfach so !!!</p>
+        </div>
+      </div>
+      <div class="story-live" data-community-stats data-community-endpoint="https://api.evcc.io/v1/total" aria-live="polite">
+        <span class="live-pill">Live</span>
+        <div class="live-items">
+          <span><strong data-live="power">-</strong> Ladeleistung</span>
+          <span><strong data-live="users">-</strong> Aktive Nutzer</span>
+          <span><strong data-live="solarShare">-</strong> Sonnenanteil</span>
+          <span><strong data-live="solarEnergy">-</strong> Sonnenenergie</span>
+          <span><strong data-live="energy">-</strong> Ladeenergie</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="screenshots" id="screenshots" aria-label="evcc Screenshots">
+  <div class="screenshots_container">
+    <p class="logo-strip-title screenshots-title">#APP <span class="hash-subline">by evcc</span></p>
+    <p class="screenshots-demo-link"><a href="https://demo.evcc.io/#/" target="_blank" rel="noopener noreferrer">Zum Demo</a></p>
+    <div class="screenshots_inner">
+      <div class="screenshot">
+        <img src="img/evcc-screenshots/1_small_main_light.webp" height="1000" width="513" alt="evcc Screenshot Hauptansicht" loading="lazy">
+      </div>
+      <div class="screenshot">
+        <img src="img/evcc-screenshots/2_small_plan_light.webp" height="1000" width="513" alt="evcc Screenshot Planung" loading="lazy">
+      </div>
+      <div class="screenshot">
+        <img src="img/evcc-screenshots/3_small_battery_light.webp" height="1000" width="513" alt="evcc Screenshot Batterie" loading="lazy">
+      </div>
+      <div class="screenshot">
+        <img src="img/evcc-screenshots/4_small_month_cost_light.webp" height="1000" width="513" alt="evcc Screenshot Kosten" loading="lazy">
+      </div>
+    </div>
+  </div>
+</section>
+
 <section class="open-point-section" id="open-hersteller" aria-label="Herstellerunabhaengig Bereich">
   <div class="open-point-pin hero-ehive-pin">
     <div class="container">
-      <p class="open-point-hash open-point-hash--section">#INTEGRATION</p>
+      <p class="open-point-hash open-point-hash--section">#INTEGRATION <span class="hash-subline">by evcc</span></p>
       <aside class="infobox">
         <div class="infobox_inner">
           <div class="infobox_entry" style="grid-area: charger;">

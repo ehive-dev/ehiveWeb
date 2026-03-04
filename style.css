@@ -893,6 +893,10 @@ body.debug-on .debug-header{
   margin: 0 0 10px;
 }
 
+.story .eyebrow.story-eyebrow-mixed{
+  text-transform: none;
+}
+
 
 .hero-ehive h1,
 .hero-ehive-pretext--title{
@@ -1051,6 +1055,17 @@ body.debug-on .debug-header{
   font-size: 11px;
   font-weight: 700;
   line-height: 1.2;
+}
+
+.hash-subline{
+  display: block;
+  margin-top: 2px;
+  font-size: 0.82em;
+  line-height: 1.2;
+  letter-spacing: .08em;
+  font-weight: 600;
+  text-transform: none;
+  color: var(--muted);
 }
 
 #APPSTORE{
