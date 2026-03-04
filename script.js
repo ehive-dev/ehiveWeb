@@ -866,6 +866,82 @@
     update();
   }
 
+  function initHeroProductVideo() {
+    const video = document.querySelector("[data-hero-product-video]");
+    if (!video) return;
+    const stage = video.closest("[data-hero-video-stage]");
+    const hotspotLayer = stage ? stage.querySelector("[data-hero-video-hotspots]") : null;
+    const notesPanel = stage ? stage.querySelector("[data-hero-video-notes]") : null;
+    const hotspots = stage ? Array.from(stage.querySelectorAll("[data-video-hotspot]")) : [];
+
+    video.muted = true;
+    video.defaultMuted = true;
+    video.playsInline = true;
+
+    const closeHotspots = () => {
+      hotspots.forEach(node => node.classList.remove("is-open"));
+    };
+
+    const showHotspots = () => {
+      if (stage) stage.classList.add("is-ended");
+      if (hotspotLayer) hotspotLayer.setAttribute("aria-hidden", "false");
+      if (notesPanel) notesPanel.setAttribute("aria-hidden", "false");
+    };
+
+    const hideHotspots = () => {
+      if (stage) stage.classList.remove("is-ended");
+      if (hotspotLayer) hotspotLayer.setAttribute("aria-hidden", "true");
+      if (notesPanel) notesPanel.setAttribute("aria-hidden", "true");
+      closeHotspots();
+    };
+
+    const freezeOnLastFrame = () => {
+      const duration = Number(video.duration);
+      if (!Number.isFinite(duration) || duration <= 0) return;
+      const endFrameTime = Math.max(0, duration - 0.04);
+      try {
+        video.currentTime = endFrameTime;
+      } catch (_) {
+        // Ignore browsers that disallow seek at end.
+      }
+      video.pause();
+      showHotspots();
+    };
+
+    video.addEventListener("ended", freezeOnLastFrame);
+
+    hotspots.forEach(hotspot => {
+      hotspot.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const shouldOpen = !hotspot.classList.contains("is-open");
+        closeHotspots();
+        if (shouldOpen) hotspot.classList.add("is-open");
+      });
+    });
+
+    document.addEventListener("click", () => {
+      closeHotspots();
+    });
+
+    window.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeHotspots();
+    });
+
+    const startPlayback = () => {
+      hideHotspots();
+      const playPromise = video.play();
+      if (playPromise && typeof playPromise.catch === "function") {
+        playPromise.catch(() => {});
+      }
+    };
+
+    if (video.readyState >= 2) {
+      startPlayback();
+    } else {
+      video.addEventListener("canplay", startPlayback, { once: true });
+    }
+  }
+
   function wireBrand() {
     const b = cfg().brand || {};
     const nameEls = document.querySelectorAll("[data-brand-name]");
@@ -1031,6 +1107,7 @@
       loadPartials().then(() => {
         syncHeaderHeight();
         syncHeroPretextOffset();
+        initHeroProductVideo();
         initMobileNav();
         setActiveNav();
         initPaypalCartButtons();

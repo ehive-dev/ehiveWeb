@@ -304,6 +304,191 @@ button, input, select{ font:inherit; }
   margin-top: 24px;
 }
 
+/* Product intro video */
+.hero-product-video{
+  padding: 20px 0 26px;
+  background: #fff;
+  position: relative;
+  z-index: 4;
+  overflow: hidden;
+}
+
+.hero-product-video-stage{
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+  margin: 0 auto;
+  background: #fff;
+}
+
+.hero-product-video-media{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  border: none;
+  border-radius: 0;
+  box-shadow: none;
+  background: #fff;
+  pointer-events: none;
+}
+
+.hero-product-video-media::-webkit-media-controls{
+  display: none !important;
+}
+
+.hero-video-hotspots{
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .25s ease;
+}
+
+.hero-product-video-stage.is-ended .hero-video-hotspots{
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.hero-video-hotspot{
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  border: none;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+}
+
+.hero-video-hotspot-dot{
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  display: block;
+  background: #088178;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 6px rgba(8,129,120,.18);
+}
+
+.hero-video-hotspot-card{
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  z-index: 2;
+  transform: translateY(-50%);
+  min-width: 210px;
+  max-width: 260px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: rgba(255,255,255,.97);
+  color: #1f2937;
+  text-align: left;
+  box-shadow: 0 12px 26px rgba(12,18,32,.16);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease, transform .2s ease;
+}
+
+.hero-video-hotspot-card strong{
+  display: block;
+  font-size: 13px;
+  margin-bottom: 3px;
+}
+
+.hero-video-hotspot-card span{
+  display: block;
+  font-size: 12px;
+  line-height: 1.45;
+  color: #4b5563;
+}
+
+.hero-video-hotspot:hover .hero-video-hotspot-card,
+.hero-video-hotspot:focus-visible .hero-video-hotspot-card,
+.hero-video-hotspot.is-open .hero-video-hotspot-card{
+  opacity: 1;
+  transform: translateY(-50%) translateX(2px);
+}
+
+.hero-video-hotspot:hover,
+.hero-video-hotspot:focus-visible,
+.hero-video-hotspot.is-open{
+  z-index: 30;
+}
+
+.hero-video-hotspot:focus-visible{
+  outline: 2px solid rgba(8,129,120,.65);
+  outline-offset: 4px;
+  border-radius: 999px;
+}
+
+.hero-video-notes{
+  position: absolute;
+  right: 1.8%;
+  top: 8%;
+  width: min(48%, 560px);
+  z-index: 20;
+  padding: 6px 2px;
+  border: none;
+  background: transparent;
+  box-shadow: none;
+  opacity: 0;
+  transform: translateX(24px);
+  pointer-events: none;
+  transition: opacity .3s ease, transform .3s ease;
+}
+
+.hero-product-video-stage.is-ended .hero-video-notes{
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.hero-video-notes-title{
+  margin: 0 0 16px;
+  font-family: inherit;
+  font-size: clamp(26px, 3.6vw, 46px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: #000;
+}
+
+.hero-video-notes-list{
+  margin: 0;
+  padding-left: 24px;
+  list-style: disc;
+  display: grid;
+  gap: 6px;
+}
+
+.hero-video-notes-list li{
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.55;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity .24s ease, transform .24s ease;
+}
+
+.hero-video-notes-list li::marker{ color: var(--muted); }
+
+.hero-product-video-stage.is-ended .hero-video-notes-list li{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-product-video-stage.is-ended .hero-video-notes-list li:nth-child(1){ transition-delay: .07s; }
+.hero-product-video-stage.is-ended .hero-video-notes-list li:nth-child(2){ transition-delay: .12s; }
+.hero-product-video-stage.is-ended .hero-video-notes-list li:nth-child(3){ transition-delay: .17s; }
+.hero-product-video-stage.is-ended .hero-video-notes-list li:nth-child(4){ transition-delay: .22s; }
+.hero-product-video-stage.is-ended .hero-video-notes-list li:nth-child(5){ transition-delay: .27s; }
+.hero-product-video-stage.is-ended .hero-video-notes-list li:nth-child(6){ transition-delay: .32s; }
+
 /* Hero */
 .hero-ehive{
   padding: 0;
@@ -325,8 +510,9 @@ button, input, select{ font:inherit; }
     radial-gradient(900px 360px at 85% 0%, rgba(15,45,90,.08), transparent 60%),
     var(--hero-bg);
   position: relative;
+  z-index: 1;
   overflow: hidden;
-  margin-top: 0;
+  margin-top: 28px;
 }
 
 .hero-ehive .container{
@@ -1050,6 +1236,36 @@ body.lightbox-open{
   gap: 8px;
   text-align: center;
   color: var(--muted);
+}
+
+.benefit-summary p{
+  margin: 0;
+}
+
+.benefit-highlight{
+  max-width: 760px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(8,129,120,.28);
+  background: linear-gradient(135deg, rgba(8,129,120,.14), rgba(8,129,120,.05));
+  color: #0f172a;
+  font-weight: 800;
+  line-height: 1.45;
+  box-shadow: 0 8px 20px rgba(8,129,120,.12);
+}
+
+.benefit-points{
+  margin: 2px 0 0;
+  width: min(100%, 560px);
+  padding-left: 20px;
+  text-align: left;
+  color: #334155;
+  display: grid;
+  gap: 4px;
+}
+
+.benefit-points li{
+  margin: 0;
 }
 
 
@@ -1813,6 +2029,43 @@ body.lightbox-open{
 @media (max-width: 640px){
   .container{ padding: 0 16px; }
   .section{ padding: 40px 0; }
+  .hero-product-video{ padding: 10px 0 16px; }
+  .hero-video-notes{
+    right: 2%;
+    top: auto;
+    bottom: 3.2%;
+    width: min(90%, 420px);
+    padding: 6px 2px;
+  }
+  .hero-video-notes-title{
+    font-size: clamp(20px, 6.2vw, 28px);
+  }
+  .hero-video-notes-list{
+    padding-left: 20px;
+    gap: 4px;
+  }
+  .hero-video-notes-list li{
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .hero-video-hotspot-dot{
+    width: 12px;
+    height: 12px;
+    box-shadow: 0 0 0 5px rgba(8,129,120,.2);
+  }
+  .hero-video-hotspot-card{
+    left: 14px;
+    min-width: 168px;
+    max-width: 196px;
+    padding: 7px 8px;
+  }
+  .hero-video-hotspot-card strong{
+    font-size: 12px;
+  }
+  .hero-video-hotspot-card span{
+    font-size: 11px;
+    line-height: 1.35;
+  }
   .nav-links{ display:none; }
   .mobile-toggle{ display:inline-flex; }
   .mobile-panel.show{ display:block; }
@@ -1842,9 +2095,7 @@ body.lightbox-open{
     font-size: 12px;
   }
 
-  .hero-ehive{
-    margin-top: 0;
-  }
+  .hero-ehive{ margin-top: 16px; }
   .hero-ehive{
     --hero-text-top: 72px;
     --hero-headline-offset: -12px;
