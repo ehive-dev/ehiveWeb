@@ -241,6 +241,28 @@ button, input, select{ font:inherit; }
   max-width: 70ch;
 }
 
+.motivation-copy{
+  display: grid;
+  gap: 14px;
+  max-width: 82ch;
+}
+
+.motivation-copy p{
+  margin: 0;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.65;
+}
+
+.motivation-highlight{
+  color: var(--text) !important;
+  background: linear-gradient(135deg, #f5f8ff, #eef8f6);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
 .shop-title{
   display: flex;
   align-items: center;
