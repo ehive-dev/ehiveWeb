@@ -254,15 +254,6 @@ button, input, select{ font:inherit; }
   line-height: 1.65;
 }
 
-.motivation-highlight{
-  color: var(--text) !important;
-  background: linear-gradient(135deg, #f5f8ff, #eef8f6);
-  border: 1px solid var(--border);
-  border-left: 4px solid var(--accent);
-  border-radius: 12px;
-  padding: 12px 14px;
-}
-
 .shop-title{
   display: flex;
   align-items: center;
@@ -1069,11 +1060,6 @@ body.debug-on .debug-header{
   color: var(--muted);
   margin: 0 0 10px;
 }
-
-.story .eyebrow.story-eyebrow-mixed{
-  text-transform: none;
-}
-
 
 .hero-ehive h1,
 .hero-ehive-pretext--title{
