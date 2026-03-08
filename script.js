@@ -281,9 +281,10 @@
 
   function setActiveNav() {
     const path = (location.pathname.split("/").pop() || "index.html").toLowerCase();
+    const activePath = path === "evcc.html" ? "" : path;
     document.querySelectorAll(".nav-links a, .mobile-panel a").forEach(a => {
       const href = (a.getAttribute("href") || "").toLowerCase();
-      if (href === path) a.setAttribute("aria-current", "page");
+      if (href === activePath) a.setAttribute("aria-current", "page");
     });
   }
 
