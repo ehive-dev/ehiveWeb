@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://ehiv3.de/sitemap.xml
+Sitemap: https://www.ehiv3.de/sitemap.xml
