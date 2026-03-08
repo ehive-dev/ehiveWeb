@@ -344,13 +344,6 @@ button, input, select{ font:inherit; }
   max-width: 72ch;
 }
 
-.cta-row{
-  display:flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 24px;
-}
-
 /* Product intro video */
 .hero-product-video{
   padding: 20px 0 26px;
@@ -2946,10 +2939,6 @@ body.lightbox-open{
   .hero-ehive .lead{
     font-size: 15px;
     margin-bottom: 20px;
-  }
-  .hero-ehive .cta-row .btn{
-    width: 100%;
-    justify-content: center;
   }
   .micro-specs{
     gap: 8px;
