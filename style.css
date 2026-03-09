@@ -259,6 +259,22 @@ button, input, select{ font:inherit; }
   margin: 18px 0 0;
 }
 
+.crawl-links{
+  margin: 10px 0 0;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.crawl-links a{
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.crawl-links a:hover{
+  color: var(--text);
+}
+
 .info-card{
   padding: 18px;
   margin-top: 22px;
