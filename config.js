@@ -59,7 +59,7 @@ window.EHIVE_SHOP_CONFIG = {
         id: "ehive-one",
         name: "eHive One – DIN‑Rail Mini‑PC",
         maker: "eHive",
-        soldOut: true,
+        soldOut: false,
         image: "products/ehive-one.png",
       descriptionShort: "Hutschienen‑Mini‑PC fürs Energiemanagement. 12–30VDC, ~3W, IP20.",
         descriptionLong: "Der eHive One ist ein Hutschienengerät‑PC für Open‑Source‑Software. Er eignet sich ideal als zentrale Smart‑Home Plattform mit Modulen wie EVCC, Home Assistant, Node‑RED, Grafana und mehr (je nach Setup).",
