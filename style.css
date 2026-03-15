@@ -163,13 +163,14 @@ button, input, select{ font:inherit; }
 }
 
 .paypal-slot paypal-add-to-cart-button{
-  display: block;
-  width: 100%;
+  display: inline-flex;
+  width: auto;
+  flex: 0 0 auto;
   min-width: 0;
   max-width: 100%;
-  white-space: normal;
-  word-break: break-word;
-  overflow-wrap: anywhere;
+  white-space: nowrap;
+  word-break: normal;
+  overflow-wrap: normal;
 }
 .nav-actions .icon-btn{
   border: none;
@@ -2073,6 +2074,17 @@ body.lightbox-open{
   border-color: #066a63;
 }
 
+.btn.btn-contact-banner{
+  background: var(--text);
+  border-color: var(--text);
+  color: #fff;
+}
+
+.btn.btn-contact-banner:hover{
+  background: #111827;
+  border-color: #111827;
+}
+
 
 .btn.link{
   border: none;
@@ -2176,6 +2188,14 @@ body.lightbox-open{
 .products[data-layout="split"] .pro img{
   width: 100%;
   max-width: 220px;
+}
+
+.products[data-layout="split"] .pro img.product-thumb--meanwell{
+  width: auto;
+  max-width: min(100%, 150px);
+  max-height: 170px;
+  object-fit: contain;
+  justify-self: center;
 }
 
 .products[data-layout="split"] .paypal-slot,
@@ -2470,12 +2490,53 @@ body.lightbox-open{
 }
 
 .paypal-slot [id^="paypal-form-fields-container-"]{
-  display: block !important;
-  gap: 0 !important;
+  display: inline-flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 10px !important;
+  width: auto !important;
+  max-width: 100% !important;
 }
 
 .paypal-slot [id^="form-container-"]{
+  display: inline-flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  gap: 10px !important;
+  width: auto !important;
   max-width: 100% !important;
+}
+
+.paypal-slot [id^="paypal-form-fields-container-"] > *,
+.paypal-slot [id^="form-container-"] > *{
+  flex: 0 0 auto !important;
+  width: auto !important;
+  max-width: 100% !important;
+}
+
+.paypal-slot input[name="quantity"],
+.paypal-slot input[id*="quantity"]{
+  width: 7.25rem !important;
+  min-width: 7.25rem !important;
+  max-width: 7.25rem !important;
+  padding-inline: 12px !important;
+  text-align: center !important;
+  color: var(--text) !important;
+  background: #fff !important;
+  border: 1px solid var(--border) !important;
+  line-height: 1.2 !important;
+  font-variant-numeric: tabular-nums !important;
+}
+
+.paypal-slot button,
+.paypal-slot input[type="submit"],
+.paypal-slot [role="button"]{
+  width: auto !important;
+  min-width: 13rem !important;
+  max-width: 100% !important;
+  white-space: nowrap !important;
+  padding-inline: 16px !important;
+  transform: translateY(-4px) !important;
 }
 
 .paypal-slot paypal-add-to-cart-button > div{

@@ -132,10 +132,26 @@
   }
 
   function fixPaypalCartQuantityLabel() {
+    const translations = new Map([
+      ["Quantity", "Menge"],
+      ["Add to Cart", "In den Warenkorb"],
+      ["View Cart", "Warenkorb"],
+      ["Price", "Preis"],
+      ["Subtotal", "Zwischensumme"],
+      ["Total", "Summe"]
+    ]);
+    const hiddenLabels = new Set([
+      "Quantity",
+      "Menge"
+    ]);
     const targets = new Set([
       "Quantity",
       "Menge",
       "Stück",
+      "Add to Cart",
+      "In den Warenkorb",
+      "View Cart",
+      "Warenkorb",
       "Price",
       "Preis",
       "Subtotal",
@@ -143,11 +159,102 @@
       "Total",
       "Summe"
     ]);
+    const normalizeText = value => String(value || "").replace(/\s+/g, " ").trim();
+    const translatedText = value => translations.get(normalizeText(value)) || "";
+
     const applyStyles = el => {
       el.style.whiteSpace = "nowrap";
       el.style.wordBreak = "normal";
       el.style.overflowWrap = "normal";
-      el.style.minWidth = "8ch";
+      el.style.minWidth = "max-content";
+    };
+    const applyInlineLayout = el => {
+      el.style.display = "inline-flex";
+      el.style.alignItems = "flex-end";
+      el.style.flexWrap = "wrap";
+      el.style.gap = "10px";
+      el.style.width = "auto";
+      el.style.maxWidth = "100%";
+    };
+    const translateElement = el => {
+      if (!el || !el.childNodes || el.childNodes.length !== 1) return;
+      const child = el.firstChild;
+      if (!child || child.nodeType !== Node.TEXT_NODE) return;
+      const replacement = translatedText(child.textContent);
+      if (replacement && normalizeText(child.textContent) !== replacement) {
+        child.textContent = replacement;
+      }
+    };
+    const canTranslateValue = el => {
+      const tag = String(el && el.tagName || "").toLowerCase();
+      const type = String(el && el.getAttribute && el.getAttribute("type") || "").toLowerCase();
+      const role = String(el && el.getAttribute && el.getAttribute("role") || "").toLowerCase();
+      return tag === "button" || type === "submit" || type === "button" || role === "button";
+    };
+    const hideLabelIfNeeded = el => {
+      if (!el || !el.querySelectorAll) return;
+      const text = normalizeText(el.textContent);
+      if (!hiddenLabels.has(text)) return;
+      if (el.querySelector("input, select, textarea, button")) return;
+      el.style.display = "none";
+      el.style.margin = "0";
+      el.style.padding = "0";
+      el.setAttribute("aria-hidden", "true");
+    };
+    const translateAttributes = el => {
+      if (!el || !el.getAttributeNames) return;
+      ["aria-label", "title"].forEach(name => {
+        const current = el.getAttribute(name);
+        const replacement = translatedText(current);
+        if (replacement && normalizeText(current) !== replacement) {
+          el.setAttribute(name, replacement);
+        }
+      });
+      if (canTranslateValue(el)) {
+        const current = "value" in el ? el.value : el.getAttribute("value");
+        const replacement = translatedText(current);
+        if (replacement && normalizeText(current) !== replacement) {
+          if ("value" in el) el.value = replacement;
+          if (el.hasAttribute("value")) el.setAttribute("value", replacement);
+        }
+      }
+      if (el.placeholder) {
+        const replacement = translatedText(el.placeholder);
+        if (replacement && normalizeText(el.placeholder) !== replacement) {
+          el.placeholder = replacement;
+        }
+      }
+    };
+    const styleInteractiveNodes = root => {
+      if (!root || !root.querySelectorAll) return;
+
+      root.querySelectorAll(".paypal-slot [id^='form-container-'], .paypal-slot [id^='paypal-form-fields-container-']").forEach(applyInlineLayout);
+
+      root.querySelectorAll(".paypal-slot input[name='quantity'], .paypal-slot input[id*='quantity'], .paypal-slot input[aria-label*='Quantity'], .paypal-slot input[aria-label*='Menge']").forEach(input => {
+        input.style.width = "7.25rem";
+        input.style.minWidth = "7.25rem";
+        input.style.maxWidth = "7.25rem";
+        input.style.paddingInline = "12px";
+        input.style.textAlign = "center";
+        input.style.flex = "0 0 auto";
+        input.style.color = "var(--text)";
+        input.style.background = "#fff";
+        input.style.border = "1px solid var(--border)";
+        input.style.lineHeight = "1.2";
+        input.style.fontVariantNumeric = "tabular-nums";
+      });
+
+      root.querySelectorAll(".paypal-slot button, .paypal-slot input[type='submit'], .paypal-slot [role='button']").forEach(node => {
+        const label = normalizeText(node.textContent || node.value || node.getAttribute("aria-label"));
+        if (!targets.has(label)) return;
+        node.style.width = "auto";
+        node.style.minWidth = "13rem";
+        node.style.maxWidth = "100%";
+        node.style.whiteSpace = "nowrap";
+        node.style.flex = "0 0 auto";
+        node.style.paddingInline = "16px";
+        node.style.transform = "translateY(-4px)";
+      });
     };
 
     const scan = root => {
@@ -165,14 +272,26 @@
         root.querySelectorAll(".paypal-slot img").forEach(img => img.remove());
         root.querySelectorAll(".paypal-slot [id^='carousel-container-']").forEach(el => el.remove());
       }
-      const text = root.textContent ? root.textContent.trim() : "";
+      translateAttributes(root);
+      translateElement(root);
+      hideLabelIfNeeded(root);
+      if (root.querySelectorAll) {
+        root.querySelectorAll("*").forEach(el => {
+          translateAttributes(el);
+          translateElement(el);
+          hideLabelIfNeeded(el);
+        });
+      }
+
+      const text = normalizeText(root.textContent);
       if (targets.has(text)) {
         applyStyles(root);
         if (root.parentElement) applyStyles(root.parentElement);
       }
+      styleInteractiveNodes(root);
       if (!root.querySelectorAll) return;
       root.querySelectorAll("*").forEach(el => {
-        const label = el.textContent ? el.textContent.trim() : "";
+        const label = normalizeText(el.textContent);
         const isTarget = targets.has(label);
         const isMoney = /\d/.test(label) && /(?:€|eur|\$|usd|chf)/i.test(label);
         if (!isTarget && !isMoney) return;
@@ -202,6 +321,10 @@
   }
   function salesEmail() {
     return (cfg().brand && cfg().brand.contactEmail) || "";
+  }
+
+  function contactSubject() {
+    return (cfg().brand && cfg().brand.contactSubject) || "[Sales] Anfrage";
   }
 
   function salesSubject() {
@@ -297,10 +420,21 @@
     if (fe) {
       fe.textContent = email;
       if (fe.tagName === "A") {
-        const subject = "[Sales] Anfrage";
+        const subject = contactSubject();
         fe.href = `mailto:${email}?subject=${encodeURIComponent(subject)}`;
       }
     }
+  }
+
+  function wireContactLinks() {
+    const email = salesEmail();
+    if (!email) return;
+
+    const href = buildMailto(email, contactSubject());
+    document.querySelectorAll("[data-contact-link]").forEach(link => {
+      if (!link || link.tagName !== "A") return;
+      link.href = href;
+    });
   }
 
   function initCommunityStats() {
@@ -1285,6 +1419,7 @@
         initPaypalCartButtons();
         fixPaypalCartQuantityLabel();
         wireFooter();
+        wireContactLinks();
         wireBrand();
         initCommunityStats();
         initScrollReveal();

@@ -18,6 +18,7 @@ window.EHIVE_SHOP_CONFIG = {
     name: "eHive",
     subtitle: "HEMS but smart",
     contactEmail: "ehive@gmx.de",
+    contactSubject: "[Sales] Anfrage",
     salesSubject: "[Sales] Bestellung"
   },
 
