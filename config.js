@@ -62,12 +62,12 @@ window.EHIVE_SHOP_CONFIG = {
         maker: "eHive",
         soldOut: false,
         image: "products/ehive-one.png",
-      descriptionShort: "Hutschienen‑Mini‑PC fürs Energiemanagement. 12–30VDC, ~3W, IP20, SLC-Speicher für hohe Temperaturbeständigkeit.",
-        descriptionLong: "Der eHive One ist ein Hutschienengerät‑PC für Open‑Source‑Software. Er eignet sich ideal als zentrale Smart‑Home Plattform mit Modulen wie EVCC, Home Assistant, Node‑RED, Grafana und mehr (je nach Setup). Im eHive One werden ausschließlich hochwertige SLC-Speicher verwendet, ausgelegt für bis zu 100.000 Schreib-/Lesezyklen und geeignet für höhere Betriebstemperaturen.",
+      descriptionShort: "Hutschienen‑Mini‑PC fürs Energiemanagement. 12–30VDC, ~3W, IP20, SLC-Speicher für -40°C bis +85°C.",
+        descriptionLong: "Der eHive One ist ein Hutschienengerät‑PC für Open‑Source‑Software. Er eignet sich ideal als zentrale Smart‑Home Plattform mit Modulen wie EVCC, Home Assistant, Node‑RED, Grafana und mehr (je nach Setup). Im eHive One werden ausschließlich hochwertige SLC-Speicher verwendet, ausgelegt für bis zu 100.000 Schreib-/Lesezyklen sowie -40°C bis +85°C, was den zuverlässigen Einsatz in extremen Umgebungen ermöglicht.",
         bullets: [
           "12–30VDC, ca. 3W (typ.) • IP20",
           "Linux OS mit Dashboard",
-          "Hochwertiger SLC-Speicher • bis zu 100.000 Schreib-/Lesezyklen • für höhere Betriebstemperaturen geeignet",
+          "Hochwertiger SLC-Speicher • bis zu 100.000 Schreib-/Lesezyklen • -40°C bis +85°C",
           "Optional NVMe-Erweiterung",
           "CE / EMV / RoHS (gemäß Planung/Zertifizierung)"
         ],
