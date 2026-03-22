@@ -11,7 +11,7 @@ window.EHIVE_NEWS = [
     date: "2026-03-22",
     dateLabel: "22. März 2026",
     title: "chargeLedger",
-    excerpt: "Seid gespannt. Coming soon.",
+    excerpt: "Monatsabrechnung für Elektrofahrzeuge mit PDF-Vorschau, Versand und Archiv-Anbindungen. Seid gespannt. Coming soon.",
     href: "https://www.ehiv3.de/news-chargeledger.html",
     tags: ["Software", "Coming soon"]
   },
