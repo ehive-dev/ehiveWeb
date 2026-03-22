@@ -72,6 +72,12 @@
     }
   }
 
+  function navKeyFromPageKey(pageKey) {
+    if (!pageKey) return "";
+    if (pageKey.startsWith("news-")) return "news.html";
+    return pageKey;
+  }
+
   function maybeRedirectToCanonicalUrl() {
     const host = (location.hostname || "").toLowerCase();
     if (host !== "www.ehiv3.de" && host !== "ehiv3.de") return;
@@ -88,6 +94,7 @@
       ["/datenschutz", "/datenschutz.html"],
       ["/evcc", "/evcc.html"],
       ["/impressum", "/impressum.html"],
+      ["/news", "/news.html"],
       ["/shop", "/shop.html"],
       ["/sproduct", "/sproduct.html"],
       ["/success", "/success.html"]
@@ -95,7 +102,14 @@
 
     let path = (location.pathname || "/").toLowerCase();
     if (path !== "/" && path.endsWith("/")) path = path.slice(0, -1);
-    const canonicalPath = aliases.get(path) || location.pathname || "/";
+    let canonicalPath = aliases.get(path);
+    if (!canonicalPath) {
+      const leaf = path.split("/").pop() || "";
+      if (path !== "/" && leaf && !leaf.includes(".")) {
+        canonicalPath = `${path}.html`;
+      }
+    }
+    canonicalPath = canonicalPath || location.pathname || "/";
     const target = origin + canonicalPath + location.search + location.hash;
 
     if (target !== location.href) {
@@ -456,9 +470,9 @@
   }
 
   function setActiveNav() {
-    const path = pageKeyFromUrl(location.href);
+    const path = navKeyFromPageKey(pageKeyFromUrl(location.href));
     document.querySelectorAll(".nav-links a, .mobile-panel a").forEach(a => {
-      const href = pageKeyFromUrl(a.getAttribute("href") || "");
+      const href = navKeyFromPageKey(pageKeyFromUrl(a.getAttribute("href") || ""));
       if (href && href === path) {
         a.setAttribute("aria-current", "page");
       } else {
