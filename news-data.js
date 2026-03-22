@@ -22,13 +22,5 @@ window.EHIVE_NEWS = [
     excerpt: "Mit dem neuen News-Bereich bündeln wir Änderungen an Website, Shop und Dokumentation an einer festen Stelle.",
     href: "https://www.ehiv3.de/news-updates-hub.html",
     tags: ["Website", "Updates"]
-  },
-  {
-    date: "2026-03-08",
-    dateLabel: "8. März 2026",
-    title: "Shop und Produktseiten sind live",
-    excerpt: "Der Shop auf ehiv3.de ist online, inklusive Produktseite, Kontakt, Impressum und Datenschutz.",
-    href: "https://www.ehiv3.de/news-shop-launch.html",
-    tags: ["Shop", "Website"]
   }
 ];
