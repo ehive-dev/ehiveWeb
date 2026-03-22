@@ -10,10 +10,10 @@ window.EHIVE_NEWS = [
   {
     date: "2026-03-22",
     dateLabel: "22. März 2026",
-    title: "chargeLedger angekündigt",
-    excerpt: "Mit chargeLedger kündigen wir eine neue Software im eHive-Umfeld an. Weitere Details folgen in den nächsten Updates.",
+    title: "chargeLedger",
+    excerpt: "Seid gespannt. Coming soon.",
     href: "https://www.ehiv3.de/news-chargeledger.html",
-    tags: ["Software", "Release"]
+    tags: ["Software", "Coming soon"]
   },
   {
     date: "2026-03-22",
