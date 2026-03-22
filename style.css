@@ -2608,6 +2608,20 @@ body.lightbox-open{
   margin: 10px 0;
 }
 
+.news-preview-media{
+  margin: 2px 0 6px;
+}
+
+.news-preview-video{
+  display: block;
+  width: min(100%, 420px);
+  aspect-ratio: 708 / 894;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: #000;
+  object-fit: cover;
+}
+
 .news-sidecard{
   padding: 24px 0 0;
   background: transparent;
