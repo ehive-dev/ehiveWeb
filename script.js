@@ -405,6 +405,66 @@
     return "mailto:" + encodeURIComponent(email) + (parts.length ? "?" + parts.join("&") : "");
   }
 
+  function newsItems() {
+    return Array.isArray(window.EHIVE_NEWS) ? window.EHIVE_NEWS : [];
+  }
+
+  function renderNewsFeeds() {
+    const feeds = document.querySelectorAll("[data-news-feed]");
+    if (!feeds.length) return;
+
+    const items = newsItems();
+    feeds.forEach(feed => {
+      const limitRaw = Number(feed.getAttribute("data-news-limit") || "0");
+      const list = limitRaw > 0 ? items.slice(0, limitRaw) : items;
+      feed.replaceChildren(...list.map(createNewsCard));
+    });
+  }
+
+  function createNewsCard(item) {
+    const article = document.createElement("article");
+    article.className = "card news-card";
+
+    const top = document.createElement("div");
+    top.className = "news-card-top";
+
+    const time = document.createElement("time");
+    time.dateTime = item.date || "";
+    time.textContent = item.dateLabel || item.date || "";
+    top.appendChild(time);
+
+    const tags = document.createElement("div");
+    tags.className = "news-tags";
+    (item.tags || []).forEach(tagLabel => {
+      const tag = document.createElement("span");
+      tag.className = "news-tag";
+      tag.textContent = tagLabel;
+      tags.appendChild(tag);
+    });
+    top.appendChild(tags);
+
+    const title = document.createElement("h3");
+    title.textContent = item.title || "";
+
+    const excerpt = document.createElement("p");
+    excerpt.textContent = item.excerpt || "";
+
+    const footer = document.createElement("div");
+    footer.className = "news-card-footer";
+
+    const link = document.createElement("a");
+    link.className = "btn";
+    link.href = item.href || "#";
+    link.textContent = "Artikel lesen";
+    footer.appendChild(link);
+
+    article.appendChild(top);
+    article.appendChild(title);
+    article.appendChild(excerpt);
+    article.appendChild(footer);
+    return article;
+  }
+
   function renderPreorderSlot(mountEl, itemName, variantLabel) {
     if (!mountEl) return;
     const email = salesEmail();
@@ -1501,6 +1561,7 @@
         initLogoLightbox();
         initVideoLightbox();
         initAddonDetails();
+        renderNewsFeeds();
         window.addEventListener("resize", syncHeaderHeight);
         window.addEventListener("resize", syncHeroPretextOffset);
         window.addEventListener("load", syncHeroPretextOffset, { once: true });

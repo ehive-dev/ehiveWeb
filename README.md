@@ -44,3 +44,4 @@ Setze in `config.js` am besten **absolute** URLs (mit https://…), z. B.:
 ## Hinweise
 
 - `Impressum`/`Datenschutz` sind Platzhalter und müssen mit echten Angaben ersetzt werden.
+- Für neue Website-News und Releases gibt es die Kurzanleitung in `NEWS_PUBLISHING.md`.
