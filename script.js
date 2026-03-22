@@ -423,7 +423,7 @@
 
   function createNewsCard(item) {
     const article = document.createElement("article");
-    article.className = "card news-card";
+    article.className = "news-card";
 
     const top = document.createElement("div");
     top.className = "news-card-top";
@@ -444,7 +444,11 @@
     top.appendChild(tags);
 
     const title = document.createElement("h3");
-    title.textContent = item.title || "";
+    const titleLink = document.createElement("a");
+    titleLink.className = "news-card-title-link";
+    titleLink.href = item.href || "#";
+    titleLink.textContent = item.title || "";
+    title.appendChild(titleLink);
 
     const excerpt = document.createElement("p");
     excerpt.textContent = item.excerpt || "";
@@ -453,9 +457,9 @@
     footer.className = "news-card-footer";
 
     const link = document.createElement("a");
-    link.className = "btn";
+    link.className = "news-card-link";
     link.href = item.href || "#";
-    link.textContent = "Artikel lesen";
+    link.textContent = "Weiterlesen";
     footer.appendChild(link);
 
     article.appendChild(top);
