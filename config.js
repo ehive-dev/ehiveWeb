@@ -14,6 +14,10 @@
 */
 
 window.EHIVE_SHOP_CONFIG = {
+  site: {
+    origin: "https://www.ehiv3.de"
+  },
+
   brand: {
     name: "eHive",
     subtitle: "HEMS but smart",
@@ -37,9 +41,9 @@ window.EHIVE_SHOP_CONFIG = {
     // Where PayPal should send buyers back to your site.
     // For the PayPal-hosted cart, "Continue shopping" uses shopping_url.
     urls: {
-      shopping_url: "shop.html",
-      return_url: "success.html",
-      cancel_return_url: "cancel.html"
+      shopping_url: "https://www.ehiv3.de/shop.html",
+      return_url: "https://www.ehiv3.de/success.html",
+      cancel_return_url: "https://www.ehiv3.de/cancel.html"
     },
 
     // Add-to-cart buttons created & hosted in your PayPal account.

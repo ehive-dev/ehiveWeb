@@ -50,6 +50,59 @@
     return window.EHIVE_SHOP_CONFIG || {};
   }
 
+  function canonicalOrigin() {
+    return (cfg().site && cfg().site.origin) || "https://www.ehiv3.de";
+  }
+
+  function pageKeyFromUrl(urlLike) {
+    try {
+      const url = new URL(urlLike, canonicalOrigin() + "/");
+      const host = (url.hostname || "").toLowerCase();
+      if (host && host !== "www.ehiv3.de" && host !== "ehiv3.de") return "";
+
+      let path = (url.pathname || "/").toLowerCase();
+      if (path !== "/" && path.endsWith("/")) path = path.slice(0, -1);
+      if (!path || path === "/" || path === "/index" || path === "/index.html") return "index.html";
+
+      const leaf = path.split("/").pop() || "";
+      if (!leaf) return "index.html";
+      return leaf.endsWith(".html") ? leaf : `${leaf}.html`;
+    } catch {
+      return "";
+    }
+  }
+
+  function maybeRedirectToCanonicalUrl() {
+    const host = (location.hostname || "").toLowerCase();
+    if (host !== "www.ehiv3.de" && host !== "ehiv3.de") return;
+
+    const origin = canonicalOrigin();
+    const aliases = new Map([
+      ["/", "/"],
+      ["/index", "/"],
+      ["/index.html", "/"],
+      ["/about", "/about.html"],
+      ["/cart", "/cart.html"],
+      ["/cancel", "/cancel.html"],
+      ["/contact", "/contact.html"],
+      ["/datenschutz", "/datenschutz.html"],
+      ["/evcc", "/evcc.html"],
+      ["/impressum", "/impressum.html"],
+      ["/shop", "/shop.html"],
+      ["/sproduct", "/sproduct.html"],
+      ["/success", "/success.html"]
+    ]);
+
+    let path = (location.pathname || "/").toLowerCase();
+    if (path !== "/" && path.endsWith("/")) path = path.slice(0, -1);
+    const canonicalPath = aliases.get(path) || location.pathname || "/";
+    const target = origin + canonicalPath + location.search + location.hash;
+
+    if (target !== location.href) {
+      location.replace(target);
+    }
+  }
+
   function byId(id) {
     return document.getElementById(id);
   }
@@ -403,10 +456,14 @@
   }
 
   function setActiveNav() {
-    const path = (location.pathname.split("/").pop() || "index.html").toLowerCase();
+    const path = pageKeyFromUrl(location.href);
     document.querySelectorAll(".nav-links a, .mobile-panel a").forEach(a => {
-      const href = (a.getAttribute("href") || "").toLowerCase();
-      if (href === path) a.setAttribute("aria-current", "page");
+      const href = pageKeyFromUrl(a.getAttribute("href") || "");
+      if (href && href === path) {
+        a.setAttribute("aria-current", "page");
+      } else {
+        a.removeAttribute("aria-current");
+      }
     });
   }
 
@@ -1408,6 +1465,8 @@
 
 
   // Init
+  maybeRedirectToCanonicalUrl();
+
   document.addEventListener("DOMContentLoaded", () => {
       loadPartials().then(() => {
         syncHeaderHeight();
