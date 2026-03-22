@@ -2490,30 +2490,6 @@ body.lightbox-open{
   background: #fff;
 }
 
-.news-overview-notes{
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 14px;
-  margin: 22px 0 0;
-}
-
-.news-note{
-  padding: 18px;
-  background: #fff;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-}
-
-.news-note h3{
-  margin: 0 0 6px;
-  font-size: 16px;
-}
-
-.news-note p{
-  margin: 0;
-  color: var(--muted);
-}
-
 .news-detail-layout{
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(260px, 320px);
@@ -2942,8 +2918,7 @@ body.lightbox-open{
   .section{ padding: 40px 0; }
   .news-card,
   .news-article,
-  .news-sidecard,
-  .news-note{ padding: 18px; }
+  .news-sidecard{ padding: 18px; }
   .news-card h3{ font-size: 20px; }
   .hero-product-video{ padding: 10px 0 16px; }
   .hero-video-notes{
