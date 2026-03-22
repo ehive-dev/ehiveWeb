@@ -18,8 +18,8 @@ window.EHIVE_NEWS = [
   {
     date: "2026-03-22",
     dateLabel: "22. März 2026",
-    title: "Neuigkeiten jetzt an einem Ort",
-    excerpt: "Mit dem neuen Blog-Bereich bündeln wir Änderungen an Website, Shop und Dokumentation an einer festen Stelle.",
+    title: "News jetzt an einem Ort",
+    excerpt: "Mit dem neuen News-Bereich bündeln wir Änderungen an Website, Shop und Dokumentation an einer festen Stelle.",
     href: "https://www.ehiv3.de/news-updates-hub.html",
     tags: ["Website", "Updates"]
   },
