@@ -24,14 +24,6 @@ window.EHIVE_NEWS = [
     tags: ["Website", "Updates"]
   },
   {
-    date: "2026-03-17",
-    dateLabel: "17. März 2026",
-    title: "SLC-Speicher und Temperaturbereich präzisiert",
-    excerpt: "Wir haben die Angaben zu Schreibzyklen, Temperaturbereich und Einsatz im Schaltschrank klarer aufbereitet.",
-    href: "https://www.ehiv3.de/news-storage-details.html",
-    tags: ["Hardware", "Produkt"]
-  },
-  {
     date: "2026-03-08",
     dateLabel: "8. März 2026",
     title: "Shop und Produktseiten sind live",
