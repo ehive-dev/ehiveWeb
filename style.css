@@ -144,6 +144,10 @@ button, input, select{ font:inherit; }
   gap: 10px;
 }
 
+.mobile-cart-link{
+  display: none;
+}
+
 .paypal-cart-wrap{
   display: inline-flex;
   align-items: center;
@@ -2905,9 +2909,16 @@ body.lightbox-open{
   .products[data-layout="split"] .pro{
     grid-template-columns: 1fr;
     gap: 14px;
+    padding: 16px;
   }
-  .products[data-layout="split"] .pro img{
-    max-width: 100%;
+  .products[data-layout="split"] .pro > img{
+    width: 100%;
+    max-width: 220px;
+    justify-self: center;
+  }
+  .products[data-layout="split"] .pro > img.product-thumb--meanwell{
+    width: auto;
+    max-width: min(100%, 150px);
   }
   .products[data-layout="split"] .des,
   .products[data-layout="split"] .paypal-slot,
@@ -3154,17 +3165,16 @@ body.lightbox-open{
   }
   .nav-links{ display:none; }
   .mobile-toggle{ display:inline-flex; }
+  .mobile-cart-link{
+    display: inline-flex;
+    padding: 8px;
+  }
   .mobile-panel.show{ display:block; }
-  .nav{ gap: 10px; }
+  .nav{ gap: 8px; }
   .nav-actions{ gap: 6px; }
+  .paypal-cart-wrap{ display: none; }
   .nav-actions .icon-btn{ padding: 8px 10px; }
   .nav-actions .icon-btn span{ display:none; }
-  .paypal-cart-wrap{
-    min-width: 152px;
-  }
-  .paypal-cart-wrap paypal-cart-button{
-    min-width: 144px;
-  }
   .features{ grid-template-columns: repeat(2, 1fr); }
   .products{ grid-template-columns: 1fr; }
   .footer-grid{ grid-template-columns: 1fr; }
@@ -3279,9 +3289,17 @@ body.lightbox-open{
 
   .products[data-layout="split"] .pro{
     grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 14px;
   }
-  .products[data-layout="split"] .pro img{
-    max-width: 100%;
+  .products[data-layout="split"] .pro > img{
+    width: 100%;
+    max-width: 180px;
+    justify-self: center;
+  }
+  .products[data-layout="split"] .pro > img.product-thumb--meanwell{
+    width: auto;
+    max-width: min(100%, 140px);
   }
   .products[data-layout="split"] .paypal-slot,
   .products[data-layout="split"] .row{
