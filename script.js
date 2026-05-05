@@ -298,12 +298,13 @@
       root.querySelectorAll(".paypal-slot [id^='form-container-'], .paypal-slot [id^='paypal-form-fields-container-']").forEach(applyInlineLayout);
 
       root.querySelectorAll(".paypal-slot input[name='quantity'], .paypal-slot input[id*='quantity'], .paypal-slot input[aria-label*='Quantity'], .paypal-slot input[aria-label*='Menge']").forEach(input => {
-        input.style.width = "7.25rem";
-        input.style.minWidth = "7.25rem";
-        input.style.maxWidth = "7.25rem";
+        const compactShop = document.body.classList.contains("shop-page") && window.matchMedia("(max-width: 640px)").matches;
+        input.style.width = compactShop ? "100%" : "7.25rem";
+        input.style.minWidth = compactShop ? "0" : "7.25rem";
+        input.style.maxWidth = "100%";
         input.style.paddingInline = "12px";
         input.style.textAlign = "center";
-        input.style.flex = "0 0 auto";
+        input.style.flex = compactShop ? "1 1 100%" : "0 0 auto";
         input.style.color = "var(--text)";
         input.style.background = "#fff";
         input.style.border = "1px solid var(--border)";
@@ -314,13 +315,15 @@
       root.querySelectorAll(".paypal-slot button, .paypal-slot input[type='submit'], .paypal-slot [role='button']").forEach(node => {
         const label = normalizeText(node.textContent || node.value || node.getAttribute("aria-label"));
         if (!targets.has(label)) return;
-        node.style.width = "auto";
-        node.style.minWidth = "13rem";
+        const compactShop = document.body.classList.contains("shop-page") && window.matchMedia("(max-width: 640px)").matches;
+        node.style.width = compactShop ? "100%" : "auto";
+        node.style.minWidth = compactShop ? "0" : "13rem";
         node.style.maxWidth = "100%";
-        node.style.whiteSpace = "nowrap";
-        node.style.flex = "0 0 auto";
+        node.style.whiteSpace = compactShop ? "normal" : "nowrap";
+        node.style.overflowWrap = compactShop ? "anywhere" : "normal";
+        node.style.flex = compactShop ? "1 1 100%" : "0 0 auto";
         node.style.paddingInline = "16px";
-        node.style.transform = "translateY(-4px)";
+        node.style.transform = compactShop ? "none" : "translateY(-4px)";
       });
     };
 

@@ -2994,6 +2994,18 @@ body.lightbox-open{
 @media (max-width: 640px){
   .container{ padding: 0 16px; }
   .section{ padding: 40px 0; }
+  .shop-page,
+  .shop-page main,
+  .shop-page .section,
+  .shop-page .container,
+  .shop-page .products,
+  .shop-page .pro{
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  .shop-page .container{
+    min-width: 0;
+  }
   .news-card{ padding: 18px 0; }
   .news-article{ padding: 0; }
   .news-sidecard{ padding: 20px 0 0; }
@@ -3281,16 +3293,28 @@ body.lightbox-open{
   .shop-title{
     flex-direction: column;
     align-items: flex-start;
+    min-width: 0;
+  }
+  .shop-title h2,
+  .shop-title p{
+    max-width: 100%;
+    overflow-wrap: anywhere;
   }
   .shop-cart{
     align-self: flex-end;
     margin-top: 8px;
   }
 
+  .shop-page .products[data-layout="split"]{
+    width: 100%;
+    min-width: 0;
+  }
   .products[data-layout="split"] .pro{
     grid-template-columns: 1fr;
     gap: 12px;
     padding: 14px;
+    width: 100%;
+    min-width: 0;
   }
   .products[data-layout="split"] .pro > img{
     width: 100%;
@@ -3304,6 +3328,54 @@ body.lightbox-open{
   .products[data-layout="split"] .paypal-slot,
   .products[data-layout="split"] .row{
     grid-column: 1 / -1;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+  .shop-page .pro .des,
+  .shop-page .addon-overview,
+  .shop-page .addon-details,
+  .shop-page .addon-specs,
+  .shop-page .addon-specs-row,
+  .shop-page .crawl-links,
+  .shop-page .btn.link{
+    max-width: 100%;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+  .shop-page .paypal-slot{
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: stretch;
+    align-items: stretch;
+    gap: 8px;
+  }
+  .shop-page .paypal-slot paypal-add-to-cart-button,
+  .shop-page .paypal-slot [id^="paypal-form-fields-container-"],
+  .shop-page .paypal-slot [id^="form-container-"],
+  .shop-page .paypal-slot [id^="paypal-form-fields-container-"] > *,
+  .shop-page .paypal-slot [id^="form-container-"] > *{
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    flex: 1 1 100% !important;
+  }
+  .shop-page .paypal-slot input[name="quantity"],
+  .shop-page .paypal-slot input[id*="quantity"]{
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+  }
+  .shop-page .paypal-slot button,
+  .shop-page .paypal-slot input[type="submit"],
+  .shop-page .paypal-slot [role="button"]{
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    white-space: normal !important;
+    overflow-wrap: anywhere !important;
+    transform: none !important;
   }
 
   .logo-row{ grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
