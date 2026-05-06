@@ -2191,7 +2191,13 @@ body.lightbox-open{
 }
 
 .products[data-layout="split"] .pro.is-open{
-  gap: 18px 22px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 14px;
+}
+
+.products[data-layout="split"] .pro.is-open > img{
+  max-width: min(220px, 100%);
+  justify-self: center;
 }
 
 .products[data-layout="split"] .pro img{
@@ -2344,12 +2350,15 @@ body.lightbox-open{
 }
 
 .products[data-layout="split"] .pro.is-open .des{
-  display: contents;
+  display: flex;
+  grid-column: 1 / -1;
 }
 
-.products[data-layout="split"] .pro.is-open .des > h5,
-.products[data-layout="split"] .pro.is-open .addon-overview{
-  grid-column: 2 / 3;
+.products[data-layout="split"] .pro.is-open .paypal-slot,
+.products[data-layout="split"] .pro.is-open .row{
+  grid-column: 1 / -1;
+  width: 100%;
+  min-width: 0;
 }
 
 .products[data-layout="split"] .pro.is-open .addon-details{
@@ -2360,12 +2369,12 @@ body.lightbox-open{
 }
 
 .products[data-layout="split"] .pro.is-open .addon-specs{
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
 }
 
 .products[data-layout="split"] .pro.is-open .addon-specs-row{
-  grid-template-columns: minmax(120px, .44fr) minmax(0, 1fr);
-  gap: 12px;
+  grid-template-columns: 1fr;
+  gap: 2px;
 }
 .pro[data-addon-toggle]{
   cursor: pointer;
