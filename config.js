@@ -26,6 +26,16 @@ window.EHIVE_SHOP_CONFIG = {
     salesSubject: "[Sales] Bestellung"
   },
 
+  news: {
+    comments: {
+      enabled: true,
+      repo: "ehive-dev/ehiveWeb",
+      issueTerm: "pathname",
+      theme: "github-light",
+      prompt: "Fragen zu diesem Beitrag kannst du hier direkt hinterlassen. Wir antworten im selben Thread. Lesen kann jeder, zum Schreiben braucht man ein GitHub-Konto."
+    }
+  },
+
   paypal: {
     // "live" or "sandbox"
     env: "live",

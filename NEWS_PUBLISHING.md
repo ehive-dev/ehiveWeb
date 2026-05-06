@@ -32,6 +32,11 @@ Für neue Beiträge ist die einfachste Methode:
 2. `title`, `meta description`, Canonical, JSON-LD, Datum, Überschrift und Text anpassen
 3. Relevante interne Links im rechten Seitenblock aktualisieren
 
+Hinweis:
+
+- Unter jedem `news-*.html`-Beitrag erscheint automatisch ein Fragen-&-Antworten-Bereich über GitHub Issues.
+- Die Zuordnung läuft aktuell über den Seitenpfad (`pathname`). Wenn sich die URL eines Beitrags ändert, entsteht dadurch auch ein neuer Thread.
+
 ## Checkliste vor dem Push
 
 - Steht der neue Beitrag ganz oben in `news-data.js`?
