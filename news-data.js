@@ -11,7 +11,7 @@ window.EHIVE_NEWS = [
     date: "2026-05-10",
     dateLabel: "10. Mai 2026",
     title: "Appstore ist integriert",
-    excerpt: "Der Appstore ist mittlerweile in den SmartHub integriert: mit eigener Ansicht, Kategorien, Installiert-Status, App-Metadaten aus den Release-Repos sowie Download-, Video- und Deinstallationsinformationen.",
+    excerpt: "Der Appstore ist mittlerweile in den SmartHub integriert. Apps und Erweiterungen können dort sichtbar gemacht, eingeordnet und mit Status sowie Metadaten angezeigt werden.",
     href: "https://www.ehiv3.de/news-appstore-integration.html",
     tags: ["Plattform", "Vision", "Erweiterungen"]
   },
