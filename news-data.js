@@ -2,6 +2,14 @@ window.EHIVE_NEWS = [
   {
     date: "2026-05-10",
     dateLabel: "10. Mai 2026",
+    title: "eHive One beim evcc Community Treffen 2026",
+    excerpt: "Wir waren beim evcc Community Treffen in Osnabrück dabei, haben eHive One vorgestellt und erlebt, wie stark Open Source funktioniert, wenn Praxis, Entwicklung und Community zusammenkommen.",
+    href: "https://www.ehiv3.de/news-evcc-community-treffen-2026.html",
+    tags: ["Community", "evcc", "Open Source"]
+  },
+  {
+    date: "2026-05-10",
+    dateLabel: "10. Mai 2026",
     title: "Appstore ist integriert",
     excerpt: "Der Appstore ist mittlerweile in den SmartHub integriert: mit eigener Ansicht, Kategorien, Installiert-Status, App-Metadaten aus den Release-Repos sowie Download-, Video- und Deinstallationsinformationen.",
     href: "https://www.ehiv3.de/news-appstore-integration.html",

@@ -2681,6 +2681,17 @@ body.lightbox-open{
   object-fit: cover;
 }
 
+.news-preview-image{
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #f7f8fa;
+  object-fit: cover;
+}
+
 .news-sidecard{
   padding: 24px 0 0;
   background: transparent;
