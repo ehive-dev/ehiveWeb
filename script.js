@@ -16,6 +16,67 @@
 (function () {
   "use strict";
 
+  function syncViewportWidthVar() {
+    const root = document.documentElement;
+    const docWidth = root && root.clientWidth ? root.clientWidth : 0;
+    const winWidth = window.innerWidth || docWidth;
+    const width = Math.max(0, Math.min(docWidth || winWidth, winWidth || docWidth));
+    if (!width) return;
+
+    const value = `${width}px`;
+    root.style.setProperty("--ehive-viewport-w", value);
+
+    if (!document.body || !document.body.classList.contains("shop-page")) return;
+
+    const isMobile = width <= 760 || window.matchMedia("(max-width: 760px)").matches;
+    root.style.overflowX = isMobile ? "hidden" : "";
+
+    const bounded = document.querySelectorAll(
+      ".shop-page .header, .shop-page .header > .container, .shop-page main, .shop-page main > .section, .shop-page main > .section > .container"
+    );
+    const content = document.querySelectorAll(
+      ".shop-page .section-title, .shop-page .products[data-layout='split'], .shop-page .products[data-layout='split'] .pro"
+    );
+    const inner = document.querySelectorAll(
+      ".shop-page .pro .des, .shop-page .addon-overview, .shop-page .addon-details, .shop-page .addon-overview ul, .shop-page .addon-details ul, .shop-page .addon-specs, .shop-page .products[data-layout='split'] .row, .shop-page .field, .shop-page .paypal-slot"
+    );
+    const listItems = document.querySelectorAll(
+      ".shop-page .addon-overview li, .shop-page .addon-details li"
+    );
+
+    if (!isMobile) {
+      [...bounded, ...content, ...inner, ...listItems].forEach(el => {
+        el.style.width = "";
+        el.style.maxWidth = "";
+        el.style.minWidth = "";
+      });
+      return;
+    }
+
+    const contentWidth = `${Math.max(0, width - 24)}px`;
+    const innerWidth = `${Math.max(0, width - 48)}px`;
+    const listItemWidth = `${Math.max(0, width - 64)}px`;
+
+    bounded.forEach(el => {
+      el.style.width = value;
+      el.style.maxWidth = value;
+    });
+    content.forEach(el => {
+      el.style.width = contentWidth;
+      el.style.maxWidth = contentWidth;
+    });
+    inner.forEach(el => {
+      el.style.width = innerWidth;
+      el.style.maxWidth = innerWidth;
+      el.style.minWidth = "0";
+    });
+    listItems.forEach(el => {
+      el.style.width = listItemWidth;
+      el.style.maxWidth = listItemWidth;
+      el.style.minWidth = "0";
+    });
+  }
+
   function resolveIncludePath(key) {
     if (!key) return "";
     if (key.includes("/") || key.endsWith(".html")) return key;
@@ -1624,10 +1685,16 @@
 
 
   // Init
+  syncViewportWidthVar();
   maybeRedirectToCanonicalUrl();
+  window.addEventListener("resize", syncViewportWidthVar);
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener("resize", syncViewportWidthVar);
+  }
 
   document.addEventListener("DOMContentLoaded", () => {
       loadPartials().then(() => {
+        syncViewportWidthVar();
         syncHeaderHeight();
         syncHeroPretextOffset();
         initHeroProductVideo();
