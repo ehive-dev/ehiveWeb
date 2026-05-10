@@ -157,7 +157,6 @@
       ["/impressum", "/impressum.html"],
       ["/news", "/news.html"],
       ["/shop", "/shop.html"],
-      ["/sproduct", "/sproduct.html"],
       ["/success", "/success.html"]
     ]);
 
