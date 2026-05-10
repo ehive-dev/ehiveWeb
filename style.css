@@ -2744,60 +2744,6 @@ body.lightbox-open{
   font-size: 14px;
 }
 
-.news-comments{
-  display: grid;
-  gap: 18px;
-  margin-top: 40px;
-  padding-top: 28px;
-  border-top: 1px solid var(--border);
-}
-
-.news-comments-head{
-  display: grid;
-  gap: 10px;
-}
-
-.news-comments p.news-comments-kicker{
-  margin: 0;
-  color: var(--accent);
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-}
-
-.news-comments h2{
-  margin: 0;
-  font-size: clamp(28px, 3vw, 34px);
-  line-height: 1.08;
-}
-
-.news-comments p{
-  margin: 0;
-  color: var(--muted);
-  max-width: 68ch;
-}
-
-.news-comments-link{
-  display: inline-flex;
-  align-items: center;
-  width: max-content;
-  color: var(--text);
-  font-weight: 700;
-}
-
-.news-comments-link:hover{
-  color: var(--accent);
-}
-
-.news-comments-thread{
-  min-height: 140px;
-}
-
-.news-comments-thread .utterances{
-  max-width: 100%;
-}
-
 /* Product detail page */
 .product-grid{
   display:grid;
@@ -3230,8 +3176,6 @@ body.lightbox-open{
   .news-article{ padding: 0; }
   .news-sidecard{ padding: 20px 0 0; }
   .news-card h3{ font-size: 21px; }
-  .news-comments{ margin-top: 32px; padding-top: 24px; }
-  .news-comments h2{ font-size: 26px; }
   .hero-product-video{ padding: 10px 0 16px; }
   .hero-video-notes{
     right: 2%;

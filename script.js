@@ -544,84 +544,6 @@
     return article;
   }
 
-  function newsCommentsConfig() {
-    const newsCfg = cfg().news || {};
-    const commentsCfg = newsCfg.comments || {};
-    return {
-      enabled: commentsCfg.enabled !== false,
-      repo: commentsCfg.repo || "",
-      issueTerm: commentsCfg.issueTerm || "pathname",
-      theme: commentsCfg.theme || "github-light",
-      prompt: commentsCfg.prompt || "Fragen zu diesem Beitrag kannst du hier direkt hinterlassen. Wir antworten im selben Thread. Lesen kann jeder, zum Schreiben braucht man ein GitHub-Konto."
-    };
-  }
-
-  function ensureUtterancesThread(host, commentsCfg) {
-    if (!host || host.getAttribute("data-utterances-ready") === "true" || !commentsCfg.repo) return;
-
-    const script = document.createElement("script");
-    script.src = "https://utteranc.es/client.js";
-    script.async = true;
-    script.crossOrigin = "anonymous";
-    script.setAttribute("repo", commentsCfg.repo);
-    script.setAttribute("issue-term", commentsCfg.issueTerm);
-    script.setAttribute("theme", commentsCfg.theme);
-    script.setAttribute("crossorigin", "anonymous");
-
-    host.setAttribute("data-utterances-ready", "true");
-    host.appendChild(script);
-  }
-
-  function initNewsComments() {
-    const pageKey = pageKeyFromUrl(location.href);
-    if (!pageKey || !pageKey.startsWith("news-")) return;
-
-    const article = document.querySelector(".news-article");
-    if (!article || article.querySelector("[data-news-comments]")) return;
-
-    const commentsCfg = newsCommentsConfig();
-    if (!commentsCfg.enabled || !commentsCfg.repo) return;
-
-    const section = document.createElement("section");
-    section.className = "news-comments";
-    section.setAttribute("data-news-comments", "");
-
-    const head = document.createElement("div");
-    head.className = "news-comments-head";
-
-    const kicker = document.createElement("p");
-    kicker.className = "news-comments-kicker";
-    kicker.textContent = "Fragen & Antworten";
-
-    const title = document.createElement("h2");
-    title.textContent = "Fragen zu diesem Beitrag?";
-
-    const copy = document.createElement("p");
-    copy.textContent = commentsCfg.prompt;
-
-    const repoLink = document.createElement("a");
-    repoLink.className = "news-comments-link";
-    repoLink.href = `https://github.com/${commentsCfg.repo}/issues?q=${encodeURIComponent(location.pathname || `/${pageKey}`)}`;
-    repoLink.target = "_blank";
-    repoLink.rel = "noopener noreferrer";
-    repoLink.textContent = "Diskussion auf GitHub öffnen";
-
-    head.appendChild(kicker);
-    head.appendChild(title);
-    head.appendChild(copy);
-    head.appendChild(repoLink);
-
-    const thread = document.createElement("div");
-    thread.className = "news-comments-thread";
-
-    section.appendChild(head);
-    section.appendChild(thread);
-    article.appendChild(section);
-
-    // Keep one shared Q&A thread per news article URL.
-    ensureUtterancesThread(thread, commentsCfg);
-  }
-
   function renderPreorderSlot(mountEl, itemName, variantLabel) {
     if (!mountEl) return;
     const email = salesEmail();
@@ -1725,7 +1647,6 @@
         initVideoLightbox();
         initAddonDetails();
         renderNewsFeeds();
-        initNewsComments();
         window.addEventListener("resize", syncHeaderHeight);
         window.addEventListener("resize", syncHeroPretextOffset);
         window.addEventListener("load", syncHeroPretextOffset, { once: true });
