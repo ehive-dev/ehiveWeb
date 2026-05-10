@@ -289,8 +289,20 @@
     ]);
     const normalizeText = value => String(value || "").replace(/\s+/g, " ").trim();
     const translatedText = value => translations.get(normalizeText(value)) || "";
+    const paypalUiSelector = [
+      ".paypal-slot",
+      ".paypal-slot *",
+      ".paypal-cart-wrap",
+      ".paypal-cart-wrap *",
+      "[data-paypal-view-cart]",
+      "[data-paypal-view-cart] *",
+      "paypal-add-to-cart-button",
+      "paypal-cart-button"
+    ].join(",");
+    const isPaypalUiNode = el => Boolean(el && el.matches && el.matches(paypalUiSelector));
 
     const applyStyles = el => {
+      if (!isPaypalUiNode(el)) return;
       el.style.whiteSpace = "nowrap";
       el.style.wordBreak = "normal";
       el.style.overflowWrap = "normal";
