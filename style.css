@@ -144,16 +144,19 @@ button, input, select{ font:inherit; }
   gap: 10px;
 }
 
-.cart-link{
-  color: var(--text);
-  text-decoration: none;
+.mobile-cart-link{
+  display: none;
 }
 
-.cart-link:focus-visible{
-  outline: 2px solid rgba(8,129,120,.6);
-  outline-offset: 2px;
+.paypal-cart-wrap{
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 180px;
+  flex: 0 0 auto;
 }
 
+.paypal-cart-wrap paypal-cart-button,
 [data-paypal-view-cart] paypal-cart-button{
   display: inline-block;
   min-width: 160px;
@@ -3408,9 +3411,14 @@ body.lightbox-open{
   }
   .nav-links{ display:none; }
   .mobile-toggle{ display:inline-flex; }
+  .mobile-cart-link{
+    display: inline-flex;
+    padding: 8px;
+  }
   .mobile-panel.show{ display:block; }
   .nav{ gap: 8px; }
   .nav-actions{ gap: 6px; }
+  .paypal-cart-wrap{ display: none; }
   .nav-actions .icon-btn{ padding: 8px 10px; }
   .nav-actions .icon-btn span{ display:none; }
   .features{ grid-template-columns: repeat(2, 1fr); }

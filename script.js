@@ -196,6 +196,18 @@
       : "https://www.paypal.com/cgi-bin/webscr";
   }
 
+  function paypalViewCartUrl() {
+    const paypal = cfg().paypal || {};
+    const url = new URL(paypalActionUrl());
+    url.searchParams.set("cmd", "_cart");
+    url.searchParams.set("display", "1");
+    url.searchParams.set("business", paypal.business || "WL4UJPJ62Y972");
+    if (paypal.urls && paypal.urls.shopping_url) {
+      url.searchParams.set("shopping_url", paypal.urls.shopping_url);
+    }
+    return url.toString();
+  }
+
   function hostedButtonId(buttonKey) {
     const p = (cfg().paypal && cfg().paypal.hostedButtons) || {};
     return p[buttonKey] || "";
@@ -211,6 +223,38 @@
     i.name = name;
     i.value = String(value);
     return i;
+  }
+
+  function ensurePaypalCartScript() {
+    if (window.cartPaypal && typeof window.cartPaypal.Cart === "function") {
+      return Promise.resolve();
+    }
+    const existing = document.querySelector("script[data-ehive-paypal-cart], script[src*='paypalobjects.com/ncp/cart/cart.js']");
+    if (existing) {
+      return new Promise(resolve => {
+        if (window.cartPaypal && typeof window.cartPaypal.Cart === "function") {
+          resolve();
+          return;
+        }
+        existing.addEventListener("load", resolve, { once: true });
+        existing.addEventListener("error", resolve, { once: true });
+        window.setTimeout(resolve, 1500);
+      });
+    }
+
+    const paypal = cfg().paypal || {};
+    const merchantId = paypal.business || "WL4UJPJ62Y972";
+    const script = document.createElement("script");
+    script.src = "https://www.paypalobjects.com/ncp/cart/cart.js";
+    script.defer = true;
+    script.setAttribute("data-merchant-id", merchantId);
+    script.setAttribute("data-ehive-paypal-cart", "true");
+
+    return new Promise(resolve => {
+      script.addEventListener("load", resolve, { once: true });
+      script.addEventListener("error", resolve, { once: true });
+      document.head.appendChild(script);
+    });
   }
 
   function initPaypalCartButtons() {
@@ -229,7 +273,18 @@
       });
       return true;
     };
-    if (!run()) window.addEventListener("load", run, { once: true });
+    if (!run()) {
+      ensurePaypalCartScript().then(() => {
+        if (!run()) window.addEventListener("load", run, { once: true });
+      });
+    }
+  }
+
+  function initPaypalCartLinks() {
+    const url = paypalViewCartUrl();
+    document.querySelectorAll("[data-paypal-cart-link]").forEach(link => {
+      link.setAttribute("href", url);
+    });
   }
 
   function renderPaypalAddButton(mountEl, buttonId) {
@@ -1635,6 +1690,7 @@
         initHeroDemoWindow();
         initMobileNav();
         setActiveNav();
+        initPaypalCartLinks();
         initPaypalCartButtons();
         fixPaypalCartQuantityLabel();
         wireFooter();
@@ -1660,9 +1716,6 @@
     });
   });
 })();
-
-
-
 
 
 
