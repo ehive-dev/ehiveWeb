@@ -1,7 +1,7 @@
-# eHive One Shop (GitHub Pages) – PayPal-hosted Warenkorb
+# eHive One Shop (GitHub Pages)
 
 Dieses Projekt ist ein **statischer** Online‑Shop (HTML/CSS/JS) für **GitHub Pages**.
-Der Warenkorb wird **PayPal‑hosted** geführt (Shopping Cart Buttons). Du brauchst kein Backend.
+Der Warenkorb wird auf den Shop- und Warenkorbseiten **PayPal‑hosted** geführt. Alle anderen Seiten laden PayPal nicht vorab.
 
 ## 1) Konfiguration
 
@@ -43,5 +43,8 @@ Setze in `config.js` am besten **absolute** URLs (mit https://…), z. B.:
 
 ## Hinweise
 
-- `Impressum`/`Datenschutz` sind Platzhalter und müssen mit echten Angaben ersetzt werden.
+- `Impressum` und `Datenschutz` sind ausgefüllt und sollten bei rechtlichen Änderungen erneut geprüft werden.
+- Neue oder geänderte Seiten brauchen passende `description`, Canonical, OpenGraph/Twitter-Metadaten und einen aktuellen Eintrag in `sitemap.xml`.
+- Videos für die Homepage sollten vor dem Commit webtauglich komprimiert werden.
+- Vor dem Push kann `powershell -ExecutionPolicy Bypass -File tools/check-site.ps1` fehlende Assets, fehlende H1 und falsches PayPal-Laden prüfen.
 - Für neue Website-News und Releases gibt es die Kurzanleitung in `NEWS_PUBLISHING.md`.

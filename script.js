@@ -1,4 +1,4 @@
-﻿/*
+/*
   eHive One Shop (GitHub Pages) – vanilla JS
   Main functions:
     - initMobileNav(): toggles the mobile navigation panel
@@ -291,8 +291,6 @@
     const paypalUiSelector = [
       ".paypal-slot",
       ".paypal-slot *",
-      ".paypal-cart-wrap",
-      ".paypal-cart-wrap *",
       "[data-paypal-view-cart]",
       "[data-paypal-view-cart] *",
       "paypal-add-to-cart-button",
@@ -1538,16 +1536,19 @@
         open(src, text);
       };
 
-      if (!item.hasAttribute("role")) item.setAttribute("role", "button");
-      if (!item.hasAttribute("tabindex")) item.setAttribute("tabindex", "0");
+      const isNativeControl = item.matches("button, a");
+      if (!isNativeControl && !item.hasAttribute("role")) item.setAttribute("role", "button");
+      if (!isNativeControl && !item.hasAttribute("tabindex")) item.setAttribute("tabindex", "0");
 
       item.addEventListener("click", activate);
-      item.addEventListener("keydown", (e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          activate();
-        }
-      });
+      if (!isNativeControl) {
+        item.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            activate();
+          }
+        });
+      }
     });
 
     if (closeBtn) closeBtn.addEventListener("click", close);

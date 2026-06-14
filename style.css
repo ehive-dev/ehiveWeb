@@ -1,4 +1,4 @@
-﻿/*
+/*
   eHive One Shop – Minimal UI (light)
   Ziel: weniger Effekte, klare Typo, viel Weißraum, konsistente Komponenten
 */
@@ -144,19 +144,16 @@ button, input, select{ font:inherit; }
   gap: 10px;
 }
 
-.mobile-cart-link{
-  display: none;
+.cart-link{
+  color: var(--text);
+  text-decoration: none;
 }
 
-.paypal-cart-wrap{
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-end;
-  min-width: 180px;
-  flex: 0 0 auto;
+.cart-link:focus-visible{
+  outline: 2px solid rgba(8,129,120,.6);
+  outline-offset: 2px;
 }
 
-.paypal-cart-wrap paypal-cart-button,
 [data-paypal-view-cart] paypal-cart-button{
   display: inline-block;
   min-width: 160px;
@@ -1632,6 +1629,21 @@ body.debug-on .debug-header{
   display: block;
 }
 
+.logo-video-button{
+  display:flex;
+  flex-direction: column;
+  align-items:center;
+  justify-content:center;
+  gap: 8px;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
 .logo-item img{
   width: auto;
   height: 38px;
@@ -1640,7 +1652,7 @@ body.debug-on .debug-header{
   opacity: 1;
 }
 
-.logo-item[data-video-src]{
+.logo-video-button[data-video-src]{
   cursor: pointer;
 }
 
@@ -1654,23 +1666,45 @@ body.debug-on .debug-header{
   transform: translateY(-2px);
 }
 
-.logo-item[data-video-src] img{
+.logo-video-card img{
   display: none;
   transition: transform .2s ease;
   transform-origin: center;
 }
 
-.logo-item[data-video-src]:hover img{
+.logo-video-card:hover img{
   transform: scale(1.08);
 }
 
-.logo-item[data-video-src]:hover .logo-item-icon{
+.logo-video-card:hover .logo-item-icon{
   background: transparent;
 }
 
-.logo-item[data-video-src]:focus-visible{
+.logo-video-button:focus-visible,
+.logo-doc-link:focus-visible{
   outline: 2px solid rgba(8,129,120,.6);
   outline-offset: 2px;
+}
+
+.logo-doc-link{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 26px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(0,170,15,.24);
+  color: #087a13;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+}
+
+.logo-doc-link:hover{
+  border-color: rgba(0,170,15,.42);
+  background: rgba(0,170,15,.07);
+  color: #075f10;
 }
 
 .image-lightbox{
@@ -3374,14 +3408,9 @@ body.lightbox-open{
   }
   .nav-links{ display:none; }
   .mobile-toggle{ display:inline-flex; }
-  .mobile-cart-link{
-    display: inline-flex;
-    padding: 8px;
-  }
   .mobile-panel.show{ display:block; }
   .nav{ gap: 8px; }
   .nav-actions{ gap: 6px; }
-  .paypal-cart-wrap{ display: none; }
   .nav-actions .icon-btn{ padding: 8px 10px; }
   .nav-actions .icon-btn span{ display:none; }
   .features{ grid-template-columns: repeat(2, 1fr); }
