@@ -522,10 +522,6 @@
     return (cfg().brand && cfg().brand.contactSubject) || "[Sales] Anfrage";
   }
 
-  function salesSubject() {
-    return (cfg().brand && cfg().brand.salesSubject) || "[Sales] Pre-Order";
-  }
-
   function buildMailto(email, subject, body) {
     const parts = [];
     if (subject) parts.push("subject=" + encodeURIComponent(subject));
@@ -597,36 +593,17 @@
     return article;
   }
 
-  function renderPreorderSlot(mountEl, itemName, variantLabel) {
+  function renderUnavailableSlot(mountEl) {
     if (!mountEl) return;
-    const email = salesEmail();
-    if (!email) {
-      const warn = document.createElement("div");
-      warn.className = "note";
-      warn.textContent = "Sales E-Mail fehlt. Bitte in config.js eintragen.";
-      mountEl.replaceChildren(warn);
-      return;
-    }
-
-    const label = [itemName, variantLabel].filter(Boolean).join(" – ");
-    const body = label ? `Bitte um Vorbestellung: ${label}` : "Bitte um Vorbestellung.";
-    const link = buildMailto(email, salesSubject(), body);
 
     const wrap = document.createElement("div");
-    wrap.className = "preorder-card";
+    wrap.className = "unavailable-card";
 
     const note = document.createElement("div");
     note.className = "note";
-    note.textContent = "Ausverkauft – Pre‑Order anfragen.";
-
-    const btn = document.createElement("a");
-    btn.className = "btn primary";
-    btn.href = link;
-    btn.textContent = "Pre‑Order anfragen";
-    btn.setAttribute("rel", "nofollow");
+    note.textContent = "Aktuell nicht verfügbar.";
 
     wrap.appendChild(note);
-    wrap.appendChild(btn);
     mountEl.replaceChildren(wrap);
   }
 
@@ -955,7 +932,7 @@
         const extra = v ? { on0: "variant", os0: v.label } : undefined;
 
         if (isSoldOut(p, v)) {
-          renderPreorderSlot(slot, p && p.name, v && v.label);
+          renderUnavailableSlot(slot);
         } else {
           renderDynamicPaypalAdd(slot, variantId, qty, extra);
         }
@@ -990,7 +967,7 @@
 
       const extra = v ? { on0: "variant", os0: v.label } : undefined;
       if (isSoldOut(p, v)) {
-        renderPreorderSlot(slot, p && p.name, v && v.label);
+        renderUnavailableSlot(slot);
       } else {
         renderDynamicPaypalAdd(slot, variantId, qty, extra);
       }
@@ -1015,7 +992,7 @@
       function refresh() {
         const qty = qtyInput ? qtyInput.value : 1;
         if (isSoldOut(addon)) {
-          renderPreorderSlot(slot, addon && addon.name);
+          renderUnavailableSlot(slot);
         } else {
           renderDynamicPaypalAdd(slot, addonId, qty);
         }
@@ -1716,7 +1693,6 @@
     });
   });
 })();
-
 
 
 
