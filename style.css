@@ -144,7 +144,7 @@ button, input, select{ font:inherit; }
   gap: 10px;
 }
 
-.mobile-cart-link{
+.nav-actions .mobile-cart-link{
   display: none;
 }
 
@@ -3411,7 +3411,7 @@ body.lightbox-open{
   }
   .nav-links{ display:none; }
   .mobile-toggle{ display:inline-flex; }
-  .mobile-cart-link{
+  .nav-actions .mobile-cart-link{
     display: inline-flex;
     padding: 8px;
   }
