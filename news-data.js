@@ -1,5 +1,13 @@
 window.EHIVE_NEWS = [
   {
+    date: "2026-07-06",
+    dateLabel: "6. Juli 2026",
+    title: "chargeLedger: sauberere Abrechnung, bessere Kosten und neues Archiv",
+    excerpt: "chargeLedger hat ein großes Update bekommen: klarerer MID-Hinweis, km-Stand, neue Kostenlogik mit Strompreispauschale, PV-/Einspeisetarif und Grundgebühr sowie manuelle und automatische Uploads ins Archiv.",
+    href: "https://www.ehiv3.de/news-chargeledger-update-juli-2026.html",
+    tags: ["Software", "chargeLedger", "Update"]
+  },
+  {
     date: "2026-05-10",
     dateLabel: "10. Mai 2026",
     title: "chargeLedger ist verfügbar",
