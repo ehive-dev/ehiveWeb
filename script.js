@@ -601,7 +601,7 @@
 
     const note = document.createElement("div");
     note.className = "note";
-    note.textContent = "Aktuell nicht verfügbar.";
+    note.textContent = "Aktuell sind wir ausverkauft. Anfragen nehmen wir gerne entgegen und planen sie in die kommenden Produktionen ein.";
 
     wrap.appendChild(note);
     mountEl.replaceChildren(wrap);
