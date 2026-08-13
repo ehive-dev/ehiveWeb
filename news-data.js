@@ -1,5 +1,13 @@
 window.EHIVE_NEWS = [
   {
+    date: "2026-08-13",
+    dateLabel: "13. August 2026",
+    title: "charge&go kommt: Werde unkompliziert zum öffentlichen Ladeparkbetreiber",
+    excerpt: "Mit charge&go entwickeln wir eine neue eHive App für den unkomplizierten Einstieg in den öffentlichen Ladebetrieb. Bald ist es so weit – interessierte Tester können sich schon jetzt melden.",
+    href: "https://www.ehiv3.de/news-charge-and-go-ladepark.html",
+    tags: ["Vorschau", "charge&go", "Ladepark"]
+  },
+  {
     date: "2026-08-01",
     dateLabel: "1. August 2026",
     title: "§ 14a EnWG und § 9 EEG: Warum Energiesysteme jetzt zusammenspielen müssen",
