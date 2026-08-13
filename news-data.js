@@ -2,6 +2,14 @@ window.EHIVE_NEWS = [
   {
     date: "2026-08-13",
     dateLabel: "13. August 2026",
+    title: "KNX trifft Energiemanagement: Die eHive KNX Bridge kommt",
+    excerpt: "Die kommende KNX Bridge verbindet evcc-Datenpunkte mit KNX-Gruppenadressen und bringt Energieinformationen in die Gebäudeautomation. Die Beta läuft bereits – Tester sind willkommen.",
+    href: "https://www.ehiv3.de/news-knx-integration-beta.html",
+    tags: ["Vorschau", "KNX", "Beta"]
+  },
+  {
+    date: "2026-08-13",
+    dateLabel: "13. August 2026",
     title: "charge&go kommt: Werde unkompliziert zum öffentlichen Ladeparkbetreiber",
     excerpt: "Mit charge&go entwickeln wir eine neue eHive App für den unkomplizierten Einstieg in den öffentlichen Ladebetrieb. Bald ist es so weit – interessierte Tester können sich schon jetzt melden.",
     href: "https://www.ehiv3.de/news-charge-and-go-ladepark.html",
