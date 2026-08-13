@@ -1,7 +1,7 @@
 window.EHIVE_NEWS = [
   {
-    date: "2026-08-13",
-    dateLabel: "13. August 2026",
+    date: "2026-08-01",
+    dateLabel: "1. August 2026",
     title: "§ 14a EnWG und § 9 EEG: Warum Energiesysteme jetzt zusammenspielen müssen",
     excerpt: "Neue Vorgaben treffen auf PV, Speicher, Wallbox und Wärmepumpe. Wir ordnen die wichtigsten Fakten ein und zeigen, wo eHive One beim lokalen, herstellerübergreifenden Energiemanagement ansetzt.",
     href: "https://www.ehiv3.de/news-14a-enwg-9-eeg-smartes-energiemanagement.html",
