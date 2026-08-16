@@ -1,5 +1,13 @@
 window.EHIVE_NEWS = [
   {
+    date: "2026-08-16",
+    dateLabel: "16. August 2026",
+    title: "eHive One für Elektrofachbetriebe: Fernwartung statt unnötiger Anfahrt",
+    excerpt: "Browser-SSH oder direkter SSH-Zugang vom eigenen Rechner: eHive One hilft Elektrofachbetrieben, Diagnose und Anpassungen aus der Ferne zu erledigen und unnötige Kundentermine zu vermeiden.",
+    href: "https://www.ehiv3.de/news-ehive-fuer-elektrofachbetriebe-fernwartung.html",
+    tags: ["Elektrofachbetrieb", "Fernwartung", "SSH"]
+  },
+  {
     date: "2026-08-13",
     dateLabel: "13. August 2026",
     title: "KNX trifft Energiemanagement: Die eHive KNX Bridge kommt",
