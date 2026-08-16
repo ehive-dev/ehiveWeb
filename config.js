@@ -77,7 +77,7 @@ window.EHIVE_SHOP_CONFIG = {
         ],
         variants: [
           { id: "ehive-one-no-license", label: "Ohne Lizenz", price: 199.00, soldOut: true },
-          { id: "ehive-one-with-license", label: "Mit evcc", price: 349.00, soldOut: true }
+          { id: "ehive-one-with-license", label: "Mit evcc", price: 349.00, soldOut: false }
         ]
       }
     ],
@@ -87,5 +87,4 @@ window.EHIVE_SHOP_CONFIG = {
     ]
   }
 };
-
 
