@@ -1581,11 +1581,21 @@ body.debug-on .debug-header{
   font-weight: 700;
 }
 
+.logo-item-description{
+  display: block;
+  max-width: 150px;
+  margin-top: 7px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.35;
+  text-align: center;
+}
+
 .logo-row{
   display:grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 12px;
-  align-items:center;
+  align-items:stretch;
 }
 
 .logo-item{
