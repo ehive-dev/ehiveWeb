@@ -3428,7 +3428,7 @@ body.lightbox-open{
   .mobile-panel.show{ display:block; }
   .nav{ gap: 8px; }
   .nav-actions{ gap: 6px; }
-  .paypal-cart-wrap{ display: none; }
+  .paypal-cart-wrap{ display: block; }
   .nav-actions .icon-btn{ padding: 8px 10px; }
   .nav-actions .icon-btn span{ display:none; }
   .features{ grid-template-columns: repeat(2, 1fr); }
