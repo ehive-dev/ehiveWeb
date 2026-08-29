@@ -53,7 +53,8 @@ window.EHIVE_NEWS = [
     title: "eHive One beim evcc Community Treffen 2026",
     excerpt: "Wir waren beim evcc Community Treffen in Osnabrück dabei, haben eHive One und unsere Apps vorgestellt und erlebt, wie stark Open Source funktioniert, wenn Praxis, Entwicklung und Community zusammenkommen.",
     href: "https://www.ehiv3.de/news-evcc-community-treffen-2026.html",
-    tags: ["Community", "evcc", "Open Source"]
+    tags: ["Community", "evcc", "Open Source"],
+    hidden: true
   },
   {
     date: "2026-05-10",

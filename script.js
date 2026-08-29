@@ -530,7 +530,9 @@
   }
 
   function newsItems() {
-    return Array.isArray(window.EHIVE_NEWS) ? window.EHIVE_NEWS : [];
+    return Array.isArray(window.EHIVE_NEWS)
+      ? window.EHIVE_NEWS.filter(item => item && item.hidden !== true)
+      : [];
   }
 
   function renderNewsFeeds() {
@@ -1693,7 +1695,6 @@
     });
   });
 })();
-
 
 
 
