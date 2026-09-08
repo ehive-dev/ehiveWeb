@@ -1,5 +1,13 @@
 window.EHIVE_NEWS = [
   {
+    date: "2026-09-09",
+    dateLabel: "9. September 2026",
+    title: "HiveScope: Geräte im Netzwerk schneller finden",
+    excerpt: "HiveScope macht Geräte, offene Dienste und mögliche evcc-Kandidaten im lokalen Netzwerk sichtbar – übersichtlich, direkt auf eHive One und als Open-Source-App.",
+    href: "https://www.ehiv3.de/news-hivescope-netzwerkscanner.html",
+    tags: ["Software", "HiveScope", "Open Source"]
+  },
+  {
     date: "2026-08-16",
     dateLabel: "16. August 2026",
     title: "eHive One für Elektrofachbetriebe: Fernwartung statt unnötiger Anfahrt",

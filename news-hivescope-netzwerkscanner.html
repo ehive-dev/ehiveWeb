@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="HiveScope scannt das lokale Netzwerk, zeigt Geräte und offene Ports und markiert mögliche evcc-kompatible Wechselrichter, Wallboxen und Energiesysteme." />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="eHive" />
+  <meta property="og:title" content="HiveScope: Geräte im Netzwerk schneller finden | eHive One" />
+  <meta property="og:description" content="Der neue Netzwerkscanner für eHive One findet Geräte und offene Dienste und hilft bei der Suche nach möglichen evcc-Kandidaten." />
+  <meta property="og:url" content="https://www.ehiv3.de/news-hivescope-netzwerkscanner.html" />
+  <meta property="og:image" content="https://www.ehiv3.de/img/news/hivescope-netzwerkscanner.webp" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="HiveScope: Geräte im Netzwerk schneller finden | eHive One" />
+  <meta name="twitter:description" content="Netzwerkübersicht, Portprüfung und eine hilfreiche Vorauswahl möglicher evcc-Geräte – direkt auf eHive One." />
+  <meta name="twitter:image" content="https://www.ehiv3.de/img/news/hivescope-netzwerkscanner.webp" />
+  <title>HiveScope: Geräte im Netzwerk schneller finden | eHive One</title>
+  <link rel="canonical" href="https://www.ehiv3.de/news-hivescope-netzwerkscanner.html" />
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="style.css" />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "BlogPosting",
+          "headline": "HiveScope: Geräte im Netzwerk schneller finden",
+          "description": "HiveScope scannt das lokale Netzwerk, zeigt Geräte und offene Ports und markiert mögliche evcc-kompatible Wechselrichter, Wallboxen und Energiesysteme.",
+          "datePublished": "2026-09-09",
+          "dateModified": "2026-09-09",
+          "mainEntityOfPage": "https://www.ehiv3.de/news-hivescope-netzwerkscanner.html",
+          "image": ["https://www.ehiv3.de/img/news/hivescope-netzwerkscanner.webp"],
+          "author": { "@type": "Organization", "name": "eHive" },
+          "publisher": {
+            "@type": "Organization",
+            "name": "eHive",
+            "logo": { "@type": "ImageObject", "url": "https://www.ehiv3.de/img/eHiveWhite.png" }
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.ehiv3.de/" },
+            { "@type": "ListItem", "position": 2, "name": "News", "item": "https://www.ehiv3.de/news.html" },
+            { "@type": "ListItem", "position": 3, "name": "HiveScope: Geräte im Netzwerk schneller finden", "item": "https://www.ehiv3.de/news-hivescope-netzwerkscanner.html" }
+          ]
+        }
+      ]
+    }
+  </script>
+</head>
+<body>
+
+<div data-include="header"></div>
+
+<main>
+  <section class="section">
+    <div class="container news-detail-layout">
+      <article class="card news-article">
+        <a class="news-backlink" href="https://www.ehiv3.de/news.html">&larr; Zurück zu den News</a>
+        <div class="news-article-meta">
+          <time datetime="2026-09-09">9. September 2026</time>
+          <span class="news-tag">Software</span>
+          <span class="news-tag">HiveScope</span>
+          <span class="news-tag">Open Source</span>
+        </div>
+        <h1>HiveScope: Geräte im Netzwerk schneller finden</h1>
+        <p class="news-lead">Welche Geräte sind erreichbar, welche Dienste bieten sie an – und könnte darunter bereits passende Hardware für evcc sein? HiveScope bringt Ordnung in das lokale Netzwerk.</p>
+
+        <div class="news-article-body">
+          <figure class="news-preview-media">
+            <img class="news-preview-image" src="img/news/hivescope-netzwerkscanner.webp" alt="Illustration des HiveScope Radars mit Wechselrichter, Wallbox, Smart Meter, Speicher, Wärmepumpe und Router" width="1672" height="941" />
+          </figure>
+
+          <p>HiveScope ist der neue Netzwerkscanner für eHive One. Die App durchsucht das eigene lokale IPv4-Netz und stellt gefundene Geräte in einer klaren Übersicht dar. Das animierte Radar macht den Scan sichtbar: Jeder Treffer erscheint als eigener Radar-Punkt.</p>
+
+          <h2>Vom unbekannten Gerät zur brauchbaren Übersicht</h2>
+          <p>Zu jedem Fund sammelt HiveScope verfügbare Informationen wie IP-Adresse, Hostname, MAC-Adresse, Hersteller und erreichbare Standarddienste. Geräte lassen sich als Raster oder Liste anzeigen, durchsuchen und gezielt auswählen. Der letzte Scan bleibt im Browser gespeichert und ist deshalb auch nach einem Neuladen der Seite noch vorhanden.</p>
+
+          <h2>Ports gezielt prüfen</h2>
+          <p>Mit der integrierten Portprüfung kann HiveScope untersuchen, ob ein bestimmter TCP-Port auf einem Gerät erreichbar ist. Das hilft beispielsweise bei der Suche nach Webdiensten oder Modbus TCP auf Port 502. Die Prüfung zeigt zunächst die Erreichbarkeit eines Dienstes – nicht automatisch dessen Konfiguration oder vollständige Geräteidentität.</p>
+
+          <h2>Mögliche evcc-Geräte schneller erkennen</h2>
+          <p>Ein grüner evcc-Blitz markiert Geräte, deren Hersteller, Name oder erreichbare Dienste zu einem bekannten evcc-Gerätetyp passen könnten. Erkennt HiveScope einen möglichen Kandidaten, steht das vermutete Template direkt am Treffer – beispielsweise bei passenden Systemen von Huawei oder Solis. Mit dem Blitz-Filter bleiben nur diese Kandidaten in der Ansicht.</p>
+          <p>Diese Erkennung ist bewusst eine Vorauswahl: Ein Treffer bedeutet, dass die technischen Hinweise zu einem evcc-Template passen könnten. Ob Modell, Firmware, Schnittstelle und Zugangsdaten tatsächlich kompatibel sind, zeigt erst die anschließende Einrichtung.</p>
+
+          <h2>Für Diagnose und Einrichtung gebaut</h2>
+          <ul>
+            <li>Lokaler Netzwerkscan mit animierter Radaransicht</li>
+            <li>Raster- und Listenansicht mit Suche und Auswahlfilter</li>
+            <li>Hostname-, MAC- und Herstellererkennung</li>
+            <li>Anzeige erreichbarer Standardports und gezielte TCP-Portprüfung</li>
+            <li>EVCC-Kandidaten mit Blitz, möglichem Template und eigenem Filter</li>
+            <li>Detailansicht und dauerhaft gespeicherter letzter Scan</li>
+          </ul>
+
+          <p>HiveScope läuft direkt auf eHive One und fügt sich als eigene App in den SmartHub ein. Das Projekt und die Installationspakete stehen offen auf GitHub bereit.</p>
+        </div>
+      </article>
+
+      <aside class="card news-sidecard">
+        <h3>HiveScope ausprobieren</h3>
+        <p>Quellcode, aktuelle Version und Installer sind öffentlich verfügbar.</p>
+        <div class="news-side-links">
+          <a href="https://github.com/ehive-dev/HiveScope_releases/releases/tag/v1.3.5" target="_blank" rel="noopener noreferrer">
+            <strong>HiveScope v1.3.5</strong>
+            <span>Installationspaket und Installer herunterladen</span>
+          </a>
+          <a href="https://github.com/ehive-dev/HiveScope" target="_blank" rel="noopener noreferrer">
+            <strong>Quellcode auf GitHub</strong>
+            <span>HiveScope ansehen und weiterentwickeln</span>
+          </a>
+          <a href="https://www.ehiv3.de/evcc.html">
+            <strong>Mehr über evcc</strong>
+            <span>Lokales Energiemanagement mit eHive One</span>
+          </a>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+
+<div data-include="footer"></div>
+
+<script src="config.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
