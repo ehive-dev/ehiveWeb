@@ -842,7 +842,7 @@ button, input, select{ font:inherit; }
 .hero-ehive-frame{
   position: relative;
   width: 100%;
-  min-height: 320px;
+  min-height: 420px;
   border-radius: 0;
   border: none;
   background: transparent;
