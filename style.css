@@ -1739,7 +1739,7 @@ body.debug-on .debug-header{
   border-radius: 11px;
   border: 1px solid rgba(8,129,120,.14);
   background: #050713;
-  object-fit: cover;
+  object-fit: contain;
   pointer-events: none;
 }
 

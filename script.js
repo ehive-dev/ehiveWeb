@@ -1554,6 +1554,10 @@
         }
       });
 
+      // At the beginning of the rail, keep Administration in focus instead of
+      // selecting the second card merely because it is closer to the midpoint.
+      if (rail.scrollLeft <= 4 && cards.length) activeCard = cards[0];
+
       cards.forEach((card) => {
         const isActive = card === activeCard;
         card.classList.toggle("is-active", isActive);
@@ -1790,7 +1794,6 @@
     });
   });
 })();
-
 
 
 
