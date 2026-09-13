@@ -842,6 +842,7 @@ button, input, select{ font:inherit; }
 .hero-ehive-frame{
   position: relative;
   width: 100%;
+  min-height: 320px;
   border-radius: 0;
   border: none;
   background: transparent;
@@ -2986,6 +2987,7 @@ body.lightbox-open{
   .hero-ehive-frame{
     display: flex;
     flex-direction: column;
+    min-height: 0;
     gap: 10px;
     overflow: visible;
     --hero-frame-pad-top: 0px;
