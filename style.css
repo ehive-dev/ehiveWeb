@@ -1670,8 +1670,8 @@ body.debug-on .debug-header{
   gap: 8px;
   padding: 14px 16px;
   border-radius: 16px;
-  border: 1px solid var(--border);
-  background: #ffffff;
+  border: 0;
+  background: transparent;
   color: var(--muted);
   font-weight: 700;
   font-size: 13px;
@@ -1686,8 +1686,7 @@ body.debug-on .debug-header{
 
 .logo-item.is-active{
   flex-basis: clamp(360px, 44vw, 520px);
-  border-color: rgba(8,129,120,.48);
-  box-shadow: 0 18px 40px rgba(12,18,32,.16);
+  box-shadow: none;
   transform: translateY(-5px);
 }
 
@@ -1737,10 +1736,11 @@ body.debug-on .debug-header{
   width: 100%;
   aspect-ratio: 16 / 9;
   border-radius: 11px;
-  border: 1px solid rgba(8,129,120,.14);
+  border: 0;
   background: #050713;
   object-fit: contain;
   pointer-events: none;
+  box-shadow: 0 12px 30px rgba(12,18,32,.12);
 }
 
 .logo-item img{
@@ -1760,8 +1760,7 @@ body.debug-on .debug-header{
 }
 
 .logo-item:hover{
-  border-color: rgba(8,129,120,.35);
-  box-shadow: 0 10px 24px rgba(12,18,32,.12);
+  box-shadow: none;
   transform: translateY(-2px);
 }
 
@@ -1794,9 +1793,9 @@ body.debug-on .debug-header{
   align-items: center;
   justify-content: center;
   min-height: 26px;
-  padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(0,170,15,.24);
+  padding: 4px 2px;
+  border: 0;
+  border-radius: 0;
   color: #087a13;
   font-size: 12px;
   font-weight: 700;
@@ -1805,9 +1804,10 @@ body.debug-on .debug-header{
 }
 
 .logo-doc-link:hover{
-  border-color: rgba(0,170,15,.42);
-  background: rgba(0,170,15,.07);
+  background: transparent;
   color: #075f10;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
 
 .image-lightbox{
