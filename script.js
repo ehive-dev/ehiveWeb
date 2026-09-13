@@ -1508,6 +1508,100 @@
     });
   }
 
+  function initAppVideoRail() {
+    const rail = document.querySelector("[data-app-video-rail]");
+    if (!rail) return;
+
+    const cards = Array.from(rail.querySelectorAll(".logo-item"));
+    const videoCards = Array.from(rail.querySelectorAll(".logo-video-card"));
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let railVisible = true;
+    let frame = 0;
+
+    videoCards.forEach((card) => {
+      const trigger = card.querySelector("[data-video-src]");
+      const src = trigger && trigger.getAttribute("data-video-src");
+      if (!trigger || !src) return;
+
+      const preview = document.createElement("video");
+      preview.className = "app-card-video";
+      preview.src = src;
+      preview.muted = true;
+      preview.defaultMuted = true;
+      preview.loop = true;
+      preview.playsInline = true;
+      preview.preload = "metadata";
+      preview.setAttribute("muted", "");
+      preview.setAttribute("playsinline", "");
+      preview.setAttribute("aria-hidden", "true");
+      trigger.appendChild(preview);
+    });
+
+    const updateActiveCard = () => {
+      frame = 0;
+      const railRect = rail.getBoundingClientRect();
+      const railCenter = railRect.left + railRect.width / 2;
+      let activeCard = null;
+      let activeDistance = Infinity;
+
+      cards.forEach((card) => {
+        const rect = card.getBoundingClientRect();
+        const visible = rect.right > railRect.left && rect.left < railRect.right;
+        const distance = Math.abs(rect.left + rect.width / 2 - railCenter);
+        if (visible && distance < activeDistance) {
+          activeCard = card;
+          activeDistance = distance;
+        }
+      });
+
+      cards.forEach((card) => {
+        const isActive = card === activeCard;
+        card.classList.toggle("is-active", isActive);
+        const preview = card.querySelector(".app-card-video");
+        if (!preview) return;
+
+        if (isActive && railVisible && !prefersReducedMotion.matches) {
+          const playPromise = preview.play();
+          if (playPromise && typeof playPromise.catch === "function") {
+            playPromise.catch(() => {});
+          }
+        } else {
+          preview.pause();
+        }
+      });
+    };
+
+    const requestUpdate = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(updateActiveCard);
+    };
+
+    rail.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate);
+    prefersReducedMotion.addEventListener("change", requestUpdate);
+
+    const previous = document.querySelector("[data-app-rail-prev]");
+    const next = document.querySelector("[data-app-rail-next]");
+    const scrollRail = (direction) => {
+      rail.scrollBy({
+        left: direction * Math.min(520, rail.clientWidth * 0.82),
+        behavior: prefersReducedMotion.matches ? "auto" : "smooth"
+      });
+    };
+    if (previous) previous.addEventListener("click", () => scrollRail(-1));
+    if (next) next.addEventListener("click", () => scrollRail(1));
+
+    if ("IntersectionObserver" in window) {
+      const observer = new IntersectionObserver((entries) => {
+        railVisible = Boolean(entries[0] && entries[0].isIntersecting);
+        requestUpdate();
+      }, { threshold: 0.15 });
+      observer.observe(rail);
+    }
+
+    requestUpdate();
+  }
+
   function initVideoLightbox() {
     const items = document.querySelectorAll("[data-video-src]");
     if (!items.length) return;
@@ -1680,6 +1774,7 @@
         initScrollShift();
         initHeroHideOnScroll();
         initLogoLightbox();
+        initAppVideoRail();
         initVideoLightbox();
         initAddonDetails();
         renderNewsFeeds();
@@ -1695,7 +1790,6 @@
     });
   });
 })();
-
 
 
 
