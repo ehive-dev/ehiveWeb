@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="eHive One ist evcc im Schaltschrank - mit offener Integration für PV, Speicher, Wallbox, Wärmepumpen und weitere Energiekomponenten." />
+  <meta name="description" content="eHive One ist die kompakte Hardware für evcc auf der Hutschiene: mit RS485, PoE, SLC-Speicher und lokaler Integration von PV, Speicher und Wallbox." />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="eHive" />
-  <meta property="og:title" content="evcc im Schaltschrank | eHive One" />
-  <meta property="og:description" content="eHive One ist evcc im Schaltschrank - mit offener Integration für PV, Speicher, Wallbox, Wärmepumpen und weitere Energiekomponenten." />
+  <meta property="og:title" content="evcc Hardware für die Hutschiene | eHive One" />
+  <meta property="og:description" content="Kompakte Hardware für evcc im Schaltschrank: RS485, PoE, SLC-Speicher und lokale Integration von PV, Speicher und Wallbox." />
   <meta property="og:url" content="https://www.ehiv3.de/evcc.html" />
   <meta property="og:image" content="https://www.ehiv3.de/products/ehive-one.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="evcc im Schaltschrank | eHive One" />
-  <meta name="twitter:description" content="eHive One ist evcc im Schaltschrank - mit offener Integration für PV, Speicher, Wallbox, Wärmepumpen und weitere Energiekomponenten." />
+  <meta name="twitter:title" content="evcc Hardware für die Hutschiene | eHive One" />
+  <meta name="twitter:description" content="Kompakte Hardware für evcc im Schaltschrank: RS485, PoE, SLC-Speicher und lokale Integration von PV, Speicher und Wallbox." />
   <meta name="twitter:image" content="https://www.ehiv3.de/products/ehive-one.png" />
-  <title>evcc im Schaltschrank | eHive One</title>
+  <title>evcc Hardware für die Hutschiene | eHive One</title>
   <link rel="canonical" href="https://www.ehiv3.de/evcc.html" />
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="style.css" />
@@ -24,9 +24,9 @@
       "@graph": [
         {
           "@type": "WebPage",
-          "name": "evcc im Schaltschrank | eHive One",
+          "name": "evcc Hardware für die Hutschiene | eHive One",
           "url": "https://www.ehiv3.de/evcc.html",
-          "description": "eHive One ist evcc im Schaltschrank mit offener Integration für PV, Speicher, Wallbox und Wärmepumpen."
+          "description": "eHive One ist kompakte Hardware für evcc auf der Hutschiene mit RS485, PoE und lokaler Integration."
         },
         {
           "@type": "BreadcrumbList",
@@ -44,6 +44,35 @@
               "item": "https://www.ehiv3.de/evcc.html"
             }
           ]
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Ist evcc auf dem eHive One bereits eingerichtet?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Die im Shop angebotene Variante mit evcc ist für den Einsatz mit evcc vorgesehen. Der genaue Einrichtungsumfang richtet sich nach der gewählten Variante und der vorhandenen Energiehardware."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Funktioniert eHive One ohne Cloud?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Ja. Steuerung und Datenverwaltung laufen lokal auf dem eHive One. Ein Fernzugriff kann optional verschlüsselt eingerichtet werden."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Welche Geräte kann evcc mit eHive One verbinden?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Die konkrete Kompatibilität richtet sich nach evcc. Unterstützt werden zahlreiche Wallboxen, Wechselrichter, Speicher, Energiezähler, Fahrzeuge und Wärmepumpen verschiedener Hersteller."
+              }
+            }
+          ]
         }
       ]
     }
@@ -59,8 +88,9 @@
   <div class="container">
     <div class="section-title">
       <p class="logo-strip-title">#EVCC</p>
-      <h1>evcc im Schaltschrank</h1>
-      <p>eHive One ist Hardware für evcc im Schaltschrank: offen integriert, lokal steuerbar und ausgelegt für PV, Speicher, Wallbox, Wärmepumpen und weitere Energiekomponenten.</p>
+      <h1>eHive One – Hardware für evcc auf der Hutschiene</h1>
+      <p>Die kompakte, lokal betriebene Hardwarebasis für PV, Speicher, Wallbox, Wärmepumpe und weitere Energiekomponenten – sauber montiert im Schaltschrank.</p>
+      <p><a class="btn primary" href="https://www.ehiv3.de/shop.html">eHive One im Shop ansehen</a></p>
     </div>
 
     <div class="motivation-copy">
@@ -120,6 +150,68 @@
           <p>Messwerte aus dem Schaltschrank bilden die Grundlage für belastbare Regeln, Automationen und Visualisierung.</p>
         </article>
       </div>
+    </div>
+
+    <div class="card info-card">
+      <div class="section-title">
+        <h2>eHive One oder Raspberry Pi?</h2>
+        <p>Beide können evcc ausführen. eHive One richtet sich an Installationen, bei denen die Hardware dauerhaft und aufgeräumt im Schaltschrank betrieben werden soll.</p>
+      </div>
+      <div class="cap-grid">
+        <article class="cap-card">
+          <h4>Montage</h4>
+          <p>eHive One wird direkt auf der DIN-Schiene montiert. Beim Raspberry Pi werden für eine vergleichbare Schaltschrankmontage meist zusätzlich Gehäuse, Halterung und Spannungsversorgung benötigt.</p>
+        </article>
+        <article class="cap-card">
+          <h4>Schnittstellen</h4>
+          <p>RS485, digitaler Eingang, Ethernet und PoE sind auf den Einsatz mit Energie- und Gebäudetechnik ausgerichtet.</p>
+        </article>
+        <article class="cap-card">
+          <h4>Dauerbetrieb</h4>
+          <p>Der eingesetzte SLC-Speicher und die Spannungsversorgung von 12 bis 30 V DC oder PoE schaffen eine robuste Basis für den lokalen Betrieb.</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="card info-card">
+      <div class="section-title">
+        <h2>So kommt evcc in den Schaltschrank</h2>
+      </div>
+      <ol class="story-list">
+        <li>eHive One auf der DIN-Schiene montieren und über 12 bis 30 V DC oder PoE versorgen.</li>
+        <li>Mit dem lokalen Netzwerk verbinden und die Einrichtung über die bereitgestellte Oberfläche starten.</li>
+        <li>PV-Anlage, Zähler, Speicher, Wallbox oder Wärmepumpe entsprechend der evcc-Kompatibilität einbinden.</li>
+        <li>Energieflüsse lokal visualisieren und Regeln für Überschussladen, Tarife und Lastmanagement festlegen.</li>
+      </ol>
+      <p class="note">Arbeiten an der Elektroinstallation und im Schaltschrank gehören in die Hände einer Elektrofachkraft.</p>
+    </div>
+
+    <div class="card info-card">
+      <div class="section-title">
+        <h2>Häufige Fragen zu eHive One und evcc</h2>
+      </div>
+      <div class="cap-grid">
+        <article class="cap-card">
+          <h4>Ist evcc bereits eingerichtet?</h4>
+          <p>Die im Shop angebotene Variante mit evcc ist für den Einsatz mit evcc vorgesehen. Der genaue Einrichtungsumfang richtet sich nach der gewählten Variante und deiner vorhandenen Energiehardware.</p>
+        </article>
+        <article class="cap-card">
+          <h4>Funktioniert eHive One ohne Cloud?</h4>
+          <p>Ja. Steuerung und Datenverwaltung laufen lokal auf dem eHive One. Ein Fernzugriff kann optional verschlüsselt eingerichtet werden.</p>
+        </article>
+        <article class="cap-card">
+          <h4>Welche Geräte werden unterstützt?</h4>
+          <p>Die konkrete Kompatibilität richtet sich nach evcc. Dazu gehören zahlreiche Wallboxen, Wechselrichter, Speicher, Energiezähler, Fahrzeuge und Wärmepumpen verschiedener Hersteller.</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="banner">
+      <div>
+        <h3>evcc dauerhaft und sauber betreiben</h3>
+        <p>Wähle die passende eHive-One-Variante oder kläre deine Installation vorab mit uns.</p>
+      </div>
+      <a class="btn btn-contact-banner" href="https://www.ehiv3.de/shop.html">Zum Shop</a>
     </div>
 
   </div>
