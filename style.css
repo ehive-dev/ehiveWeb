@@ -1783,29 +1783,17 @@ body.debug-on .debug-header{
 }
 
 .logo-video-button:focus-visible,
-.logo-doc-link:focus-visible{
+.logo-description-link:focus-visible{
   outline: 2px solid rgba(8,129,120,.6);
   outline-offset: 2px;
 }
 
-.logo-doc-link{
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 26px;
-  padding: 4px 2px;
-  border: 0;
-  border-radius: 0;
-  color: #087a13;
-  font-size: 12px;
-  font-weight: 700;
-  line-height: 1;
+.logo-description-link{
   text-decoration: none;
 }
 
-.logo-doc-link:hover{
-  background: transparent;
-  color: #075f10;
+.logo-description-link:hover{
+  color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
