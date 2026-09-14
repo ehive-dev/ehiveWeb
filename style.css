@@ -1781,6 +1781,10 @@ body.debug-on .debug-header{
   transform-origin: center top;
 }
 
+.logo-video-button[data-video-label="TunnelManager"]{
+  overflow: hidden;
+}
+
 .logo-item.is-active .logo-video-button[data-video-label="TunnelManager"] .app-card-video{
   transform: scale(1.08);
 }
