@@ -1588,17 +1588,6 @@
     window.addEventListener("resize", requestUpdate);
     prefersReducedMotion.addEventListener("change", requestUpdate);
 
-    const previous = document.querySelector("[data-app-rail-prev]");
-    const next = document.querySelector("[data-app-rail-next]");
-    const scrollRail = (direction) => {
-      rail.scrollBy({
-        left: direction * Math.min(520, rail.clientWidth * 0.82),
-        behavior: prefersReducedMotion.matches ? "auto" : "smooth"
-      });
-    };
-    if (previous) previous.addEventListener("click", () => scrollRail(-1));
-    if (next) next.addEventListener("click", () => scrollRail(1));
-
     if ("IntersectionObserver" in window) {
       const observer = new IntersectionObserver((entries) => {
         railVisible = Boolean(entries[0] && entries[0].isIntersecting);
@@ -1798,7 +1787,6 @@
     });
   });
 })();
-
 
 
 

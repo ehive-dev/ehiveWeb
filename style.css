@@ -1600,33 +1600,6 @@ body.debug-on .debug-header{
   color: var(--muted);
 }
 
-.app-rail-controls{
-  display: flex;
-  gap: 8px;
-  flex: 0 0 auto;
-}
-
-.app-rail-nav{
-  width: 42px;
-  height: 42px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--border);
-  border-radius: 999px;
-  background: #fff;
-  color: var(--text);
-  font-size: 21px;
-  cursor: pointer;
-  transition: border-color .2s ease, background .2s ease, transform .2s ease;
-}
-
-.app-rail-nav:hover{
-  border-color: rgba(8,129,120,.4);
-  background: rgba(8,129,120,.06);
-  transform: translateY(-1px);
-}
-
 .logo-item-description{
   display: block;
   max-width: 150px;
@@ -3725,13 +3698,6 @@ body.lightbox-open{
   .app-rail-heading > div > p:last-child{
     font-size: 13px;
     line-height: 1.4;
-  }
-  .app-rail-controls{
-    padding-top: 28px;
-  }
-  .app-rail-nav{
-    width: 38px;
-    height: 38px;
   }
   .logo-row{ gap: 12px; }
   .logo-item{
