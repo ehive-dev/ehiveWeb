@@ -2861,6 +2861,12 @@ body.lightbox-open{
   object-fit: cover;
 }
 
+.news-preview-video.news-preview-video--hivescope{
+  width: 100%;
+  aspect-ratio: 1138 / 1148;
+  object-fit: contain;
+}
+
 .news-preview-image{
   display: block;
   width: 100%;
