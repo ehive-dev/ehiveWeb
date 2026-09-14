@@ -1520,8 +1520,7 @@
     let railVisible = true;
     let frame = 0;
     let navigationTarget = null;
-    let navigationCenterTimer = 0;
-    let navigationUnlockTimer = 0;
+    let navigationFrame = 0;
 
     videoCards.forEach((card) => {
       const trigger = card.querySelector("[data-video-src]");
@@ -1599,18 +1598,50 @@
     window.addEventListener("resize", requestUpdate);
     prefersReducedMotion.addEventListener("change", requestUpdate);
 
-    const centerCard = (target, behavior) => {
+    const centeredScrollLeft = (target) => {
       const railRect = rail.getBoundingClientRect();
       const targetRect = target.getBoundingClientRect();
-      const left = rail.scrollLeft + targetRect.left - railRect.left
+      return rail.scrollLeft + targetRect.left - railRect.left
         - (rail.clientWidth - targetRect.width) / 2;
-      rail.scrollTo({ left, behavior });
     };
 
     const cancelNavigationTarget = () => {
-      window.clearTimeout(navigationCenterTimer);
-      window.clearTimeout(navigationUnlockTimer);
+      if (navigationFrame) window.cancelAnimationFrame(navigationFrame);
+      navigationFrame = 0;
       navigationTarget = null;
+    };
+
+    const animateCardToCenter = (target) => {
+      if (prefersReducedMotion.matches) {
+        rail.scrollLeft = centeredScrollLeft(target);
+        navigationTarget = null;
+        requestUpdate();
+        return;
+      }
+
+      const startLeft = rail.scrollLeft;
+      const startTime = performance.now();
+      const duration = 1250;
+
+      const step = (time) => {
+        if (navigationTarget !== target) return;
+        const progress = Math.min(1, (time - startTime) / duration);
+        const eased = progress * progress * (3 - 2 * progress);
+        const destination = centeredScrollLeft(target);
+        rail.scrollLeft = startLeft + (destination - startLeft) * eased;
+
+        if (progress < 1) {
+          navigationFrame = window.requestAnimationFrame(step);
+          return;
+        }
+
+        rail.scrollLeft = centeredScrollLeft(target);
+        navigationFrame = 0;
+        navigationTarget = null;
+        requestUpdate();
+      };
+
+      navigationFrame = window.requestAnimationFrame(step);
     };
 
     const moveToCard = (direction) => {
@@ -1625,17 +1656,7 @@
       cancelNavigationTarget();
       navigationTarget = target;
       updateActiveCard();
-
-      const behavior = prefersReducedMotion.matches ? "auto" : "smooth";
-      window.requestAnimationFrame(() => centerCard(target, behavior));
-      navigationCenterTimer = window.setTimeout(() => {
-        centerCard(target, behavior);
-        navigationUnlockTimer = window.setTimeout(() => {
-          if (navigationTarget !== target) return;
-          navigationTarget = null;
-          requestUpdate();
-        }, prefersReducedMotion.matches ? 0 : 550);
-      }, prefersReducedMotion.matches ? 0 : 1150);
+      animateCardToCenter(target);
     };
 
     if (previous) previous.addEventListener("click", () => moveToCard(-1));
@@ -1842,4 +1863,3 @@
     });
   });
 })();
-
