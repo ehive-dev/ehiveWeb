@@ -1663,7 +1663,7 @@ body.debug-on .debug-header{
 }
 
 .logo-item.is-active{
-  flex-basis: clamp(560px, 62vw, 760px);
+  flex-basis: clamp(600px, 66vw, 820px);
   box-shadow: none;
   transform: translateY(-5px);
 }
@@ -3724,7 +3724,7 @@ body.lightbox-open{
     min-height: 238px;
   }
   .logo-item.is-active{
-    flex-basis: 88vw;
+    flex-basis: 90vw;
   }
   .logo-item-name{
     font-size: 12px;
