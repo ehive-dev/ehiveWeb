@@ -1514,6 +1514,8 @@
 
     const cards = Array.from(rail.querySelectorAll(".logo-item"));
     const videoCards = Array.from(rail.querySelectorAll(".logo-video-card"));
+    const previous = document.querySelector("[data-app-rail-prev]");
+    const next = document.querySelector("[data-app-rail-next]");
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let railVisible = true;
     let frame = 0;
@@ -1577,6 +1579,10 @@
           preview.pause();
         }
       });
+
+      const activeIndex = cards.indexOf(activeCard);
+      if (previous) previous.disabled = activeIndex <= 0;
+      if (next) next.disabled = activeIndex < 0 || activeIndex >= cards.length - 1;
     };
 
     const requestUpdate = () => {
@@ -1587,6 +1593,25 @@
     rail.addEventListener("scroll", requestUpdate, { passive: true });
     window.addEventListener("resize", requestUpdate);
     prefersReducedMotion.addEventListener("change", requestUpdate);
+
+    const moveToCard = (direction) => {
+      const activeIndex = cards.findIndex((card) => card.classList.contains("is-active"));
+      const targetIndex = Math.max(0, Math.min(cards.length - 1, activeIndex + direction));
+      const target = cards[targetIndex];
+      if (!target || targetIndex === activeIndex) return;
+
+      const railRect = rail.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+      const left = rail.scrollLeft + targetRect.left - railRect.left
+        - (rail.clientWidth - targetRect.width) / 2;
+      rail.scrollTo({
+        left,
+        behavior: prefersReducedMotion.matches ? "auto" : "smooth"
+      });
+    };
+
+    if (previous) previous.addEventListener("click", () => moveToCard(-1));
+    if (next) next.addEventListener("click", () => moveToCard(1));
 
     if ("IntersectionObserver" in window) {
       const observer = new IntersectionObserver((entries) => {
@@ -1787,6 +1812,5 @@
     });
   });
 })();
-
 
 
