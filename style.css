@@ -1614,6 +1614,7 @@ body.debug-on .debug-header{
   display: flex;
   gap: 18px;
   align-items: center;
+  height: clamp(470px, calc(37.125vw + 130px), 610px);
   overflow-x: auto;
   overflow-y: hidden;
   padding: 18px 4px 26px;
@@ -3717,7 +3718,10 @@ body.lightbox-open{
     font-size: 13px;
     line-height: 1.4;
   }
-  .logo-row{ gap: 12px; }
+  .logo-row{
+    gap: 12px;
+    height: clamp(340px, calc(50.625vw + 145px), 535px);
+  }
   .logo-item{
     padding: 10px 10px;
     flex-basis: 62vw;
