@@ -1519,6 +1519,9 @@
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let railVisible = true;
     let frame = 0;
+    let navigationTarget = null;
+    let navigationCenterTimer = 0;
+    let navigationUnlockTimer = 0;
 
     videoCards.forEach((card) => {
       const trigger = card.querySelector("[data-video-src]");
@@ -1547,22 +1550,24 @@
       frame = 0;
       const railRect = rail.getBoundingClientRect();
       const railCenter = railRect.left + railRect.width / 2;
-      let activeCard = null;
+      let activeCard = navigationTarget;
       let activeDistance = Infinity;
 
-      cards.forEach((card) => {
-        const rect = card.getBoundingClientRect();
-        const visible = rect.right > railRect.left && rect.left < railRect.right;
-        const distance = Math.abs(rect.left + rect.width / 2 - railCenter);
-        if (visible && distance < activeDistance) {
-          activeCard = card;
-          activeDistance = distance;
-        }
-      });
+      if (!activeCard) {
+        cards.forEach((card) => {
+          const rect = card.getBoundingClientRect();
+          const visible = rect.right > railRect.left && rect.left < railRect.right;
+          const distance = Math.abs(rect.left + rect.width / 2 - railCenter);
+          if (visible && distance < activeDistance) {
+            activeCard = card;
+            activeDistance = distance;
+          }
+        });
+      }
 
       // At the beginning of the rail, keep Administration in focus instead of
       // selecting the second card merely because it is closer to the midpoint.
-      if (rail.scrollLeft <= 4 && cards.length) activeCard = cards[0];
+      if (!navigationTarget && rail.scrollLeft <= 4 && cards.length) activeCard = cards[0];
 
       cards.forEach((card) => {
         const isActive = card === activeCard;
@@ -1594,24 +1599,49 @@
     window.addEventListener("resize", requestUpdate);
     prefersReducedMotion.addEventListener("change", requestUpdate);
 
-    const moveToCard = (direction) => {
-      const activeIndex = cards.findIndex((card) => card.classList.contains("is-active"));
-      const targetIndex = Math.max(0, Math.min(cards.length - 1, activeIndex + direction));
-      const target = cards[targetIndex];
-      if (!target || targetIndex === activeIndex) return;
-
+    const centerCard = (target, behavior) => {
       const railRect = rail.getBoundingClientRect();
       const targetRect = target.getBoundingClientRect();
       const left = rail.scrollLeft + targetRect.left - railRect.left
         - (rail.clientWidth - targetRect.width) / 2;
-      rail.scrollTo({
-        left,
-        behavior: prefersReducedMotion.matches ? "auto" : "smooth"
-      });
+      rail.scrollTo({ left, behavior });
+    };
+
+    const cancelNavigationTarget = () => {
+      window.clearTimeout(navigationCenterTimer);
+      window.clearTimeout(navigationUnlockTimer);
+      navigationTarget = null;
+    };
+
+    const moveToCard = (direction) => {
+      const currentCard = navigationTarget
+        || cards.find((card) => card.classList.contains("is-active"))
+        || cards[0];
+      const activeIndex = cards.indexOf(currentCard);
+      const targetIndex = Math.max(0, Math.min(cards.length - 1, activeIndex + direction));
+      const target = cards[targetIndex];
+      if (!target || targetIndex === activeIndex) return;
+
+      cancelNavigationTarget();
+      navigationTarget = target;
+      updateActiveCard();
+
+      const behavior = prefersReducedMotion.matches ? "auto" : "smooth";
+      window.requestAnimationFrame(() => centerCard(target, behavior));
+      navigationCenterTimer = window.setTimeout(() => {
+        centerCard(target, behavior);
+        navigationUnlockTimer = window.setTimeout(() => {
+          if (navigationTarget !== target) return;
+          navigationTarget = null;
+          requestUpdate();
+        }, prefersReducedMotion.matches ? 0 : 550);
+      }, prefersReducedMotion.matches ? 0 : 1150);
     };
 
     if (previous) previous.addEventListener("click", () => moveToCard(-1));
     if (next) next.addEventListener("click", () => moveToCard(1));
+    rail.addEventListener("pointerdown", cancelNavigationTarget, { passive: true });
+    rail.addEventListener("wheel", cancelNavigationTarget, { passive: true });
 
     if ("IntersectionObserver" in window) {
       const observer = new IntersectionObserver((entries) => {
@@ -1812,5 +1842,4 @@
     });
   });
 })();
-
 

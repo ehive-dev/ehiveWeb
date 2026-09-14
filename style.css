@@ -1624,8 +1624,8 @@ body.debug-on .debug-header{
   transition: color .2s ease, background .2s ease, opacity .2s ease, transform .2s ease;
 }
 
-.app-rail-nav-prev{ left: 8px; }
-.app-rail-nav-next{ right: 8px; }
+.app-rail-nav-prev{ left: -22px; }
+.app-rail-nav-next{ right: -22px; }
 
 .app-rail-nav svg{
   width: 22px;
@@ -1665,7 +1665,7 @@ body.debug-on .debug-header{
   height: clamp(470px, calc(37.125vw + 130px), 610px);
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 18px 58px 26px;
+  padding: 18px max(4px, calc(50% - clamp(300px, 33vw, 410px))) 26px;
   scroll-snap-type: x proximity;
   scroll-padding-inline: 4px;
   scrollbar-width: none;
@@ -1696,8 +1696,8 @@ body.debug-on .debug-header{
   scroll-snap-align: center;
   will-change: flex-basis, transform;
   transition:
-    flex-basis 1.05s cubic-bezier(.45,0,.2,1),
-    transform .9s cubic-bezier(.45,0,.2,1),
+    flex-basis 1.15s cubic-bezier(.25,.8,.25,1),
+    transform 1.05s cubic-bezier(.25,.8,.25,1),
     box-shadow .7s ease-in-out,
     border-color .7s ease-in-out;
 }
@@ -1764,8 +1764,8 @@ body.debug-on .debug-header{
   will-change: transform, opacity;
   backface-visibility: hidden;
   transition:
-    transform 1.05s cubic-bezier(.45,0,.2,1),
-    opacity .8s ease-in-out;
+    transform 1.15s cubic-bezier(.25,.8,.25,1),
+    opacity .9s ease-in-out;
 }
 
 .logo-item.is-active .app-card-video{
@@ -3760,7 +3760,7 @@ body.lightbox-open{
   .logo-row{
     gap: 12px;
     height: clamp(340px, calc(50.625vw + 145px), 535px);
-    padding-inline: 46px;
+    padding-inline: max(2px, calc(50% - 45vw));
   }
   .app-rail-nav{
     width: 38px;
