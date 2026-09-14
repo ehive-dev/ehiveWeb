@@ -1730,6 +1730,15 @@ body.debug-on .debug-header{
   opacity: 1;
 }
 
+.logo-video-button[data-video-label="TunnelManager"] .app-card-video{
+  transform: scale(.89);
+  transform-origin: center top;
+}
+
+.logo-item.is-active .logo-video-button[data-video-label="TunnelManager"] .app-card-video{
+  transform: scale(1.08);
+}
+
 .logo-item img{
   width: auto;
   height: 38px;
