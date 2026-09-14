@@ -1737,7 +1737,7 @@ body.debug-on .debug-header{
   aspect-ratio: 16 / 9;
   border-radius: 11px;
   border: 0;
-  background: #050713;
+  background: #eef2f7;
   object-fit: contain;
   pointer-events: none;
   box-shadow: 0 12px 30px rgba(12,18,32,.12);

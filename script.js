@@ -1530,10 +1530,14 @@
       preview.defaultMuted = true;
       preview.loop = true;
       preview.playsInline = true;
-      preview.preload = "metadata";
+      preview.preload = "auto";
       preview.setAttribute("muted", "");
       preview.setAttribute("playsinline", "");
       preview.setAttribute("aria-hidden", "true");
+      preview.addEventListener("loadedmetadata", () => {
+        if (!Number.isFinite(preview.duration) || preview.duration <= 0.25) return;
+        preview.currentTime = Math.min(1, preview.duration * 0.08);
+      }, { once: true });
       trigger.appendChild(preview);
     });
 
@@ -1794,7 +1798,6 @@
     });
   });
 })();
-
 
 
 
