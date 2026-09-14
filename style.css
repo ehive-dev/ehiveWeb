@@ -1624,8 +1624,8 @@ body.debug-on .debug-header{
   transition: color .2s ease, background .2s ease, opacity .2s ease, transform .2s ease;
 }
 
-.app-rail-nav-prev{ left: -22px; }
-.app-rail-nav-next{ right: -22px; }
+.app-rail-nav-prev{ left: -60px; }
+.app-rail-nav-next{ right: -60px; }
 
 .app-rail-nav svg{
   width: 22px;
@@ -3765,9 +3765,10 @@ body.lightbox-open{
   .app-rail-nav{
     width: 38px;
     height: 38px;
+    top: 30px;
   }
-  .app-rail-nav-prev{ left: 2px; }
-  .app-rail-nav-next{ right: 2px; }
+  .app-rail-nav-prev{ left: 0; }
+  .app-rail-nav-next{ right: 0; }
   .logo-item{
     padding: 10px 10px;
     flex-basis: 62vw;
