@@ -1621,12 +1621,13 @@
 
       const startLeft = rail.scrollLeft;
       const startTime = performance.now();
-      const duration = 1250;
+      const duration = 1700;
 
       const step = (time) => {
         if (navigationTarget !== target) return;
         const progress = Math.min(1, (time - startTime) / duration);
-        const eased = progress * progress * (3 - 2 * progress);
+        const eased = progress * progress * progress
+          * (progress * (progress * 6 - 15) + 10);
         const destination = centeredScrollLeft(target);
         rail.scrollLeft = startLeft + (destination - startLeft) * eased;
 

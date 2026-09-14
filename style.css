@@ -1696,10 +1696,10 @@ body.debug-on .debug-header{
   scroll-snap-align: center;
   will-change: flex-basis, transform;
   transition:
-    flex-basis 1.15s cubic-bezier(.25,.8,.25,1),
-    transform 1.05s cubic-bezier(.25,.8,.25,1),
-    box-shadow .7s ease-in-out,
-    border-color .7s ease-in-out;
+    flex-basis 1.6s cubic-bezier(.37,0,.15,1),
+    transform 1.5s cubic-bezier(.37,0,.15,1),
+    box-shadow 1s ease-in-out,
+    border-color 1s ease-in-out;
 }
 
 .logo-item.is-active{
@@ -1764,8 +1764,8 @@ body.debug-on .debug-header{
   will-change: transform, opacity;
   backface-visibility: hidden;
   transition:
-    transform 1.15s cubic-bezier(.25,.8,.25,1),
-    opacity .9s ease-in-out;
+    transform 1.6s cubic-bezier(.37,0,.15,1),
+    opacity 1.2s ease-in-out;
 }
 
 .logo-item.is-active .app-card-video{
