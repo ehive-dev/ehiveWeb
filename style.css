@@ -1659,21 +1659,25 @@ body.debug-on .debug-header{
 }
 
 .logo-row{
-  display: flex;
-  gap: 18px;
-  align-items: center;
+  position: relative;
   height: clamp(470px, calc(37.125vw + 130px), 610px);
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding: 18px max(4px, calc(50% - clamp(300px, 33vw, 410px))) 26px;
-  scroll-snap-type: x proximity;
-  scroll-padding-inline: 4px;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  overscroll-behavior-inline: contain;
+  overflow: hidden;
+  padding: 18px 0 26px;
 }
 
-.logo-row::-webkit-scrollbar{ display: none; }
+.app-rail-track{
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  width: max-content;
+  height: 100%;
+  will-change: transform;
+  transition: transform .82s cubic-bezier(.22,.61,.36,1);
+}
+
+.app-rail-track.is-positioning{
+  transition: none;
+}
 
 .logo-item{
   display:flex;
@@ -1690,20 +1694,19 @@ body.debug-on .debug-header{
   font-size: 13px;
   text-align: center;
   min-height: 96px;
-  flex: 0 0 clamp(210px, 22vw, 270px);
+  flex: 0 0 clamp(600px, 66vw, 820px);
   min-width: 0;
   min-height: 270px;
-  scroll-snap-align: center;
-  will-change: flex-basis, transform;
+  position: relative;
+  z-index: 1;
+  will-change: transform, opacity;
   transition:
-    flex-basis 1s cubic-bezier(.22,.61,.36,1),
-    transform .9s cubic-bezier(.22,.61,.36,1),
-    box-shadow .6s ease-out,
-    border-color .6s ease-out;
+    transform .72s cubic-bezier(.22,.61,.36,1),
+    opacity .55s ease-out;
 }
 
 .logo-item.is-active{
-  flex-basis: clamp(600px, 66vw, 820px);
+  z-index: 2;
   box-shadow: none;
   transform: translateY(-5px);
 }
@@ -1759,8 +1762,8 @@ body.debug-on .debug-header{
   object-fit: contain;
   pointer-events: none;
   box-shadow: 0 12px 30px rgba(12,18,32,.12);
-  transform: scale(.82);
-  opacity: .88;
+  transform: scale(.68);
+  opacity: .82;
   will-change: transform, opacity;
   backface-visibility: hidden;
   transition:
@@ -1774,7 +1777,7 @@ body.debug-on .debug-header{
 }
 
 .logo-video-button[data-video-label="TunnelManager"] .app-card-video{
-  transform: scale(.89);
+  transform: scale(.73);
   transform-origin: center top;
 }
 
@@ -3758,9 +3761,11 @@ body.lightbox-open{
     line-height: 1.4;
   }
   .logo-row{
-    gap: 12px;
     height: clamp(340px, calc(50.625vw + 145px), 535px);
-    padding-inline: max(2px, calc(50% - 45vw));
+    padding-inline: 0;
+  }
+  .app-rail-track{
+    gap: 12px;
   }
   .app-rail-nav{
     width: 38px;
@@ -3771,11 +3776,8 @@ body.lightbox-open{
   .app-rail-nav-next{ right: 0; }
   .logo-item{
     padding: 10px 10px;
-    flex-basis: 62vw;
+    flex-basis: 86vw;
     min-height: 238px;
-  }
-  .logo-item.is-active{
-    flex-basis: 90vw;
   }
   .logo-item-name{
     font-size: 12px;

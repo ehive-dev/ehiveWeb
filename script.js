@@ -1510,20 +1510,18 @@
 
   function initAppVideoRail() {
     const rail = document.querySelector("[data-app-video-rail]");
-    if (!rail) return;
+    const track = rail && rail.querySelector("[data-app-video-track]");
+    if (!rail || !track) return;
 
-    const cards = Array.from(rail.querySelectorAll(".logo-item"));
-    const videoCards = Array.from(rail.querySelectorAll(".logo-video-card"));
+    const cards = Array.from(track.querySelectorAll(".logo-item"));
     const previous = document.querySelector("[data-app-rail-prev]");
     const next = document.querySelector("[data-app-rail-next]");
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let activeIndex = 0;
     let railVisible = true;
-    let frame = 0;
-    let navigationTarget = null;
-    let navigationDestination = null;
-    let navigationFrame = 0;
+    let resizeFrame = 0;
 
-    videoCards.forEach((card) => {
+    cards.forEach((card) => {
       const trigger = card.querySelector("[data-video-src]");
       const src = trigger && trigger.getAttribute("data-video-src");
       if (!trigger || !src) return;
@@ -1546,32 +1544,12 @@
       trigger.appendChild(preview);
     });
 
-    const updateActiveCard = () => {
-      frame = 0;
-      const railRect = rail.getBoundingClientRect();
-      const railCenter = railRect.left + railRect.width / 2;
-      let activeCard = navigationTarget;
-      let activeDistance = Infinity;
-
-      if (!activeCard) {
-        cards.forEach((card) => {
-          const rect = card.getBoundingClientRect();
-          const visible = rect.right > railRect.left && rect.left < railRect.right;
-          const distance = Math.abs(rect.left + rect.width / 2 - railCenter);
-          if (visible && distance < activeDistance) {
-            activeCard = card;
-            activeDistance = distance;
-          }
-        });
-      }
-
-      // At the beginning of the rail, keep Administration in focus instead of
-      // selecting the second card merely because it is closer to the midpoint.
-      if (!navigationTarget && rail.scrollLeft <= 4 && cards.length) activeCard = cards[0];
-
+    const updateVideos = () => {
       cards.forEach((card) => {
-        const isActive = card === activeCard;
+        const isActive = cards.indexOf(card) === activeIndex;
         card.classList.toggle("is-active", isActive);
+        if (isActive) card.setAttribute("aria-current", "true");
+        else card.removeAttribute("aria-current");
         const preview = card.querySelector(".app-card-video");
         if (!preview) return;
 
@@ -1584,106 +1562,70 @@
           preview.pause();
         }
       });
-
-      const activeIndex = cards.indexOf(activeCard);
-      if (previous) previous.disabled = activeIndex <= 0;
-      if (next) next.disabled = activeIndex < 0 || activeIndex >= cards.length - 1;
     };
 
-    const requestUpdate = () => {
-      if (frame) return;
-      frame = window.requestAnimationFrame(updateActiveCard);
-    };
+    const positionTrack = (animate) => {
+      const activeCard = cards[activeIndex];
+      if (!activeCard) return;
 
-    rail.addEventListener("scroll", requestUpdate, { passive: true });
-    window.addEventListener("resize", requestUpdate);
-    prefersReducedMotion.addEventListener("change", requestUpdate);
-
-    const centeredScrollLeft = (target) => {
-      const railRect = rail.getBoundingClientRect();
-      const targetRect = target.getBoundingClientRect();
-      return rail.scrollLeft + targetRect.left - railRect.left
-        - (rail.clientWidth - targetRect.width) / 2;
-    };
-
-    const cancelNavigationTarget = () => {
-      if (navigationFrame) window.cancelAnimationFrame(navigationFrame);
-      navigationFrame = 0;
-      navigationTarget = null;
-      navigationDestination = null;
-    };
-
-    const animateCardToCenter = (target, duration, onComplete) => {
-      if (prefersReducedMotion.matches) {
-        rail.scrollLeft = centeredScrollLeft(target);
-        onComplete();
-        return;
+      if (!animate || prefersReducedMotion.matches) {
+        track.classList.add("is-positioning");
       }
 
-      const startLeft = rail.scrollLeft;
-      const startTime = performance.now();
+      const left = rail.clientWidth / 2
+        - (activeCard.offsetLeft + activeCard.offsetWidth / 2);
+      track.style.transform = `translate3d(${left}px, 0, 0)`;
 
-      const step = (time) => {
-        if (navigationDestination !== target) return;
-        const progress = Math.min(1, (time - startTime) / duration);
-        const eased = Math.sin((progress * Math.PI) / 2);
-        const destination = centeredScrollLeft(target);
-        rail.scrollLeft = startLeft + (destination - startLeft) * eased;
-
-        if (progress < 1) {
-          navigationFrame = window.requestAnimationFrame(step);
-          return;
-        }
-
-        rail.scrollLeft = centeredScrollLeft(target);
-        navigationFrame = 0;
-        onComplete();
-      };
-
-      navigationFrame = window.requestAnimationFrame(step);
+      if (!animate || prefersReducedMotion.matches) {
+        window.requestAnimationFrame(() => track.classList.remove("is-positioning"));
+      }
     };
 
-    const moveToCard = (direction) => {
-      const currentCard = navigationDestination
-        || navigationTarget
-        || cards.find((card) => card.classList.contains("is-active"))
-        || cards[0];
-      const activeIndex = cards.indexOf(currentCard);
-      const targetIndex = Math.max(0, Math.min(cards.length - 1, activeIndex + direction));
-      const target = cards[targetIndex];
-      if (!target || targetIndex === activeIndex) return;
+    const render = (animate) => {
+      updateVideos();
+      positionTrack(animate);
+      if (previous) previous.disabled = activeIndex === 0;
+      if (next) next.disabled = activeIndex === cards.length - 1;
+    };
 
-      cancelNavigationTarget();
-      navigationDestination = target;
-      navigationTarget = currentCard;
-      updateActiveCard();
-      animateCardToCenter(target, 520, () => {
-        if (navigationDestination !== target) return;
-        navigationTarget = target;
-        updateActiveCard();
-        animateCardToCenter(target, 1050, () => {
-          if (navigationDestination !== target) return;
-          navigationTarget = null;
-          navigationDestination = null;
-          requestUpdate();
-        });
+    const goTo = (index) => {
+      const targetIndex = Math.max(0, Math.min(cards.length - 1, index));
+      if (targetIndex === activeIndex) return;
+      activeIndex = targetIndex;
+      render(true);
+    };
+
+    if (previous) previous.addEventListener("click", () => goTo(activeIndex - 1));
+    if (next) next.addEventListener("click", () => goTo(activeIndex + 1));
+    rail.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") {
+        event.preventDefault();
+        goTo(activeIndex - 1);
+      }
+      if (event.key === "ArrowRight") {
+        event.preventDefault();
+        goTo(activeIndex + 1);
+      }
+    });
+
+    window.addEventListener("resize", () => {
+      if (resizeFrame) window.cancelAnimationFrame(resizeFrame);
+      resizeFrame = window.requestAnimationFrame(() => {
+        resizeFrame = 0;
+        positionTrack(false);
       });
-    };
-
-    if (previous) previous.addEventListener("click", () => moveToCard(-1));
-    if (next) next.addEventListener("click", () => moveToCard(1));
-    rail.addEventListener("pointerdown", cancelNavigationTarget, { passive: true });
-    rail.addEventListener("wheel", cancelNavigationTarget, { passive: true });
+    });
+    prefersReducedMotion.addEventListener("change", () => positionTrack(false));
 
     if ("IntersectionObserver" in window) {
       const observer = new IntersectionObserver((entries) => {
         railVisible = Boolean(entries[0] && entries[0].isIntersecting);
-        requestUpdate();
+        updateVideos();
       }, { threshold: 0.15 });
       observer.observe(rail);
     }
 
-    requestUpdate();
+    render(false);
   }
 
   function initVideoLightbox() {
