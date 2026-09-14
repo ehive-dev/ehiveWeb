@@ -1617,7 +1617,7 @@ body.debug-on .debug-header{
   overflow-x: auto;
   overflow-y: hidden;
   padding: 18px 4px 26px;
-  scroll-snap-type: x mandatory;
+  scroll-snap-type: x proximity;
   scroll-padding-inline: 4px;
   scrollbar-width: auto;
   scrollbar-color: rgba(8,129,120,.72) rgba(8,129,120,.10);
@@ -1654,7 +1654,11 @@ body.debug-on .debug-header{
   min-width: 0;
   min-height: 270px;
   scroll-snap-align: center;
-  transition: flex-basis .38s cubic-bezier(.2,.75,.25,1), transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+  transition:
+    flex-basis .72s cubic-bezier(.4,0,.2,1),
+    transform .62s cubic-bezier(.4,0,.2,1),
+    box-shadow .5s ease,
+    border-color .5s ease;
 }
 
 .logo-item.is-active{
@@ -1716,7 +1720,9 @@ body.debug-on .debug-header{
   box-shadow: 0 12px 30px rgba(12,18,32,.12);
   transform: scale(.82);
   opacity: .72;
-  transition: transform .38s cubic-bezier(.2,.75,.25,1), opacity .3s ease;
+  transition:
+    transform .72s cubic-bezier(.4,0,.2,1),
+    opacity .55s ease-in-out;
 }
 
 .logo-item.is-active .app-card-video{
