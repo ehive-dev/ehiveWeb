@@ -1685,7 +1685,7 @@ body.debug-on .debug-header{
 }
 
 .logo-item.is-active{
-  flex-basis: clamp(430px, 48vw, 580px);
+  flex-basis: clamp(560px, 62vw, 760px);
   box-shadow: none;
   transform: translateY(-5px);
 }
