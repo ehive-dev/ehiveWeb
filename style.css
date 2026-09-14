@@ -1760,7 +1760,7 @@ body.debug-on .debug-header{
   pointer-events: none;
   box-shadow: 0 12px 30px rgba(12,18,32,.12);
   transform: scale(.82);
-  opacity: .72;
+  opacity: .88;
   will-change: transform, opacity;
   backface-visibility: hidden;
   transition:

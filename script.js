@@ -1520,6 +1520,7 @@
     let railVisible = true;
     let frame = 0;
     let navigationTarget = null;
+    let navigationDestination = null;
     let navigationFrame = 0;
 
     videoCards.forEach((card) => {
@@ -1609,22 +1610,21 @@
       if (navigationFrame) window.cancelAnimationFrame(navigationFrame);
       navigationFrame = 0;
       navigationTarget = null;
+      navigationDestination = null;
     };
 
-    const animateCardToCenter = (target) => {
+    const animateCardToCenter = (target, duration, onComplete) => {
       if (prefersReducedMotion.matches) {
         rail.scrollLeft = centeredScrollLeft(target);
-        navigationTarget = null;
-        requestUpdate();
+        onComplete();
         return;
       }
 
       const startLeft = rail.scrollLeft;
       const startTime = performance.now();
-      const duration = 1050;
 
       const step = (time) => {
-        if (navigationTarget !== target) return;
+        if (navigationDestination !== target) return;
         const progress = Math.min(1, (time - startTime) / duration);
         const eased = Math.sin((progress * Math.PI) / 2);
         const destination = centeredScrollLeft(target);
@@ -1637,15 +1637,15 @@
 
         rail.scrollLeft = centeredScrollLeft(target);
         navigationFrame = 0;
-        navigationTarget = null;
-        requestUpdate();
+        onComplete();
       };
 
       navigationFrame = window.requestAnimationFrame(step);
     };
 
     const moveToCard = (direction) => {
-      const currentCard = navigationTarget
+      const currentCard = navigationDestination
+        || navigationTarget
         || cards.find((card) => card.classList.contains("is-active"))
         || cards[0];
       const activeIndex = cards.indexOf(currentCard);
@@ -1654,9 +1654,20 @@
       if (!target || targetIndex === activeIndex) return;
 
       cancelNavigationTarget();
-      navigationTarget = target;
+      navigationDestination = target;
+      navigationTarget = currentCard;
       updateActiveCard();
-      animateCardToCenter(target);
+      animateCardToCenter(target, 520, () => {
+        if (navigationDestination !== target) return;
+        navigationTarget = target;
+        updateActiveCard();
+        animateCardToCenter(target, 1050, () => {
+          if (navigationDestination !== target) return;
+          navigationTarget = null;
+          navigationDestination = null;
+          requestUpdate();
+        });
+      });
     };
 
     if (previous) previous.addEventListener("click", () => moveToCard(-1));
