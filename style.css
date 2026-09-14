@@ -1654,11 +1654,12 @@ body.debug-on .debug-header{
   min-width: 0;
   min-height: 270px;
   scroll-snap-align: center;
+  will-change: flex-basis, transform;
   transition:
-    flex-basis .72s cubic-bezier(.4,0,.2,1),
-    transform .62s cubic-bezier(.4,0,.2,1),
-    box-shadow .5s ease,
-    border-color .5s ease;
+    flex-basis 1.05s cubic-bezier(.45,0,.2,1),
+    transform .9s cubic-bezier(.45,0,.2,1),
+    box-shadow .7s ease-in-out,
+    border-color .7s ease-in-out;
 }
 
 .logo-item.is-active{
@@ -1720,9 +1721,11 @@ body.debug-on .debug-header{
   box-shadow: 0 12px 30px rgba(12,18,32,.12);
   transform: scale(.82);
   opacity: .72;
+  will-change: transform, opacity;
+  backface-visibility: hidden;
   transition:
-    transform .72s cubic-bezier(.4,0,.2,1),
-    opacity .55s ease-in-out;
+    transform 1.05s cubic-bezier(.45,0,.2,1),
+    opacity .8s ease-in-out;
 }
 
 .logo-item.is-active .app-card-video{
