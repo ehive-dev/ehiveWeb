@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Teile deine Erfahrungen mit eHive One und zeige dein Energiesystem mit Fotos." />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="eHive" />
+  <meta property="og:title" content="Kundenberichte | eHive One" />
+  <meta property="og:description" content="Teile deine Erfahrungen mit eHive One und zeige dein Energiesystem mit Fotos." />
+  <meta property="og:url" content="https://www.ehiv3.de/kundenberichte.html" />
+  <meta property="og:image" content="https://www.ehiv3.de/products/ehive-one.png" />
+  <title>Kundenberichte | eHive One</title>
+  <link rel="canonical" href="https://www.ehiv3.de/kundenberichte.html" />
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div data-include="header"></div>
+<main>
+  <section class="section">
+    <div class="container community-form-wrap">
+      <div class="section-title">
+        <h1>Zeig dein eHive System</h1>
+        <p>Wie nutzt du eHive One? Teile deine Erfahrung und ein oder zwei Fotos deiner Anlage. Wir prüfen jeden Beitrag, bevor er auf der Website erscheint.</p>
+      </div>
+      <form id="communityForm" class="community-form" enctype="multipart/form-data">
+        <div class="community-form-grid">
+          <label>Dein Name <input name="name" autocomplete="name" maxlength="100" required></label>
+          <label>Deine E-Mail <input name="email" type="email" autocomplete="email" maxlength="254" required></label>
+        </div>
+        <p class="community-form-hint">Die E-Mail brauchen wir für Rückfragen. Sie wird nicht veröffentlicht.</p>
+        <label>Überschrift <input name="title" maxlength="120" placeholder="Zum Beispiel: PV und Wallbox im Alltag" required></label>
+        <label>Dein Bericht <textarea name="report" minlength="30" maxlength="3000" rows="8" placeholder="Welche Komponenten nutzt du und was funktioniert für dich besonders gut?" required></textarea></label>
+        <label>Fotos deiner Anlage <input name="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple required></label>
+        <p class="community-form-hint">Ein oder zwei JPG-, PNG- oder WebP-Fotos, jeweils höchstens 5 MB. Bitte zeige keine Personen, Kennzeichen, Adressen oder Zugangsdaten ohne deren Zustimmung.</p>
+        <label>So darf dein Name erscheinen
+          <select name="display" required>
+            <option value="">Bitte auswählen</option>
+            <option value="first">Vorname</option>
+            <option value="full">Voller Name</option>
+            <option value="anonymous">Anonym</option>
+          </select>
+        </label>
+        <section class="community-preview" aria-labelledby="communityPreviewTitle">
+          <p class="community-preview-kicker">Vorschau · nur für dich sichtbar</p>
+          <h2 id="communityPreviewTitle">So könnte dein Bericht aussehen</h2>
+          <article class="community-preview-card">
+            <div id="communityPreviewPhotos" class="community-preview-photos" aria-label="Fotovorschau"></div>
+            <div class="community-preview-copy">
+              <h3 id="communityPreviewHeading">Deine Überschrift</h3>
+              <p id="communityPreviewReport">Dein Bericht erscheint hier, während du ihn schreibst.</p>
+              <p class="community-preview-byline" id="communityPreviewName">Dein Anzeigename</p>
+            </div>
+          </article>
+          <p class="community-form-hint">Die Vorschau wird nur in deinem Browser angezeigt. Wir prüfen den Beitrag vor einer möglichen Veröffentlichung.</p>
+        </section>
+        <label class="community-consent"><input name="consent" type="checkbox" value="yes" required><span>Ich darf diese Fotos und den Bericht einreichen und bin damit einverstanden, dass eHive sie nach Prüfung zusammen mit der gewählten Namensanzeige auf der Website veröffentlicht. Ich kann meine Einwilligung per E-Mail an <a href="mailto:ehive@gmx.de">ehive@gmx.de</a> zurückziehen.</span></label>
+        <input class="community-honeypot" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+        <button class="btn primary" type="submit">Bericht einsenden</button>
+        <p id="communityStatus" class="community-status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</main>
+<div data-include="footer"></div>
+<script src="config.js"></script>
+<script src="script.js"></script>
+<script src="kundenberichte.js"></script>
+</body>
+</html>
