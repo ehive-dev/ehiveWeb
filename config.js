@@ -50,10 +50,10 @@ window.EHIVE_SHOP_CONFIG = {
     // Replace the placeholder IDs.
     hostedButtons: {
       // eHive One variants
-      // Former button 4EM9UUJZRTK8U must be repriced to 319 EUR in PayPal
-      // before it can be used again. Until then, this variant is ordered by email.
+      // Former button 4EM9UUJZRTK8U must be repriced to 319 EUR in PayPal.
       "ehive-one-no-license": "",
-      "ehive-one-with-license": "SNKJV66HSBEMC",
+      // Former button SNKJV66HSBEMC must be repriced to 389 EUR in PayPal.
+      "ehive-one-with-license": "",
 
       // Add-ons (examples)
       "psu-24v": "C8P6NNSWGT3KA"
@@ -79,7 +79,7 @@ window.EHIVE_SHOP_CONFIG = {
         ],
         variants: [
           { id: "ehive-one-no-license", label: "Ohne Lizenz", price: 319.00, soldOut: false },
-          { id: "ehive-one-with-license", label: "Mit evcc", price: 349.00, soldOut: false }
+          { id: "ehive-one-with-license", label: "Mit evcc", price: 389.00, soldOut: false }
         ]
       }
     ],

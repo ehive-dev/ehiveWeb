@@ -3028,6 +3028,10 @@ body.lightbox-open{
   align-items:center;
 }
 
+.paypal-slot:empty{
+  display:none;
+}
+
 .paypal-slot img{
   display: none !important;
 }

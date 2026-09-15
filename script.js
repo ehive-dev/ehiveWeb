@@ -905,16 +905,10 @@
   function renderDynamicPaypalAdd(mountEl, buttonKey) {
     if (!mountEl) return;
     const buttonId = hostedButtonId(buttonKey);
-    if (buttonKey === "ehive-one-no-license" && isPlaceholderId(buttonId)) {
-      const link = document.createElement("a");
-      link.className = "btn primary";
-      link.textContent = "Per E-Mail bestellen";
-      link.href = buildMailto(
-        salesEmail(),
-        "[Sales] Bestellung eHive One ohne Lizenz",
-        "Hallo, ich möchte einen eHive One ohne Lizenz für 319,00 € bestellen. Bitte senden Sie mir die nächsten Schritte."
-      );
-      mountEl.replaceChildren(link);
+    if ((buttonKey === "ehive-one-no-license" || buttonKey === "ehive-one-with-license")
+      && isPlaceholderId(buttonId)) {
+      // Never display a checkout button until PayPal's stored price is confirmed.
+      mountEl.replaceChildren();
       return;
     }
     renderPaypalAddButton(mountEl, buttonId);
@@ -933,7 +927,6 @@
       const qtyInput = card.querySelector("[data-qty-input]");
       const slot = card.querySelector("[data-paypal-slot]");
       const priceEl = card.querySelector("[data-price]");
-      const availabilityEl = card.querySelector("[data-variant-availability]");
 
       if (!productId || !slot) return;
 
@@ -954,11 +947,6 @@
 
         if (priceEl && v) {
           priceEl.textContent = money(v.price, (cfg().paypal && cfg().paypal.currency) || "EUR");
-        }
-        if (availabilityEl && v) {
-          availabilityEl.textContent = v.id === "ehive-one-no-license"
-            ? "Ohne Lizenz · Bestellung per E-Mail"
-            : "Variante mit evcc verfügbar";
         }
       }
 
