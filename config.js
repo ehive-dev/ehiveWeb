@@ -50,8 +50,8 @@ window.EHIVE_SHOP_CONFIG = {
     // Replace the placeholder IDs.
     hostedButtons: {
       // eHive One variants
-      // Former button 4EM9UUJZRTK8U must be repriced to 319 EUR in PayPal.
-      "ehive-one-no-license": "",
+      // Button price checked against PayPal's public form: 319 EUR.
+      "ehive-one-no-license": "4EM9UUJZRTK8U",
       // Button price checked against PayPal's public form: 389 EUR.
       "ehive-one-with-license": "SNKJV66HSBEMC",
 
