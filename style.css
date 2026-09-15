@@ -1627,6 +1627,11 @@ body.debug-on .debug-header{
 .app-rail-nav-prev{ left: -60px; }
 .app-rail-nav-next{ right: -60px; }
 
+@media (min-width: 768px) and (max-width: 1200px){
+  .app-rail-nav-prev{ left: -22px; }
+  .app-rail-nav-next{ right: -22px; }
+}
+
 .app-rail-nav svg{
   width: 22px;
   height: 22px;

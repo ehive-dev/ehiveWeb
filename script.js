@@ -1520,6 +1520,10 @@
     let activeIndex = 0;
     let railVisible = true;
     let resizeFrame = 0;
+    let wheelDistance = 0;
+    let wheelResetTimer = 0;
+    let touchStartX = 0;
+    let touchStartY = 0;
 
     cards.forEach((card) => {
       const trigger = card.querySelector("[data-video-src]");
@@ -1597,6 +1601,35 @@
 
     if (previous) previous.addEventListener("click", () => goTo(activeIndex - 1));
     if (next) next.addEventListener("click", () => goTo(activeIndex + 1));
+    rail.addEventListener("wheel", (event) => {
+      // Only horizontal gestures move the cards; vertical scrolling stays with the page.
+      if (Math.abs(event.deltaX) <= Math.abs(event.deltaY)) return;
+      const direction = Math.sign(event.deltaX);
+      if ((direction < 0 && activeIndex === 0)
+        || (direction > 0 && activeIndex === cards.length - 1)) return;
+
+      event.preventDefault();
+      wheelDistance += event.deltaX;
+      window.clearTimeout(wheelResetTimer);
+      wheelResetTimer = window.setTimeout(() => { wheelDistance = 0; }, 180);
+      if (Math.abs(wheelDistance) >= 45) {
+        goTo(activeIndex + Math.sign(wheelDistance));
+        wheelDistance = 0;
+      }
+    }, { passive: false });
+    rail.addEventListener("touchstart", (event) => {
+      if (event.touches.length !== 1) return;
+      touchStartX = event.touches[0].clientX;
+      touchStartY = event.touches[0].clientY;
+    }, { passive: true });
+    rail.addEventListener("touchend", (event) => {
+      if (event.changedTouches.length !== 1) return;
+      const distanceX = touchStartX - event.changedTouches[0].clientX;
+      const distanceY = touchStartY - event.changedTouches[0].clientY;
+      if (Math.abs(distanceX) > 55 && Math.abs(distanceX) > Math.abs(distanceY)) {
+        goTo(activeIndex + Math.sign(distanceX));
+      }
+    }, { passive: true });
     rail.addEventListener("keydown", (event) => {
       if (event.key === "ArrowLeft") {
         event.preventDefault();
