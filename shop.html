@@ -33,20 +33,36 @@
         "@type": "Brand",
         "name": "eHive"
       },
-      "offers": {
-        "@type": "Offer",
-        "name": "eHive One mit evcc",
-        "sku": "ehive-one-with-license",
-        "url": "https://www.ehiv3.de/shop.html",
-        "priceCurrency": "EUR",
-        "price": "349.00",
-        "availability": "https://schema.org/InStock",
-        "itemCondition": "https://schema.org/NewCondition",
-        "seller": {
-          "@type": "Organization",
-          "name": "eHive"
+      "offers": [
+        {
+          "@type": "Offer",
+          "name": "eHive One ohne Lizenz",
+          "sku": "ehive-one-no-license",
+          "url": "https://www.ehiv3.de/shop.html",
+          "priceCurrency": "EUR",
+          "price": "319.00",
+          "availability": "https://schema.org/InStock",
+          "itemCondition": "https://schema.org/NewCondition",
+          "seller": {
+            "@type": "Organization",
+            "name": "eHive"
+          }
+        },
+        {
+          "@type": "Offer",
+          "name": "eHive One mit evcc",
+          "sku": "ehive-one-with-license",
+          "url": "https://www.ehiv3.de/shop.html",
+          "priceCurrency": "EUR",
+          "price": "349.00",
+          "availability": "https://schema.org/InStock",
+          "itemCondition": "https://schema.org/NewCondition",
+          "seller": {
+            "@type": "Organization",
+            "name": "eHive"
+          }
         }
-      }
+      ]
     }
   </script>
   <script defer src="https://www.paypalobjects.com/ncp/cart/cart.js" data-merchant-id="WL4UJPJ62Y972"></script>
@@ -106,13 +122,13 @@
           <div class="field">
             <label for="variantShop">Variante</label>
             <select id="variantShop" data-variant-select="ehive-one">
-              <option value="ehive-one-no-license" disabled>Ohne Lizenz – ausverkauft</option>
-              <option value="ehive-one-with-license" selected>Mit evcc</option>
+              <option value="ehive-one-no-license">Ohne Lizenz – 319,00 €</option>
+              <option value="ehive-one-with-license" selected>Mit evcc – 349,00 €</option>
             </select>
           </div>
         </div>
 
-        <p class="note"><strong>349,00 €</strong> · Variante mit evcc verfügbar</p>
+        <p class="note"><strong data-price="ehive-one">349,00 €</strong> · <span data-variant-availability>Variante mit evcc verfügbar</span></p>
 
         <div class="paypal-slot" data-paypal-slot="ehive-one"></div>
 
