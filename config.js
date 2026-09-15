@@ -52,8 +52,8 @@ window.EHIVE_SHOP_CONFIG = {
       // eHive One variants
       // Former button 4EM9UUJZRTK8U must be repriced to 319 EUR in PayPal.
       "ehive-one-no-license": "",
-      // Former button SNKJV66HSBEMC must be repriced to 389 EUR in PayPal.
-      "ehive-one-with-license": "",
+      // Button price checked against PayPal's public form: 389 EUR.
+      "ehive-one-with-license": "SNKJV66HSBEMC",
 
       // Add-ons (examples)
       "psu-24v": "C8P6NNSWGT3KA"
