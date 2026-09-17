@@ -1,5 +1,13 @@
 window.EHIVE_NEWS = [
   {
+    date: "2026-09-17",
+    dateLabel: "17. September 2026",
+    title: "SmartHub 1.1.55: Apps sicherer verwalten",
+    excerpt: "SmartHub 1.1.55 verbessert App-Installationen, WLAN- und NTP-Anzeige sowie den Neustart auf eHive One. HiveBus, KNX Bridge und HiveScope stehen gesammelt unter Tools bereit.",
+    href: "https://www.ehiv3.de/news-smarthub-1-1-55.html",
+    tags: ["Software", "SmartHub", "Update"]
+  },
+  {
     date: "2026-09-09",
     dateLabel: "9. September 2026",
     title: "HiveScope: Geräte im Netzwerk schneller finden",
