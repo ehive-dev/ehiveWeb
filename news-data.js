@@ -1,5 +1,13 @@
 window.EHIVE_NEWS = [
   {
+    date: "2026-10-15",
+    dateLabel: "15. Oktober 2026",
+    title: "USB-Config: eHive One direkt am Gerät in Betrieb nehmen",
+    excerpt: "Netzwerk, Zeitserver, WLAN, Diagnose-Logs, Backups und evcc White Label lassen sich jetzt über einen vorbereiteten USB-Stick einrichten – inklusive Statusdatei und LED-Rückmeldung.",
+    href: "https://www.ehiv3.de/news-smarthub-usb-config.html",
+    tags: ["Software", "SmartHub", "Inbetriebnahme"]
+  },
+  {
     date: "2026-09-17",
     dateLabel: "17. September 2026",
     title: "SmartHub 1.1.55: Apps sicherer verwalten",

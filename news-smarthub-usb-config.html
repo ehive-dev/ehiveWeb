@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Die neue USB-Config vereinfacht die Inbetriebnahme von eHive One: Netzwerk, Zeitserver, WLAN, Logs, Backups und evcc White Label lassen sich direkt per USB-Stick konfigurieren." />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="eHive" />
+  <meta property="og:title" content="USB-Config: eHive One direkt am Gerät in Betrieb nehmen" />
+  <meta property="og:description" content="Konfiguration einstecken, Status auslesen und die erfolgreiche Übernahme an der grünen LED erkennen." />
+  <meta property="og:url" content="https://www.ehiv3.de/news-smarthub-usb-config.html" />
+  <meta property="og:image" content="https://www.ehiv3.de/products/ehive-one.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="USB-Config: eHive One direkt am Gerät in Betrieb nehmen" />
+  <meta name="twitter:description" content="Netzwerk, Zeitserver, WLAN, Diagnose, Backups und evcc White Label über einen USB-Stick verwalten." />
+  <meta name="twitter:image" content="https://www.ehiv3.de/products/ehive-one.png" />
+  <title>USB-Config: eHive One direkt am Gerät in Betrieb nehmen | eHive One</title>
+  <link rel="canonical" href="https://www.ehiv3.de/news-smarthub-usb-config.html" />
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="style.css" />
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "SoftwareApplication",
+          "name": "SmartHub",
+          "softwareVersion": "1.1.65",
+          "applicationCategory": "UtilitiesApplication",
+          "operatingSystem": "eHive One / DietPi",
+          "description": "SmartHub ermöglicht die Inbetriebnahme und Diagnose von eHive One über einen USB-Stick.",
+          "url": "https://www.ehiv3.de/news-smarthub-usb-config.html"
+        },
+        {
+          "@type": "BlogPosting",
+          "headline": "USB-Config: eHive One direkt am Gerät in Betrieb nehmen",
+          "description": "Netzwerk, Zeitserver, WLAN, Logs, Backups und evcc White Label lassen sich über einen USB-Stick konfigurieren.",
+          "datePublished": "2026-10-15",
+          "dateModified": "2026-10-15",
+          "mainEntityOfPage": "https://www.ehiv3.de/news-smarthub-usb-config.html",
+          "image": "https://www.ehiv3.de/products/ehive-one.png",
+          "author": { "@type": "Organization", "name": "eHive" },
+          "publisher": {
+            "@type": "Organization",
+            "name": "eHive",
+            "logo": { "@type": "ImageObject", "url": "https://www.ehiv3.de/img/eHiveWhite.png" }
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.ehiv3.de/" },
+            { "@type": "ListItem", "position": 2, "name": "News", "item": "https://www.ehiv3.de/news.html" },
+            { "@type": "ListItem", "position": 3, "name": "USB-Config", "item": "https://www.ehiv3.de/news-smarthub-usb-config.html" }
+          ]
+        }
+      ]
+    }
+  </script>
+</head>
+<body>
+
+<div data-include="header"></div>
+
+<main>
+<section class="section">
+  <div class="container news-detail-layout">
+    <article class="card news-article">
+      <a class="news-backlink" href="https://www.ehiv3.de/news.html">&larr; Zurück zu den News</a>
+      <div class="news-article-meta">
+        <time datetime="2026-10-15">15. Oktober 2026</time>
+        <span class="news-tag">Software</span>
+        <span class="news-tag">SmartHub</span>
+        <span class="news-tag">Inbetriebnahme</span>
+      </div>
+      <h1>USB-Config: eHive One direkt am Gerät in Betrieb nehmen</h1>
+      <p class="news-lead">Ein USB-Stick reicht jetzt aus, um ein eHive One vorzubereiten, Einstellungen zu übertragen und den aktuellen Gerätestatus wieder mitzunehmen – ohne Monitor und ohne lokale Tastatur.</p>
+
+      <figure class="news-preview">
+        <img class="news-preview-image" src="products/ehive-one.png" alt="eHive One für lokales Energiemanagement" />
+        <figcaption>Die USB-Config unterstützt Inbetriebnahme, Diagnose und vorkonfigurierte Lagergeräte.</figcaption>
+      </figure>
+
+      <div class="news-article-body">
+        <h2>Ein Stick für Konfiguration und Rückmeldung</h2>
+        <p>SmartHub erkennt USB-Datenträger mit dem Namen <strong>EHIVE</strong> oder <strong>EHIVE_BACKUP</strong>. Ist der Stick leer, legt eHive One automatisch die vollständige Verzeichnisstruktur und eine kommentierte Konfigurationsdatei an. Jeder Parameter wird direkt in der Datei auf Deutsch und Englisch erklärt.</p>
+        <p>Die Datei <code>ehive-config.conf</code> enthält alle einstellbaren Werte. In <code>status.conf</code> steht dagegen ausschließlich der aktuelle Zustand des Geräts – beispielsweise die tatsächlich verwendete IP-Adresse, das aktive Gateway, DNS, Zeitabgleich, WLAN sowie Logging- und Backup-Status.</p>
+
+        <h2>Für Werkstatt, Lager und Inbetriebnahme</h2>
+        <p>Netzwerk, Hostname, Zeitzone und NTP-Server lassen sich schon vor dem eigentlichen Auftrag vorbereiten. Auch WLAN und das lokale Admin-Passwort können einmalig übernommen werden. Sensible Werte werden nach erfolgreicher Verarbeitung aus der Stick-Konfiguration entfernt.</p>
+        <p>Die grüne System-LED bestätigt wichtige Vorgänge mit eindeutigen Blinkmustern. Damit ist auch ohne Bildschirm erkennbar, ob eine Konfiguration erfolgreich angewendet oder das Diagnose-Logging gestartet wurde.</p>
+
+        <h2>Diagnose-Logs und automatische Backups</h2>
+        <p>Bei Bedarf schreibt eHive One gefilterte Diagnose-Logs direkt auf den eingesteckten Stick. Größe und Aktivierung werden in der Konfiguration festgelegt; Passwörter, Tokens und API-Schlüssel werden vor dem Export geschwärzt. Zusätzlich lassen sich automatische Systembackups täglich, wöchentlich oder monatlich planen.</p>
+
+        <h2>evcc im eigenen Design</h2>
+        <p>Auch das evcc White Label lässt sich über die USB-Config einrichten: Markenname, Website, Supportkontakt, Start-Theme, eigenes CSS sowie Logos für den hellen und dunklen Modus. SmartHub legt dafür automatisch den Ordner <code>EHIVE-CONFIG/branding</code> mit zwei SVG-Platzhaltern an.</p>
+        <p>Die Vorlagen verwenden ein Querformat von <strong>512 × 128 Pixeln</strong>. evcc zeigt das Logo mit 64 Pixeln Höhe an und skaliert die Breite proportional. Eigene Dateien ersetzen einfach <code>logo-light.svg</code> und <code>logo-dark.svg</code>; vorhandene Logos werden von SmartHub nicht überschrieben.</p>
+
+        <h2>Transparent und nachvollziehbar</h2>
+        <p>Einstellungen werden nur übernommen, wenn der jeweilige <code>apply</code>-Schalter ausdrücklich aktiviert wurde. Nach erfolgreicher Verarbeitung setzt SmartHub ihn zurück. So bleibt der Stick wiederverwendbar und Änderungen werden nicht versehentlich mehrfach ausgeführt.</p>
+      </div>
+    </article>
+
+    <aside class="card news-sidecard">
+      <h3>Mehr erfahren</h3>
+      <p>USB-Config und White Label sind ab SmartHub 1.1.65 vollständig verfügbar.</p>
+      <div class="news-side-links">
+        <a href="https://github.com/ehive-dev/smarthub-releases/releases/tag/v1.1.65" target="_blank" rel="noopener noreferrer">
+          <strong>SmartHub 1.1.65</strong>
+          <span>Release und ARM64-Paket</span>
+        </a>
+        <a href="https://ehive-dev.github.io/doc/software/smarthub/" target="_blank" rel="noopener noreferrer">
+          <strong>SmartHub-Dokumentation</strong>
+          <span>Bedienung und Systemverwaltung</span>
+        </a>
+        <a href="https://docs.evcc.io/de/reference/white-label/" target="_blank" rel="noopener noreferrer">
+          <strong>evcc White Label</strong>
+          <span>Hinweise zu Markenname, Logos und CSS</span>
+        </a>
+      </div>
+    </aside>
+  </div>
+</section>
+</main>
+
+<div data-include="footer"></div>
+
+<script src="config.js"></script>
+<script src="script.js"></script>
+
+</body>
+</html>
