@@ -248,6 +248,25 @@ button, input, select{ font:inherit; }
   max-width: 70ch;
 }
 
+.shop-delivery-notice{
+  margin: 0 0 24px;
+  padding: 14px 16px;
+  border: 1px solid #e7c766;
+  border-left: 4px solid #d39b00;
+  border-radius: 10px;
+  background: #fff9e8;
+  color: #493600;
+}
+
+.shop-delivery-notice strong{
+  display: block;
+  margin-bottom: 3px;
+}
+
+.shop-delivery-notice p{
+  margin: 0;
+}
+
 .motivation-copy{
   display: grid;
   gap: 14px;
