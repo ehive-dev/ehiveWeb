@@ -3,7 +3,7 @@ window.EHIVE_NEWS = [
     date: "2026-10-15",
     dateLabel: "15. Oktober 2026",
     title: "USB-Config für Installateure: eHive One schneller in Betrieb nehmen",
-    excerpt: "eHive One bereits in der Werkstatt vorbereiten, beim Kunden reproduzierbar einrichten und den tatsächlichen Gerätestatus dokumentieren – mit einem vorbereiteten USB-Stick.",
+    excerpt: "Wir kennen es aus eigener Erfahrung: Wiederholtes Einrichten kostet Zeit und nervt. Jetzt genügt ein vorbereiteter USB-Stick für eine schnelle, reproduzierbare Inbetriebnahme.",
     href: "https://www.ehiv3.de/news-smarthub-usb-config.html",
     tags: ["Software", "SmartHub", "Inbetriebnahme"]
   },
