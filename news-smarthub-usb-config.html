@@ -76,31 +76,61 @@
       <h1>USB-Config für Installateure: eHive One schneller in Betrieb nehmen</h1>
       <p class="news-lead">eHive One schon in der Werkstatt vorbereiten, beim Kunden mit klar definierten Einstellungen starten und den tatsächlichen Gerätestatus für Übergabe und Service mitnehmen – dafür genügt jetzt ein USB-Stick.</p>
 
-      <figure class="news-preview">
-        <img class="news-preview-image" src="products/ehive-one.png" alt="eHive One für lokales Energiemanagement" />
-        <figcaption>Vorbereiten, installieren und dokumentieren: Die USB-Config unterstützt den gesamten Ablauf im Elektrofachbetrieb.</figcaption>
-      </figure>
-
       <div class="news-article-body">
-        <h2>Für den Ablauf im Elektrofachbetrieb entwickelt</h2>
-        <p>Ob einzelnes Kundenprojekt oder vorbereitete Lagergeräte: Mit der USB-Config lassen sich wiederkehrende Schritte standardisieren. SmartHub erkennt USB-Datenträger mit dem Namen <strong>EHIVE</strong> oder <strong>EHIVE_BACKUP</strong>. Ist der Stick leer, legt eHive One automatisch die vollständige Verzeichnisstruktur und eine kommentierte Konfigurationsdatei an. Jeder Parameter wird direkt in der Datei auf Deutsch und Englisch erklärt.</p>
-        <p>Die Datei <code>ehive-config.conf</code> enthält alle einstellbaren Werte. In <code>status.conf</code> steht dagegen ausschließlich der aktuelle Zustand des Geräts – beispielsweise die tatsächlich verwendete IP-Adresse, das aktive Gateway, DNS, Zeitabgleich, WLAN sowie Logging- und Backup-Status.</p>
+        <h2>So funktioniert es</h2>
+        <ol>
+          <li>USB-Stick <strong>EHIVE</strong> oder <strong>EHIVE_BACKUP</strong> nennen und einstecken.</li>
+          <li>SmartHub legt Config, Status, Branding, Logs und Backup-Ordner automatisch an.</li>
+          <li>Einstellungen in der Werkstatt vorbereiten, <code>apply=true</code> setzen und den Stick am Kundengerät einstecken.</li>
+        </ol>
+        <p>Die grüne LED bestätigt die Verarbeitung. In <code>status.conf</code> stehen danach nur die tatsächlich aktiven Werte – ideal für Übergabe und Service.</p>
 
-        <h2>In der Werkstatt vorbereiten, vor Ort Zeit sparen</h2>
-        <p>Netzwerk, Hostname, Zeitzone und NTP-Server lassen sich bereits vor dem Montagetermin vorbereiten. Auch WLAN und das lokale Admin-Passwort können einmalig übernommen werden. Der Installateur steckt den vorbereiteten Datenträger ein und erhält anschließend eine klare Rückmeldung über den tatsächlichen Zustand. Sensible Werte werden nach erfolgreicher Verarbeitung aus der Stick-Konfiguration entfernt.</p>
-        <p>Die grüne System-LED bestätigt wichtige Vorgänge mit eindeutigen Blinkmustern. Damit ist auch ohne Bildschirm erkennbar, ob eine Konfiguration erfolgreich angewendet oder das Diagnose-Logging gestartet wurde.</p>
+        <h2>So sieht der USB-Stick aus</h2>
+        <pre class="news-config-example"><code>EHIVE/
+├── EHIVE-CONFIG/
+│   ├── ehive-config.conf
+│   ├── status.conf
+│   ├── branding/
+│   │   ├── logo-light.svg
+│   │   └── logo-dark.svg
+│   └── logs/
+└── EHIVE-BACKUPS/</code></pre>
 
-        <h2>Dokumentation für Übergabe und Service</h2>
-        <p>Die Statusdatei zeigt, welche IP-Adresse, welches Gateway, welche DNS-Server und welche Zeitkonfiguration am Gerät tatsächlich aktiv sind. Das erleichtert die Übergabe und schafft eine belastbare Grundlage für spätere Servicefälle.</p>
-        <p>Bei Bedarf schreibt eHive One gefilterte Diagnose-Logs direkt auf den eingesteckten Stick. So kann der Fachbetrieb Informationen aus der Anlage mitnehmen, ohne vor Ort zusätzliche Diagnosewerkzeuge einzurichten. Passwörter, Tokens und API-Schlüssel werden vor dem Export geschwärzt. Zusätzlich lassen sich automatische Systembackups täglich, wöchentlich oder monatlich planen.</p>
+        <h2>Beispiel: ehive-config.conf</h2>
+        <pre class="news-config-example"><code>version=1
 
-        <h2>Die eigene Marke beim Kunden sichtbar machen</h2>
-        <p>Installateure und Anbieter können evcc passend zum eigenen Auftritt ausliefern. Über die USB-Config lassen sich Markenname, Website, Supportkontakt, Start-Theme, eigenes CSS sowie Logos für den hellen und dunklen Modus festlegen. SmartHub legt dafür automatisch den Ordner <code>EHIVE-CONFIG/branding</code> mit zwei SVG-Platzhaltern an.</p>
-        <p>Die Vorlagen verwenden ein Querformat von <strong>512 × 128 Pixeln</strong>. evcc zeigt das Logo mit 64 Pixeln Höhe an und skaliert die Breite proportional. Eigene Dateien ersetzen einfach <code>logo-light.svg</code> und <code>logo-dark.svg</code>; vorhandene Logos werden von SmartHub nicht überschrieben.</p>
+[network]
+apply=true
+interface=eth0
+mode=static
+address=192.168.1.50
+prefix=24
+gateway=192.168.1.1
+dns=192.168.1.1
 
-        <h2>Transparent und nachvollziehbar</h2>
-        <p>Einstellungen werden nur übernommen, wenn der jeweilige <code>apply</code>-Schalter ausdrücklich aktiviert wurde. Nach erfolgreicher Verarbeitung setzt SmartHub ihn zurück. So bleibt der Stick wiederverwendbar und Änderungen werden nicht versehentlich mehrfach ausgeführt.</p>
-        <p>Damit eignet sich die USB-Config besonders für Elektrofachbetriebe, die eHive One reproduzierbar vorbereiten, effizient in Betrieb nehmen und ihren Kunden mit einer nachvollziehbaren Dokumentation übergeben möchten.</p>
+[logging]
+enabled=true
+mode=continuous
+maxSizeMb=100
+
+[backup]
+apply=true
+enabled=true
+interval=weekly
+weekday=Sun
+time=03:15
+
+[whiteLabel]
+apply=true
+enabled=true
+brand=Mein Fachbetrieb
+logoLight=branding/logo-light.svg
+logoDark=branding/logo-dark.svg
+theme=auto</code></pre>
+        <p>Die echte Datei enthält zusätzlich Hostname, Zeitserver, WLAN, Passwort, Supportkontakt und CSS – jeweils direkt auf Deutsch und Englisch kommentiert. Sensible Werte werden nach erfolgreicher Übernahme entfernt.</p>
+
+        <h2>Für Installateure gemacht</h2>
+        <p>Damit lassen sich Lagergeräte einheitlich vorbereiten, Termine vor Ort verkürzen und Anlagen nachvollziehbar dokumentieren. Diagnose-Logs, automatische Backups und ein evcc-Auftritt im eigenen Branding sind im selben Ablauf enthalten. Die Logo-Vorlagen verwenden <strong>512 × 128 Pixel</strong>.</p>
       </div>
     </article>
 

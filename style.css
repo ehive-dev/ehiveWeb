@@ -2867,6 +2867,33 @@ body.lightbox-open{
   max-width: 70ch;
 }
 
+.news-article-body ol{
+  margin: 2px 0 0;
+  padding-left: 22px;
+  max-width: 70ch;
+}
+
+.news-article-body ol li{
+  margin: 10px 0;
+}
+
+.news-config-example{
+  margin: 2px 0 4px;
+  padding: 18px;
+  max-width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #0f172a;
+  color: #e2e8f0;
+  font: 14px/1.55 ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.news-config-example code{
+  color: inherit;
+  font: inherit;
+}
+
 .news-article-body li{
   margin: 10px 0;
 }
