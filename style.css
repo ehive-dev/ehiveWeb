@@ -2929,30 +2929,6 @@ body.lightbox-open{
   object-fit: cover;
 }
 
-.news-feature-figure{
-  margin: 22px 0 30px;
-}
-
-.news-feature-figure--hero{
-  margin-top: 28px;
-}
-
-.news-feature-figure img{
-  display: block;
-  width: 100%;
-  height: auto;
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  background: #f8f7f2;
-}
-
-.news-feature-figure figcaption{
-  margin-top: 9px;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.5;
-}
-
 .news-screenshot-grid{
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
