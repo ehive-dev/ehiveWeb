@@ -3,18 +3,18 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Die neue USB-Config vereinfacht die Inbetriebnahme von eHive One: Netzwerk, Zeitserver, WLAN, Logs, Backups und evcc White Label lassen sich direkt per USB-Stick konfigurieren." />
+  <meta name="description" content="Mit der USB-Config können Installateure eHive One in der Werkstatt vorbereiten, beim Kunden reproduzierbar einrichten und den aktuellen Gerätestatus dokumentieren." />
   <meta property="og:type" content="article" />
   <meta property="og:site_name" content="eHive" />
-  <meta property="og:title" content="USB-Config: eHive One direkt am Gerät in Betrieb nehmen" />
-  <meta property="og:description" content="Konfiguration einstecken, Status auslesen und die erfolgreiche Übernahme an der grünen LED erkennen." />
+  <meta property="og:title" content="USB-Config für Installateure: eHive One schneller in Betrieb nehmen" />
+  <meta property="og:description" content="Geräte vorkonfigurieren, Einstellungen vor Ort sicher übernehmen und den tatsächlichen Zustand für Übergabe und Service dokumentieren." />
   <meta property="og:url" content="https://www.ehiv3.de/news-smarthub-usb-config.html" />
   <meta property="og:image" content="https://www.ehiv3.de/products/ehive-one.png" />
   <meta name="twitter:card" content="summary_large_image" />
-  <meta name="twitter:title" content="USB-Config: eHive One direkt am Gerät in Betrieb nehmen" />
-  <meta name="twitter:description" content="Netzwerk, Zeitserver, WLAN, Diagnose, Backups und evcc White Label über einen USB-Stick verwalten." />
+  <meta name="twitter:title" content="USB-Config für Installateure: eHive One schneller in Betrieb nehmen" />
+  <meta name="twitter:description" content="eHive One in der Werkstatt vorbereiten und beim Kunden reproduzierbar in Betrieb nehmen." />
   <meta name="twitter:image" content="https://www.ehiv3.de/products/ehive-one.png" />
-  <title>USB-Config: eHive One direkt am Gerät in Betrieb nehmen | eHive One</title>
+  <title>USB-Config für Installateure: eHive One schneller in Betrieb nehmen | eHive One</title>
   <link rel="canonical" href="https://www.ehiv3.de/news-smarthub-usb-config.html" />
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="style.css" />
@@ -28,13 +28,13 @@
           "softwareVersion": "1.1.65",
           "applicationCategory": "UtilitiesApplication",
           "operatingSystem": "eHive One / DietPi",
-          "description": "SmartHub ermöglicht die Inbetriebnahme und Diagnose von eHive One über einen USB-Stick.",
+          "description": "SmartHub unterstützt Installateure bei Vorbereitung, Inbetriebnahme, Übergabe und Diagnose von eHive One über einen USB-Stick.",
           "url": "https://www.ehiv3.de/news-smarthub-usb-config.html"
         },
         {
           "@type": "BlogPosting",
-          "headline": "USB-Config: eHive One direkt am Gerät in Betrieb nehmen",
-          "description": "Netzwerk, Zeitserver, WLAN, Logs, Backups und evcc White Label lassen sich über einen USB-Stick konfigurieren.",
+          "headline": "USB-Config für Installateure: eHive One schneller in Betrieb nehmen",
+          "description": "eHive One in der Werkstatt vorbereiten, beim Kunden reproduzierbar einrichten und den aktuellen Gerätestatus dokumentieren.",
           "datePublished": "2026-10-15",
           "dateModified": "2026-10-15",
           "mainEntityOfPage": "https://www.ehiv3.de/news-smarthub-usb-config.html",
@@ -73,38 +73,40 @@
         <span class="news-tag">SmartHub</span>
         <span class="news-tag">Inbetriebnahme</span>
       </div>
-      <h1>USB-Config: eHive One direkt am Gerät in Betrieb nehmen</h1>
-      <p class="news-lead">Ein USB-Stick reicht jetzt aus, um ein eHive One vorzubereiten, Einstellungen zu übertragen und den aktuellen Gerätestatus wieder mitzunehmen – ohne Monitor und ohne lokale Tastatur.</p>
+      <h1>USB-Config für Installateure: eHive One schneller in Betrieb nehmen</h1>
+      <p class="news-lead">eHive One schon in der Werkstatt vorbereiten, beim Kunden mit klar definierten Einstellungen starten und den tatsächlichen Gerätestatus für Übergabe und Service mitnehmen – dafür genügt jetzt ein USB-Stick.</p>
 
       <figure class="news-preview">
         <img class="news-preview-image" src="products/ehive-one.png" alt="eHive One für lokales Energiemanagement" />
-        <figcaption>Die USB-Config unterstützt Inbetriebnahme, Diagnose und vorkonfigurierte Lagergeräte.</figcaption>
+        <figcaption>Vorbereiten, installieren und dokumentieren: Die USB-Config unterstützt den gesamten Ablauf im Elektrofachbetrieb.</figcaption>
       </figure>
 
       <div class="news-article-body">
-        <h2>Ein Stick für Konfiguration und Rückmeldung</h2>
-        <p>SmartHub erkennt USB-Datenträger mit dem Namen <strong>EHIVE</strong> oder <strong>EHIVE_BACKUP</strong>. Ist der Stick leer, legt eHive One automatisch die vollständige Verzeichnisstruktur und eine kommentierte Konfigurationsdatei an. Jeder Parameter wird direkt in der Datei auf Deutsch und Englisch erklärt.</p>
+        <h2>Für den Ablauf im Elektrofachbetrieb entwickelt</h2>
+        <p>Ob einzelnes Kundenprojekt oder vorbereitete Lagergeräte: Mit der USB-Config lassen sich wiederkehrende Schritte standardisieren. SmartHub erkennt USB-Datenträger mit dem Namen <strong>EHIVE</strong> oder <strong>EHIVE_BACKUP</strong>. Ist der Stick leer, legt eHive One automatisch die vollständige Verzeichnisstruktur und eine kommentierte Konfigurationsdatei an. Jeder Parameter wird direkt in der Datei auf Deutsch und Englisch erklärt.</p>
         <p>Die Datei <code>ehive-config.conf</code> enthält alle einstellbaren Werte. In <code>status.conf</code> steht dagegen ausschließlich der aktuelle Zustand des Geräts – beispielsweise die tatsächlich verwendete IP-Adresse, das aktive Gateway, DNS, Zeitabgleich, WLAN sowie Logging- und Backup-Status.</p>
 
-        <h2>Für Werkstatt, Lager und Inbetriebnahme</h2>
-        <p>Netzwerk, Hostname, Zeitzone und NTP-Server lassen sich schon vor dem eigentlichen Auftrag vorbereiten. Auch WLAN und das lokale Admin-Passwort können einmalig übernommen werden. Sensible Werte werden nach erfolgreicher Verarbeitung aus der Stick-Konfiguration entfernt.</p>
+        <h2>In der Werkstatt vorbereiten, vor Ort Zeit sparen</h2>
+        <p>Netzwerk, Hostname, Zeitzone und NTP-Server lassen sich bereits vor dem Montagetermin vorbereiten. Auch WLAN und das lokale Admin-Passwort können einmalig übernommen werden. Der Installateur steckt den vorbereiteten Datenträger ein und erhält anschließend eine klare Rückmeldung über den tatsächlichen Zustand. Sensible Werte werden nach erfolgreicher Verarbeitung aus der Stick-Konfiguration entfernt.</p>
         <p>Die grüne System-LED bestätigt wichtige Vorgänge mit eindeutigen Blinkmustern. Damit ist auch ohne Bildschirm erkennbar, ob eine Konfiguration erfolgreich angewendet oder das Diagnose-Logging gestartet wurde.</p>
 
-        <h2>Diagnose-Logs und automatische Backups</h2>
-        <p>Bei Bedarf schreibt eHive One gefilterte Diagnose-Logs direkt auf den eingesteckten Stick. Größe und Aktivierung werden in der Konfiguration festgelegt; Passwörter, Tokens und API-Schlüssel werden vor dem Export geschwärzt. Zusätzlich lassen sich automatische Systembackups täglich, wöchentlich oder monatlich planen.</p>
+        <h2>Dokumentation für Übergabe und Service</h2>
+        <p>Die Statusdatei zeigt, welche IP-Adresse, welches Gateway, welche DNS-Server und welche Zeitkonfiguration am Gerät tatsächlich aktiv sind. Das erleichtert die Übergabe und schafft eine belastbare Grundlage für spätere Servicefälle.</p>
+        <p>Bei Bedarf schreibt eHive One gefilterte Diagnose-Logs direkt auf den eingesteckten Stick. So kann der Fachbetrieb Informationen aus der Anlage mitnehmen, ohne vor Ort zusätzliche Diagnosewerkzeuge einzurichten. Passwörter, Tokens und API-Schlüssel werden vor dem Export geschwärzt. Zusätzlich lassen sich automatische Systembackups täglich, wöchentlich oder monatlich planen.</p>
 
-        <h2>evcc im eigenen Design</h2>
-        <p>Auch das evcc White Label lässt sich über die USB-Config einrichten: Markenname, Website, Supportkontakt, Start-Theme, eigenes CSS sowie Logos für den hellen und dunklen Modus. SmartHub legt dafür automatisch den Ordner <code>EHIVE-CONFIG/branding</code> mit zwei SVG-Platzhaltern an.</p>
+        <h2>Die eigene Marke beim Kunden sichtbar machen</h2>
+        <p>Installateure und Anbieter können evcc passend zum eigenen Auftritt ausliefern. Über die USB-Config lassen sich Markenname, Website, Supportkontakt, Start-Theme, eigenes CSS sowie Logos für den hellen und dunklen Modus festlegen. SmartHub legt dafür automatisch den Ordner <code>EHIVE-CONFIG/branding</code> mit zwei SVG-Platzhaltern an.</p>
         <p>Die Vorlagen verwenden ein Querformat von <strong>512 × 128 Pixeln</strong>. evcc zeigt das Logo mit 64 Pixeln Höhe an und skaliert die Breite proportional. Eigene Dateien ersetzen einfach <code>logo-light.svg</code> und <code>logo-dark.svg</code>; vorhandene Logos werden von SmartHub nicht überschrieben.</p>
 
         <h2>Transparent und nachvollziehbar</h2>
         <p>Einstellungen werden nur übernommen, wenn der jeweilige <code>apply</code>-Schalter ausdrücklich aktiviert wurde. Nach erfolgreicher Verarbeitung setzt SmartHub ihn zurück. So bleibt der Stick wiederverwendbar und Änderungen werden nicht versehentlich mehrfach ausgeführt.</p>
+        <p>Damit eignet sich die USB-Config besonders für Elektrofachbetriebe, die eHive One reproduzierbar vorbereiten, effizient in Betrieb nehmen und ihren Kunden mit einer nachvollziehbaren Dokumentation übergeben möchten.</p>
       </div>
     </article>
 
     <aside class="card news-sidecard">
       <h3>Mehr erfahren</h3>
-      <p>USB-Config und White Label sind ab SmartHub 1.1.65 vollständig verfügbar.</p>
+      <p>Du möchtest eHive One in deinen Installations- und Serviceablauf integrieren? USB-Config und White Label sind ab SmartHub 1.1.65 vollständig verfügbar.</p>
       <div class="news-side-links">
         <a href="https://github.com/ehive-dev/smarthub-releases/releases/tag/v1.1.65" target="_blank" rel="noopener noreferrer">
           <strong>SmartHub 1.1.65</strong>
@@ -113,6 +115,10 @@
         <a href="https://ehive-dev.github.io/doc/software/smarthub/" target="_blank" rel="noopener noreferrer">
           <strong>SmartHub-Dokumentation</strong>
           <span>Bedienung und Systemverwaltung</span>
+        </a>
+        <a href="https://www.ehiv3.de/contact.html">
+          <strong>Kontakt für Fachbetriebe</strong>
+          <span>Fragen zu Einsatz, Vorbereitung und Inbetriebnahme</span>
         </a>
         <a href="https://docs.evcc.io/de/reference/white-label/" target="_blank" rel="noopener noreferrer">
           <strong>evcc White Label</strong>
