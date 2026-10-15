@@ -4090,6 +4090,75 @@ body.lightbox-open{
   }
 }
 
+/* Startseite: klare Produktbuehne im eigenstaendigen eHive-Look */
+.home-page .hero-product-video,
+.home-page .hero-demo-window,
+.home-page .hero-ehive,
+.home-page #open-qr,
+.home-page #open-no-cloud,
+.home-page #open-community,
+.home-page .debug-header{
+  display: none;
+}
+
+.ehive-showcase{
+  position: relative;
+  overflow: hidden;
+  color: #fff;
+  background: radial-gradient(900px 520px at 76% 42%, rgba(64,194,184,.19), transparent 62%), linear-gradient(135deg,#071a22 0%,#0b2630 52%,#07161d 100%);
+  padding: clamp(70px,9vw,124px) 0 clamp(66px,8vw,108px);
+}
+.ehive-showcase::after{ content:""; position:absolute; inset:auto 0 0; height:1px; background:linear-gradient(90deg,transparent,rgba(116,223,213,.5),transparent); }
+.ehive-showcase-grid{ display:grid; grid-template-columns:minmax(0,1.03fr) minmax(360px,.97fr); gap:clamp(38px,7vw,86px); align-items:center; }
+.ehive-showcase-copy{ position:relative; z-index:2; }
+.ehive-showcase-kicker{ display:flex; align-items:center; gap:10px; margin:0 0 20px; color:#a9c5c9; font-size:13px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+.ehive-showcase-kicker span{ width:9px; height:9px; border-radius:50%; background:#67d5cb; box-shadow:0 0 20px rgba(103,213,203,.85); }
+.ehive-showcase h1{ margin:0; max-width:720px; font-size:clamp(46px,6vw,76px); line-height:1.02; letter-spacing:-.045em; }
+.ehive-showcase h1 span{ color:#72d9cf; }
+.ehive-showcase-lead{ max-width:620px; margin:28px 0 34px; color:#bed0d3; font-size:clamp(17px,1.8vw,20px); line-height:1.65; }
+.ehive-showcase-actions{ display:flex; flex-wrap:wrap; gap:14px; }
+.ehive-showcase .btn{ min-height:52px; padding:14px 24px; border-radius:999px; }
+.ehive-showcase-primary{ background:#72d9cf; color:#071a22; box-shadow:0 14px 34px rgba(75,201,190,.25); }
+.ehive-showcase-primary:hover{ background:#8ae5dd; transform:translateY(-2px); }
+.ehive-showcase-secondary{ color:#fff; border:1px solid rgba(255,255,255,.22); background:rgba(255,255,255,.04); }
+.ehive-showcase-secondary:hover{ background:rgba(255,255,255,.1); }
+.ehive-showcase-facts{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; margin:44px 0 0; padding:24px 0 0; border-top:1px solid rgba(255,255,255,.14); list-style:none; }
+.ehive-showcase-facts li{ display:grid; gap:2px; }
+.ehive-showcase-facts strong{ color:#fff; font-size:15px; }
+.ehive-showcase-facts span{ color:#8facb1; font-size:12px; }
+.ehive-showcase-product{ position:relative; z-index:1; margin:0; text-align:center; }
+.ehive-showcase-glow{ position:absolute; inset:12% 3% 8%; border-radius:50%; background:rgba(68,211,197,.24); filter:blur(68px); }
+.ehive-showcase-device{ position:relative; overflow:hidden; aspect-ratio:1; border:1px solid rgba(255,255,255,.13); border-radius:34px; background:#fff; box-shadow:0 34px 80px rgba(0,0,0,.34); transform:rotate(1.5deg); transition:transform .3s ease; }
+.ehive-showcase-device:hover{ transform:rotate(0) translateY(-5px); }
+.ehive-showcase-device img{ width:100%; height:100%; object-fit:contain; }
+.ehive-showcase-product figcaption{ position:relative; margin-top:18px; color:#8facb1; font-size:13px; }
+.ehive-showcase-benefits{ padding:34px 0; color:#fff; background:#07161d; }
+.ehive-showcase-benefit-grid{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); }
+.ehive-showcase-benefit-grid article{ display:grid; grid-template-columns:auto 1fr; column-gap:16px; padding:12px 30px; border-right:1px solid rgba(255,255,255,.12); }
+.ehive-showcase-benefit-grid article:first-child{ padding-left:0; }
+.ehive-showcase-benefit-grid article:last-child{ padding-right:0; border-right:0; }
+.ehive-showcase-icon{ grid-row:1 / span 2; display:grid; place-items:center; width:42px; height:42px; border:1px solid rgba(114,217,207,.35); border-radius:50%; color:#72d9cf; font-size:12px; font-weight:800; }
+.ehive-showcase-benefit-grid h2{ margin:0 0 5px; color:#fff; font-size:17px; }
+.ehive-showcase-benefit-grid p{ margin:0; color:#8facb1; font-size:13px; line-height:1.55; }
+
+@media (max-width:860px){
+  .ehive-showcase-grid{ grid-template-columns:1fr; }
+  .ehive-showcase-copy{ text-align:center; }
+  .ehive-showcase-kicker,.ehive-showcase-actions{ justify-content:center; }
+  .ehive-showcase-lead{ margin-inline:auto; }
+  .ehive-showcase-product{ width:min(520px,100%); margin-inline:auto; }
+  .ehive-showcase-benefit-grid{ grid-template-columns:1fr; }
+  .ehive-showcase-benefit-grid article,.ehive-showcase-benefit-grid article:first-child,.ehive-showcase-benefit-grid article:last-child{ padding:22px 0; border-right:0; border-bottom:1px solid rgba(255,255,255,.12); }
+  .ehive-showcase-benefit-grid article:last-child{ border-bottom:0; }
+}
+@media (max-width:560px){
+  .ehive-showcase{ padding-top:54px; }
+  .ehive-showcase h1{ font-size:clamp(39px,12vw,54px); }
+  .ehive-showcase-facts{ grid-template-columns:1fr; gap:12px; }
+  .ehive-showcase-facts li{ grid-template-columns:84px 1fr; text-align:left; }
+  .ehive-showcase-device{ border-radius:22px; }
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce){
   *{ scroll-behavior:auto !important; transition:none !important; }
