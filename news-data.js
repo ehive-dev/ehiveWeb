@@ -1,5 +1,13 @@
 window.EHIVE_NEWS = [
   {
+    date: "2026-10-18",
+    dateLabel: "18. Oktober 2026",
+    title: "Frag mich: KI-Hilfe für eHive One und evcc",
+    excerpt: "Mit unserer neuen „Frag mich“-Hilfe kannst du konkrete Fragen zu deiner Wallbox, PV-Anlage, deinem Speicher und weiteren Komponenten im Zusammenspiel mit eHive One und evcc stellen.",
+    href: "https://www.ehiv3.de/news-ki-kompatibilitaetspruefung.html",
+    tags: ["Website", "KI-Hilfe", "Kompatibilität"]
+  },
+  {
     date: "2026-10-15",
     dateLabel: "15. Oktober 2026",
     title: "USB-Stick: Konfiguriere den eHive ab sofort in der Werkstatt",

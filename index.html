@@ -18,6 +18,7 @@
   <link rel="canonical" href="https://www.ehiv3.de/" />
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="style.css" />
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" defer></script>
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -143,6 +144,7 @@
             <a class="hero-video-note-trigger hero-video-note-jump" href="#open-hersteller" data-open-note-jump>Hersteller unabhängig.</a>
           </li>
         </ul>
+        <a class="hero-video-product-link cta-shop-link" href="ehive-one.html">Mehr</a>
       </aside>
     </div>
   </div>
@@ -490,32 +492,61 @@
   </div>
 </section>
 
-<section class="section" aria-labelledby="decision-title">
-  <div class="container">
-    <div class="banner">
-      <div>
-        <p class="logo-strip-title">#DEIN SYSTEM</p>
-        <h2 id="decision-title">Passt eHive One zu deiner Anlage?</h2>
-        <p>Prüfe deine Komponenten in der Integrationsliste oder sende uns deine Anlagenkonfiguration. Wir helfen dir vor dem Kauf bei der Prüfung von Wechselrichter, Speicher, Wallbox, Wärmepumpe und Energiezähler.</p>
-        <p>Für die netzdienliche Steuerung nach § 14a EnWG steht ein digitaler Eingang zur Verfügung. Ob und in welcher Höhe reduzierte Netzentgelte gelten, hängt von deinem Netzbetreiber, dem gewählten Modul und den örtlichen Voraussetzungen ab.</p>
-      </div>
-      <div>
-        <a class="btn link" href="https://www.ehiv3.de/contact.html" data-contact-link>Kompatibilität anfragen</a>
+<section class="section section-muted" aria-labelledby="decision-title">
+  <div class="container narrow">
+    <p class="logo-strip-title">#FRAG MICH</p>
+    <h2 id="decision-title">Passt eHive One zu deiner Anlage?</h2>
+    <div class="ai-question-block">
+      <h3>Prüfe deine Komponenten</h3>
+      <p>Gib Hersteller und Modell deiner Wallbox, PV-Anlage, deines Speichers, Wechselrichters, Energiezählers oder deiner Wärmepumpe ein. Du erhältst eine konkrete Einschätzung zu eHive One und evcc mit passenden Quellen.</p>
+      <form class="ai-compatibility-form" data-ai-compatibility-form>
+        <label for="homeAiCompatibilityDevice">Hersteller und Modell eingeben</label>
+        <div class="ai-compatibility-row">
+          <input id="homeAiCompatibilityDevice" name="device" type="text" placeholder="z. B. SMA Sunny Tripower 10.0 oder go-e Charger Gemini" autocomplete="off" required>
+          <button class="btn primary" type="submit">Frag mich</button>
+        </div>
+      </form>
+      <div class="ai-compatibility-result" data-ai-compatibility-result hidden aria-live="polite">
+        <p class="ai-compatibility-status" data-ai-compatibility-status></p>
+        <div data-ai-compatibility-answer></div>
+        <div class="ai-compatibility-sources" data-ai-compatibility-sources></div>
       </div>
     </div>
   </div>
 </section>
 
 <section class="section" aria-labelledby="community-title">
-  <div class="container">
-    <div class="banner">
-      <div>
-        <p class="logo-strip-title">#DEIN SYSTEM</p>
-        <h2 id="community-title">Zeig dein eHive System</h2>
-        <p>Du nutzt eHive One bereits? Teile deine Erfahrung und Fotos deiner Anlage mit der Community. Jeder Beitrag wird vor der Veröffentlichung geprüft.</p>
+  <div class="container narrow">
+    <p class="logo-strip-title">#DEIN SYSTEM</p>
+    <h2 id="community-title">Zeig dein eHive System</h2>
+    <p class="system-report-intro">Du nutzt eHive One bereits? Teile deine Erfahrung und Fotos deiner Anlage direkt mit der Community.</p>
+    <button class="btn primary system-report-toggle" type="button" data-system-report-toggle aria-expanded="false" aria-controls="systemReportForm">Bist du schon dabei? Dann zeig uns deine Anlage</button>
+    <form id="systemReportForm" class="system-report-form" data-system-report-form enctype="multipart/form-data" hidden>
+      <div class="system-report-grid">
+        <label>Dein Name oder Anzeigename<input name="displayName" type="text" minlength="2" maxlength="80" autocomplete="name" required></label>
+        <label>E-Mail-Adresse <span>Wird nicht veröffentlicht</span><input name="email" type="email" maxlength="254" autocomplete="email" required></label>
       </div>
-      <div><a class="btn link" href="kundenberichte.html">Bericht einreichen</a></div>
-    </div>
+      <label>Überschrift für deinen Bericht<input name="title" type="text" minlength="5" maxlength="120" placeholder="z. B. eHive One mit PV, Speicher und zwei Wallboxen" required></label>
+      <div class="system-report-grid system-report-content-grid">
+        <label>Welche Komponenten nutzt du?<textarea name="components" rows="5" minlength="10" maxlength="1000" placeholder="Hersteller und Modelle von Wechselrichter, Speicher, Wallbox, Wärmepumpe und Zähler" required></textarea></label>
+        <label>Dein Erfahrungsbericht<textarea name="report" rows="5" minlength="30" maxlength="5000" placeholder="Wie nutzt du eHive One und was funktioniert für dich besonders gut?" required></textarea></label>
+      </div>
+      <div class="system-report-grid system-report-media-grid">
+        <div class="system-report-photo-fields">
+          <label>Fotos deiner Anlage <span>1 bis 5 Bilder, JPEG, PNG oder WebP, jeweils maximal 8 MB</span><input name="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple required data-system-report-photos></label>
+          <label>Übersichtsbild <span>Dieses Bild erscheint in der Vorschau. Alle weiteren Fotos werden im geöffneten Beitrag als Galerie angezeigt.</span><select name="coverPhotoPosition" required data-system-report-cover><option value="">Zuerst Fotos auswählen</option></select></label>
+        </div>
+        <label>Kommentar zu den Fotos <span>Optional</span><textarea name="photoComment" rows="2" maxlength="1000" placeholder="Was ist auf den Bildern zu sehen?"></textarea></label>
+      </div>
+      <div class="system-report-photo-list" data-system-report-photo-list aria-live="polite"></div>
+      <label class="system-report-consent"><input name="consent" type="checkbox" value="yes" required><span>Ich darf die hochgeladenen Fotos und den Bericht veröffentlichen und bin mit der unmittelbaren Veröffentlichung auf dieser Website einverstanden. Die <a href="datenschutz.html">Datenschutzhinweise</a> habe ich gelesen.</span></label>
+      <div class="system-report-turnstile" data-system-report-turnstile></div>
+      <div class="system-report-actions"><button class="btn primary" type="submit">Senden</button><p>Dein Beitrag erscheint direkt nach dem Senden.</p></div>
+      <p class="system-report-status" data-system-report-status role="status" aria-live="polite"></p>
+    </form>
+    <section class="system-report-feed" aria-label="Community-Beiträge">
+      <div class="system-report-feed-grid" data-system-report-feed><p class="system-report-feed-empty">Noch keine Anlagenberichte veröffentlicht.</p></div>
+    </section>
   </div>
 </section>
 

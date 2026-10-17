@@ -1848,6 +1848,7 @@
         initVideoLightbox();
         initAddonDetails();
         initAiCompatibilityForm();
+        initSystemReportForm();
         renderNewsFeeds();
         window.addEventListener("resize", syncHeaderHeight);
         window.addEventListener("resize", syncHeroPretextOffset);
@@ -1862,6 +1863,57 @@
   });
 })();
 function initAiCompatibilityForm() {
+  const endpoint = "https://ehive-ai-worker.ehive.workers.dev/question";
+  const answerCacheKey = "ehive-ai-answer-cache-v1";
+  const answerCacheMaxAge = 7 * 24 * 60 * 60 * 1000;
+  const answerCacheLimit = 20;
+
+  const normalizeQuestion = (value) => value.normalize("NFKC").toLocaleLowerCase("de").replace(/\s+/g, " ").trim();
+
+  const readAnswerCache = () => {
+    try {
+      const entries = JSON.parse(localStorage.getItem(answerCacheKey) || "[]");
+      if (!Array.isArray(entries)) return [];
+      const cutoff = Date.now() - answerCacheMaxAge;
+      return entries.filter((entry) => entry && entry.savedAt >= cutoff && entry.question && entry.payload);
+    } catch (_) {
+      return [];
+    }
+  };
+
+  const findCachedAnswer = (question) => readAnswerCache().find((entry) => entry.question === normalizeQuestion(question));
+
+  const cacheAnswer = (question, payload) => {
+    try {
+      const normalized = normalizeQuestion(question);
+      const entries = readAnswerCache().filter((entry) => entry.question !== normalized);
+      entries.unshift({ question: normalized, savedAt: Date.now(), payload });
+      localStorage.setItem(answerCacheKey, JSON.stringify(entries.slice(0, answerCacheLimit)));
+    } catch (_) {
+      // The answer still works when browser storage is unavailable.
+    }
+  };
+
+  const getVisitorId = () => {
+    const storageKey = "ehive-ai-visitor";
+    try {
+      let visitorId = localStorage.getItem(storageKey);
+      if (!visitorId) {
+        visitorId = crypto.randomUUID();
+        localStorage.setItem(storageKey, visitorId);
+      }
+      return visitorId;
+    } catch (_) {
+      return crypto.randomUUID();
+    }
+  };
+
+  const cleanAnswerText = (value) => value
+    .replace(/\*\*/g, "")
+    .replace(/\s*\(\[[^\]]+\]\(https?:\/\/[^)]+\)\)/g, "")
+    .replace(/\[([^\]]+)\]\(https?:\/\/[^)]+\)/g, "$1")
+    .trim();
+
   const revealQuestion = () => {
     const questionBlock = document.querySelector("#ki-frage");
     if (!questionBlock) return;
@@ -1881,22 +1933,449 @@ function initAiCompatibilityForm() {
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
       const input = form.querySelector('input[name="device"]');
-      const status = form.querySelector("[data-ai-compatibility-status]");
+      const button = form.querySelector('button[type="submit"]');
+      const block = form.closest(".ai-question-block");
+      const result = block?.querySelector("[data-ai-compatibility-result]");
+      const status = result?.querySelector("[data-ai-compatibility-status]");
+      const answer = result?.querySelector("[data-ai-compatibility-answer]");
+      const sources = result?.querySelector("[data-ai-compatibility-sources]");
       const device = input?.value.trim();
       if (!device) {
         input?.focus();
         return;
       }
 
-      const prompt = `Ist ${device} mit evcc und eHive One kompatibel? Prüfe möglichst die aktuelle offizielle evcc-Dokumentation. Erkläre, ob das Gerät lokal angebunden werden kann, welches Protokoll oder welche Schnittstelle verwendet wird und welche Voraussetzungen oder Einschränkungen es gibt. Verlinke deine Quellen.`;
-      window.open("https://chatgpt.com/", "_blank", "noopener,noreferrer");
+      const renderAnswer = (payload, cached = false) => {
+        if (status) status.textContent = cached ? "Gespeicherte KI-Antwort" : "KI-Antwort";
+        if (answer) answer.replaceChildren();
+        if (sources) sources.replaceChildren();
+        cleanAnswerText(payload.answer || "").split(/\n{2,}/).filter(Boolean).forEach((text) => {
+          const paragraph = document.createElement("p");
+          paragraph.textContent = text;
+          answer?.appendChild(paragraph);
+        });
+
+        if (sources && Array.isArray(payload.sources) && payload.sources.length) {
+          const heading = document.createElement("strong");
+          heading.textContent = "Quellen";
+          const list = document.createElement("ul");
+          payload.sources.forEach((source) => {
+            if (!source?.url) return;
+            const item = document.createElement("li");
+            const link = document.createElement("a");
+            link.href = source.url;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+            link.textContent = source.title || source.url;
+            item.appendChild(link);
+            list.appendChild(item);
+          });
+          sources.append(heading, list);
+        }
+      };
+
+      if (result) result.hidden = false;
+      const cached = findCachedAnswer(device);
+      if (cached) {
+        renderAnswer(cached.payload, true);
+        return;
+      }
+
+      if (status) status.textContent = "Kompatibilität wird geprüft …";
+      if (answer) answer.replaceChildren();
+      if (sources) sources.replaceChildren();
+      if (button) {
+        button.disabled = true;
+        button.setAttribute("aria-busy", "true");
+      }
 
       try {
-        await navigator.clipboard.writeText(prompt);
-        if (status) status.textContent = "Frage kopiert – jetzt in ChatGPT einfügen und absenden.";
-      } catch (_) {
-        if (status) status.textContent = `Kopiere diese Frage in ChatGPT: ${prompt}`;
+        const response = await fetch(endpoint, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ question: device, visitorId: getVisitorId() })
+        });
+        const payload = await response.json();
+        if (!response.ok) throw new Error(payload.error || "Die Anfrage ist fehlgeschlagen.");
+        cacheAnswer(device, payload);
+        renderAnswer(payload);
+      } catch (error) {
+        if (status) status.textContent = error instanceof Error ? error.message : "Die KI-Antwort konnte nicht erstellt werden.";
+      } finally {
+        if (button) {
+          button.disabled = false;
+          button.removeAttribute("aria-busy");
+        }
       }
     });
+  });
+}
+
+const closingCta = document.querySelector(".cta-panel");
+if (closingCta) {
+  const revealClosingCta = () => closingCta.classList.add("is-visible");
+  if ("IntersectionObserver" in window) {
+    const closingCtaObserver = new IntersectionObserver(([entry], observer) => {
+      if (!entry.isIntersecting) return;
+      revealClosingCta();
+      observer.disconnect();
+    }, { threshold: 0.35 });
+    closingCtaObserver.observe(closingCta);
+  } else {
+    revealClosingCta();
+  }
+}
+
+function initSystemReportForm() {
+  const form = document.querySelector("[data-system-report-form]");
+  if (!form) return;
+  const isLocal = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+  const endpoint = isLocal ? "http://127.0.0.1:8787/system-report" : "https://ehive-ai-worker.ehive.workers.dev/system-report";
+  const reportsEndpoint = isLocal ? "http://127.0.0.1:8787/system-reports" : "https://ehive-ai-worker.ehive.workers.dev/system-reports";
+  const siteKey = isLocal ? "1x00000000000000000000AA" : (window.EHIVE_SHOP_CONFIG?.site?.turnstileSiteKey || "");
+  const ownershipKey = "ehive-report-edit-tokens-v1";
+  const photoInput = form.querySelector("[data-system-report-photos]");
+  const coverSelect = form.querySelector("[data-system-report-cover]");
+  const photoList = form.querySelector("[data-system-report-photo-list]");
+  const status = form.querySelector("[data-system-report-status]");
+  const button = form.querySelector('button[type="submit"]');
+  const actionNote = form.querySelector(".system-report-actions p");
+  const turnstileTarget = form.querySelector("[data-system-report-turnstile]");
+  const feed = document.querySelector("[data-system-report-feed]");
+  const toggleButton = document.querySelector("[data-system-report-toggle]");
+  let turnstileWidgetId = null;
+  let turnstileTimer = null;
+  let editingId = "";
+  let editingToken = "";
+
+  const ensureTurnstile = () => {
+    if (!siteKey || !turnstileTarget || turnstileWidgetId !== null || turnstileTimer !== null) return;
+    turnstileTimer = window.setInterval(() => {
+      if (!window.turnstile) return;
+      window.clearInterval(turnstileTimer);
+      turnstileTimer = null;
+      turnstileWidgetId = window.turnstile.render(turnstileTarget, { sitekey: siteKey, theme: "light" });
+    }, 100);
+    window.setTimeout(() => {
+      if (turnstileTimer === null) return;
+      window.clearInterval(turnstileTimer);
+      turnstileTimer = null;
+    }, 10000);
+  };
+
+  const setFormOpen = (open) => {
+    form.hidden = !open;
+    toggleButton?.setAttribute("aria-expanded", String(open));
+    if (toggleButton) toggleButton.textContent = open ? "Formular schließen" : "Bist du schon dabei? Dann zeig uns deine Anlage";
+    if (open) ensureTurnstile();
+  };
+
+  toggleButton?.addEventListener("click", () => setFormOpen(form.hidden));
+
+  const readOwnership = () => {
+    try {
+      const value = JSON.parse(localStorage.getItem(ownershipKey) || "{}");
+      return value && typeof value === "object" ? value : {};
+    } catch (_) {
+      return {};
+    }
+  };
+
+  const saveOwnership = (reportId, editToken, email) => {
+    const entries = readOwnership();
+    entries[reportId] = { editToken, email };
+    localStorage.setItem(ownershipKey, JSON.stringify(entries));
+  };
+
+  const removeOwnership = (reportId) => {
+    const entries = readOwnership();
+    delete entries[reportId];
+    localStorage.setItem(ownershipKey, JSON.stringify(entries));
+  };
+
+  const resetFormMode = () => {
+    editingId = "";
+    editingToken = "";
+    form.removeAttribute("data-editing-report");
+    if (photoInput) photoInput.required = true;
+    if (coverSelect) coverSelect.innerHTML = '<option value="">Zuerst Fotos auswählen</option>';
+    if (button) button.textContent = "Senden";
+    if (actionNote) actionNote.textContent = "Dein Beitrag erscheint direkt nach dem Senden.";
+  };
+
+  const startEditing = (report, ownership) => {
+    setFormOpen(true);
+    editingId = report.id;
+    editingToken = ownership.editToken;
+    form.setAttribute("data-editing-report", report.id);
+    form.elements.displayName.value = report.displayName || "";
+    form.elements.email.value = ownership.email || "";
+    form.elements.title.value = report.title || "";
+    form.elements.components.value = report.components || "";
+    form.elements.report.value = report.report || "";
+    form.elements.photoComment.value = report.photoComment || "";
+    form.elements.consent.checked = false;
+    if (photoInput) photoInput.required = false;
+    if (coverSelect) {
+      coverSelect.replaceChildren();
+      (report.photos || []).forEach((_, index) => {
+        const option = document.createElement("option");
+        option.value = String(index + 1);
+        option.textContent = `Vorhandenes Bild ${index + 1}`;
+        coverSelect.appendChild(option);
+      });
+      coverSelect.value = String(report.coverPhotoPosition || 1);
+    }
+    if (button) button.textContent = "Änderungen speichern";
+    if (actionNote) actionNote.textContent = "Ohne neue Bildauswahl bleiben deine bisherigen Fotos erhalten.";
+    if (status) {
+      status.className = "system-report-status";
+      status.textContent = "Du bearbeitest deinen veröffentlichten Beitrag.";
+    }
+    form.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  const loadPublishedReports = async () => {
+    if (!feed) return;
+    try {
+      const response = await fetch(reportsEndpoint);
+      const payload = await response.json();
+      if (!response.ok) throw new Error();
+      feed.replaceChildren();
+      if (!Array.isArray(payload.reports) || !payload.reports.length) {
+        const empty = document.createElement("p");
+        empty.className = "system-report-feed-empty";
+        empty.textContent = "Noch keine Anlagenberichte veröffentlicht.";
+        feed.appendChild(empty);
+        return;
+      }
+      const ownershipEntries = readOwnership();
+      payload.reports.forEach((report) => {
+        const card = document.createElement("details");
+        card.className = "system-report-card";
+        const preview = document.createElement("summary");
+        preview.className = "system-report-card-preview";
+        const reportPhotos = Array.isArray(report.photos) ? report.photos : [];
+        if (reportPhotos.length) {
+          card.classList.add("has-photos");
+          const imageWrap = document.createElement("div");
+          imageWrap.className = "system-report-card-preview-image";
+          const image = document.createElement("img");
+          const coverIndex = Math.min(Math.max(Number(report.coverPhotoPosition || 1) - 1, 0), reportPhotos.length - 1);
+          image.src = reportPhotos[coverIndex];
+          image.alt = `Anlage von ${report.displayName}`;
+          image.loading = "lazy";
+          imageWrap.appendChild(image);
+          preview.appendChild(imageWrap);
+        }
+        const previewCopy = document.createElement("div");
+        previewCopy.className = "system-report-card-preview-copy";
+        const meta = document.createElement("p");
+        meta.className = "system-report-card-meta";
+        const reportDate = new Date(`${report.createdAt.replace(" ", "T")}Z`);
+        const formattedDate = Number.isNaN(reportDate.getTime()) ? "" : reportDate.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
+        meta.textContent = formattedDate ? `${report.displayName} · ${formattedDate}` : report.displayName;
+        const heading = document.createElement("h4");
+        heading.textContent = report.title;
+        const facts = document.createElement("div");
+        facts.className = "system-report-card-facts";
+        String(report.components || "").split(/[,;\n]/).map((value) => value.trim()).filter(Boolean).slice(0, 5).forEach((value) => {
+          const fact = document.createElement("span");
+          fact.textContent = value;
+          facts.appendChild(fact);
+        });
+        const openHint = document.createElement("span");
+        openHint.className = "system-report-card-open-hint";
+        openHint.textContent = "Beitrag";
+        previewCopy.append(meta, heading, facts, openHint);
+        preview.appendChild(previewCopy);
+        card.appendChild(preview);
+
+        const detail = document.createElement("div");
+        detail.className = "system-report-card-detail";
+        if (reportPhotos.length) {
+          const gallery = document.createElement("div");
+          gallery.className = "system-report-card-gallery";
+          reportPhotos.forEach((url, index) => {
+            const image = document.createElement("img");
+            image.src = url;
+            image.alt = index === 0 ? `Anlage von ${report.displayName}` : `Weiteres Anlagenfoto von ${report.displayName}`;
+            image.loading = "lazy";
+            gallery.appendChild(image);
+          });
+          detail.appendChild(gallery);
+        }
+        const fullCopy = document.createElement("div");
+        fullCopy.className = "system-report-card-full-copy";
+        const componentLabel = document.createElement("strong");
+        componentLabel.className = "system-report-card-label";
+        componentLabel.textContent = "System";
+        const components = document.createElement("p");
+        components.className = "system-report-card-components";
+        components.textContent = report.components;
+        const body = document.createElement("p");
+        body.className = "system-report-card-report";
+        body.textContent = report.report;
+        fullCopy.append(componentLabel, components, body);
+        if (report.photoComment) {
+          const comment = document.createElement("p");
+          comment.className = "system-report-card-photo-comment";
+          comment.textContent = report.photoComment;
+          fullCopy.appendChild(comment);
+        }
+        const ownership = ownershipEntries[report.id];
+        if (ownership?.editToken) {
+          const actions = document.createElement("div");
+          actions.className = "system-report-card-actions";
+          const editButton = document.createElement("button");
+          editButton.className = "btn link";
+          editButton.type = "button";
+          editButton.textContent = "Bearbeiten";
+          editButton.addEventListener("click", () => startEditing(report, ownership));
+          const deleteButton = document.createElement("button");
+          deleteButton.className = "btn link system-report-delete";
+          deleteButton.type = "button";
+          deleteButton.textContent = "Löschen";
+          deleteButton.addEventListener("click", async () => {
+            if (!window.confirm("Möchtest du deinen Beitrag und alle Fotos wirklich löschen?")) return;
+            deleteButton.disabled = true;
+            try {
+              const response = await fetch(`${endpoint}/${report.id}`, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ editToken: ownership.editToken })
+              });
+              const payload = await response.json();
+              if (!response.ok) throw new Error(payload.error || "Der Beitrag konnte nicht gelöscht werden.");
+              removeOwnership(report.id);
+              if (editingId === report.id) {
+                form.reset();
+                resetFormMode();
+              }
+              await loadPublishedReports();
+            } catch (error) {
+              window.alert(error instanceof Error ? error.message : "Der Beitrag konnte nicht gelöscht werden.");
+              deleteButton.disabled = false;
+            }
+          });
+          actions.append(editButton, deleteButton);
+          fullCopy.appendChild(actions);
+        }
+        detail.appendChild(fullCopy);
+        card.appendChild(detail);
+        feed.appendChild(card);
+      });
+    } catch (_) {
+      const empty = feed.querySelector(".system-report-feed-empty");
+      if (empty) empty.textContent = "Die Anlagenberichte konnten gerade nicht geladen werden.";
+    }
+  };
+
+  loadPublishedReports();
+
+  const getVisitorId = () => {
+    const storageKey = "ehive-report-visitor";
+    try {
+      let value = localStorage.getItem(storageKey);
+      if (!value) {
+        value = crypto.randomUUID();
+        localStorage.setItem(storageKey, value);
+      }
+      return value;
+    } catch (_) {
+      return crypto.randomUUID();
+    }
+  };
+
+  if (!siteKey && status) {
+    status.textContent = "Das Formular wird noch für die Veröffentlichung eingerichtet.";
+  }
+
+  photoInput?.addEventListener("change", () => {
+    if (!photoList) return;
+    photoList.replaceChildren();
+    const files = Array.from(photoInput.files || []);
+    if (coverSelect && (files.length || !editingId)) {
+      coverSelect.replaceChildren();
+      if (!files.length) {
+        const option = document.createElement("option");
+        option.value = "";
+        option.textContent = "Zuerst Fotos auswählen";
+        coverSelect.appendChild(option);
+      } else {
+        files.slice(0, 5).forEach((file, index) => {
+          const option = document.createElement("option");
+          option.value = String(index + 1);
+          option.textContent = `${index + 1}. ${file.name}`;
+          coverSelect.appendChild(option);
+        });
+        coverSelect.value = "1";
+      }
+    }
+    files.slice(0, 5).forEach((file) => {
+      const item = document.createElement("span");
+      item.textContent = `${file.name} · ${(file.size / 1024 / 1024).toFixed(1)} MB`;
+      photoList.appendChild(item);
+    });
+    if (files.length > 5) {
+      const warning = document.createElement("span");
+      warning.textContent = "Bitte höchstens 5 Bilder auswählen.";
+      photoList.appendChild(warning);
+    }
+  });
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+    const files = Array.from(photoInput?.files || []);
+    const invalidPhotoCount = editingId ? files.length > 5 : files.length < 1 || files.length > 5;
+    if (invalidPhotoCount || files.some((file) => file.size > 8 * 1024 * 1024)) {
+      if (status) {
+        status.className = "system-report-status is-error";
+        status.textContent = "Bitte wähle ein bis fünf Bilder mit jeweils maximal 8 MB aus.";
+      }
+      return;
+    }
+
+    const data = new FormData(form);
+    data.set("visitorId", getVisitorId());
+    if (editingId) data.set("editToken", editingToken);
+    if (status) {
+      status.className = "system-report-status";
+      status.textContent = "Dein Bericht und die Fotos werden übertragen …";
+    }
+    if (button) {
+      button.disabled = true;
+      button.setAttribute("aria-busy", "true");
+    }
+
+    try {
+      const email = String(form.elements.email.value || "");
+      const response = await fetch(editingId ? `${endpoint}/${editingId}` : endpoint, { method: editingId ? "PATCH" : "POST", body: data });
+      const payload = await response.json();
+      if (!response.ok) throw new Error(payload.error || "Der Bericht konnte nicht gespeichert werden.");
+      if (!editingId && payload.id && payload.editToken) saveOwnership(payload.id, payload.editToken, email);
+      if (status) {
+        status.className = "system-report-status is-success";
+        status.textContent = payload.message;
+      }
+      form.reset();
+      photoList?.replaceChildren();
+      resetFormMode();
+      setFormOpen(false);
+      if (window.turnstile && turnstileWidgetId !== null) window.turnstile.reset(turnstileWidgetId);
+      await loadPublishedReports();
+    } catch (error) {
+      if (status) {
+        status.className = "system-report-status is-error";
+        status.textContent = error instanceof Error ? error.message : "Der Bericht konnte nicht gespeichert werden.";
+      }
+      if (window.turnstile && turnstileWidgetId !== null) window.turnstile.reset(turnstileWidgetId);
+    } finally {
+      if (button) {
+        button.disabled = false;
+        button.removeAttribute("aria-busy");
+      }
+    }
   });
 }

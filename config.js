@@ -15,7 +15,8 @@
 
 window.EHIVE_SHOP_CONFIG = {
   site: {
-    origin: "https://www.ehiv3.de"
+    origin: "https://www.ehiv3.de",
+    turnstileSiteKey: "0x4AAAAAAFZn4yx-mRLpMWTo"
   },
 
   brand: {
