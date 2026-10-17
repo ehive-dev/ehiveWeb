@@ -1849,6 +1849,7 @@
         initAddonDetails();
         initAiCompatibilityForm();
         initSystemReportForm();
+        initPrivacyFriendlyAnalytics();
         renderNewsFeeds();
         window.addEventListener("resize", syncHeaderHeight);
         window.addEventListener("resize", syncHeroPretextOffset);
@@ -1982,6 +1983,7 @@ function initAiCompatibilityForm() {
       }
 
       if (status) status.textContent = "Kompatibilität wird geprüft …";
+      window.eHiveTrack?.("ai_question_started");
       if (answer) answer.replaceChildren();
       if (sources) sources.replaceChildren();
       if (button) {
@@ -1999,6 +2001,7 @@ function initAiCompatibilityForm() {
         if (!response.ok) throw new Error(payload.error || "Die Anfrage ist fehlgeschlagen.");
         cacheAnswer(device, payload);
         renderAnswer(payload);
+        window.eHiveTrack?.("ai_question_answered");
       } catch (error) {
         if (status) status.textContent = error instanceof Error ? error.message : "Die KI-Antwort konnte nicht erstellt werden.";
       } finally {
@@ -2008,6 +2011,36 @@ function initAiCompatibilityForm() {
         }
       }
     });
+  });
+}
+
+function initPrivacyFriendlyAnalytics() {
+  const endpoint = "https://ehive-ai-worker.ehive.workers.dev/analytics";
+  const storageKey = "ehive-analytics-visitor";
+  const visitorId = (() => {
+    try {
+      let value = localStorage.getItem(storageKey);
+      if (!value) {
+        value = crypto.randomUUID();
+        localStorage.setItem(storageKey, value);
+      }
+      return value;
+    } catch (_) { return crypto.randomUUID(); }
+  })();
+  const track = (event) => fetch(endpoint, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ event, path: window.location.pathname, visitorId }),
+    keepalive: true
+  }).catch(() => {});
+  window.eHiveTrack = track;
+  document.addEventListener("click", (clickEvent) => {
+    const link = clickEvent.target.closest("a[href]");
+    if (!link) return;
+    const href = link.getAttribute("href") || "";
+    if (/eHive-One-Datenblatt\.pdf/i.test(href)) track("datasheet_download");
+    else if (/ehive-dev\.github\.io\/doc|docs\.evcc\.io/i.test(href)) track("documentation_opened");
+    else if (/shop\.html/i.test(href)) track("shop_opened");
   });
 }
 
@@ -2261,6 +2294,29 @@ function initSystemReportForm() {
           actions.append(editButton, deleteButton);
           fullCopy.appendChild(actions);
         }
+        const flagButton = document.createElement("button");
+        flagButton.className = "system-report-flag";
+        flagButton.type = "button";
+        flagButton.textContent = "Beitrag melden";
+        flagButton.addEventListener("click", async () => {
+          const reason = window.prompt("Warum möchtest du diesen Beitrag melden?");
+          if (!reason) return;
+          flagButton.disabled = true;
+          try {
+            const response = await fetch(`${endpoint}/${report.id}/flag`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ reason, visitorId: getVisitorId() })
+            });
+            const payload = await response.json();
+            if (!response.ok) throw new Error(payload.error || "Die Meldung konnte nicht gesendet werden.");
+            flagButton.textContent = "Gemeldet – danke";
+          } catch (error) {
+            window.alert(error instanceof Error ? error.message : "Die Meldung konnte nicht gesendet werden.");
+            flagButton.disabled = false;
+          }
+        });
+        fullCopy.appendChild(flagButton);
         detail.appendChild(fullCopy);
         card.appendChild(detail);
         feed.appendChild(card);
@@ -2355,6 +2411,7 @@ function initSystemReportForm() {
       const payload = await response.json();
       if (!response.ok) throw new Error(payload.error || "Der Bericht konnte nicht gespeichert werden.");
       if (!editingId && payload.id && payload.editToken) saveOwnership(payload.id, payload.editToken, email);
+      if (!editingId) window.eHiveTrack?.("community_report_sent");
       if (status) {
         status.className = "system-report-status is-success";
         status.textContent = payload.message;
