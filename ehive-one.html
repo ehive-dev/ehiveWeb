@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>eHive One – evcc Hardware für die Hutschiene</title>
+  <meta name="description" content="eHive One ist die lokale Hardwareplattform für evcc im Schaltschrank. Für PV, Wallbox, Speicher und Wärmepumpe – mit RS485, Digitaleingang und PoE.">
+  <link rel="canonical" href="https://www.ehiv3.de/ehive-one.html">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <meta property="og:type" content="product">
+  <meta property="og:site_name" content="eHive">
+  <meta property="og:title" content="eHive One – evcc Hardware für die Hutschiene">
+  <meta property="og:description" content="Lokales Energiemanagement für PV, Speicher, Wallbox und Wärmepumpe – kompakt im Schaltschrank.">
+  <meta property="og:url" content="https://www.ehiv3.de/ehive-one.html">
+  <meta property="og:image" content="https://www.ehiv3.de/products/ehive-one.png">
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {"@type":"BreadcrumbList","itemListElement":[
+        {"@type":"ListItem","position":1,"name":"Home","item":"https://www.ehiv3.de/"},
+        {"@type":"ListItem","position":2,"name":"eHive One","item":"https://www.ehiv3.de/ehive-one.html"}
+      ]},
+      {"@type":"ProductGroup","@id":"https://www.ehiv3.de/ehive-one.html#product",
+       "name":"eHive One","description":"Lokale Hardwareplattform für evcc und weitere Open-Source-Anwendungen im Schaltschrank.",
+       "brand":{"@type":"Brand","name":"eHive"},"productGroupID":"EHIVE-ONE","variesBy":"https://schema.org/softwareAddOn",
+       "image":["https://www.ehiv3.de/products/ehive-one.png"],
+       "hasVariant":[
+        {"@type":"Product","name":"eHive One ohne evcc-Lizenz","sku":"EHIVE-ONE-BASE","image":"https://www.ehiv3.de/products/ehive-one.png","offers":{"@type":"Offer","url":"https://www.ehiv3.de/shop.html","price":"319.00","priceCurrency":"EUR","availability":"https://schema.org/InStock","itemCondition":"https://schema.org/NewCondition"}},
+        {"@type":"Product","name":"eHive One mit evcc-Lizenz","sku":"EHIVE-ONE-EVCC","image":"https://www.ehiv3.de/products/ehive-one.png","offers":{"@type":"Offer","url":"https://www.ehiv3.de/shop.html","price":"389.00","priceCurrency":"EUR","availability":"https://schema.org/InStock","itemCondition":"https://schema.org/NewCondition"}}
+       ]},
+      {"@type":"FAQPage","mainEntity":[
+        {"@type":"Question","name":"Funktioniert eHive One ohne Cloud?","acceptedAnswer":{"@type":"Answer","text":"Ja. Kernfunktionen und Datenverarbeitung laufen lokal. Für Updates, optionale externe Dienste oder einen eingerichteten Fernzugriff kann eine Internetverbindung erforderlich sein."}},
+        {"@type":"Question","name":"Ist evcc bereits installiert?","acceptedAnswer":{"@type":"Answer","text":"eHive One ist als Variante mit oder ohne evcc-Lizenz erhältlich. Die konkrete Anlage muss anschließend mit ihren Geräten eingerichtet werden."}},
+        {"@type":"Question","name":"Kann ich meine vorhandene Wallbox oder PV-Anlage weiterverwenden?","acceptedAnswer":{"@type":"Answer","text":"Wenn die Geräte von evcc oder einer installierten Anwendung unterstützt werden und lokal erreichbar sind, ist eine Einbindung grundsätzlich möglich. Vor dem Kauf sollte die aktuelle Kompatibilitätsliste geprüft werden."}},
+        {"@type":"Question","name":"Wer darf eHive One im Schaltschrank montieren?","acceptedAnswer":{"@type":"Answer","text":"Arbeiten im elektrischen Verteiler gehören in die Hände einer qualifizierten Elektrofachkraft. Die Software kann anschließend im lokalen Netzwerk eingerichtet werden."}},
+        {"@type":"Question","name":"Benötigt eHive One dauerhaft eine Internetverbindung?","acceptedAnswer":{"@type":"Answer","text":"Für die lokale Bedienung und viele lokale Geräteverbindungen ist keine dauerhafte Internetverbindung notwendig. Externe Fahrzeugdienste, Tarifdaten, Prognosen, Fernzugriff und Updates können Internetzugriff benötigen."}},
+        {"@type":"Question","name":"Wie wird eHive One mit Strom versorgt?","acceptedAnswer":{"@type":"Answer","text":"Die Versorgung erfolgt über 12 bis 30 Volt Gleichspannung, Power over Ethernet oder redundant über beide Anschlüsse gleichzeitig. Fällt eine Versorgungsquelle aus, übernimmt die verbleibende Quelle die Versorgung."}},
+        {"@type":"Question","name":"Welche Schnittstellen besitzt eHive One?","acceptedAnswer":{"@type":"Answer","text":"eHive One bietet Ethernet, RS485, einen Digitaleingang und USB-C. Welche Schnittstelle verwendet wird, hängt vom angeschlossenen Gerät und dessen Protokoll ab."}},
+        {"@type":"Question","name":"Welche Rolle spielt EEBUS im Energiemanagement?","acceptedAnswer":{"@type":"Answer","text":"EEBUS ist ein standardisiertes Kommunikationsmodell für den Austausch energierelevanter Informationen zwischen Geräten, Energiemanagement und Steuerungseinrichtung. Ob EEBUS in einer konkreten eHive-Anlage genutzt werden kann, hängt vom Softwarestand und allen beteiligten Komponenten ab."}},
+        {"@type":"Question","name":"Was bedeutet § 14a EnWG für eHive One?","acceptedAnswer":{"@type":"Answer","text":"§ 14a EnWG betrifft die netzorientierte Steuerung bestimmter Verbrauchseinrichtungen. Der digitale Eingang des eHive One kann ein externes Steuersignal in das lokale Energiemanagement übernehmen. Die konkrete Umsetzung muss mit Elektrofachbetrieb, Netzbetreiber und den beteiligten Geräten geplant werden."}},
+        {"@type":"Question","name":"Was regelt § 9 EEG bei einer PV-Anlage?","acceptedAnswer":{"@type":"Answer","text":"§ 9 EEG enthält technische Vorgaben für Erzeugungsanlagen. Dazu gehören je nach Anlage Voraussetzungen für den Abruf der Ist-Einspeisung und die ferngesteuerte Regelung der Einspeiseleistung. Die im Einzelfall geltenden Anforderungen müssen fachlich geprüft werden."}},
+        {"@type":"Question","name":"Kann ich eHive One von unterwegs erreichen?","acceptedAnswer":{"@type":"Answer","text":"Ein optionaler, abgesicherter Fernzugriff kann eingerichtet werden. Die lokale Oberfläche sollte nicht ungeschützt direkt aus dem Internet erreichbar gemacht werden."}},
+        {"@type":"Question","name":"Kann eHive One neben evcc weitere Anwendungen ausführen?","acceptedAnswer":{"@type":"Answer","text":"Der SmartHub ist für zusätzliche Anwendungen und Erweiterungen ausgelegt. Der verfügbare Umfang hängt von der jeweiligen Softwareversion und Konfiguration ab."}},
+        {"@type":"Question","name":"Wie funktionieren USB-Backup und Wiederherstellung?","acceptedAnswer":{"@type":"Answer","text":"Ab SmartHub 1.1.6 kann ein portables System-Backup auf einem vorbereiteten USB-Stick erstellt und per Prüfsumme geprüft werden. Eine automatische Voll-Wiederherstellung ist derzeit nicht freigegeben; ein Restore nach Gerätetausch wird durch Service oder Installateur durchgeführt."}},
+        {"@type":"Question","name":"Kann ich einen USB-Massenspeicher am eHive One verwenden?","acceptedAnswer":{"@type":"Answer","text":"Ja. Ein vorbereiteter USB-Stick oder USB-Massenspeicher kann für Systembackups, Konfigurationsaustausch, Statusdateien und Diagnose-Logs verwendet werden. Empfohlen wird ein vertrauenswürdiger, mit FAT32 oder exFAT formatierter Datenträger. Die jeweils aktuelle Anleitung beschreibt die benötigte Kennzeichnung und Ordnerstruktur."}},
+        {"@type":"Question","name":"Kann ich eHive One über WLAN verbinden?","acceptedAnswer":{"@type":"Answer","text":"Ja. SmartHub kann einen kompatiblen physischen USB-WLAN-Adapter erkennen, aktivieren und konfigurieren. SSID sowie DHCP oder eine statische IP-Adresse werden in den Netzwerkeinstellungen eingerichtet. Die Unterstützung hängt vom verwendeten WLAN-Adapter und Softwarestand ab."}},
+        {"@type":"Question","name":"Kann ich PoE und die 12–30-V-Klemme gleichzeitig verwenden?","acceptedAnswer":{"@type":"Answer","text":"Ja. PoE und die 12–30-V-DC-Klemme dürfen gleichzeitig angeschlossen werden und bilden eine redundante Versorgung. Fällt eine Quelle aus, übernimmt die verbleibende Quelle die Versorgung."}}
+      ]}
+    ]
+  }
+  </script>
+</head>
+<body class="content-page">
+<div data-include="header"></div>
+<main>
+  <section class="product-hero">
+    <div class="container product-hero-grid">
+      <div class="product-hero-copy">
+        <p class="eyebrow">eHive One · lokal · offen · Hutschiene</p>
+        <h1>Die Hardware für evcc im Schaltschrank.</h1>
+        <p class="lead">eHive One verbindet PV-Anlage, Speicher, Wallbox, Wärmepumpe und weitere Verbraucher auf einer kompakten, lokal betriebenen Plattform.</p>
+        <div class="product-actions">
+          <a class="product-buy-link" href="shop.html">Ab 319 € kaufen</a>
+          <div class="product-resource-links">
+            <a href="https://ehive-dev.github.io/doc/" target="_blank" rel="noopener noreferrer">Dokumentation</a>
+            <a href="products/eHive-One-Datenblatt.pdf" target="_blank" rel="noopener">Datenblatt</a>
+          </div>
+        </div>
+        <ul class="trust-row" aria-label="Produkteigenschaften">
+          <li>Keine Pflicht-Cloud</li><li>ca. 3 W typisch</li><li>12–30 V DC oder PoE</li>
+        </ul>
+      </div>
+      <div class="product-visual">
+        <img src="products/ehive-one.png" alt="eHive One Hutschienen-Computer für evcc" width="900" height="900">
+      </div>
+    </div>
+  </section>
+
+  <section class="answer-strip">
+    <div class="container narrow">
+      <h2>Was ist eHive One?</h2>
+      <p>eHive One ist eine kompakte Plattform für lokales Energiemanagement auf der Hutschiene. Sie führt Energieflüsse, Ladepunkte und Automatisierungen zentral zusammen und ist für den dauerhaften Einbau im Schaltschrank ausgelegt. Die angeschlossenen Geräte bleiben herstellerübergreifend kombinierbar; Steuerung und Betriebsdaten liegen im lokalen Netzwerk.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-title"><div><p class="eyebrow">Ein System statt Insellösungen</p><h2>Für die Energieflüsse im ganzen Haus</h2></div></div>
+      <div class="feature-grid">
+        <article class="info-card"><h3>PV &amp; Speicher</h3><p>Erzeugung, Netzbezug und Speicherstatus zusammenführen und für automatisierte Entscheidungen nutzen.</p></article>
+        <article class="info-card"><h3>Wallbox &amp; Fahrzeug</h3><p>PV-Überschussladen, dynamische Tarife, Ladepläne und kompatible Fahrzeuge zentral in evcc verwalten.</p></article>
+        <article class="info-card"><h3>Wärmepumpe &amp; Verbraucher</h3><p>Steuerbare Verbraucher und SG-Ready-Signale über vorhandene Schnittstellen in das Energiemanagement einbinden.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-muted" id="technische-daten">
+    <div class="container split-content">
+      <div>
+        <p class="eyebrow">Für den Schaltschrank gedacht</p>
+        <h2>Technische Daten</h2>
+        <p>Die kompakte Bauform, industrielle Spannungsversorgung und der SLC-Speicher sind auf einen zuverlässigen Dauerbetrieb ausgelegt.</p>
+        <p><a class="product-resource-link" href="products/eHive-One-Datenblatt.pdf" download="eHive-One-Datenblatt.pdf">Datenblatt herunterladen</a></p>
+      </div>
+      <dl class="spec-table">
+        <div><dt>Montage</dt><dd>DIN-Schiene / Hutschiene</dd></div>
+        <div><dt>Versorgung</dt><dd>12–30 V DC, PoE oder redundant über beide Quellen</dd></div>
+        <div><dt>Leistungsaufnahme</dt><dd>ca. 3 W typisch, max. 5 W</dd></div>
+        <div><dt>Schnittstellen</dt><dd>Ethernet, RS485, Digitaleingang, USB-C</dd></div>
+        <div><dt>Speicher</dt><dd>SLC, bis zu 100.000 Schreib-/Lesezyklen</dd></div>
+        <div><dt>Speichertemperatur</dt><dd>−40 °C bis +85 °C</dd></div>
+        <div><dt>Schutzart</dt><dd>IP20</dd></div>
+        <div><dt>Varianten</dt><dd>Ohne evcc-Lizenz oder mit evcc-Lizenz</dd></div>
+        <div><dt>Software</dt><dd>SmartHub, optional evcc und weitere Apps</dd></div>
+        <div><dt>Betriebsweise</dt><dd>Lokal, Fernzugriff optional</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-title"><div><p class="eyebrow">Entscheidungshilfe</p><h2>Wann passt eHive One?</h2></div></div>
+      <div class="comparison-wrap">
+        <table class="comparison-table">
+          <thead><tr><th>Merkmal</th><th>eHive One</th><th>Hersteller-HEMS</th></tr></thead>
+          <tbody>
+            <tr><th>Montage</th><td>Hutschiene</td><td>modellabhängig</td></tr>
+            <tr><th>Geräteauswahl</th><td>herstellerübergreifend</td><td>oft Hersteller-Ökosystem</td></tr>
+            <tr><th>Einrichtung</th><td>SmartHub &amp; QR-Setup</td><td>Installateur/App</td></tr>
+            <tr><th>Datenhaltung</th><td>lokal</td><td>häufig Cloud-Anteil</td></tr>
+            <tr><th>RS485 / Digitaleingang</th><td>integriert</td><td>modellabhängig</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-muted" id="faq">
+    <div class="container narrow">
+      <p class="eyebrow">Kurz beantwortet</p><h2>Häufige Fragen</h2>
+      <div id="ki-frage" class="ai-question-block">
+        <h3>Passt deine vorhandene Technik?</h3>
+        <p>Gib Hersteller und Modell deiner Wallbox, PV-Anlage oder eines anderen Geräts ein. Wir bereiten eine konkrete Frage für ChatGPT vor.</p>
+        <form class="ai-compatibility-form" data-ai-compatibility-form>
+          <label for="aiCompatibilityDevice">Hersteller und Modell eingeben</label>
+          <div class="ai-compatibility-row">
+            <input id="aiCompatibilityDevice" name="device" type="text" placeholder="z. B. SMA Sunny Tripower 10.0 oder go-e Charger Gemini" autocomplete="off" required>
+            <button class="btn primary" type="submit">Frage kopieren &amp; ChatGPT öffnen</button>
+          </div>
+          <p class="ai-compatibility-status" data-ai-compatibility-status role="status" aria-live="polite"></p>
+          <p class="note">Die vorbereitete Frage wird in die Zwischenablage kopiert. Füge sie anschließend in ChatGPT ein und sende sie ab. Bitte keine persönlichen Daten eingeben. KI-Antworten können fehlerhaft oder veraltet sein – maßgeblich ist die aktuelle evcc-Kompatibilitätsliste.</p>
+        </form>
+      </div>
+      <details><summary>Funktioniert eHive One ohne Cloud?</summary><p>Ja. Die Kernfunktionen und die Datenverarbeitung laufen lokal. Für Updates, optionale externe Dienste oder einen eingerichteten Fernzugriff kann eine Internetverbindung erforderlich sein. <a href="https://ehive-dev.github.io/doc/access/" target="_blank" rel="noopener noreferrer">Lokalen Zugriff in der Dokumentation ansehen</a>.</p></details>
+      <details><summary>Ist evcc bereits installiert?</summary><p>eHive One ist als Variante mit oder ohne evcc-Lizenz erhältlich. Die Softwareumgebung wird über den SmartHub bereitgestellt; die konkrete Anlage muss anschließend mit ihren Geräten eingerichtet werden. <a href="https://ehive-dev.github.io/doc/getting-started/" target="_blank" rel="noopener noreferrer">Inbetriebnahme in der Dokumentation</a>.</p></details>
+      <details><summary>Kann ich meine vorhandene Wallbox oder PV-Anlage weiterverwenden?</summary>
+        <p>Wenn die Geräte von evcc oder einer installierten Anwendung unterstützt werden und lokal erreichbar sind, ist eine Einbindung grundsätzlich möglich. Vor dem Kauf sollte die aktuelle Kompatibilitätsliste geprüft werden. <a href="https://ehive-dev.github.io/doc/software/hivescope/#evcc-kandidaten-und-templates" target="_blank" rel="noopener noreferrer">Gerätesuche mit HiveScope in der Dokumentation</a>.</p>
+      </details>
+      <details><summary>Wer darf das Gerät im Schaltschrank montieren?</summary><p>Arbeiten im elektrischen Verteiler gehören in die Hände einer qualifizierten Elektrofachkraft. Die Einrichtung der Software kann anschließend im lokalen Netzwerk erfolgen. <a href="https://ehive-dev.github.io/doc/hardware/overview/#sicherheitshinweise" target="_blank" rel="noopener noreferrer">Sicherheitshinweise in der Dokumentation</a>.</p></details>
+      <details><summary>Benötigt eHive One dauerhaft eine Internetverbindung?</summary><p>Für die lokale Bedienung und viele lokale Geräteverbindungen ist keine dauerhafte Internetverbindung notwendig. Externe Fahrzeugdienste, dynamische Tarifdaten, Prognosen, Fernzugriff und Updates können jedoch Internetzugriff benötigen. <a href="https://ehive-dev.github.io/doc/access/" target="_blank" rel="noopener noreferrer">Zugriffswege in der Dokumentation</a>.</p></details>
+      <details><summary>Wie wird eHive One mit Strom versorgt?</summary><p>Die Versorgung erfolgt über 12 bis 30 V Gleichspannung, Power over Ethernet (PoE) oder redundant über beide Anschlüsse gleichzeitig. Planung und Anschluss im Verteiler müssen durch eine Elektrofachkraft erfolgen. <a href="https://ehive-dev.github.io/doc/hardware/connectors/#versorgungsempfehlung" target="_blank" rel="noopener noreferrer">Versorgung in der Hardware-Dokumentation</a>.</p></details>
+      <details><summary>Kann ich PoE und die 12–30-V-Klemme gleichzeitig verwenden?</summary><p>Ja. PoE und die 12–30-V-DC-Klemme dürfen gleichzeitig angeschlossen und betrieben werden. Damit entsteht eine redundante Versorgung: Fällt eine Quelle aus, übernimmt die verbleibende Quelle die Versorgung. Für echte Redundanz müssen beide Anschlüsse aus voneinander unabhängigen und passend ausgelegten Quellen versorgt werden. Anschluss und Absicherung gehören in die Hände einer Elektrofachkraft. <a href="https://ehive-dev.github.io/doc/hardware/connectors/#versorgungsempfehlung" target="_blank" rel="noopener noreferrer">Details zur redundanten Versorgung</a>.</p></details>
+      <details><summary>Welche Schnittstellen besitzt eHive One?</summary><p>eHive One bietet Ethernet, RS485, einen Digitaleingang und USB-C. Welche Schnittstelle für ein Gerät verwendet wird, hängt von dessen Protokoll und der konkreten Anlagenplanung ab. <a href="https://ehive-dev.github.io/doc/hardware/connectors/" target="_blank" rel="noopener noreferrer">Anschlüsse in der Hardware-Dokumentation</a>.</p></details>
+      <details><summary>Welche Rolle spielt EEBUS im Energiemanagement?</summary><p>EEBUS ist ein standardisiertes Kommunikationsmodell für den Austausch energierelevanter Informationen zwischen Geräten, Energiemanagement und Steuerungseinrichtung. Für § 14a EnWG beschreibt EEBUS insbesondere die Begrenzung des Leistungsbezugs; für § 9 EEG ist die Begrenzung der Erzeugungsleistung relevant. Ob EEBUS in einer konkreten eHive-Anlage genutzt werden kann, hängt vom Softwarestand und allen beteiligten Komponenten ab. Eine generelle EEBUS-Unterstützung von eHive One wird damit nicht zugesichert. <a href="https://www.eebus.org/publications-studies/" target="_blank" rel="noopener noreferrer">EEBUS-Informationen ansehen</a>.</p></details>
+      <details><summary>Was bedeutet § 14a EnWG für eHive One?</summary><p>§ 14a EnWG betrifft die netzorientierte Steuerung bestimmter Verbrauchseinrichtungen, insbesondere Wärmepumpen, private Ladepunkte, Klimaanlagen und Stromspeicher. Der digitale Eingang des eHive One kann ein externes Steuersignal in das lokale Energiemanagement übernehmen. Ob und wie die Anforderungen deiner Anlage erfüllt werden, muss mit Elektrofachbetrieb, Netzbetreiber und den beteiligten Geräten abgestimmt werden. <a href="https://ehive-dev.github.io/doc/software/iomanager/#evcc-hems" target="_blank" rel="noopener noreferrer">ioManager und evcc HEMS in der Dokumentation</a>. <a href="https://www.bundesnetzagentur.de/DE/Vportal/Energie/SteuerbareVBE/artikel.html" target="_blank" rel="noopener noreferrer">Informationen der Bundesnetzagentur</a>.</p></details>
+      <details><summary>Was regelt § 9 EEG bei einer PV-Anlage?</summary><p>§ 9 EEG betrifft die Erzeugungsseite. Der technische Zustand einer einspeisenden Anlage muss – abhängig von den jeweils geltenden Voraussetzungen – den Abruf der Ist-Einspeisung und eine ferngesteuerte Regelung der Einspeiseleistung ermöglichen. Welche Pflichten für deine Anlage gelten, hängt unter anderem von Leistung, Inbetriebnahmezeitpunkt, Mess- und Steuertechnik ab und muss fachlich geprüft werden. <a href="https://www.gesetze-im-internet.de/eeg_2014/__9.html" target="_blank" rel="noopener noreferrer">§ 9 EEG im Wortlaut</a>.</p></details>
+      <details><summary>Wie hängen § 14a EnWG und § 9 EEG zusammen?</summary><p>Beide Regelungen betreffen steuerbare Energieflüsse, aber in unterschiedlicher Richtung: § 14a EnWG adressiert vor allem den Netzbezug steuerbarer Verbraucher, § 9 EEG die Einspeisung von Erzeugungsanlagen. Ein Energiemanagement kann beide Seiten koordinieren, ersetzt aber weder die vorgeschriebene Mess- und Steuertechnik noch die fachgerechte Anlagenplanung. <a href="https://ehive-dev.github.io/doc/software/iomanager/" target="_blank" rel="noopener noreferrer">Digitale Signale mit ioManager in der Dokumentation</a>. <a href="news-14a-enwg-9-eeg-smartes-energiemanagement.html">Ausführlichen Beitrag lesen</a>.</p></details>
+      <details><summary>Kann ich eHive One von unterwegs erreichen?</summary><p>Ein optionaler, abgesicherter Fernzugriff kann eingerichtet werden. Die lokale Bedienoberfläche sollte dabei nicht ungeschützt direkt aus dem Internet erreichbar gemacht werden. <a href="https://ehive-dev.github.io/doc/software/tunnel-manager/" target="_blank" rel="noopener noreferrer">Tunnel Manager in der Dokumentation</a>.</p></details>
+      <details><summary>Kann eHive One neben evcc weitere Anwendungen ausführen?</summary><p>Der SmartHub ist für zusätzliche Anwendungen und Erweiterungen ausgelegt. Dazu können – abhängig von Softwarestand und Konfiguration – beispielsweise ioManager, wattRadar oder chargeLedger gehören. <a href="https://ehive-dev.github.io/doc/software/other-apps/" target="_blank" rel="noopener noreferrer">Weitere Apps und Dienste in der Dokumentation</a>.</p></details>
+      <details><summary>Was ist der Unterschied zwischen den Varianten mit und ohne evcc-Lizenz?</summary><p>Beide Varianten verwenden dieselbe eHive-One-Hardware. Bei der Variante mit evcc ist die im Shop ausgewiesene evcc-Lizenz enthalten. Preise und aktueller Lieferumfang stehen auf der jeweiligen Shopseite. <a href="https://ehive-dev.github.io/doc/evcc-lizenz/" target="_blank" rel="noopener noreferrer">Hinweise zur evcc-Lizenz in der Dokumentation</a>.</p></details>
+      <details><summary>Wie erhalte ich Updates?</summary><p>System- und App-Aktualisierungen werden über die dafür vorgesehenen Funktionen des SmartHub verwaltet. Vor wichtigen Änderungen empfiehlt sich ein Blick in die Dokumentation und die jeweiligen Versionshinweise. <a href="https://ehive-dev.github.io/doc/maintenance/updates/" target="_blank" rel="noopener noreferrer">Update-Anleitung öffnen</a>.</p></details>
+      <details><summary>Wie funktionieren USB-Backup und Recovery?</summary><p>Ab SmartHub 1.1.6 kann im Bereich <strong>System-Backup</strong> ein portables Backup auf einem vorbereiteten USB-Stick erstellt und per Prüfsumme kontrolliert werden. Ein passender Stick kann außerdem für wöchentliche Sicherungen verwendet werden; ohne eingesteckten Stick wird der Lauf einfach übersprungen. Eine automatische Voll-Wiederherstellung ist derzeit noch nicht freigegeben. Ein Restore nach Gerätetausch wird mit dem geprüften Backup durch Service oder Installateur durchgeführt. Backups können Zugangsdaten und Tokens enthalten und müssen deshalb sicher aufbewahrt werden. <a href="https://ehive-dev.github.io/doc/maintenance/backup-restore/" target="_blank" rel="noopener noreferrer">Anleitung zu Backup und Wiederherstellung</a>.</p></details>
+      <details><summary>Kann ich einen USB-Massenspeicher am eHive One verwenden?</summary><p>Ja. Ein vorbereiteter USB-Stick oder USB-Massenspeicher kann – abhängig vom SmartHub-Stand – für Systembackups, Konfigurationsaustausch, Statusdateien und Diagnose-Logs verwendet werden. Empfohlen wird ein vertrauenswürdiger Datenträger mit FAT32 oder exFAT. Da die Vorbereitung und Datenträgerbezeichnung vom verwendeten Arbeitsablauf abhängen, sollte die jeweils aktuelle Anleitung befolgt werden. Das Vorbereiten eines Datenträgers kann vorhandene Daten löschen; wichtige Dateien deshalb vorher sichern. <a href="https://ehive-dev.github.io/doc/software/usb-konfiguration/" target="_blank" rel="noopener noreferrer">USB-Konfiguration ansehen</a>.</p></details>
+      <details><summary>Kann ich eHive One über WLAN verbinden?</summary><p>Ja. SmartHub kann einen kompatiblen physischen USB-WLAN-Adapter erkennen, aktivieren und konfigurieren. SSID und IP-Modus – DHCP oder statisch – werden in den Netzwerkeinstellungen festgelegt. Alternativ kann die WLAN-Konfiguration für wiederholbare Installationen über einen vorbereiteten USB-Stick übernommen werden. Die Unterstützung hängt vom verwendeten WLAN-Adapter und Softwarestand ab; für eine dauerhaft installierte Energiezentrale bleibt eine kabelgebundene Netzwerkverbindung in der Regel die robustere Wahl. <a href="https://ehive-dev.github.io/doc/software/smarthub/#netzwerk-andern" target="_blank" rel="noopener noreferrer">WLAN und Netzwerk in der SmartHub-Dokumentation</a>.</p></details>
+      <details><summary>Wo finde ich technische Daten und die Dokumentation?</summary><p>Das kompakte <a href="products/eHive-One-Datenblatt.pdf" target="_blank" rel="noopener">eHive One Datenblatt</a> enthält Hardwaredaten und Anschlüsse. Ausführliche Hinweise zu Einrichtung, Apps und Wartung stehen in der <a href="https://ehive-dev.github.io/doc/" target="_blank" rel="noopener noreferrer">Online-Dokumentation</a>.</p></details>
+    </div>
+  </section>
+
+  <section class="section" id="abschluss"><div class="container cta-panel"><div><p class="eyebrow">Bereit für ein lokales HEMS?</p><h2><a class="cta-shop-link" href="shop.html">eHive One ab 319 €</a></h2></div><div class="product-actions"><a class="btn link" href="#ki-frage" data-ai-question-link>Frag mich</a></div></div></section>
+</main>
+<div data-include="footer"></div>
+<script src="config.js"></script><script src="script.js"></script>
+</body>
+</html>

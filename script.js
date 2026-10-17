@@ -1024,6 +1024,11 @@
       const details = card.querySelector(".addon-details");
       if (!details) return;
 
+      card.querySelectorAll("[data-product-detail-link]").forEach(link => {
+        link.addEventListener("click", event => event.stopPropagation());
+        link.addEventListener("keydown", event => event.stopPropagation());
+      });
+
       const toggle = () => {
         const open = !card.classList.contains("is-open");
         card.classList.toggle("is-open", open);
@@ -1842,6 +1847,7 @@
         initAppVideoRail();
         initVideoLightbox();
         initAddonDetails();
+        initAiCompatibilityForm();
         renderNewsFeeds();
         window.addEventListener("resize", syncHeaderHeight);
         window.addEventListener("resize", syncHeroPretextOffset);
@@ -1855,3 +1861,42 @@
     });
   });
 })();
+function initAiCompatibilityForm() {
+  const revealQuestion = () => {
+    const questionBlock = document.querySelector("#ki-frage");
+    if (!questionBlock) return;
+    requestAnimationFrame(() => {
+      questionBlock.scrollIntoView({ behavior: "smooth", block: "start" });
+      window.setTimeout(() => questionBlock.querySelector('input[name="device"]')?.focus(), 450);
+    });
+  };
+
+  document.querySelectorAll("[data-ai-question-link]").forEach((link) => {
+    link.addEventListener("click", revealQuestion);
+  });
+
+  if (window.location.hash === "#ki-frage") revealQuestion();
+
+  document.querySelectorAll("[data-ai-compatibility-form]").forEach((form) => {
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      const input = form.querySelector('input[name="device"]');
+      const status = form.querySelector("[data-ai-compatibility-status]");
+      const device = input?.value.trim();
+      if (!device) {
+        input?.focus();
+        return;
+      }
+
+      const prompt = `Ist ${device} mit evcc und eHive One kompatibel? Prüfe möglichst die aktuelle offizielle evcc-Dokumentation. Erkläre, ob das Gerät lokal angebunden werden kann, welches Protokoll oder welche Schnittstelle verwendet wird und welche Voraussetzungen oder Einschränkungen es gibt. Verlinke deine Quellen.`;
+      window.open("https://chatgpt.com/", "_blank", "noopener,noreferrer");
+
+      try {
+        await navigator.clipboard.writeText(prompt);
+        if (status) status.textContent = "Frage kopiert – jetzt in ChatGPT einfügen und absenden.";
+      } catch (_) {
+        if (status) status.textContent = `Kopiere diese Frage in ChatGPT: ${prompt}`;
+      }
+    });
+  });
+}
