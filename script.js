@@ -2168,7 +2168,7 @@ function initSystemReportForm() {
       });
       coverSelect.value = String(report.coverPhotoPosition || 1);
     }
-    if (coverField) coverField.hidden = (report.photos || []).length <= 1;
+    if (coverField) coverField.hidden = (report.photos || []).length <= 2;
     if (button) button.textContent = "Änderungen speichern";
     if (actionNote) actionNote.textContent = "Ohne neue Bildauswahl bleiben deine bisherigen Fotos erhalten.";
     if (status) {
@@ -2401,7 +2401,7 @@ function initSystemReportForm() {
         coverSelect.value = "1";
       }
     }
-    if (coverField && (files.length || !editingId)) coverField.hidden = files.length <= 1;
+    if (coverField && (files.length || !editingId)) coverField.hidden = files.length <= 2;
     files.slice(0, 5).forEach((file) => {
       const item = document.createElement("span");
       item.textContent = `${file.name} · ${(file.size / 1024 / 1024).toFixed(1)} MB`;
