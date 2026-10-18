@@ -4303,8 +4303,8 @@ body.lightbox-open{
 .system-report-feed { margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--border); }
 .system-report-feed > h3 { margin: 0 0 28px; font-size: clamp(1.5rem,3vw,2rem); letter-spacing: -.025em; }
 .system-report-feed-grid { display: grid; gap: 18px; }
-.system-report-card { overflow: hidden; border: 1px solid var(--border); border-radius: calc(var(--radius) + 4px); background: #fff; box-shadow: var(--shadow); transition: border-color .18s ease,box-shadow .18s ease; }
-.system-report-card:hover { border-color: rgba(8,129,120,.32); box-shadow: 0 10px 30px rgba(15,23,42,.07); }
+.system-report-card { overflow: hidden; border: 1px solid var(--border); border-radius: calc(var(--radius) + 4px); background: transparent; box-shadow: none; transition: border-color .18s ease; }
+.system-report-card:hover { border-color: rgba(8,129,120,.32); box-shadow: none; }
 .system-report-card-preview { display: grid; grid-template-columns: minmax(180px,26%) 1fr; min-height: 190px; cursor: pointer; list-style: none; }
 .system-report-card-preview::-webkit-details-marker { display: none; }
 .system-report-card:not(.has-photos) .system-report-card-preview { grid-template-columns: 1fr; min-height: 0; }

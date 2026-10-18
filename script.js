@@ -2305,6 +2305,12 @@ function initSystemReportForm() {
         });
         const componentTags = [];
         String(report.components || "").split(/\n|;/).map((value) => value.trim()).filter(Boolean).forEach((line) => {
+          if (!line.includes(":")) {
+            componentCategories.filter((category) => category !== "Sonstiges" && category !== "eHive App").forEach((category) => {
+              if (line.toLocaleLowerCase("de").includes(category.toLocaleLowerCase("de")) && !componentTags.includes(category)) componentTags.push(category);
+            });
+            return;
+          }
           const [category, description = ""] = line.split(":");
           const manufacturer = description.trim().split(/\s+/)[0] || "";
           [category, manufacturer].forEach((value) => {
