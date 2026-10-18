@@ -528,12 +528,7 @@
       </div>
       <label>Überschrift für deinen Bericht<input name="title" type="text" minlength="5" maxlength="120" placeholder="z. B. eHive One mit PV, Speicher und zwei Wallboxen" required></label>
       <div class="system-report-grid system-report-content-grid">
-        <div class="system-report-components">
-          <span class="system-report-field-label">Welche Komponenten nutzt du?</span>
-          <div class="system-report-component-list" data-system-report-components></div>
-          <button class="system-report-component-add" type="button" data-system-report-component-add>+ Gerät hinzufügen</button>
-          <textarea name="components" maxlength="1000" hidden></textarea>
-        </div>
+        <label>Welche Komponenten nutzt du?<textarea name="components" rows="5" minlength="10" maxlength="1000" placeholder="Beschreibe deine Geräte, zum Beispiel Wechselrichter, Speicher, Wallbox, Wärmepumpe und Zähler." required></textarea></label>
         <label>Dein Erfahrungsbericht<textarea name="report" rows="5" minlength="30" maxlength="5000" placeholder="Wie nutzt du eHive One und was funktioniert für dich besonders gut?" required></textarea></label>
       </div>
       <div class="system-report-media-grid">

@@ -2068,8 +2068,6 @@ function initSystemReportForm() {
   const siteKey = isLocal ? "1x00000000000000000000AA" : (window.EHIVE_SHOP_CONFIG?.site?.turnstileSiteKey || "");
   const ownershipKey = "ehive-report-edit-tokens-v1";
   const photoInput = form.querySelector("[data-system-report-photos]");
-  const componentList = form.querySelector("[data-system-report-components]");
-  const componentAdd = form.querySelector("[data-system-report-component-add]");
   const componentsField = form.elements.components;
   const coverSelect = form.querySelector("[data-system-report-cover]");
   const coverField = form.querySelector("[data-system-report-cover-field]");
@@ -2091,78 +2089,6 @@ function initSystemReportForm() {
     const haystack = values.join(" ").toLocaleLowerCase("de");
     return knownEhiveApps.filter((name) => haystack.includes(name.toLocaleLowerCase("de")));
   };
-  const syncComponents = () => {
-    if (!componentList || !componentsField) return;
-    const lines = Array.from(componentList.querySelectorAll("[data-component-row]")).map((row) => {
-      const category = row.querySelector("select")?.value.trim() || "";
-      const manufacturer = row.querySelector('[data-component-manufacturer]')?.value.trim() || "";
-      const model = row.querySelector('[data-component-model]')?.value.trim() || "";
-      return [category, [manufacturer, model].filter(Boolean).join(" ")].filter(Boolean).join(": ");
-    }).filter((line) => line.includes(":"));
-    componentsField.value = lines.join("\n");
-  };
-  const addComponentRow = (category = "", manufacturer = "", model = "") => {
-    if (!componentList) return;
-    const row = document.createElement("div");
-    row.className = "system-report-component-row";
-    row.setAttribute("data-component-row", "");
-    const select = document.createElement("select");
-    select.setAttribute("aria-label", "Gerätekategorie");
-    select.required = true;
-    select.innerHTML = '<option value="">Kategorie wählen</option>';
-    componentCategories.forEach((name) => {
-      const option = document.createElement("option");
-      option.value = name;
-      option.textContent = name;
-      select.appendChild(option);
-    });
-    select.value = componentCategories.includes(category) ? category : (category ? "Sonstiges" : "");
-    const manufacturerInput = document.createElement("input");
-    manufacturerInput.type = "text";
-    manufacturerInput.placeholder = "Hersteller";
-    manufacturerInput.setAttribute("aria-label", "Hersteller");
-    manufacturerInput.setAttribute("data-component-manufacturer", "");
-    manufacturerInput.required = true;
-    manufacturerInput.value = manufacturer;
-    const modelInput = document.createElement("input");
-    modelInput.type = "text";
-    modelInput.placeholder = "Modell";
-    modelInput.setAttribute("aria-label", "Modell");
-    modelInput.setAttribute("data-component-model", "");
-    modelInput.value = model;
-    const remove = document.createElement("button");
-    remove.type = "button";
-    remove.className = "system-report-component-remove";
-    remove.setAttribute("aria-label", "Gerät entfernen");
-    remove.textContent = "×";
-    remove.addEventListener("click", () => {
-      if (componentList.children.length > 1) row.remove();
-      else {
-        select.value = "";
-        manufacturerInput.value = "";
-        modelInput.value = "";
-      }
-      syncComponents();
-    });
-    [select, manufacturerInput, modelInput].forEach((field) => field.addEventListener("input", syncComponents));
-    row.append(select, manufacturerInput, modelInput, remove);
-    componentList.appendChild(row);
-    syncComponents();
-  };
-  const loadComponentRows = (value = "") => {
-    if (!componentList) return;
-    componentList.replaceChildren();
-    const lines = String(value).split(/\n|;/).map((line) => line.trim()).filter(Boolean);
-    lines.forEach((line) => {
-      const [rawCategory, ...rest] = line.split(":");
-      const description = rest.join(":").trim();
-      const parts = description.split(/\s+/);
-      addComponentRow(rawCategory.trim(), parts.shift() || "", parts.join(" "));
-    });
-    if (!componentList.children.length) addComponentRow();
-  };
-  componentAdd?.addEventListener("click", () => addComponentRow());
-  loadComponentRows();
 
   const ensureTurnstile = () => {
     if (!siteKey || !turnstileTarget || turnstileWidgetId !== null || turnstileTimer !== null) return;
@@ -2228,7 +2154,7 @@ function initSystemReportForm() {
     form.elements.displayName.value = report.displayName || "";
     form.elements.email.value = ownership.email || "";
     form.elements.title.value = report.title || "";
-    loadComponentRows(report.components || "");
+    if (componentsField) componentsField.value = report.components || "";
     form.elements.report.value = report.report || "";
     form.elements.consent.checked = false;
     if (photoInput) photoInput.required = false;
@@ -2490,7 +2416,6 @@ function initSystemReportForm() {
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
-    syncComponents();
     if (!form.reportValidity()) return;
     const files = Array.from(photoInput?.files || []);
     const invalidPhotoCount = editingId ? files.length > 5 : files.length < 1 || files.length > 5;
@@ -2526,7 +2451,6 @@ function initSystemReportForm() {
         status.textContent = payload.message;
       }
       form.reset();
-      loadComponentRows();
       photoList?.replaceChildren();
       resetFormMode();
       setFormOpen(false);
