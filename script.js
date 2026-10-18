@@ -2068,7 +2068,11 @@ function initSystemReportForm() {
   const siteKey = isLocal ? "1x00000000000000000000AA" : (window.EHIVE_SHOP_CONFIG?.site?.turnstileSiteKey || "");
   const ownershipKey = "ehive-report-edit-tokens-v1";
   const photoInput = form.querySelector("[data-system-report-photos]");
+  const componentList = form.querySelector("[data-system-report-components]");
+  const componentAdd = form.querySelector("[data-system-report-component-add]");
+  const componentsField = form.elements.components;
   const coverSelect = form.querySelector("[data-system-report-cover]");
+  const coverField = form.querySelector("[data-system-report-cover-field]");
   const photoList = form.querySelector("[data-system-report-photo-list]");
   const status = form.querySelector("[data-system-report-status]");
   const button = form.querySelector('button[type="submit"]');
@@ -2080,6 +2084,85 @@ function initSystemReportForm() {
   let turnstileTimer = null;
   let editingId = "";
   let editingToken = "";
+
+  const componentCategories = ["Wallbox", "PV-Anlage", "Wechselrichter", "Speicher", "Wärmepumpe", "Energiezähler", "Fahrzeug", "eHive App", "Sonstiges"];
+  const knownEhiveApps = ["Administration", "HiveScope", "chargeLedger", "tenantLedger", "wattRadar", "ioManager", "TunnelManager", "HiveBus", "KNX Bridge", "charge&go"];
+  const findKnownApps = (...values) => {
+    const haystack = values.join(" ").toLocaleLowerCase("de");
+    return knownEhiveApps.filter((name) => haystack.includes(name.toLocaleLowerCase("de")));
+  };
+  const syncComponents = () => {
+    if (!componentList || !componentsField) return;
+    const lines = Array.from(componentList.querySelectorAll("[data-component-row]")).map((row) => {
+      const category = row.querySelector("select")?.value.trim() || "";
+      const manufacturer = row.querySelector('[data-component-manufacturer]')?.value.trim() || "";
+      const model = row.querySelector('[data-component-model]')?.value.trim() || "";
+      return [category, [manufacturer, model].filter(Boolean).join(" ")].filter(Boolean).join(": ");
+    }).filter((line) => line.includes(":"));
+    componentsField.value = lines.join("\n");
+  };
+  const addComponentRow = (category = "", manufacturer = "", model = "") => {
+    if (!componentList) return;
+    const row = document.createElement("div");
+    row.className = "system-report-component-row";
+    row.setAttribute("data-component-row", "");
+    const select = document.createElement("select");
+    select.setAttribute("aria-label", "Gerätekategorie");
+    select.required = true;
+    select.innerHTML = '<option value="">Kategorie wählen</option>';
+    componentCategories.forEach((name) => {
+      const option = document.createElement("option");
+      option.value = name;
+      option.textContent = name;
+      select.appendChild(option);
+    });
+    select.value = componentCategories.includes(category) ? category : (category ? "Sonstiges" : "");
+    const manufacturerInput = document.createElement("input");
+    manufacturerInput.type = "text";
+    manufacturerInput.placeholder = "Hersteller";
+    manufacturerInput.setAttribute("aria-label", "Hersteller");
+    manufacturerInput.setAttribute("data-component-manufacturer", "");
+    manufacturerInput.required = true;
+    manufacturerInput.value = manufacturer;
+    const modelInput = document.createElement("input");
+    modelInput.type = "text";
+    modelInput.placeholder = "Modell";
+    modelInput.setAttribute("aria-label", "Modell");
+    modelInput.setAttribute("data-component-model", "");
+    modelInput.value = model;
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "system-report-component-remove";
+    remove.setAttribute("aria-label", "Gerät entfernen");
+    remove.textContent = "×";
+    remove.addEventListener("click", () => {
+      if (componentList.children.length > 1) row.remove();
+      else {
+        select.value = "";
+        manufacturerInput.value = "";
+        modelInput.value = "";
+      }
+      syncComponents();
+    });
+    [select, manufacturerInput, modelInput].forEach((field) => field.addEventListener("input", syncComponents));
+    row.append(select, manufacturerInput, modelInput, remove);
+    componentList.appendChild(row);
+    syncComponents();
+  };
+  const loadComponentRows = (value = "") => {
+    if (!componentList) return;
+    componentList.replaceChildren();
+    const lines = String(value).split(/\n|;/).map((line) => line.trim()).filter(Boolean);
+    lines.forEach((line) => {
+      const [rawCategory, ...rest] = line.split(":");
+      const description = rest.join(":").trim();
+      const parts = description.split(/\s+/);
+      addComponentRow(rawCategory.trim(), parts.shift() || "", parts.join(" "));
+    });
+    if (!componentList.children.length) addComponentRow();
+  };
+  componentAdd?.addEventListener("click", () => addComponentRow());
+  loadComponentRows();
 
   const ensureTurnstile = () => {
     if (!siteKey || !turnstileTarget || turnstileWidgetId !== null || turnstileTimer !== null) return;
@@ -2132,6 +2215,7 @@ function initSystemReportForm() {
     form.removeAttribute("data-editing-report");
     if (photoInput) photoInput.required = true;
     if (coverSelect) coverSelect.innerHTML = '<option value="">Zuerst Fotos auswählen</option>';
+    if (coverField) coverField.hidden = true;
     if (button) button.textContent = "Senden";
     if (actionNote) actionNote.textContent = "Dein Beitrag erscheint direkt nach dem Senden.";
   };
@@ -2144,9 +2228,8 @@ function initSystemReportForm() {
     form.elements.displayName.value = report.displayName || "";
     form.elements.email.value = ownership.email || "";
     form.elements.title.value = report.title || "";
-    form.elements.components.value = report.components || "";
+    loadComponentRows(report.components || "");
     form.elements.report.value = report.report || "";
-    form.elements.photoComment.value = report.photoComment || "";
     form.elements.consent.checked = false;
     if (photoInput) photoInput.required = false;
     if (coverSelect) {
@@ -2159,6 +2242,7 @@ function initSystemReportForm() {
       });
       coverSelect.value = String(report.coverPhotoPosition || 1);
     }
+    if (coverField) coverField.hidden = (report.photos || []).length <= 1;
     if (button) button.textContent = "Änderungen speichern";
     if (actionNote) actionNote.textContent = "Ohne neue Bildauswahl bleiben deine bisherigen Fotos erhalten.";
     if (status) {
@@ -2212,9 +2296,26 @@ function initSystemReportForm() {
         heading.textContent = report.title;
         const facts = document.createElement("div");
         facts.className = "system-report-card-facts";
-        String(report.components || "").split(/[,;\n]/).map((value) => value.trim()).filter(Boolean).slice(0, 5).forEach((value) => {
+        findKnownApps(report.title || "", report.components || "", report.report || "").forEach((appName) => {
+          const appTag = document.createElement("span");
+          appTag.className = "system-report-app-tag";
+          appTag.textContent = appName;
+          appTag.title = "eHive App";
+          facts.appendChild(appTag);
+        });
+        const componentTags = [];
+        String(report.components || "").split(/\n|;/).map((value) => value.trim()).filter(Boolean).forEach((line) => {
+          const [category, description = ""] = line.split(":");
+          const manufacturer = description.trim().split(/\s+/)[0] || "";
+          [category, manufacturer].forEach((value) => {
+            const tag = String(value).trim().replace(/\s+/g, "");
+            const isKnownAppTag = value.trim() === "eHive App" || findKnownApps(value).length > 0;
+            if (tag && !isKnownAppTag && !componentTags.includes(tag)) componentTags.push(tag);
+          });
+        });
+        componentTags.slice(0, 8).forEach((value) => {
           const fact = document.createElement("span");
-          fact.textContent = value;
+          fact.textContent = `#${value}`;
           facts.appendChild(fact);
         });
         const openHint = document.createElement("span");
@@ -2368,6 +2469,7 @@ function initSystemReportForm() {
         coverSelect.value = "1";
       }
     }
+    if (coverField && (files.length || !editingId)) coverField.hidden = files.length <= 1;
     files.slice(0, 5).forEach((file) => {
       const item = document.createElement("span");
       item.textContent = `${file.name} · ${(file.size / 1024 / 1024).toFixed(1)} MB`;
@@ -2382,6 +2484,7 @@ function initSystemReportForm() {
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
+    syncComponents();
     if (!form.reportValidity()) return;
     const files = Array.from(photoInput?.files || []);
     const invalidPhotoCount = editingId ? files.length > 5 : files.length < 1 || files.length > 5;
@@ -2417,6 +2520,7 @@ function initSystemReportForm() {
         status.textContent = payload.message;
       }
       form.reset();
+      loadComponentRows();
       photoList?.replaceChildren();
       resetFormMode();
       setFormOpen(false);

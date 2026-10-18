@@ -528,15 +528,19 @@
       </div>
       <label>Überschrift für deinen Bericht<input name="title" type="text" minlength="5" maxlength="120" placeholder="z. B. eHive One mit PV, Speicher und zwei Wallboxen" required></label>
       <div class="system-report-grid system-report-content-grid">
-        <label>Welche Komponenten nutzt du?<textarea name="components" rows="5" minlength="10" maxlength="1000" placeholder="Hersteller und Modelle von Wechselrichter, Speicher, Wallbox, Wärmepumpe und Zähler" required></textarea></label>
+        <div class="system-report-components">
+          <span class="system-report-field-label">Welche Komponenten nutzt du?</span>
+          <div class="system-report-component-list" data-system-report-components></div>
+          <button class="system-report-component-add" type="button" data-system-report-component-add>+ Gerät hinzufügen</button>
+          <textarea name="components" maxlength="1000" hidden></textarea>
+        </div>
         <label>Dein Erfahrungsbericht<textarea name="report" rows="5" minlength="30" maxlength="5000" placeholder="Wie nutzt du eHive One und was funktioniert für dich besonders gut?" required></textarea></label>
       </div>
-      <div class="system-report-grid system-report-media-grid">
+      <div class="system-report-media-grid">
         <div class="system-report-photo-fields">
           <label>Fotos deiner Anlage <span>1 bis 5 Bilder, JPEG, PNG oder WebP, jeweils maximal 8 MB. Entferne vorher bei Bedarf Standortdaten aus den Bildern.</span><input name="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple required data-system-report-photos></label>
-          <label>Übersichtsbild <span>Dieses Bild erscheint in der Vorschau. Alle weiteren Fotos werden im geöffneten Beitrag als Galerie angezeigt.</span><select name="coverPhotoPosition" required data-system-report-cover><option value="">Zuerst Fotos auswählen</option></select></label>
+          <label data-system-report-cover-field hidden>Übersichtsbild <span>Welches Foto soll in der Vorschau erscheinen?</span><select name="coverPhotoPosition" required data-system-report-cover><option value="">Zuerst Fotos auswählen</option></select></label>
         </div>
-        <label>Kommentar zu den Fotos <span>Optional</span><textarea name="photoComment" rows="2" maxlength="1000" placeholder="Was ist auf den Bildern zu sehen?"></textarea></label>
       </div>
       <div class="system-report-photo-list" data-system-report-photo-list aria-live="polite"></div>
       <label class="system-report-consent"><input name="consent" type="checkbox" value="yes" required><span>Ich darf die hochgeladenen Fotos und den Bericht veröffentlichen und bin mit der unmittelbaren Veröffentlichung auf dieser Website einverstanden. Die <a href="datenschutz.html">Datenschutzhinweise</a> habe ich gelesen.</span></label>

@@ -4271,6 +4271,18 @@ body.lightbox-open{
 .system-report-form[hidden] { display: none; }
 .system-report-form { display: grid; gap: 14px; margin-top: 20px; padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
 .system-report-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.system-report-components { display: grid; align-content: start; gap: 8px; }
+.system-report-field-label { color: var(--text); font-weight: 700; }
+.system-report-component-list { display: grid; gap: 8px; }
+.system-report-component-row { display: grid; grid-template-columns: minmax(120px,.8fr) minmax(110px,1fr) minmax(120px,1.2fr) 32px; gap: 7px; align-items: center; }
+.system-report-component-row input,
+.system-report-component-row select { min-width: 0; }
+.system-report-component-remove { width: 32px; height: 32px; padding: 0; border: 0; background: transparent; color: var(--muted); font-size: 1.35rem; line-height: 1; cursor: pointer; }
+.system-report-component-remove:hover,
+.system-report-component-remove:focus-visible { color: #a32626; }
+.system-report-component-add { justify-self: start; padding: 3px 0; border: 0; background: transparent; color: var(--accent); font: inherit; font-weight: 700; cursor: pointer; }
+.system-report-component-add:hover,
+.system-report-component-add:focus-visible { color: var(--text); }
 .system-report-form label { display: grid; gap: 8px; color: var(--text); font-weight: 700; }
 .system-report-form label > span { color: var(--muted); font-size: .82rem; font-weight: 400; }
 .system-report-form input[type="text"], .system-report-form input[type="email"], .system-report-form input[type="file"], .system-report-form textarea, .system-report-form select { width: 100%; padding: 9px 11px; border: 1px solid var(--border); border-radius: 9px; background: #fff; color: var(--text); font: inherit; }
@@ -4287,7 +4299,7 @@ body.lightbox-open{
 .system-report-status.is-success { color: var(--accent); font-weight: 700; }
 .system-report-status.is-error { color: #a32626; font-weight: 700; }
 .system-report-turnstile:empty { display: none; }
-@media (max-width: 800px) { .system-report-grid { grid-template-columns: 1fr; } .system-report-actions { align-items: stretch; flex-direction: column; } .system-report-actions .btn { width: 100%; } }
+@media (max-width: 800px) { .system-report-grid { grid-template-columns: 1fr; } .system-report-component-row { grid-template-columns: 1fr 1fr 32px; } .system-report-component-row select { grid-column: 1 / -2; } .system-report-actions { align-items: stretch; flex-direction: column; } .system-report-actions .btn { width: 100%; } }
 .system-report-feed { margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--border); }
 .system-report-feed > h3 { margin: 0 0 28px; font-size: clamp(1.5rem,3vw,2rem); letter-spacing: -.025em; }
 .system-report-feed-grid { display: grid; gap: 18px; }
@@ -4303,6 +4315,8 @@ body.lightbox-open{
 .system-report-card-preview-copy h4 { margin: 0 46px 16px 0; font-size: clamp(1.25rem,2.5vw,1.65rem); line-height: 1.2; letter-spacing: -.025em; }
 .system-report-card-meta { margin: 0 0 8px!important; color: var(--accent); font-size: .8rem; font-weight: 750; }
 .system-report-card-facts { display: flex; flex-wrap: wrap; gap: 7px; }
+.system-report-card-facts .system-report-app-tag { border-color: var(--accent); background: var(--accent); color: #fff; font-weight: 750; }
+.system-report-card-facts .system-report-app-tag::before { content: "eHive App · "; font-size: .72em; font-weight: 600; opacity: .82; }
 .system-report-card-facts span { padding: 5px 9px; border-radius: 999px; background: var(--bg-soft); color: var(--muted); font-size: .78rem; line-height: 1.3; }
 .system-report-card-open-hint { margin-top: 18px; color: var(--text); font-size: .86rem; font-weight: 700; }
 .system-report-card-open-hint::after { content: " ↓"; color: var(--accent); }
