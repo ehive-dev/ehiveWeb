@@ -4285,7 +4285,7 @@ body.lightbox-open{
 .system-report-component-add:focus-visible { color: var(--text); }
 .system-report-form label { display: grid; gap: 8px; color: var(--text); font-weight: 700; }
 .system-report-form label > span { color: var(--muted); font-size: .82rem; font-weight: 400; }
-.system-report-form input[type="text"], .system-report-form input[type="email"], .system-report-form input[type="file"], .system-report-form textarea, .system-report-form select { width: 100%; padding: 9px 11px; border: 1px solid var(--border); border-radius: 9px; background: #fff; color: var(--text); font: inherit; }
+.system-report-form input[type="text"], .system-report-form input[type="email"], .system-report-form input[type="file"], .system-report-form textarea, .system-report-form select { width: 100%; padding: 9px 11px; border: 1px solid var(--border); border-radius: 9px; background: transparent; color: var(--text); font: inherit; }
 .system-report-photo-fields { display: grid; gap: 12px; }
 .system-report-form textarea { resize: vertical; line-height: 1.5; }
 .system-report-form input:focus, .system-report-form textarea:focus { border-color: rgba(8,129,120,.55); outline: none; box-shadow: 0 0 0 3px rgba(8,129,120,.12); }
