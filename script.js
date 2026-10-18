@@ -2315,7 +2315,7 @@ function initSystemReportForm() {
         });
         componentTags.slice(0, 8).forEach((value) => {
           const fact = document.createElement("span");
-          fact.textContent = `#${value}`;
+          fact.textContent = value;
           facts.appendChild(fact);
         });
         const openHint = document.createElement("span");
