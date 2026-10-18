@@ -2152,6 +2152,7 @@ function initSystemReportForm() {
     editingToken = ownership.editToken;
     form.setAttribute("data-editing-report", report.id);
     form.elements.displayName.value = report.displayName || "";
+    form.elements.city.value = report.city || "";
     form.elements.email.value = ownership.email || "";
     form.elements.title.value = report.title || "";
     if (componentsField) componentsField.value = report.components || "";
@@ -2217,7 +2218,7 @@ function initSystemReportForm() {
         meta.className = "system-report-card-meta";
         const reportDate = new Date(`${report.createdAt.replace(" ", "T")}Z`);
         const formattedDate = Number.isNaN(reportDate.getTime()) ? "" : reportDate.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
-        meta.textContent = formattedDate ? `${report.displayName} · ${formattedDate}` : report.displayName;
+        meta.textContent = [report.displayName, report.city, formattedDate].filter(Boolean).join(" · ");
         const heading = document.createElement("h4");
         heading.textContent = report.title;
         const facts = document.createElement("div");
