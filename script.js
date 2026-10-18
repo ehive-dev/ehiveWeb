@@ -2083,7 +2083,6 @@ function initSystemReportForm() {
   let editingId = "";
   let editingToken = "";
 
-  const componentCategories = ["Wallbox", "PV-Anlage", "Wechselrichter", "Speicher", "Wärmepumpe", "Energiezähler", "Fahrzeug", "eHive App", "Sonstiges"];
   const knownEhiveApps = ["Administration", "HiveScope", "chargeLedger", "tenantLedger", "wattRadar", "ioManager", "TunnelManager", "HiveBus", "KNX Bridge", "charge&go"];
   const findKnownApps = (...values) => {
     const haystack = values.join(" ").toLocaleLowerCase("de");
@@ -2230,22 +2229,19 @@ function initSystemReportForm() {
           appTag.title = "eHive App";
           facts.appendChild(appTag);
         });
-        const componentTags = [];
-        String(report.components || "").split(/\n|;/).map((value) => value.trim()).filter(Boolean).forEach((line) => {
-          if (!line.includes(":")) {
-            componentCategories.filter((category) => category !== "Sonstiges" && category !== "eHive App").forEach((category) => {
-              if (line.toLocaleLowerCase("de").includes(category.toLocaleLowerCase("de")) && !componentTags.includes(category)) componentTags.push(category);
-            });
-            return;
-          }
-          const [category, description = ""] = line.split(":");
-          const manufacturer = description.trim().split(/\s+/)[0] || "";
-          [category, manufacturer].forEach((value) => {
-            const tag = String(value).trim().replace(/\s+/g, "");
-            const isKnownAppTag = value.trim() === "eHive App" || findKnownApps(value).length > 0;
-            if (tag && !isKnownAppTag && !componentTags.includes(tag)) componentTags.push(tag);
-          });
-        });
+        const componentText = `${report.title || ""} ${report.components || ""}`.toLocaleLowerCase("de");
+        const componentKeywords = [
+          ["Wallbox", ["wallbox", "ladepunkt", "ladesäule", "alfen eve", "charger"]],
+          ["PV-Anlage", ["pv-anlage", "photovoltaik", " kWp", " pv ", "solar"]],
+          ["Wechselrichter", ["wechselrichter", "inverter", "sun2000"]],
+          ["Speicher", ["speicher", "akku", "batterie", "luna-s1"]],
+          ["Wärmepumpe", ["wärmepumpe", "heizung"]],
+          ["Energiezähler", ["energiezähler", "stromzähler", "imsys", "lesekopf", "smart meter"]],
+          ["Fahrzeug", ["fahrzeug", "auto", "e-auto"]]
+        ];
+        const componentTags = componentKeywords
+          .filter(([, keywords]) => keywords.some((keyword) => componentText.includes(keyword.toLocaleLowerCase("de"))))
+          .map(([category]) => category);
         componentTags.slice(0, 8).forEach((value) => {
           const fact = document.createElement("span");
           fact.textContent = value;
