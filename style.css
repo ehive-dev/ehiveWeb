@@ -139,12 +139,18 @@ button, input, select{ font:inherit; }
 }
 
 .nav-news-link.is-news-unread{
-  animation: news-link-highlight 3s ease-in-out 1;
+  animation: news-link-highlight 3s ease-in-out infinite;
 }
 
 @keyframes news-link-highlight{
-  0%, 50%, 100%{ color: var(--muted); }
-  25%, 75%{ color: var(--accent); }
+  0%, 100%{
+    color: var(--muted);
+    text-shadow: none;
+  }
+  50%{
+    color: #00a890;
+    text-shadow: 0 0 7px rgba(0,168,144,.28);
+  }
 }
 
 @media (prefers-reduced-motion: reduce){
