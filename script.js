@@ -952,7 +952,6 @@
       const productId = select.getAttribute("data-variant-select");
       const qtyInput = card.querySelector("[data-qty-input]");
       const slot = card.querySelector("[data-paypal-slot]");
-      const priceEl = card.querySelector("[data-price]");
 
       if (!productId || !slot) return;
 
@@ -971,9 +970,6 @@
           renderDynamicPaypalAdd(slot, variantId, qty, extra);
         }
 
-        if (priceEl && v) {
-          priceEl.textContent = money(v.price, (cfg().paypal && cfg().paypal.currency) || "EUR");
-        }
       }
 
       select.addEventListener("change", refresh);
@@ -987,7 +983,6 @@
     const select = document.querySelector("[data-variant-select='ehive-one-detail']");
     const qtyInput = document.querySelector("[data-qty-input='ehive-one-detail']");
     const slot = document.querySelector("[data-paypal-slot='ehive-one-detail']");
-    const priceEl = document.querySelector("[data-price='ehive-one-detail']");
 
     if (!select || !slot) return;
 
@@ -997,7 +992,6 @@
 
       const p = findProduct("ehive-one");
       const v = p && p.variants ? p.variants.find(x => x.id === variantId) : null;
-      if (priceEl && v) priceEl.textContent = money(v.price, (cfg().paypal && cfg().paypal.currency) || "EUR");
 
       const extra = v ? { on0: "variant", os0: v.label } : undefined;
       if (isSoldOut(p, v)) {
