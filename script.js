@@ -652,6 +652,32 @@
     });
   }
 
+  function initNewsNavHighlight() {
+    const links = document.querySelectorAll(".nav-news-link[data-news-id]");
+    if (!links.length) return;
+
+    const newsId = links[0].getAttribute("data-news-id") || "";
+    const cookieName = "ehive_news_seen";
+    const seenId = document.cookie
+      .split("; ")
+      .find(entry => entry.startsWith(`${cookieName}=`))
+      ?.split("=")
+      .slice(1)
+      .join("=");
+
+    if (decodeURIComponent(seenId || "") !== newsId) {
+      links.forEach(link => link.classList.add("is-news-unread"));
+    }
+
+    links.forEach(link => {
+      link.addEventListener("click", () => {
+        const secure = location.protocol === "https:" ? "; Secure" : "";
+        document.cookie = `${cookieName}=${encodeURIComponent(newsId)}; Max-Age=31536000; Path=/; SameSite=Lax${secure}`;
+        links.forEach(item => item.classList.remove("is-news-unread"));
+      });
+    });
+  }
+
 
   function wireFooter() {
     const y = byId("year");
@@ -1833,6 +1859,7 @@
         initHeroDemoWindow();
         initMobileNav();
         setActiveNav();
+        initNewsNavHighlight();
         initPaypalCartLinks();
         initPaypalCartButtons();
         fixPaypalCartQuantityLabel();
