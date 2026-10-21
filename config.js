@@ -79,8 +79,8 @@ window.EHIVE_SHOP_CONFIG = {
           "CE / EMV / RoHS (gemäß Planung/Zertifizierung)"
         ],
         variants: [
-          { id: "ehive-one-no-license", label: "Ohne Lizenz", price: 319.00, soldOut: false },
-          { id: "ehive-one-with-license", label: "Mit evcc", price: 389.00, soldOut: false }
+          { id: "ehive-one-no-license", label: "Ohne Lizenz", soldOut: false },
+          { id: "ehive-one-with-license", label: "Mit evcc", soldOut: false }
         ]
       }
     ],
