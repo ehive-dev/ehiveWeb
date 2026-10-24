@@ -434,18 +434,6 @@ button, input, select{ font:inherit; }
   isolation: isolate;
 }
 
-.hero-product-video-stage::after{
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 3px;
-  background: #fff;
-  pointer-events: none;
-  z-index: 40;
-}
-
 .hero-video-qr-trigger{
   position: absolute;
   left: var(--x, 12px);
@@ -534,7 +522,7 @@ button, input, select{ font:inherit; }
 .hero-product-video-media{
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   display: block;
   border: none;
   border-radius: 0;
