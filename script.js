@@ -2172,6 +2172,7 @@ function initSystemReportForm() {
     editingToken = ownership.editToken;
     form.setAttribute("data-editing-report", report.id);
     form.elements.displayName.value = report.displayName || "";
+    form.elements.companyName.value = report.companyName || "";
     form.elements.city.value = report.city || "";
     form.elements.email.value = ownership.email || "";
     form.elements.title.value = report.title || "";
@@ -2238,7 +2239,7 @@ function initSystemReportForm() {
         meta.className = "system-report-card-meta";
         const reportDate = new Date(`${report.createdAt.replace(" ", "T")}Z`);
         const formattedDate = Number.isNaN(reportDate.getTime()) ? "" : reportDate.toLocaleDateString("de-DE", { day: "2-digit", month: "2-digit", year: "numeric" });
-        meta.textContent = [report.displayName, report.city, formattedDate].filter(Boolean).join(" · ");
+        meta.textContent = [report.displayName, report.companyName, report.city, formattedDate].filter(Boolean).join(" · ");
         const heading = document.createElement("h4");
         heading.textContent = report.title;
         const facts = document.createElement("div");
@@ -2294,9 +2295,17 @@ function initSystemReportForm() {
         const componentLabel = document.createElement("strong");
         componentLabel.className = "system-report-card-label";
         componentLabel.textContent = "System";
-        const components = document.createElement("p");
+        const components = document.createElement("ul");
         components.className = "system-report-card-components";
-        components.textContent = report.components;
+        String(report.components || "")
+          .split(/[\n,;]+/)
+          .map((component) => component.trim().replace(/^[-•]\s*/, ""))
+          .filter(Boolean)
+          .forEach((component) => {
+            const item = document.createElement("li");
+            item.textContent = component;
+            components.appendChild(item);
+          });
         const body = document.createElement("p");
         body.className = "system-report-card-report";
         body.textContent = report.report;

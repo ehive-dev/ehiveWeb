@@ -1,13 +1,5 @@
 window.EHIVE_NEWS = [
   {
-    date: "2026-10-20",
-    dateLabel: "20. Oktober 2026",
-    title: "eHive One+: mehr Leistung für neue Möglichkeiten",
-    excerpt: "Mehr Arbeitsspeicher, mehr Speicherplatz und zusätzliche Leistungsreserven: Der neue eHive One+ schafft Raum für neue Apps und zukünftige Smart-Home-Anwendungen.",
-    href: "https://www.ehiv3.de/news-ehive-one-plus.html",
-    tags: ["Hardware", "eHive One+", "Vorschau"]
-  },
-  {
     date: "2026-10-18",
     dateLabel: "18. Oktober 2026",
     title: "Frag mich: KI-Hilfe für eHive One und evcc",

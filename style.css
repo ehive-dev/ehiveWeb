@@ -4368,7 +4368,8 @@ body.lightbox-open{
 .system-report-card-full-copy { max-width: 760px; padding-top: clamp(24px,4vw,36px); }
 .system-report-card-full-copy p { margin: 0; white-space: pre-wrap; }
 .system-report-card-label { margin-bottom: 5px; color: var(--text); font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; }
-.system-report-card-components { margin-bottom: 22px!important; color: var(--muted); font-size: .92rem; line-height: 1.55; }
+.system-report-card-components { margin: 0 0 22px!important; padding-left: 1.25rem; color: var(--muted); font-size: .92rem; line-height: 1.55; }
+.system-report-card-components li + li { margin-top: 4px; }
 .system-report-card-report { color: var(--text); font-size: 1rem; line-height: 1.72; }
 .system-report-card-photo-comment { margin-top: 20px!important; padding-left: 14px; border-left: 2px solid var(--accent); color: var(--muted); font-size: .9rem; }
 .system-report-card-actions { display: flex; gap: 18px; margin-top: auto; padding-top: 28px; }

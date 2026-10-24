@@ -28,7 +28,7 @@
           "name": "eHive",
           "url": "https://www.ehiv3.de/",
           "logo": "https://www.ehiv3.de/img/eHiveWhite.png",
-          "email": "mailto:ehive@gmx.de"
+          "email": "mailto:kontakt@ehiv3.de"
         },
         {
           "@type": "WebSite",
@@ -524,12 +524,13 @@
     <form id="systemReportForm" class="system-report-form" data-system-report-form enctype="multipart/form-data" hidden>
       <div class="system-report-grid">
         <label>Dein Name oder Anzeigename<input name="displayName" type="text" minlength="2" maxlength="80" autocomplete="name" required></label>
+        <label>Firmenname <span>Optional, wird veröffentlicht</span><input name="companyName" type="text" maxlength="120" autocomplete="organization" placeholder="z. B. Muster Elektro GmbH"></label>
         <label>Stadt <span>Optional, wird veröffentlicht</span><input name="city" type="text" maxlength="80" autocomplete="address-level2" placeholder="z. B. Passau"></label>
         <label>E-Mail-Adresse <span>Wird nicht veröffentlicht</span><input name="email" type="email" maxlength="254" autocomplete="email" required></label>
       </div>
       <label>Überschrift für deinen Bericht<input name="title" type="text" minlength="5" maxlength="120" placeholder="z. B. eHive One mit PV, Speicher und zwei Wallboxen" required></label>
       <div class="system-report-grid system-report-content-grid">
-        <label>Welche Komponenten nutzt du?<textarea name="components" rows="5" minlength="10" maxlength="1000" placeholder="Beschreibe deine Geräte, zum Beispiel Wechselrichter, Speicher, Wallbox, Wärmepumpe und Zähler." required></textarea></label>
+        <label>Welche Komponenten nutzt du? <span>Bitte eine Komponente pro Zeile</span><textarea name="components" rows="5" minlength="10" maxlength="1000" placeholder="Wechselrichter&#10;Speicher&#10;Wallbox&#10;Wärmepumpe&#10;Energiezähler" required></textarea></label>
         <label>Dein Erfahrungsbericht<textarea name="report" rows="5" minlength="30" maxlength="5000" placeholder="Wie nutzt du eHive One und was funktioniert für dich besonders gut?" required></textarea></label>
       </div>
       <div class="system-report-media-grid">
