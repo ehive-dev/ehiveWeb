@@ -154,6 +154,7 @@
       ["/contact", "/contact.html"],
       ["/datenschutz", "/datenschutz.html"],
       ["/evcc", "/evcc.html"],
+      ["/fachbetriebe", "/fachbetriebe.html"],
       ["/impressum", "/impressum.html"],
       ["/news", "/news.html"],
       ["/shop", "/shop.html"],
