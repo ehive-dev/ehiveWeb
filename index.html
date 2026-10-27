@@ -34,27 +34,6 @@
           "@type": "WebSite",
           "name": "eHive",
           "url": "https://www.ehiv3.de/"
-        },
-        {
-          "@type": "FAQPage",
-          "mainEntity": [
-            {
-              "@type": "Question",
-              "name": "Was kann ich tun, wenn der Tunnel nach dem Kopieren einer SD-Karte nicht funktioniert?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Installiere TunnelManager 0.9.19 oder neuer über den SmartHub App Store. Beende einen eventuell aktiven Service- oder SSH-Zugang, öffne im TunnelManager die Einstellungen und wähle „Dieses Gerät neu registrieren“. Der Tunnel wird kurz gestoppt und mit neuen, an die eindeutige CPU-Kennung gebundenen Zugangsdaten eingerichtet."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Ändert sich der Tunnel-Hash bei der Neuregistrierung?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Nein. Der vorhandene sechsstellige Hash bleibt erhalten. Bei einer kopierten SD-Karte auf anderer Hardware wird die Gerätekennung auf die eindeutige CPU-Kennung des neuen Geräts korrigiert. Danach gilt die im TunnelManager angezeigte Geräteadresse."
-              }
-            }
-          ]
         }
       ]
     }
@@ -533,21 +512,6 @@
         <div class="ai-compatibility-sources" data-ai-compatibility-sources></div>
       </div>
     </div>
-  </div>
-</section>
-
-<section class="section section-muted content-page" id="faq" aria-labelledby="faq-title">
-  <div class="container narrow">
-    <p class="logo-strip-title">#HÄUFIGE FRAGEN</p>
-    <h2 id="faq-title">TunnelManager nach einer kopierten SD-Karte</h2>
-    <details>
-      <summary>Was kann ich tun, wenn der Tunnel nach dem Kopieren einer SD-Karte nicht funktioniert?</summary>
-      <p>Installiere <strong>TunnelManager 0.9.19</strong> oder neuer über den SmartHub App Store. Beende einen eventuell aktiven Service- oder SSH-Zugang, öffne im TunnelManager die Einstellungen und wähle <strong>„Dieses Gerät neu registrieren“</strong>. Der Tunnel wird dabei kurz gestoppt und mit neuen, an die eindeutige CPU-Kennung gebundenen Zugangsdaten eingerichtet.</p>
-    </details>
-    <details>
-      <summary>Ändert sich der Tunnel-Hash bei der Neuregistrierung?</summary>
-      <p>Nein. Der vorhandene sechsstellige Hash bleibt erhalten. Bei einer kopierten SD-Karte auf anderer Hardware wird die Gerätekennung auf die eindeutige CPU-Kennung des neuen Geräts korrigiert. Verwende danach die im TunnelManager angezeigte Geräteadresse. Weitere Hinweise findest du in der <a href="https://ehive-dev.github.io/doc/software/tunnel-manager/" target="_blank" rel="noopener noreferrer">TunnelManager-Dokumentation</a>.</p>
-    </details>
   </div>
 </section>
 
