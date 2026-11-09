@@ -2261,22 +2261,11 @@ function initSystemReportForm() {
           appTag.title = isKnownEhiveApp(appName) ? "eHive App" : "Software";
           facts.appendChild(appTag);
         });
-        const componentText = String(report.components || "").toLocaleLowerCase("de");
-        const componentKeywords = [
-          ["Wallbox", ["wallbox", "ladepunkt", "ladesäule", "alfen eve", "charger"]],
-          ["PV-Anlage", ["pv-anlage", "photovoltaik", " kWp", " pv ", "solar"]],
-          ["Wechselrichter", ["wechselrichter", "inverter", "sun2000"]],
-          ["Speicher", ["speicher", "akku", "batterie", "luna-s1"]],
-          ["Wärmepumpe", ["wärmepumpe", "heizung"]],
-          ["Energiezähler", ["energiezähler", "stromzähler", "imsys", "lesekopf", "smart meter"]],
-          ["Fahrzeug", ["fahrzeug", "auto", "e-auto"]]
-        ];
-        const componentTags = componentKeywords
-          .filter(([, keywords]) => keywords.some((keyword) => componentText.includes(keyword.toLocaleLowerCase("de"))))
-          .map(([category]) => category);
-        componentTags.slice(0, 8).forEach((value) => {
+        splitReportEntries(report.components).forEach((value) => {
           const fact = document.createElement("span");
+          fact.className = "system-report-hardware-tag";
           fact.textContent = value;
+          fact.title = "Hardware";
           facts.appendChild(fact);
         });
         const openHint = document.createElement("span");
@@ -2302,31 +2291,9 @@ function initSystemReportForm() {
         }
         const fullCopy = document.createElement("div");
         fullCopy.className = "system-report-card-full-copy";
-        const componentLabel = document.createElement("strong");
-        componentLabel.className = "system-report-card-label";
-        componentLabel.textContent = "Hardware";
-        const components = document.createElement("ul");
-        components.className = "system-report-card-components";
-        splitReportEntries(report.components).forEach((component) => {
-            const item = document.createElement("li");
-            item.textContent = component;
-            components.appendChild(item);
-          });
-        const softwareLabel = document.createElement("strong");
-        softwareLabel.className = "system-report-card-label";
-        softwareLabel.textContent = "Software";
-        const software = document.createElement("ul");
-        software.className = "system-report-card-components";
-        softwareEntries.forEach((entry) => {
-          const item = document.createElement("li");
-          item.textContent = entry;
-          software.appendChild(item);
-        });
         const body = document.createElement("p");
         body.className = "system-report-card-report";
         body.textContent = report.report;
-        fullCopy.append(componentLabel, components);
-        if (softwareEntries.length) fullCopy.append(softwareLabel, software);
         fullCopy.append(body);
         if (report.photoComment) {
           const comment = document.createElement("p");
