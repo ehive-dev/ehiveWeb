@@ -2102,6 +2102,8 @@ function initSystemReportForm() {
   const turnstileTarget = form.querySelector("[data-system-report-turnstile]");
   const feed = document.querySelector("[data-system-report-feed]");
   const toggleButton = document.querySelector("[data-system-report-toggle]");
+  const dialog = document.querySelector("[data-system-report-dialog]");
+  const dialogCloseButton = dialog?.querySelector("[data-system-report-dialog-close]");
   let turnstileWidgetId = null;
   let turnstileTimer = null;
   let editingId = "";
@@ -2130,13 +2132,23 @@ function initSystemReportForm() {
   };
 
   const setFormOpen = (open) => {
-    form.hidden = !open;
+    if (!dialog) return;
+    if (open && !dialog.open) dialog.showModal();
+    if (!open && dialog.open) dialog.close();
     toggleButton?.setAttribute("aria-expanded", String(open));
-    if (toggleButton) toggleButton.textContent = open ? "Formular schließen" : "Bist du schon dabei? Dann zeig uns deine Anlage";
     if (open) ensureTurnstile();
   };
 
-  toggleButton?.addEventListener("click", () => setFormOpen(form.hidden));
+  toggleButton?.addEventListener("click", () => setFormOpen(true));
+  dialogCloseButton?.addEventListener("click", () => setFormOpen(false));
+  dialog?.addEventListener("cancel", (event) => {
+    event.preventDefault();
+    setFormOpen(false);
+  });
+  dialog?.addEventListener("click", (event) => {
+    if (event.target === dialog) setFormOpen(false);
+  });
+  dialog?.addEventListener("close", () => toggleButton?.setAttribute("aria-expanded", "false"));
 
   const readOwnership = () => {
     try {

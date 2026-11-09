@@ -520,8 +520,14 @@
     <p class="logo-strip-title">#DEIN SYSTEM</p>
     <h2 id="community-title">Zeig dein eHive System</h2>
     <p class="system-report-intro">Du nutzt eHive One bereits? Teile deine Erfahrung und Fotos deiner Anlage direkt mit der Community.</p>
-    <button class="btn primary system-report-toggle" type="button" data-system-report-toggle aria-expanded="false" aria-controls="systemReportForm">Bist du schon dabei? Dann zeig uns deine Anlage</button>
-    <form id="systemReportForm" class="system-report-form" data-system-report-form enctype="multipart/form-data" hidden>
+    <button class="btn primary system-report-toggle" type="button" data-system-report-toggle aria-expanded="false" aria-haspopup="dialog" aria-controls="systemReportDialog">Bist du schon dabei? Dann zeig uns deine Anlage</button>
+    <dialog id="systemReportDialog" class="system-report-dialog" data-system-report-dialog aria-labelledby="systemReportDialogTitle">
+      <div class="system-report-dialog-shell">
+        <header class="system-report-dialog-header">
+          <div><p class="logo-strip-title">#DEIN SYSTEM</p><h3 id="systemReportDialogTitle">Zeig uns deine Anlage</h3></div>
+          <button class="system-report-dialog-close" type="button" data-system-report-dialog-close aria-label="Dialog schließen">×</button>
+        </header>
+    <form id="systemReportForm" class="system-report-form" data-system-report-form enctype="multipart/form-data">
       <div class="system-report-grid">
         <label>Dein Name oder Anzeigename<input name="displayName" type="text" minlength="2" maxlength="80" autocomplete="name" required></label>
         <label>Firmenname <span>Optional, wird veröffentlicht</span><input name="companyName" type="text" maxlength="120" autocomplete="organization" placeholder="z. B. Muster Elektro GmbH"></label>
@@ -562,6 +568,8 @@
       <div class="system-report-actions"><button class="btn primary" type="submit">Senden</button><p>Dein Beitrag erscheint direkt nach dem Senden.</p></div>
       <p class="system-report-status" data-system-report-status role="status" aria-live="polite"></p>
     </form>
+      </div>
+    </dialog>
     <section class="system-report-feed" aria-label="Community-Beiträge">
       <div class="system-report-feed-grid" data-system-report-feed><p class="system-report-feed-empty">Noch keine Anlagenberichte veröffentlicht.</p></div>
     </section>
