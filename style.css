@@ -4318,6 +4318,16 @@ body.lightbox-open{
 .system-report-photo-fields { display: grid; gap: 12px; }
 .system-report-form textarea { resize: vertical; line-height: 1.5; }
 .system-report-form input:focus, .system-report-form textarea:focus { border-color: rgba(8,129,120,.55); outline: none; box-shadow: 0 0 0 3px rgba(8,129,120,.12); }
+.system-report-software { display: grid; gap: 14px; margin: 0; padding: 20px; border: 1px solid var(--border); border-radius: var(--radius); }
+.system-report-software legend { padding: 0 7px; font-weight: 750; }
+.system-report-software > p { margin: 0; color: var(--muted); font-size: .9rem; }
+.system-report-software-options { display: flex; flex-wrap: wrap; gap: 9px; }
+.system-report-software-options label { display: block; cursor: pointer; }
+.system-report-software-options input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.system-report-software-options span { display: inline-flex; min-height: 38px; align-items: center; padding: 7px 12px; border: 1px solid var(--border); border-radius: 999px; background: #fff; color: var(--text); font-size: .88rem; font-weight: 700; transition: .18s ease; }
+.system-report-software-options input:checked + span { border-color: var(--accent); background: var(--accent); color: #fff; }
+.system-report-software-options input:focus-visible + span { outline: 3px solid rgba(8,129,120,.2); outline-offset: 2px; }
+.system-report-software-other { margin-top: 2px; }
 .system-report-photo-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: -10px; }
 .system-report-photo-list span { padding: 5px 9px; border-radius: 999px; background: var(--bg-soft); color: var(--muted); font-size: .8rem; }
 .system-report-consent { grid-template-columns: auto 1fr !important; align-items: start; font-weight: 400 !important; }
@@ -4346,6 +4356,7 @@ body.lightbox-open{
 .system-report-card-facts { display: flex; flex-wrap: wrap; gap: 7px; }
 .system-report-card-facts .system-report-app-tag { border-color: var(--accent); background: var(--accent); color: #fff; font-weight: 750; }
 .system-report-card-facts .system-report-app-tag::before { content: "eHive App · "; font-size: .72em; font-weight: 600; opacity: .82; }
+.system-report-card-facts .system-report-software-tag::before { content: "Software · "; font-size: .72em; font-weight: 600; opacity: .82; }
 .system-report-card-facts span { padding: 5px 9px; border-radius: 999px; background: var(--bg-soft); color: var(--muted); font-size: .78rem; line-height: 1.3; }
 .system-report-card-open-hint { margin-top: 18px; color: var(--text); font-size: .86rem; font-weight: 700; }
 .system-report-card-open-hint::after { content: " ↓"; color: var(--accent); }

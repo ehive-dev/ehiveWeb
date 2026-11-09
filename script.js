@@ -2091,6 +2091,8 @@ function initSystemReportForm() {
   const ownershipKey = "ehive-report-edit-tokens-v1";
   const photoInput = form.querySelector("[data-system-report-photos]");
   const componentsField = form.elements.components;
+  const softwareAppFields = Array.from(form.querySelectorAll('input[name="softwareApps"]'));
+  const softwareOtherField = form.elements.softwareOther;
   const coverSelect = form.querySelector("[data-system-report-cover]");
   const coverField = form.querySelector("[data-system-report-cover-field]");
   const photoList = form.querySelector("[data-system-report-photo-list]");
@@ -2106,10 +2108,11 @@ function initSystemReportForm() {
   let editingToken = "";
 
   const knownEhiveApps = ["Administration", "HiveScope", "chargeLedger", "tenantLedger", "wattRadar", "ioManager", "TunnelManager", "HiveBus", "KNX Bridge", "charge&go"];
-  const findKnownApps = (...values) => {
-    const haystack = values.join(" ").toLocaleLowerCase("de");
-    return knownEhiveApps.filter((name) => haystack.includes(name.toLocaleLowerCase("de")));
-  };
+  const splitReportEntries = (value) => Array.from(new Set(String(value || "")
+    .split(/\r?\n+/)
+    .map((entry) => entry.trim().replace(/^[-•]\s*/, ""))
+    .filter(Boolean)));
+  const isKnownEhiveApp = (value) => knownEhiveApps.some((name) => name.toLocaleLowerCase("de") === value.toLocaleLowerCase("de"));
 
   const ensureTurnstile = () => {
     if (!siteKey || !turnstileTarget || turnstileWidgetId !== null || turnstileTimer !== null) return;
@@ -2178,6 +2181,11 @@ function initSystemReportForm() {
     form.elements.email.value = ownership.email || "";
     form.elements.title.value = report.title || "";
     if (componentsField) componentsField.value = report.components || "";
+    const softwareEntries = splitReportEntries(report.software);
+    softwareAppFields.forEach((field) => {
+      field.checked = softwareEntries.some((entry) => entry.toLocaleLowerCase("de") === field.value.toLocaleLowerCase("de"));
+    });
+    if (softwareOtherField) softwareOtherField.value = softwareEntries.filter((entry) => !isKnownEhiveApp(entry)).join("\n");
     form.elements.report.value = report.report || "";
     form.elements.consent.checked = false;
     if (photoInput) photoInput.required = false;
@@ -2245,14 +2253,15 @@ function initSystemReportForm() {
         heading.textContent = report.title;
         const facts = document.createElement("div");
         facts.className = "system-report-card-facts";
-        findKnownApps(report.title || "", report.components || "", report.report || "").forEach((appName) => {
+        const softwareEntries = splitReportEntries(report.software);
+        softwareEntries.forEach((appName) => {
           const appTag = document.createElement("span");
-          appTag.className = "system-report-app-tag";
+          appTag.className = isKnownEhiveApp(appName) ? "system-report-app-tag" : "system-report-software-tag";
           appTag.textContent = appName;
-          appTag.title = "eHive App";
+          appTag.title = isKnownEhiveApp(appName) ? "eHive App" : "Software";
           facts.appendChild(appTag);
         });
-        const componentText = `${report.title || ""} ${report.components || ""}`.toLocaleLowerCase("de");
+        const componentText = String(report.components || "").toLocaleLowerCase("de");
         const componentKeywords = [
           ["Wallbox", ["wallbox", "ladepunkt", "ladesäule", "alfen eve", "charger"]],
           ["PV-Anlage", ["pv-anlage", "photovoltaik", " kWp", " pv ", "solar"]],
@@ -2295,22 +2304,30 @@ function initSystemReportForm() {
         fullCopy.className = "system-report-card-full-copy";
         const componentLabel = document.createElement("strong");
         componentLabel.className = "system-report-card-label";
-        componentLabel.textContent = "System";
+        componentLabel.textContent = "Hardware";
         const components = document.createElement("ul");
         components.className = "system-report-card-components";
-        String(report.components || "")
-          .split(/[\n,;]+/)
-          .map((component) => component.trim().replace(/^[-•]\s*/, ""))
-          .filter(Boolean)
-          .forEach((component) => {
+        splitReportEntries(report.components).forEach((component) => {
             const item = document.createElement("li");
             item.textContent = component;
             components.appendChild(item);
           });
+        const softwareLabel = document.createElement("strong");
+        softwareLabel.className = "system-report-card-label";
+        softwareLabel.textContent = "Software";
+        const software = document.createElement("ul");
+        software.className = "system-report-card-components";
+        softwareEntries.forEach((entry) => {
+          const item = document.createElement("li");
+          item.textContent = entry;
+          software.appendChild(item);
+        });
         const body = document.createElement("p");
         body.className = "system-report-card-report";
         body.textContent = report.report;
-        fullCopy.append(componentLabel, components, body);
+        fullCopy.append(componentLabel, components);
+        if (softwareEntries.length) fullCopy.append(softwareLabel, software);
+        fullCopy.append(body);
         if (report.photoComment) {
           const comment = document.createElement("p");
           comment.className = "system-report-card-photo-comment";
@@ -2445,6 +2462,15 @@ function initSystemReportForm() {
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
     if (!form.reportValidity()) return;
+    const hasSoftware = softwareAppFields.some((field) => field.checked) || splitReportEntries(softwareOtherField?.value).length > 0;
+    if (!hasSoftware) {
+      if (status) {
+        status.className = "system-report-status is-error";
+        status.textContent = "Bitte wähle mindestens eine Software aus oder trage weitere Software ein.";
+      }
+      softwareAppFields[0]?.focus();
+      return;
+    }
     const files = Array.from(photoInput?.files || []);
     const invalidPhotoCount = editingId ? files.length > 5 : files.length < 1 || files.length > 5;
     if (invalidPhotoCount || files.some((file) => file.size > 8 * 1024 * 1024)) {

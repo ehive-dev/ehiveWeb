@@ -530,9 +530,26 @@
       </div>
       <label>Überschrift für deinen Bericht<input name="title" type="text" minlength="5" maxlength="120" placeholder="z. B. eHive One mit PV, Speicher und zwei Wallboxen" required></label>
       <div class="system-report-grid system-report-content-grid">
-        <label>Welche Komponenten nutzt du? <span>Bitte eine Komponente pro Zeile</span><textarea name="components" rows="5" minlength="10" maxlength="1000" placeholder="Wechselrichter&#10;Speicher&#10;Wallbox&#10;Wärmepumpe&#10;Energiezähler" required></textarea></label>
+        <label>Welche Hardware nutzt du? <span>Bitte eine Komponente pro Zeile</span><textarea name="components" rows="5" minlength="10" maxlength="1000" placeholder="Wechselrichter&#10;Speicher&#10;Wallbox&#10;Wärmepumpe&#10;Energiezähler" required></textarea></label>
         <label>Dein Erfahrungsbericht<textarea name="report" rows="5" minlength="30" maxlength="5000" placeholder="Wie nutzt du eHive One und was funktioniert für dich besonders gut?" required></textarea></label>
       </div>
+      <fieldset class="system-report-software">
+        <legend>Welche Software nutzt du?</legend>
+        <p>Wähle die eingesetzten eHive-Apps aus und ergänze bei Bedarf weitere Software.</p>
+        <div class="system-report-software-options">
+          <label><input type="checkbox" name="softwareApps" value="Administration"><span>Administration</span></label>
+          <label><input type="checkbox" name="softwareApps" value="HiveScope"><span>HiveScope</span></label>
+          <label><input type="checkbox" name="softwareApps" value="chargeLedger"><span>chargeLedger</span></label>
+          <label><input type="checkbox" name="softwareApps" value="tenantLedger"><span>tenantLedger</span></label>
+          <label><input type="checkbox" name="softwareApps" value="wattRadar"><span>wattRadar</span></label>
+          <label><input type="checkbox" name="softwareApps" value="ioManager"><span>ioManager</span></label>
+          <label><input type="checkbox" name="softwareApps" value="TunnelManager"><span>TunnelManager</span></label>
+          <label><input type="checkbox" name="softwareApps" value="HiveBus"><span>HiveBus</span></label>
+          <label><input type="checkbox" name="softwareApps" value="KNX Bridge"><span>KNX Bridge</span></label>
+          <label><input type="checkbox" name="softwareApps" value="charge&amp;go"><span>charge&amp;go</span></label>
+        </div>
+        <label class="system-report-software-other">Weitere Software <span>Optional, bitte eine Anwendung pro Zeile</span><textarea name="softwareOther" rows="3" maxlength="1000" placeholder="evcc&#10;Home Assistant&#10;Node-RED"></textarea></label>
+      </fieldset>
       <div class="system-report-media-grid">
         <div class="system-report-photo-fields">
           <label>Fotos deiner Anlage <span>1 bis 5 Bilder, JPEG, PNG oder WebP, jeweils maximal 8 MB. Entferne vorher bei Bedarf Standortdaten aus den Bildern.</span><input name="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple required data-system-report-photos></label>
