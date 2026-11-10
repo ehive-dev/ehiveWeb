@@ -162,7 +162,7 @@
         <p>Gehe die drei Bereiche nacheinander durch. Beispielwerte sind bereits eingetragen und können jederzeit angepasst werden.</p>
       </header>
       <ol class="savings-guide" aria-label="Drei Schritte zur Berechnung">
-        <li><span>01</span><strong>Günstige Energie wählen</strong><small>PV und passende Tarife aktivieren</small></li>
+        <li><span>01</span><strong>Energiequellen wählen</strong><small>PV, Batteriespeicher und passende Tarife aktivieren</small></li>
         <li><span>02</span><strong>Verbrauch eintragen</strong><small>Flexiblen und festen Anteil festlegen</small></li>
         <li><span>03</span><strong>Speicher ergänzen</strong><small>Nur wenn einer vorhanden ist</small></li>
       </ol>
@@ -197,6 +197,10 @@
                   <label class="savings-strategy-share"><span>Wie viel kannst du von 00:00 bis 05:00 Uhr nutzen? <output data-strategy-output="window">40&nbsp;%</output></span><input type="range" name="shareWindow" min="0" max="100" step="5" value="40"><small>Zum Beispiel E-Auto, Batteriespeicher oder Spülmaschine. Den tatsächlichen Tarifpreis bitte selbst eintragen.</small></label>
                 </div>
               </article>
+              <article class="savings-strategy-card savings-battery-choice is-disabled" data-battery-choice>
+                <label class="savings-strategy-toggle"><input type="checkbox" name="batteryEnabled"><span><strong>Batteriespeicher</strong><small>Gespeicherte Energie später anstelle von teurem Netzstrom nutzen</small></span></label>
+                <div class="savings-strategy-fields"><p>Kapazität, Nutzung und Wirkungsgrad trägst du anschließend in Punkt 3 ein.</p></div>
+              </article>
             </div>
             <p class="savings-strategy-status" data-strategy-status role="status" aria-live="polite"></p>
           </fieldset>
@@ -216,8 +220,8 @@
           </fieldset>
 
           <fieldset class="savings-battery is-disabled" id="speicher-rechner">
-            <legend>3. Batteriespeicher berücksichtigen</legend>
-            <label class="savings-battery-toggle"><input type="checkbox" name="batteryEnabled"><span><strong>Ich habe einen Batteriespeicher</strong><small>Aktivieren, um Kapazität und Nutzung einzutragen</small></span></label>
+            <legend>3. Batteriespeicher einstellen</legend>
+            <p class="savings-battery-empty">Aktiviere den Batteriespeicher zuerst unter Punkt 1. Danach erscheinen hier die technischen Angaben.</p>
             <div class="savings-battery-details">
               <div class="savings-battery-inputs">
                 <label><span>Nutzbare Kapazität</span><span class="savings-input-unit"><input type="number" name="batteryCapacity" min="0" max="200" step="0.5" value="10" inputmode="decimal"><b>kWh</b></span></label>
@@ -301,6 +305,6 @@
 <div data-include="footer"></div>
 <script src="config.js"></script>
 <script src="script.js?v=20261110-knx-release"></script>
-<script src="stromkosten-rechner.js?v=20261110-pv-label"></script>
+<script src="stromkosten-rechner.js?v=20261110-battery-step-one"></script>
 </body>
 </html>

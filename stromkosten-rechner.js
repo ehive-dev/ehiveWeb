@@ -99,6 +99,7 @@
       : "Aktiviere mindestens die PV-Anlage, einen dynamischen Tarif oder ein günstiges Zeitfenster.";
 
     const batteryEnabled = Boolean(form.elements.batteryEnabled?.checked);
+    form.querySelector("[data-battery-choice]")?.classList.toggle("is-disabled", !batteryEnabled);
     form.querySelector(".savings-battery")?.classList.toggle("is-disabled", !batteryEnabled);
     const batteryCapacity = Math.max(0, value(form.elements.batteryCapacity));
     const batteryCycles = Math.max(0, value(form.elements.batteryCycles));
