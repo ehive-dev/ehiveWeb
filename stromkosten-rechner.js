@@ -7,7 +7,7 @@
   const decimal = new Intl.NumberFormat("de-DE", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
   const strategyConfig = {
     pv: { enabled: "strategyPv", price: "pricePv", share: "sharePv", label: "PV", window: [9, 16] },
-    dynamic: { enabled: "strategyDynamic", price: "priceDynamic", share: "shareDynamic", label: "Dynamisch", window: [1, 6] },
+    dynamic: { enabled: "strategyDynamic", price: "priceDynamic", share: "shareDynamic", label: "Spotmarkt", window: [1, 6] },
     window: { enabled: "strategyWindow", price: "priceWindow", share: "shareWindow", label: "Nachtfenster 00–05 Uhr", window: [0, 4] }
   };
 
@@ -222,7 +222,7 @@
     const usedCoverage = flexibleKwh > 0 ? shiftedKwh / flexibleKwh * 100 : 0;
     output.strategyStatus.textContent = activeStrategies.length
       ? `${number.format(usedCoverage)} % der zeitlich flexiblen Energie werden berücksichtigt.${requestedCoverage > 100 ? " Anteile über 100 % werden automatisch begrenzt." : ""}`
-      : "Aktiviere mindestens die PV-Anlage, einen dynamischen Tarif oder ein günstiges Zeitfenster.";
+      : "Aktiviere mindestens die PV-Anlage, einen dynamischen Spotmarkt-Tarif oder ein günstiges Zeitfenster.";
 
     const batteryEnabled = Boolean(form.elements.batteryEnabled?.checked);
     form.querySelector("[data-battery-choice]")?.classList.toggle("is-disabled", !batteryEnabled);

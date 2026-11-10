@@ -184,10 +184,10 @@
                 </div>
               </article>
               <article class="savings-strategy-card is-disabled" data-strategy-card="dynamic">
-                <label class="savings-strategy-toggle"><input type="checkbox" name="strategyDynamic"><span><strong>Dynamischer Tarif</strong><small>Günstige Viertelstunden des Strommarkts nutzen</small></span></label>
+                <label class="savings-strategy-toggle"><input type="checkbox" name="strategyDynamic"><span><strong>Dynamischer Spotmarkt-Tarif</strong><small>Der Preis ändert sich stündlich oder viertelstündlich mit dem Spotmarkt</small></span></label>
                 <div class="savings-strategy-fields">
-                  <label><span>Ø günstiger Endpreis</span><span class="savings-input-unit"><input type="number" name="priceDynamic" min="-50" max="200" step="0.1" value="24" inputmode="decimal"><b>ct/kWh</b></span></label>
-                  <label class="savings-strategy-share"><span>Wie viel passt in günstige Viertelstunden? <output data-strategy-output="dynamic">35&nbsp;%</output></span><input type="range" name="shareDynamic" min="0" max="100" step="5" value="35"><small>Schätze den realistisch planbaren Anteil</small></label>
+                  <label><span>Beispiel-Endpreis in günstiger Stunde</span><span class="savings-input-unit"><input type="number" name="priceDynamic" min="-50" max="200" step="0.1" value="24" inputmode="decimal"><b>ct/kWh</b></span><small class="savings-price-example">Beispiel: 8 ct/kWh am Spotmarkt. Mit Steuern, Netzentgelten und Tarifbestandteilen rechnen wir beispielhaft mit 24 ct/kWh Endpreis.</small></label>
+                  <label class="savings-strategy-share"><span>Wie viel kannst du in günstige Spotmarktzeiten verschieben? <output data-strategy-output="dynamic">35&nbsp;%</output></span><input type="range" name="shareDynamic" min="0" max="100" step="5" value="35"><small>Schätze den realistisch planbaren Anteil</small></label>
                 </div>
               </article>
               <article class="savings-strategy-card is-disabled" data-strategy-card="window">
@@ -294,7 +294,7 @@
       </header>
       <div class="savings-model-info-grid">
         <article><span>01</span><h3>PV-Anlage</h3><p>Ein Verbraucher startet dann, wenn die eigene PV-Anlage ausreichend Leistung bereitstellt. Gespart wird die Differenz zwischen vermiedenem Netzbezug und entgangener Einspeisevergütung.</p></article>
-        <article><span>02</span><h3>Dynamischer Tarif</h3><p>Der Arbeitspreis folgt dem Strommarkt. Mit passendem Messsystem kann zeitlich genau abgerechnet werden. eHive One kann verfügbare Preissignale für die Planung steuerbarer Verbraucher berücksichtigen.</p></article>
+        <article><span>02</span><h3>Dynamischer Spotmarkt-Tarif</h3><p>Der Börsenanteil des Strompreises folgt dem Spotmarkt. Zum tatsächlichen Endpreis kommen weitere Bestandteile wie Netzentgelte, Steuern und Tarifkosten hinzu. Mit passendem Messsystem kann zeitlich genau abgerechnet werden.</p></article>
         <article><span>03</span><h3>Günstiges Zeitfenster</h3><p>In vorgegebenen Stunden gilt ein anderer Preis oder Bonus. Entscheidend ist, wie viel Verbrauch tatsächlich in dieses Zeitfenster passt, ohne Komfort oder technische Grenzen zu verletzen.</p></article>
       </div>
       <p class="savings-source-note">Tarifbedingungen ändern sich. Informiere dich direkt beim Anbieter, zum Beispiel über die offiziellen Erläuterungen von <a href="https://support.tibber.com/hc/de/articles/48143572102033-So-funktionieren-dynamische-Strompreise" target="_blank" rel="noopener noreferrer">Tibber zu dynamischen Strompreisen</a>, <a href="https://octopusenergy.de/dynamic-octopus" target="_blank" rel="noopener noreferrer">Octopus Energy zu dynamicOctopus</a> und <a href="https://octopusenergy.de/octopus-go" target="_blank" rel="noopener noreferrer">Octopus Go zum festen günstigen Nachtzeitfenster</a>. eHive ist mit diesen Anbietern nicht verbunden.</p>
@@ -318,6 +318,6 @@
 <div data-include="footer"></div>
 <script src="config.js"></script>
 <script src="script.js?v=20261110-knx-release"></script>
-<script src="stromkosten-rechner.js?v=20261110-car-kilometres"></script>
+<script src="stromkosten-rechner.js?v=20261110-spot-market-example"></script>
 </body>
 </html>
