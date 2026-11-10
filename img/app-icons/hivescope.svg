@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="HiveScope Radar">
+  <defs>
+    <radialGradient id="radar-bg" cx="50%" cy="50%" r="52%"><stop offset="0" stop-color="#0fdd42" stop-opacity=".18"/><stop offset="1" stop-color="#07130d" stop-opacity=".04"/></radialGradient>
+    <linearGradient id="sweep" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#0fdd42" stop-opacity="0"/><stop offset="1" stop-color="#0fdd42" stop-opacity=".72"/></linearGradient>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="1.1" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <style>
+    .scanner { transform-box: fill-box; transform-origin: 0% 100%; animation: scan 2.8s linear infinite; }
+    .contact-a { transform-box: fill-box; transform-origin: center; animation: pulse 2.8s ease-out infinite .35s; }
+    .contact-b { transform-box: fill-box; transform-origin: center; animation: pulse 2.8s ease-out infinite 1.65s; }
+    @keyframes scan { to { transform: rotate(360deg); } }
+    @keyframes pulse { 0%,12% { opacity:1; transform:scale(1.45); } 35%,100% { opacity:.5; transform:scale(1); } }
+    @media (prefers-reduced-motion: reduce) { .scanner,.contact-a,.contact-b { animation:none; } }
+  </style>
+  <circle cx="16" cy="16" r="13.1" fill="url(#radar-bg)" stroke="#0fdd42" stroke-width="1.8"/>
+  <g fill="none" stroke="#0fdd42" stroke-opacity=".38" stroke-width=".8"><circle cx="16" cy="16" r="8.6"/><circle cx="16" cy="16" r="4.3"/><path d="M3 16h26M16 3v26"/></g>
+  <g class="scanner"><path d="M16 16V3a13 13 0 0 1 9.2 3.8Z" fill="url(#sweep)"/><path d="M16 16 25.2 6.8" fill="none" stroke="#8aff9f" stroke-width="1.25" stroke-linecap="round" filter="url(#glow)"/></g>
+  <g fill="#b5ffc2" filter="url(#glow)"><circle class="contact-a" cx="11" cy="10.5" r="1.35"/><circle class="contact-b" cx="21.5" cy="19" r="1.25"/></g>
+  <circle cx="16" cy="16" r="1.5" fill="#0fdd42" filter="url(#glow)"/>
+</svg>

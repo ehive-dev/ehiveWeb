@@ -4970,6 +4970,34 @@ body.lightbox-open{
   stroke-linejoin:round;
 }
 
+.app-entry-icon--app{
+  width:86px;
+  height:86px;
+}
+
+.app-entry-icon--app img{
+  display:block;
+  width:72px;
+  height:72px;
+  object-fit:contain;
+  object-position:center;
+}
+
+.app-entry-icon--evcc img{
+  width:78px;
+  height:78px;
+}
+
+.app-entry-icon--hivescope img{
+  width:74px;
+  height:74px;
+}
+
+.app-entry-icon--node-red img{
+  width:62px;
+  height:72px;
+}
+
 .app-entry-icon--ehive img{
   width:72px;
   height:72px;
@@ -5240,6 +5268,11 @@ body.lightbox-open{
   .app-entry-brand{flex-direction:row;align-items:center}
   .app-entry-icon{width:68px;height:68px}
   .app-entry-icon svg{width:50px;height:50px}
+  .app-entry-icon--app{width:72px;height:72px}
+  .app-entry-icon--app img{width:62px;height:62px}
+  .app-entry-icon--evcc img{width:68px;height:68px}
+  .app-entry-icon--hivescope img{width:64px;height:64px}
+  .app-entry-icon--node-red img{width:54px;height:62px}
   .app-entry-icon--wide{width:104px}
   .app-entry-icon--ehive img{width:62px;height:62px}
 }
