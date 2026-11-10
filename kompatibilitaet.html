@@ -51,7 +51,39 @@
           <h1>KOMPATIBILITÄT</h1>
           <p class="lead">Wir sprechen herstellerübergreifend mit über 900 Geräten. Wöchentlich kommen neue hinzu.</p>
         </div>
-        <figure class="compat-hero-device"><img src="products/ehive-one.png" width="900" height="900" alt="eHive One Hutschienen-Computer für evcc"></figure>
+        <figure class="compat-energy-flow" data-energy-flow>
+          <div class="compat-flow-stage" aria-hidden="true">
+            <div class="compat-flow-node compat-flow-node--top">
+              <svg viewBox="0 0 32 32"><circle cx="24" cy="8" r="4"></circle><path d="M24 1v3m0 8v3m-7-7h3m8 0h3M4 16h17l-3 11H1zM3 21h16M9 16 7 27m8-11-2 11"></path></svg>
+              <span><small>Erzeugung</small>PV-Anlage</span>
+            </div>
+            <div class="compat-flow-node compat-flow-node--left">
+              <svg viewBox="0 0 32 32"><path d="m3 15 13-10 13 10M7 13v14h18V13M13 27v-8h6v8"></path></svg>
+              <span><small>Verbrauch</small>Haus</span>
+            </div>
+            <div class="compat-flow-node compat-flow-node--right">
+              <svg viewBox="0 0 32 32"><path d="M6 20h20l-2-7a4 4 0 0 0-4-3h-8a4 4 0 0 0-4 3zm2 0v5m16-5v5M4 17h4m16 0h4"></path><circle cx="10" cy="22" r="2"></circle><circle cx="22" cy="22" r="2"></circle></svg>
+              <span><small>Laden</small>E-Auto</span>
+            </div>
+            <div class="compat-flow-node compat-flow-node--bottom">
+              <svg viewBox="0 0 32 32"><rect x="4" y="5" width="24" height="22" rx="2"></rect><circle cx="16" cy="16" r="7"></circle><path d="M16 9c3 3 2 5 0 7-3-1-4-3-3-5m10 5c-3 3-5 2-7 0 1-3 3-4 5-3m-5 10c-3-3-2-5 0-7 3 1 4 3 3 5"></path></svg>
+              <span><small>Wärme</small>Wärmepumpe</span>
+            </div>
+
+            <span class="compat-flow-line compat-flow-line--top"><i></i><i></i></span>
+            <span class="compat-flow-line compat-flow-line--left"><i></i><i></i></span>
+            <span class="compat-flow-line compat-flow-line--right"><i></i><i></i></span>
+            <span class="compat-flow-line compat-flow-line--bottom"><i></i><i></i></span>
+
+            <div class="compat-flow-hub">
+              <span>Energiemanagement</span>
+              <img src="img/ehive-one-v73-top-transparent.webp" width="1024" height="1536" alt="">
+              <strong>eHive One</strong>
+            </div>
+          </div>
+          <figcaption>eHive One verbindet Erzeuger und Verbraucher in einem lokalen Energiemanagement.</figcaption>
+          <button class="compat-flow-toggle" type="button" aria-pressed="false" data-energy-flow-toggle>Animation pausieren</button>
+        </figure>
       </div>
     </div>
   </section>

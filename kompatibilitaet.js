@@ -1,4 +1,15 @@
 (() => {
+  const energyFlow = document.querySelector("[data-energy-flow]");
+  const energyFlowToggle = document.querySelector("[data-energy-flow-toggle]");
+
+  if (energyFlow && energyFlowToggle) {
+    energyFlowToggle.addEventListener("click", () => {
+      const paused = energyFlow.classList.toggle("is-paused");
+      energyFlowToggle.setAttribute("aria-pressed", String(paused));
+      energyFlowToggle.textContent = paused ? "Animation fortsetzen" : "Animation pausieren";
+    });
+  }
+
   const input = document.querySelector("[data-compat-search]");
   const reset = document.querySelector("[data-compat-reset]");
   const status = document.querySelector("[data-compat-status]");
