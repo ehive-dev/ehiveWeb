@@ -111,6 +111,91 @@
     renderChart(model, reach);
   }
 
+  const manualButtons = Array.from(document.querySelectorAll("[data-manual-mode]"));
+  const manualPower = document.querySelector("[data-manual-power]");
+  const manualPowerOutput = document.querySelector("[data-manual-power-output]");
+  const manualStage = document.querySelector("[data-manual-stage]");
+  const manualKicker = document.querySelector("[data-manual-kicker]");
+  const manualStatus = document.querySelector("[data-manual-status]");
+  const manualDetail = document.querySelector("[data-manual-detail]");
+  const manualCar = document.querySelector("[data-manual-car]");
+  const manualGrid = document.querySelector("[data-manual-grid]");
+  const manualHubLabel = document.querySelector("[data-manual-hub-label]");
+  const manualBalanceLabel = document.querySelector("[data-manual-balance-label]");
+  const manualBalance = document.querySelector("[data-manual-balance]");
+  let manualMode = "auto";
+
+  function formatPower(power) {
+    return `${decimal.format(power)} kW`;
+  }
+
+  function setManualRoute(name, active, reverse = false) {
+    const route = document.querySelector(`[data-manual-route="${name}"]`);
+    route?.classList.toggle("is-active", active);
+    route?.classList.toggle("is-reverse", reverse);
+  }
+
+  function renderManualDemo() {
+    if (!manualStage || !manualPower) return;
+    const surplus = 4;
+    const requested = Math.max(1.4, Math.min(11, value(manualPower)));
+    let charge = surplus;
+    let grid = 0;
+    let gridExport = false;
+
+    manualButtons.forEach(button => {
+      const active = button.dataset.manualMode === manualMode;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+    manualStage.dataset.mode = manualMode;
+    manualPower.disabled = manualMode !== "quick";
+    manualPowerOutput.textContent = formatPower(requested);
+    setManualRoute("pv", true);
+    setManualRoute("house", true);
+
+    if (manualMode === "quick") {
+      charge = requested;
+      grid = Math.max(0, requested - surplus);
+      manualKicker.textContent = "Manuelle Freigabe aktiv";
+      manualStatus.textContent = `Das E-Auto lädt sofort mit ${formatPower(charge)}.`;
+      manualDetail.textContent = grid > 0
+        ? `Der PV-Überschuss reicht nicht vollständig aus. eHive One bezieht deshalb zusätzlich ${formatPower(grid)} aus dem Netz, bis du zur Automatik zurückkehrst.`
+        : "Die gewünschte Ladeleistung kann in diesem Beispiel vollständig aus dem PV-Überschuss bereitgestellt werden.";
+      manualHubLabel.textContent = "manuell";
+      setManualRoute("car", true);
+      setManualRoute("grid", grid > 0);
+    } else if (manualMode === "pause") {
+      charge = 0;
+      grid = surplus;
+      gridExport = true;
+      manualKicker.textContent = "Laden pausiert";
+      manualStatus.textContent = "Das E-Auto erhält vorübergehend keine Ladeleistung.";
+      manualDetail.textContent = "Der verfügbare PV-Überschuss wird in diesem vereinfachten Beispiel in das Stromnetz eingespeist. Andere angeschlossene Verbraucher oder ein Speicher könnten ihn ebenfalls nutzen.";
+      manualHubLabel.textContent = "pausiert";
+      setManualRoute("car", false);
+      setManualRoute("grid", true, true);
+    } else {
+      manualKicker.textContent = "Automatik aktiv";
+      manualStatus.textContent = "Das E-Auto lädt mit verfügbarem PV-Überschuss.";
+      manualDetail.textContent = "Der Hausverbrauch ist bereits abgezogen. Für das Laden wird in diesem Beispiel kein zusätzlicher Netzstrom benötigt.";
+      manualHubLabel.textContent = "optimiert";
+      setManualRoute("car", true);
+      setManualRoute("grid", false);
+    }
+
+    manualCar.textContent = formatPower(charge);
+    manualGrid.textContent = grid === 0 ? "0,0 kW" : `${formatPower(grid)} ${gridExport ? "Abgabe" : "Bezug"}`;
+    manualBalanceLabel.textContent = gridExport ? "Einspeisung ins Netz" : "Zusätzlicher Netzbezug";
+    manualBalance.textContent = formatPower(grid);
+  }
+
+  manualButtons.forEach(button => button.addEventListener("click", () => {
+    manualMode = button.dataset.manualMode || "auto";
+    renderManualDemo();
+  }));
+  manualPower?.addEventListener("input", renderManualDemo);
+
   form.addEventListener("input", calculate);
   form.addEventListener("change", event => {
     if (event.target instanceof HTMLInputElement && event.target.name === "model") {
@@ -119,5 +204,6 @@
     calculate();
   });
   form.addEventListener("reset", () => window.setTimeout(calculate, 0));
+  renderManualDemo();
   calculate();
 })();

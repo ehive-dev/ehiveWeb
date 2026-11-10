@@ -87,6 +87,69 @@
     </div>
   </section>
 
+  <section class="savings-manual" id="manuell" aria-labelledby="manual-title">
+    <div class="container savings-manual-grid">
+      <div class="savings-manual-copy">
+        <p class="eyebrow">Manueller Modus · Live-Demo</p>
+        <h2 id="manual-title">Jetzt schnell laden? Du entscheidest.</h2>
+        <p>Automatik spart, solange es zu deinem Alltag passt. Wenn du kurzfristig volle Ladeleistung brauchst, kannst du die Optimierung bewusst übersteuern. Probiere aus, wie eHive One darauf reagiert.</p>
+
+        <div class="savings-manual-controls" role="group" aria-label="Betriebsart für die Demonstration wählen">
+          <button type="button" class="is-active" data-manual-mode="auto" aria-pressed="true"><span>Automatik</span><small>PV-Überschuss nutzen</small></button>
+          <button type="button" data-manual-mode="quick" aria-pressed="false"><span>Jetzt schnell laden</span><small>Komfort hat Vorrang</small></button>
+          <button type="button" data-manual-mode="pause" aria-pressed="false"><span>Laden pausieren</span><small>Verbrauch zurückstellen</small></button>
+        </div>
+
+        <label class="savings-manual-power">
+          <span>Gewünschte Sofort-Ladeleistung <output data-manual-power-output>11,0 kW</output></span>
+          <input type="range" min="1.4" max="11" step="0.2" value="11" data-manual-power>
+        </label>
+
+        <div class="savings-manual-message" aria-live="polite">
+          <span data-manual-kicker>Automatik aktiv</span>
+          <strong data-manual-status>Das E-Auto lädt mit verfügbarem PV-Überschuss.</strong>
+          <p data-manual-detail>Der Hausverbrauch ist bereits abgezogen. Für das Laden wird in diesem Beispiel kein zusätzlicher Netzstrom benötigt.</p>
+        </div>
+      </div>
+
+      <div class="savings-manual-demo">
+        <div class="savings-manual-stage" data-manual-stage data-mode="auto" aria-label="Schematischer Energiefluss im gewählten Betriebsmodus">
+          <div class="savings-manual-node savings-manual-node--top" data-manual-node="pv">
+            <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="24" cy="8" r="4"></circle><path d="M24 1v3m0 8v3m-7-7h3m8 0h3M4 16h17l-3 11H1zM3 21h16M9 16 7 27m8-11-2 11"></path></svg>
+            <span><small>PV-Anlage</small><strong>5,2 kW</strong></span>
+          </div>
+          <div class="savings-manual-node savings-manual-node--left" data-manual-node="house">
+            <svg viewBox="0 0 32 32" aria-hidden="true"><path d="m3 15 13-10 13 10M7 13v14h18V13M13 27v-8h6v8"></path></svg>
+            <span><small>Hausverbrauch</small><strong>1,2 kW</strong></span>
+          </div>
+          <div class="savings-manual-node savings-manual-node--right" data-manual-node="car">
+            <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M6 20h20l-2-7a4 4 0 0 0-4-3h-8a4 4 0 0 0-4 3zm2 0v5m16-5v5"></path><circle cx="10" cy="22" r="2"></circle><circle cx="22" cy="22" r="2"></circle></svg>
+            <span><small>E-Auto</small><strong data-manual-car>4,0 kW</strong></span>
+          </div>
+          <div class="savings-manual-node savings-manual-node--bottom" data-manual-node="grid">
+            <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3 5 10h22zM8 12v13m5-13v13m6-13v13m5-13v13M4 28h24"></path></svg>
+            <span><small>Stromnetz</small><strong data-manual-grid>0,0 kW</strong></span>
+          </div>
+
+          <span class="savings-manual-route savings-manual-route--top is-active" data-manual-route="pv"><i></i></span>
+          <span class="savings-manual-route savings-manual-route--left is-active" data-manual-route="house"><i></i></span>
+          <span class="savings-manual-route savings-manual-route--right is-active" data-manual-route="car"><i></i></span>
+          <span class="savings-manual-route savings-manual-route--bottom" data-manual-route="grid"><i></i></span>
+
+          <div class="savings-manual-hub">
+            <img src="img/ehive-one-v73-top-transparent.webp" width="1024" height="1536" alt="eHive One">
+            <span data-manual-hub-label>optimiert</span>
+          </div>
+        </div>
+        <dl class="savings-manual-balance">
+          <div><dt>PV nach Hausverbrauch</dt><dd>4,0 kW</dd></div>
+          <div><dt data-manual-balance-label>Zusätzlicher Netzbezug</dt><dd data-manual-balance>0,0 kW</dd></div>
+        </dl>
+        <p>Beispielanlage mit 5,2 kW PV-Erzeugung und 1,2 kW aktuellem Hausverbrauch.</p>
+      </div>
+    </div>
+  </section>
+
   <section class="savings-calculator" id="rechner" aria-labelledby="calculator-title">
     <div class="container">
       <header class="savings-section-heading">
@@ -205,6 +268,6 @@
 <div data-include="footer"></div>
 <script src="config.js"></script>
 <script src="script.js?v=20261110-knx-release"></script>
-<script src="stromkosten-rechner.js?v=20261110"></script>
+<script src="stromkosten-rechner.js?v=20261110-manual"></script>
 </body>
 </html>
