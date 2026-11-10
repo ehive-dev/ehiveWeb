@@ -5028,6 +5028,15 @@ body.lightbox-open{
   line-height:1.68;
 }
 
+.app-entry-copy>.app-entry-restriction{
+  margin-top:16px;
+  padding-top:14px;
+  border-top:1px solid #dbe2e0;
+  color:var(--text);
+  font-size:.88rem;
+  line-height:1.55;
+}
+
 .app-entry-copy>a,
 .app-store-preview-list article>a{
   margin-top:auto;
