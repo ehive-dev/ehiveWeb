@@ -8,7 +8,7 @@
   const strategyConfig = {
     pv: { enabled: "strategyPv", price: "pricePv", share: "sharePv", label: "PV", window: [9, 16] },
     dynamic: { enabled: "strategyDynamic", price: "priceDynamic", share: "shareDynamic", label: "Dynamisch", window: [1, 6] },
-    window: { enabled: "strategyWindow", price: "priceWindow", share: "shareWindow", label: "Zeitfenster", window: [0, 5] }
+    window: { enabled: "strategyWindow", price: "priceWindow", share: "shareWindow", label: "Nachtfenster 00–05 Uhr", window: [0, 4] }
   };
 
   const get = selector => document.querySelector(selector);
