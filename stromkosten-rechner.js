@@ -37,6 +37,7 @@
     total: get("[data-total-kwh]"),
     flex: get("[data-flex-kwh]"),
     shifted: get("[data-shifted-kwh]"),
+    battery: get("[data-battery-kwh]"),
     gap: get("[data-price-gap]"),
     formula: get("[data-formula]"),
     reach: get("[data-reach-output]"),
@@ -91,19 +92,30 @@
 
     const shiftedKwh = flexibleKwh * reach / 100;
     const priceGap = Math.max(0, basePrice - targetPrice);
-    const saving = shiftedKwh * priceGap / 100;
-    const before = totalKwh * basePrice / 100;
+    const loadSaving = shiftedKwh * priceGap / 100;
+    const batteryEnabled = Boolean(form.elements.batteryEnabled?.checked);
+    const batteryCapacity = Math.max(0, value(form.elements.batteryCapacity));
+    const batteryCycles = Math.max(0, value(form.elements.batteryCycles));
+    const batteryEfficiency = Math.max(50, Math.min(100, value(form.elements.batteryEfficiency))) / 100;
+    const batteryDischargeKwh = batteryEnabled ? batteryCapacity * batteryCycles * reach / 100 : 0;
+    const batteryChargeKwh = batteryDischargeKwh / batteryEfficiency;
+    const batterySaving = Math.max(0, (batteryDischargeKwh * basePrice - batteryChargeKwh * targetPrice) / 100);
+    const saving = loadSaving + batterySaving;
+    const before = (totalKwh + batteryDischargeKwh) * basePrice / 100;
     const after = Math.max(0, before - saving);
     const copy = modelCopy[model];
 
     output.saving.textContent = euro.format(saving);
     output.before.textContent = euro.format(before);
     output.after.textContent = euro.format(after);
-    output.total.textContent = `${number.format(totalKwh)} kWh`;
+    output.total.textContent = `${number.format(totalKwh + batteryDischargeKwh)} kWh`;
     output.flex.textContent = `${number.format(flexibleKwh)} kWh`;
     output.shifted.textContent = `${number.format(shiftedKwh)} kWh`;
+    output.battery.textContent = `${number.format(batteryDischargeKwh)} kWh`;
     output.gap.textContent = `${decimal.format(priceGap)} ct`;
-    output.formula.textContent = `${number.format(shiftedKwh)} kWh × ${decimal.format(priceGap)} ct/kWh ÷ 100 = ${euro.format(saving)}`;
+    output.formula.textContent = batteryEnabled
+      ? `Verbrauch: ${number.format(shiftedKwh)} kWh × ${decimal.format(priceGap)} ct ÷ 100 + Speicher: (${number.format(batteryDischargeKwh)} kWh × ${decimal.format(basePrice)} ct − ${number.format(batteryChargeKwh)} kWh × ${decimal.format(targetPrice)} ct) ÷ 100 = ${euro.format(saving)}`
+      : `${number.format(shiftedKwh)} kWh × ${decimal.format(priceGap)} ct/kWh ÷ 100 = ${euro.format(saving)}`;
     output.reach.textContent = `${number.format(reach)} %`;
     output.targetLabel.textContent = copy.label;
     output.help.textContent = copy.help;
@@ -120,6 +132,8 @@
   const manualDetail = document.querySelector("[data-manual-detail]");
   const manualCar = document.querySelector("[data-manual-car]");
   const manualGrid = document.querySelector("[data-manual-grid]");
+  const manualBattery = document.querySelector("[data-manual-battery]");
+  const manualBatteryBalance = document.querySelector("[data-manual-battery-balance]");
   const manualHubLabel = document.querySelector("[data-manual-hub-label]");
   const manualBalanceLabel = document.querySelector("[data-manual-balance-label]");
   const manualBalance = document.querySelector("[data-manual-balance]");
@@ -141,7 +155,8 @@
     const requested = Math.max(1.4, Math.min(11, value(manualPower)));
     let charge = surplus;
     let grid = 0;
-    let gridExport = false;
+    let battery = 0;
+    let batteryCharging = false;
 
     manualButtons.forEach(button => {
       const active = button.dataset.manualMode === manualMode;
@@ -152,41 +167,49 @@
     manualPower.disabled = manualMode !== "quick";
     manualPowerOutput.textContent = formatPower(requested);
     setManualRoute("pv", true);
-    setManualRoute("house", true);
+    setManualRoute("house", true, true);
 
     if (manualMode === "quick") {
       charge = requested;
-      grid = Math.max(0, requested - surplus);
+      battery = Math.min(3, Math.max(0, requested - surplus));
+      grid = Math.max(0, requested - surplus - battery);
       manualKicker.textContent = "Manuelle Freigabe aktiv";
       manualStatus.textContent = `Das E-Auto lädt sofort mit ${formatPower(charge)}.`;
       manualDetail.textContent = grid > 0
-        ? `Der PV-Überschuss reicht nicht vollständig aus. eHive One bezieht deshalb zusätzlich ${formatPower(grid)} aus dem Netz, bis du zur Automatik zurückkehrst.`
-        : "Die gewünschte Ladeleistung kann in diesem Beispiel vollständig aus dem PV-Überschuss bereitgestellt werden.";
+        ? `Der PV-Überschuss reicht nicht vollständig aus. Der Batteriespeicher liefert ${formatPower(battery)}; zusätzlich kommen ${formatPower(grid)} aus dem Netz, bis du zur Automatik zurückkehrst.`
+        : battery > 0
+          ? `Der PV-Überschuss liefert ${formatPower(surplus)}. Die fehlenden ${formatPower(battery)} kommen aus dem Batteriespeicher; zusätzlicher Netzbezug ist nicht nötig.`
+          : "Die gewünschte Ladeleistung kann in diesem Beispiel vollständig aus dem PV-Überschuss bereitgestellt werden.";
       manualHubLabel.textContent = "manuell";
       setManualRoute("car", true);
-      setManualRoute("grid", grid > 0);
+      setManualRoute("battery", battery > 0, true);
+      setManualRoute("grid", grid > 0, true);
     } else if (manualMode === "pause") {
       charge = 0;
-      grid = surplus;
-      gridExport = true;
+      battery = surplus;
+      batteryCharging = true;
       manualKicker.textContent = "Laden pausiert";
       manualStatus.textContent = "Das E-Auto erhält vorübergehend keine Ladeleistung.";
-      manualDetail.textContent = "Der verfügbare PV-Überschuss wird in diesem vereinfachten Beispiel in das Stromnetz eingespeist. Andere angeschlossene Verbraucher oder ein Speicher könnten ihn ebenfalls nutzen.";
+      manualDetail.textContent = "Der verfügbare PV-Überschuss lädt in diesem Beispiel den Batteriespeicher. Erst wenn dieser keine Energie mehr aufnehmen kann, würde überschüssige Leistung in das Stromnetz fließen.";
       manualHubLabel.textContent = "pausiert";
       setManualRoute("car", false);
-      setManualRoute("grid", true, true);
+      setManualRoute("battery", true);
+      setManualRoute("grid", false);
     } else {
       manualKicker.textContent = "Automatik aktiv";
       manualStatus.textContent = "Das E-Auto lädt mit verfügbarem PV-Überschuss.";
       manualDetail.textContent = "Der Hausverbrauch ist bereits abgezogen. Für das Laden wird in diesem Beispiel kein zusätzlicher Netzstrom benötigt.";
       manualHubLabel.textContent = "optimiert";
       setManualRoute("car", true);
+      setManualRoute("battery", false);
       setManualRoute("grid", false);
     }
 
     manualCar.textContent = formatPower(charge);
-    manualGrid.textContent = grid === 0 ? "0,0 kW" : `${formatPower(grid)} ${gridExport ? "Abgabe" : "Bezug"}`;
-    manualBalanceLabel.textContent = gridExport ? "Einspeisung ins Netz" : "Zusätzlicher Netzbezug";
+    manualBattery.textContent = battery === 0 ? "bereit · 62 %" : `${formatPower(battery)} ${batteryCharging ? "Laden" : "Abgabe"}`;
+    manualBatteryBalance.textContent = battery === 0 ? "0,0 kW" : `${formatPower(battery)} ${batteryCharging ? "Laden" : "Abgabe"}`;
+    manualGrid.textContent = grid === 0 ? "0,0 kW" : `${formatPower(grid)} Bezug`;
+    manualBalanceLabel.textContent = "Zusätzlicher Netzbezug";
     manualBalance.textContent = formatPower(grid);
   }
 

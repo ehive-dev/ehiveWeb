@@ -130,11 +130,16 @@
             <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3 5 10h22zM8 12v13m5-13v13m6-13v13m5-13v13M4 28h24"></path></svg>
             <span><small>Stromnetz</small><strong data-manual-grid>0,0 kW</strong></span>
           </div>
+          <div class="savings-manual-node savings-manual-node--battery" data-manual-node="battery">
+            <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="5" y="7" width="22" height="20" rx="2"></rect><path d="M12 4h8v3M10 17h12m-6-6v12"></path></svg>
+            <span><small>Batteriespeicher</small><strong data-manual-battery>bereit · 62 %</strong></span>
+          </div>
 
           <span class="savings-manual-route savings-manual-route--top is-active" data-manual-route="pv"><i></i></span>
           <span class="savings-manual-route savings-manual-route--left is-active" data-manual-route="house"><i></i></span>
           <span class="savings-manual-route savings-manual-route--right is-active" data-manual-route="car"><i></i></span>
           <span class="savings-manual-route savings-manual-route--bottom" data-manual-route="grid"><i></i></span>
+          <span class="savings-manual-route savings-manual-route--battery" data-manual-route="battery"><i></i></span>
 
           <div class="savings-manual-hub">
             <img src="img/ehive-one-v73-top-transparent.webp" width="1024" height="1536" alt="eHive One">
@@ -143,6 +148,7 @@
         </div>
         <dl class="savings-manual-balance">
           <div><dt>PV nach Hausverbrauch</dt><dd>4,0 kW</dd></div>
+          <div><dt>Batteriespeicher</dt><dd data-manual-battery-balance>0,0 kW</dd></div>
           <div><dt data-manual-balance-label>Zusätzlicher Netzbezug</dt><dd data-manual-balance>0,0 kW</dd></div>
         </dl>
         <p>Beispielanlage mit 5,2 kW PV-Erzeugung und 1,2 kW aktuellem Hausverbrauch.</p>
@@ -198,6 +204,17 @@
             </div>
           </fieldset>
 
+          <fieldset class="savings-battery" id="speicher-rechner">
+            <legend>4. Batteriespeicher berücksichtigen</legend>
+            <label class="savings-battery-toggle"><input type="checkbox" name="batteryEnabled" checked><span><strong>Batteriespeicher einrechnen</strong><small>Günstig geladene Energie später anstelle von teurem Netzstrom nutzen</small></span></label>
+            <div class="savings-battery-inputs">
+              <label><span>Nutzbare Kapazität</span><span class="savings-input-unit"><input type="number" name="batteryCapacity" min="0" max="200" step="0.5" value="10" inputmode="decimal"><b>kWh</b></span></label>
+              <label><span>Vollzyklen pro Jahr</span><span class="savings-input-unit"><input type="number" name="batteryCycles" min="0" max="365" step="1" value="120" inputmode="numeric"><b>Zyklen</b></span></label>
+              <label><span>Gesamtwirkungsgrad</span><span class="savings-input-unit"><input type="number" name="batteryEfficiency" min="50" max="100" step="1" value="90" inputmode="decimal"><b>%</b></span></label>
+            </div>
+            <p class="savings-field-help">Der Rechner bewertet die abgegebene Speicherenergie zum normalen Arbeitspreis und die dafür benötigte Ladeenergie zum günstigen Preis. Mögliche Überschneidungen mit bereits verschobenen Verbrauchern werden nicht automatisch erkannt.</p>
+          </fieldset>
+
           <button class="savings-reset" type="reset">Beispielwerte wiederherstellen</button>
         </form>
 
@@ -209,9 +226,10 @@
             <div><span>Mit Verschiebung</span><strong data-cost-after>0 €</strong></div>
           </div>
           <dl class="savings-result-facts">
-            <div><dt>Ausgewählter Verbrauch</dt><dd data-total-kwh>0 kWh</dd></div>
+            <div><dt>Verglichene Energiemenge</dt><dd data-total-kwh>0 kWh</dd></div>
             <div><dt>Technisch verschiebbar</dt><dd data-flex-kwh>0 kWh</dd></div>
             <div><dt>Im Modell verschoben</dt><dd data-shifted-kwh>0 kWh</dd></div>
+            <div><dt>Aus Speicher bereitgestellt</dt><dd data-battery-kwh>0 kWh</dd></div>
             <div><dt>Preisvorteil je verschobener kWh</dt><dd data-price-gap>0 ct</dd></div>
           </dl>
           <div class="savings-formula">
@@ -268,6 +286,6 @@
 <div data-include="footer"></div>
 <script src="config.js"></script>
 <script src="script.js?v=20261110-knx-release"></script>
-<script src="stromkosten-rechner.js?v=20261110-manual"></script>
+<script src="stromkosten-rechner.js?v=20261110-battery"></script>
 </body>
 </html>
