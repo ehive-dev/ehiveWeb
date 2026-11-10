@@ -152,7 +152,10 @@
   const manualHubLabel = document.querySelector("[data-manual-hub-label]");
   const manualBalanceLabel = document.querySelector("[data-manual-balance-label]");
   const manualBalance = document.querySelector("[data-manual-balance]");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let manualMode = "auto";
+  let manualTransitionTimer;
+  let manualSettleTimer;
 
   function formatPower(power) {
     return `${decimal.format(power)} kW`;
@@ -229,8 +232,30 @@
   }
 
   manualButtons.forEach(button => button.addEventListener("click", () => {
-    manualMode = button.dataset.manualMode || "auto";
-    renderManualDemo();
+    const nextMode = button.dataset.manualMode || "auto";
+    if (nextMode === manualMode || !manualStage || reduceMotion) {
+      manualMode = nextMode;
+      renderManualDemo();
+      return;
+    }
+
+    window.clearTimeout(manualTransitionTimer);
+    window.clearTimeout(manualSettleTimer);
+    manualButtons.forEach(item => {
+      const active = item.dataset.manualMode === nextMode;
+      item.classList.toggle("is-active", active);
+      item.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+    manualStage.classList.remove("is-settling");
+    manualStage.classList.add("is-switching");
+
+    manualTransitionTimer = window.setTimeout(() => {
+      manualMode = nextMode;
+      renderManualDemo();
+      manualStage.classList.remove("is-switching");
+      manualStage.classList.add("is-settling");
+      manualSettleTimer = window.setTimeout(() => manualStage.classList.remove("is-settling"), 650);
+    }, 180);
   }));
   manualPower?.addEventListener("input", renderManualDemo);
 
