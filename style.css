@@ -4720,21 +4720,26 @@ body.lightbox-open{
   border-bottom:1px solid var(--border);
 }
 
+.app-store-hero>.container{
+  max-width:1240px;
+}
+
 .app-store-hero-grid{
   display:grid;
-  grid-template-columns:minmax(0,1.1fr) minmax(290px,.62fr);
+  grid-template-columns:minmax(0,1fr) minmax(300px,340px);
   align-items:center;
-  gap:clamp(48px,9vw,120px);
+  gap:clamp(48px,6vw,80px);
 }
 
 .app-store-hero-copy{
-  max-width:690px;
+  min-width:0;
+  max-width:790px;
 }
 
 .app-store-hero h1{
-  max-width:12ch;
+  max-width:15ch;
   margin:14px 0 0;
-  font-size:clamp(2.75rem,6vw,5.55rem);
+  font-size:clamp(2.75rem,5.1vw,4.75rem);
   font-weight:820;
   line-height:.98;
   letter-spacing:-.055em;
