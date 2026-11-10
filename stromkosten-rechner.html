@@ -191,10 +191,10 @@
                 </div>
               </article>
               <article class="savings-strategy-card is-disabled" data-strategy-card="window">
-                <label class="savings-strategy-toggle"><input type="checkbox" name="strategyWindow"><span><strong>Festes günstiges Nachtfenster</strong><small>Nach dem Octopus-Go-Prinzip: täglich 00:00 bis 05:00 Uhr</small></span></label>
+                <label class="savings-strategy-toggle"><input type="checkbox" name="strategyWindow"><span><strong>Feste günstige Zeitfenster</strong><small>Beispiel: insgesamt 5 Stunden täglich – 02:00–05:00, 12:00–13:00 und 16:00–17:00 Uhr</small></span></label>
                 <div class="savings-strategy-fields">
-                  <label><span>Günstiger Preis als Beispiel</span><span class="savings-input-unit"><input type="number" name="priceWindow" min="-50" max="200" step="0.1" value="27" inputmode="decimal"><b>ct/kWh</b></span></label>
-                  <label class="savings-strategy-share"><span>Wie viel kannst du von 00:00 bis 05:00 Uhr nutzen? <output data-strategy-output="window">40&nbsp;%</output></span><input type="range" name="shareWindow" min="0" max="100" step="5" value="40"><small>Zum Beispiel E-Auto, Batteriespeicher oder Spülmaschine. Den tatsächlichen Tarifpreis bitte selbst eintragen.</small></label>
+                  <label><span>Preis im Zeitfenster</span><span class="savings-input-unit"><input type="number" name="priceWindow" min="-50" max="200" step="0.1" value="27" inputmode="decimal"><b>ct/kWh</b></span></label>
+                  <label class="savings-strategy-share"><span>Wie viel kannst du in diesen 5 Stunden nutzen? <output data-strategy-output="window">40&nbsp;%</output></span><input type="range" name="shareWindow" min="0" max="100" step="5" value="40"><small>Zum Beispiel E-Auto, Batteriespeicher oder Haushaltsgeräte. Den tatsächlichen Tarifpreis bitte selbst eintragen.</small></label>
                 </div>
               </article>
               <article class="savings-strategy-card savings-battery-choice is-disabled" data-battery-choice>
@@ -207,7 +207,7 @@
 
           <fieldset class="savings-devices">
             <legend>2. Zeitliche Flexibilität der Verbraucher anpassen</legend>
-            <p class="savings-field-help savings-flex-help"><strong>Zeitlich flexibel</strong> bedeutet: Dieser Anteil darf innerhalb des Tages in PV-Zeiten, dynamisch günstige Viertelstunden oder ein festes günstiges Zeitfenster gelegt werden. Der übrige Anteil bleibt zeitlich fest.</p>
+            <p class="savings-field-help savings-flex-help"><strong>Zeitlich flexibel</strong> bedeutet: Dieser Anteil darf innerhalb des Tages in PV-Zeiten, dynamisch günstige Viertelstunden oder feste günstige Zeitfenster gelegt werden. Der übrige Anteil bleibt zeitlich fest.</p>
             <div class="savings-device-head" aria-hidden="true"><span>Verbraucher</span><span>kWh/Jahr</span><span>zeitlich flexibel / fest</span></div>
             <div class="savings-device-list">
               <label class="savings-device-row"><span class="savings-device-name"><input type="checkbox" checked><span class="savings-device-title"><b>Haushaltsgeräte</b><small>Waschen, Trocknen, Spülen und weitere Geräte</small></span></span><span class="savings-kwh-wrap"><small>Verbrauch/Jahr</small><input class="savings-kwh" type="number" min="0" max="30000" step="10" value="660" aria-label="Jahresverbrauch der Haushaltsgeräte in Kilowattstunden"><i>kWh</i></span><span class="savings-device-share"><input type="range" min="0" max="100" step="5" value="75" aria-label="Zeitlich flexibler Anteil der Haushaltsgeräte"><output>75 % flexibel · 25 % fest</output></span></label>
@@ -226,7 +226,7 @@
                 <label><span>Gesamtwirkungsgrad</span><span class="savings-input-unit"><input type="number" name="batteryEfficiency" min="50" max="100" step="1" value="90" inputmode="decimal"><b>%</b></span></label>
               </div>
               <p class="savings-plain-help">Wenn du die Vollzyklen nicht kennst, kannst du zunächst mit 120 rechnen und den Wert später anpassen.</p>
-              <label class="savings-grid-charge"><input type="checkbox" name="batteryGridCharge"><span><strong>Netzladen in günstigen Tarifzeiten erlauben</strong><small>Zum Beispiel im Winter. Dafür muss oben ein dynamischer Tarif oder ein festes günstiges Zeitfenster aktiviert sein.</small></span></label>
+              <label class="savings-grid-charge"><input type="checkbox" name="batteryGridCharge"><span><strong>Netzladen in günstigen Tarifzeiten erlauben</strong><small>Zum Beispiel im Winter. Dafür muss oben ein dynamischer Tarif oder mindestens ein festes günstiges Zeitfenster aktiviert sein.</small></span></label>
               <details class="savings-explanation"><summary>Wie wird der Speicher berechnet?</summary><p>Die abgegebene Speicherenergie wird mit dem normalen Arbeitspreis verglichen. Die benötigte Ladeenergie wird einschließlich Speicherverlusten zum günstigsten aktivierten Ladepreis angesetzt. Die Vollzyklen sollten bereits berücksichtigen, wie oft günstige Energie realistisch verfügbar ist.</p></details>
             </div>
           </fieldset>
@@ -295,7 +295,7 @@
       <div class="savings-model-info-grid">
         <article><span>01</span><h3>PV-Anlage</h3><p>Ein Verbraucher startet dann, wenn die eigene PV-Anlage ausreichend Leistung bereitstellt. Gespart wird die Differenz zwischen vermiedenem Netzbezug und entgangener Einspeisevergütung.</p></article>
         <article><span>02</span><h3>Dynamischer Spotmarkt-Tarif</h3><p>Der Börsenanteil des Strompreises folgt dem Spotmarkt. Zum tatsächlichen Endpreis kommen weitere Bestandteile wie Netzentgelte, Steuern und Tarifkosten hinzu. Mit passendem Messsystem kann zeitlich genau abgerechnet werden.</p></article>
-        <article><span>03</span><h3>Günstiges Zeitfenster</h3><p>In vorgegebenen Stunden gilt ein anderer Preis oder Bonus. Entscheidend ist, wie viel Verbrauch tatsächlich in dieses Zeitfenster passt, ohne Komfort oder technische Grenzen zu verletzen.</p></article>
+        <article><span>03</span><h3>Feste günstige Zeitfenster</h3><p>In vorgegebenen Stunden gilt ein anderer Preis oder Bonus. Entscheidend ist, wie viel Verbrauch tatsächlich in diese Zeitfenster passt, ohne Komfort oder technische Grenzen zu verletzen.</p></article>
       </div>
       <p class="savings-source-note">Tarifbedingungen ändern sich. Informiere dich direkt beim Anbieter, zum Beispiel über die offiziellen Erläuterungen von <a href="https://support.tibber.com/hc/de/articles/48143572102033-So-funktionieren-dynamische-Strompreise" target="_blank" rel="noopener noreferrer">Tibber zu dynamischen Strompreisen</a>, <a href="https://octopusenergy.de/dynamic-octopus" target="_blank" rel="noopener noreferrer">Octopus Energy zu dynamicOctopus</a> und <a href="https://octopusenergy.de/octopus-go" target="_blank" rel="noopener noreferrer">Octopus Go zum festen günstigen Nachtzeitfenster</a>. eHive ist mit diesen Anbietern nicht verbunden.</p>
     </div>
@@ -318,6 +318,6 @@
 <div data-include="footer"></div>
 <script src="config.js"></script>
 <script src="script.js?v=20261110-knx-release"></script>
-<script src="stromkosten-rechner.js?v=20261110-spot-market-example"></script>
+<script src="stromkosten-rechner.js?v=20261110-five-fixed-hours"></script>
 </body>
 </html>

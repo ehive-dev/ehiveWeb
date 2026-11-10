@@ -8,7 +8,7 @@
   const strategyConfig = {
     pv: { enabled: "strategyPv", price: "pricePv", share: "sharePv", label: "PV", window: [9, 16] },
     dynamic: { enabled: "strategyDynamic", price: "priceDynamic", share: "shareDynamic", label: "Spotmarkt", window: [1, 6] },
-    window: { enabled: "strategyWindow", price: "priceWindow", share: "shareWindow", label: "Nachtfenster 00–05 Uhr", window: [0, 4] }
+    window: { enabled: "strategyWindow", price: "priceWindow", share: "shareWindow", label: "5 feste Tarifstunden", windows: [[2, 4], [12, 12], [16, 16]] }
   };
 
   const get = selector => document.querySelector(selector);
@@ -39,14 +39,13 @@
     const after = before.slice();
     const movable = Math.round(23 * (coverage / 100));
     [7, 8, 17, 18, 19].forEach(hour => { after[hour] = Math.max(12, after[hour] - movable); });
-    strategies.forEach(strategy => {
-      for (let hour = strategy.window[0]; hour <= strategy.window[1]; hour += 1) after[hour] = Math.min(96, after[hour] + Math.round(movable * .38));
-    });
+    const cheapHours = new Set(strategies.flatMap(hoursForStrategy));
+    cheapHours.forEach(hour => { after[hour] = Math.min(96, after[hour] + Math.round(movable * .38)); });
     output.chart.replaceChildren();
     before.forEach((height, hour) => {
       const column = document.createElement("span");
       column.className = "savings-chart-column";
-      if (strategies.some(strategy => hour >= strategy.window[0] && hour <= strategy.window[1])) column.classList.add("is-cheap");
+      if (cheapHours.has(hour)) column.classList.add("is-cheap");
       column.innerHTML = `<i class="before" style="--bar:${height}%"></i><i class="after" style="--bar:${after[hour]}%"></i><small>${hour % 3 === 0 ? String(hour).padStart(2, "0") : ""}</small>`;
       output.chart.appendChild(column);
     });
@@ -54,7 +53,10 @@
 
   function hoursForStrategy(strategy) {
     const hours = [];
-    for (let hour = strategy.window[0]; hour <= strategy.window[1]; hour += 1) hours.push(hour);
+    const windows = strategy.windows || [strategy.window];
+    windows.forEach(([from, to]) => {
+      for (let hour = from; hour <= to; hour += 1) hours.push(hour);
+    });
     if (strategy.key === "pv") hours.sort((a, b) => Math.abs(a - 13) - Math.abs(b - 13));
     return hours;
   }
