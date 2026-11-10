@@ -1310,10 +1310,10 @@ body.debug-on .debug-header{
 .open-point-card{
   display: grid;
   gap: 10px;
-  padding: 12px 14px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  background: #fff;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
   box-shadow: none;
   backdrop-filter: none;
 }
@@ -3621,8 +3621,8 @@ body.lightbox-open{
     --open-pad-bottom: 22px;
   }
   .open-point-card{
-    padding: 10px 11px;
-    border-radius: 10px;
+    padding: 0;
+    border-radius: 0;
     gap: 8px;
   }
   .open-point-hash{
