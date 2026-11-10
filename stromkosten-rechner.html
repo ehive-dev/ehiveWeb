@@ -177,7 +177,7 @@
             </div>
             <div class="savings-strategy-list">
               <article class="savings-strategy-card" data-strategy-card="pv">
-                <label class="savings-strategy-toggle"><input type="checkbox" name="strategyPv" checked><span><strong>PV-Tageslicht</strong><small>Verbrauch in Zeiten eigener Solarerzeugung legen</small></span></label>
+                <label class="savings-strategy-toggle"><input type="checkbox" name="strategyPv" checked><span><strong>PV-Anlage</strong><small>Verbrauch in Zeiten eigener Solarerzeugung legen</small></span></label>
                 <div class="savings-strategy-fields">
                   <label><span>Einspeisevergütung</span><span class="savings-input-unit"><input type="number" name="pricePv" min="-50" max="200" step="0.1" value="8" inputmode="decimal"><b>ct/kWh</b></span></label>
                   <label class="savings-strategy-share"><span>Wie viel passt typischerweise in PV-Zeiten? <output data-strategy-output="pv">45&nbsp;%</output></span><input type="range" name="sharePv" min="0" max="100" step="5" value="45"><small>0 % = kaum nutzbar · 100 % = vollständig nutzbar</small></label>
@@ -276,7 +276,7 @@
         <p>Die Modelle beschreiben unterschiedliche Preissignale. Welches davon zu deinem Anschluss passt, hängt von Vertrag, Zähler und steuerbaren Geräten ab.</p>
       </header>
       <div class="savings-model-info-grid">
-        <article><span>01</span><h3>PV-Tageslicht</h3><p>Ein Verbraucher startet dann, wenn die eigene PV-Anlage ausreichend Leistung bereitstellt. Gespart wird die Differenz zwischen vermiedenem Netzbezug und entgangener Einspeisevergütung.</p></article>
+        <article><span>01</span><h3>PV-Anlage</h3><p>Ein Verbraucher startet dann, wenn die eigene PV-Anlage ausreichend Leistung bereitstellt. Gespart wird die Differenz zwischen vermiedenem Netzbezug und entgangener Einspeisevergütung.</p></article>
         <article><span>02</span><h3>Dynamischer Tarif</h3><p>Der Arbeitspreis folgt dem Strommarkt. Mit passendem Messsystem kann zeitlich genau abgerechnet werden. eHive One kann verfügbare Preissignale für die Planung steuerbarer Verbraucher berücksichtigen.</p></article>
         <article><span>03</span><h3>Günstiges Zeitfenster</h3><p>In vorgegebenen Stunden gilt ein anderer Preis oder Bonus. Entscheidend ist, wie viel Verbrauch tatsächlich in dieses Zeitfenster passt, ohne Komfort oder technische Grenzen zu verletzen.</p></article>
       </div>
@@ -301,6 +301,6 @@
 <div data-include="footer"></div>
 <script src="config.js"></script>
 <script src="script.js?v=20261110-knx-release"></script>
-<script src="stromkosten-rechner.js?v=20261110-clean-hub"></script>
+<script src="stromkosten-rechner.js?v=20261110-pv-label"></script>
 </body>
 </html>
