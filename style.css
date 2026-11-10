@@ -4300,7 +4300,7 @@ body.lightbox-open{
 .compat-search input:focus-visible{outline:3px solid rgba(8,129,120,.22);outline-offset:2px;border-color:#088178}
 .compat-reset{min-height:52px;padding:10px 18px;border:1px solid #17332d;border-radius:4px;background:#fff;color:#17332d;font-weight:750;cursor:pointer}
 .compat-reset:hover,.compat-reset:focus-visible{border-color:#088178;color:#066b64}
-.compat-reset:focus-visible,.compat-contact-link:focus-visible,.compat-related a:focus-visible{outline:3px solid rgba(8,129,120,.25);outline-offset:4px}
+.compat-reset:focus-visible,.compat-contact-link:focus-visible,.compat-inline-link:focus-visible,.compat-related a:focus-visible{outline:3px solid rgba(8,129,120,.25);outline-offset:4px}
 .compat-search-status{min-height:1.4em;margin:0 0 30px;color:#52615d;font-size:.9rem}
 .compat-empty{margin:26px 0 0;padding:24px;border-left:4px solid #088178;background:#edf5f2;color:#263631}
 .compat-categories{margin-top:46px;border-top:1px solid #cbd8d3}
@@ -4328,6 +4328,7 @@ body.lightbox-open{
 .compat-faq details:first-child{border-top:1px solid #9fb0aa}
 .compat-faq summary{font-size:1.05rem;font-weight:760}
 .compat-faq details p{max-width:720px;margin:13px 0 0;color:#5b6864;line-height:1.7}
+.compat-inline-link{color:#08756d;font-weight:750;text-decoration:underline;text-decoration-color:#9bc7c0;text-underline-offset:4px}
 .compat-contact{padding:clamp(70px,10vw,126px) 0;background:#e4f1ed}
 .compat-contact-grid{display:grid;grid-template-columns:minmax(0,1.25fr) auto;gap:42px;align-items:end}
 .compat-contact h2{max-width:850px;margin:0;font-size:clamp(2.4rem,5.5vw,4.8rem);line-height:1;letter-spacing:-.055em}
