@@ -4359,6 +4359,9 @@ body.lightbox-open{
 .compat-step-number{display:block;margin-bottom:42px;color:#73d2c5;font-size:.8rem;font-weight:850;letter-spacing:.12em}
 .compat-steps h3{margin:0 0 12px;font-size:1.25rem}
 .compat-steps p{margin:0;color:#c8d7d2;line-height:1.7}
+.compat-step-link{color:#8de2d7;font-weight:750;text-decoration:underline;text-decoration-color:rgba(141,226,215,.55);text-underline-offset:4px}
+.compat-step-link:hover{color:#fff}
+.compat-step-link:focus-visible{outline:3px solid rgba(141,226,215,.45);outline-offset:4px}
 .compat-faq{padding:clamp(68px,9vw,110px) 0;background:#fff}
 .compat-faq-grid{display:grid;grid-template-columns:minmax(250px,.72fr) minmax(0,1.28fr);gap:clamp(32px,8vw,100px)}
 .compat-faq h2{font-size:clamp(2rem,3.4vw,3rem);hyphens:auto;overflow-wrap:anywhere}
