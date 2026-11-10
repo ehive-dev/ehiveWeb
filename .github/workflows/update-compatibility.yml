@@ -1,0 +1,100 @@
+name: Update evcc compatibility data
+
+on:
+  schedule:
+    - cron: "23 3 * * *"
+  workflow_dispatch:
+    inputs:
+      force:
+        description: Aktualisierung auch vor Ablauf der 14 Tage ausführen
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: compatibility-update
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout eHive website
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Check 14-day interval
+        id: interval
+        shell: bash
+        env:
+          FORCE_UPDATE: ${{ inputs.force || 'false' }}
+        run: |
+          if [[ "$FORCE_UPDATE" == "true" ]]; then
+            echo "due=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "due=$(node scripts/update-compatibility.mjs --check-due)" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Clone official evcc release data
+        if: steps.interval.outputs.due == 'true'
+        shell: bash
+        run: |
+          git clone --depth 1 --filter=blob:none --sparse https://github.com/evcc-io/docs.git "$RUNNER_TEMP/evcc-docs"
+          git -C "$RUNNER_TEMP/evcc-docs" sparse-checkout set templates/release/de
+          echo "EVCC_COMMIT=$(git -C "$RUNNER_TEMP/evcc-docs" rev-parse HEAD)" >> "$GITHUB_ENV"
+
+      - name: Generate static compatibility HTML
+        if: steps.interval.outputs.due == 'true'
+        shell: bash
+        run: |
+          node scripts/update-compatibility.mjs \
+            --source "$RUNNER_TEMP/evcc-docs/templates/release/de" \
+            --upstream-sha "$EVCC_COMMIT" \
+            --date "$(date -u +%F)"
+
+      - name: Validate generated page
+        if: steps.interval.outputs.due == 'true'
+        shell: bash
+        run: |
+          node --test scripts/test-update-compatibility.mjs
+          node scripts/update-compatibility.mjs --validate
+          git diff --check
+          unexpected="$(git status --porcelain --untracked-files=all | cut -c4- | grep -Ev '^(kompatibilitaet\.html|sitemap\.xml|data/compatibility-state\.json)$' || true)"
+          if [[ -n "$unexpected" ]]; then
+            echo "Unerwartete geänderte Dateien:"
+            echo "$unexpected"
+            exit 1
+          fi
+
+      - name: Commit validated update
+        if: steps.interval.outputs.due == 'true'
+        id: commit
+        shell: bash
+        run: |
+          git config user.name "eHive Compatibility Bot"
+          git config user.email "compatibility-bot@users.noreply.github.com"
+          git add kompatibilitaet.html sitemap.xml data/compatibility-state.json
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git commit -m "chore: refresh evcc compatibility data"
+          git push origin HEAD:main
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Trigger Pages deployment
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run pages.yml --ref main

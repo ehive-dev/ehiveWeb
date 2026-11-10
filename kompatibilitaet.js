@@ -21,7 +21,21 @@
     categories.forEach((category) => {
       let categoryMatches = 0;
       category.querySelectorAll("[data-manufacturer]").forEach((manufacturer) => {
-        const matches = !query || normalize(manufacturer.textContent).includes(query);
+        const brand = normalize(manufacturer.dataset.brand || "");
+        const models = normalize(manufacturer.dataset.models || manufacturer.textContent);
+        const matches = !query || brand.includes(query) || models.includes(query);
+        const details = manufacturer.querySelector("details");
+
+        if (details && query && matches && !brand.includes(query)) {
+          if (!details.open) {
+            details.open = true;
+            details.dataset.searchOpened = "true";
+          }
+        } else if (details?.dataset.searchOpened) {
+          details.open = false;
+          delete details.dataset.searchOpened;
+        }
+
         manufacturer.hidden = !matches;
         if (matches) categoryMatches += 1;
       });
@@ -36,7 +50,7 @@
     reset.hidden = !query;
     noResults.hidden = visibleManufacturers !== 0;
     status.textContent = query
-      ? `${visibleManufacturers} Hersteller in ${visibleCategories} ${visibleCategories === 1 ? "Kategorie" : "Kategorien"} gefunden.`
+      ? `${visibleManufacturers} ${visibleManufacturers === 1 ? "Treffer" : "Treffer"} in ${visibleCategories} ${visibleCategories === 1 ? "Kategorie" : "Kategorien"} gefunden.`
       : "";
   };
 

@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "lastSuccessfulUpdate": "2026-11-10",
+  "source": {
+    "repository": "https://github.com/evcc-io/docs",
+    "branch": "main",
+    "directory": "templates/release/de",
+    "commit": "f39334a7a5582e74b0c627911d2fd266994e4263",
+    "deviceIndex": "https://docs.evcc.io/llms-devices.txt",
+    "deviceIndexSha256": "af8844530b46cbd0b15872da60f6a5ef5414b223c3450d9edea749fd860603ac"
+  },
+  "uniqueIntegrations": 869,
+  "categories": {
+    "chargers": {
+      "manufacturers": 153,
+      "integrations": 354
+    },
+    "inverters": {
+      "manufacturers": 127,
+      "integrations": 324
+    },
+    "heating": {
+      "manufacturers": 35,
+      "integrations": 65
+    },
+    "meters": {
+      "manufacturers": 134,
+      "integrations": 312
+    },
+    "vehicles": {
+      "manufacturers": 54,
+      "integrations": 63
+    },
+    "switches": {
+      "manufacturers": 11,
+      "integrations": 19
+    }
+  }
+}
