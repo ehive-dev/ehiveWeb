@@ -5076,6 +5076,14 @@ body.lightbox-open{
   border-top:1px solid #45524f;
 }
 
+.app-store-preview-list--single{
+  grid-template-columns:1fr;
+}
+
+.app-store-preview-list--single article{
+  max-width:760px;
+}
+
 .app-store-preview-list article{
   display:flex;
   min-height:320px;

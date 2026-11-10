@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Apps für eHive One | Energie, Analyse &amp; Steuerung</title>
-  <meta name="description" content="Apps für eHive One: evcc, HiveScope, wattRadar, ioManager, Node-RED, chargeLedger, tenantLedger, TunnelManager und weitere Werkzeuge im Überblick.">
+  <meta name="description" content="Apps für eHive One: evcc, HiveScope, wattRadar, ioManager, KNX Bridge, Node-RED, chargeLedger, tenantLedger, TunnelManager und weitere Werkzeuge im Überblick.">
   <link rel="canonical" href="https://www.ehiv3.de/app-store.html">
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css">
@@ -171,6 +171,13 @@
             </div>
             <div class="app-entry-copy"><p class="app-entry-type">Visuelle Automatisierung</p><h3>Node-RED</h3><p>Erstellt browserbasiert eigene Abläufe, verbindet Datenquellen und verarbeitet Ereignisse mit einem visuellen Flow-Editor.</p><p class="app-entry-restriction"><strong>Verfügbarkeit:</strong> ausschließlich der eHive-One-Variante mit 2&nbsp;GB Arbeitsspeicher vorbehalten.</p><a href="https://nodered.org/" target="_blank" rel="noopener noreferrer">Node-RED kennenlernen</a></div>
           </article>
+          <article class="app-entry">
+            <div class="app-entry-brand">
+              <span class="app-entry-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="6" height="6" rx="1"/><rect x="15" y="3" width="6" height="6" rx="1"/><rect x="3" y="15" width="6" height="6" rx="1"/><rect x="15" y="15" width="6" height="6" rx="1"/><path d="M9 6h6M6 9v6M18 9v6M9 18h6"/></svg></span>
+              <span class="app-entry-owner"><img src="img/favicon.svg" width="96" height="96" alt="">eHive</span>
+            </div>
+            <div class="app-entry-copy"><p class="app-entry-type">Gebäudeautomation</p><h3>KNX Bridge</h3><p>Verbindet ausgewählte evcc-Datenpunkte mit KNX-Gruppenadressen. Abhängig vom Datenpunkt können Werte visualisiert und geeignete Funktionen in beide Richtungen verknüpft werden.</p><a href="news-knx-integration-beta.html">KNX Bridge ansehen</a></div>
+          </article>
         </div>
       </section>
     </div>
@@ -181,15 +188,9 @@
       <div class="app-store-section-intro">
         <p class="eyebrow">In Erprobung</p>
         <h2 id="app-store-preview-title">Was als Nächstes entsteht.</h2>
-        <p>Diese Anwendungen werden bereits erprobt oder vorbereitet, sind aber noch nicht allgemein verfügbar. Funktionsumfang und Veröffentlichung können sich ändern.</p>
+        <p>Diese Anwendung wird vorbereitet, ist aber noch nicht allgemein verfügbar. Funktionsumfang und Veröffentlichung können sich ändern.</p>
       </div>
-      <div class="app-store-preview-list">
-        <article>
-          <div class="app-preview-meta"><span>Beta</span><span class="app-entry-owner"><img src="img/favicon.svg" width="96" height="96" alt="">eHive</span></div>
-          <h3>KNX Bridge</h3>
-          <p>Verbindet ausgewählte evcc-Datenpunkte mit KNX-Gruppenadressen. Die Beta richtet sich an reale Testanlagen mit erreichbarer KNX/IP-Schnittstelle.</p>
-          <a href="news-knx-integration-beta.html">Mehr zur KNX-Bridge-Beta</a>
-        </article>
+      <div class="app-store-preview-list app-store-preview-list--single">
         <article>
           <div class="app-preview-meta"><span>Vorschau</span><span class="app-entry-owner"><img src="img/favicon.svg" width="96" height="96" alt="">eHive</span></div>
           <h3>charge&amp;go</h3>
@@ -212,6 +213,6 @@
 
 <div data-include="footer"></div>
 <script src="config.js"></script>
-<script src="script.js?v=20261110-mailforms"></script>
+<script src="script.js?v=20261110-knx-release"></script>
 </body>
 </html>

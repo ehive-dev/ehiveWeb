@@ -1,5 +1,13 @@
 window.EHIVE_NEWS = [
   {
+    date: "2026-11-10",
+    dateLabel: "10. November 2026",
+    title: "KNX trifft Energiemanagement: Die eHive KNX Bridge ist freigegeben",
+    excerpt: "Die freigegebene KNX Bridge verbindet ausgewählte evcc-Datenpunkte mit KNX-Gruppenadressen und bringt Energieinformationen in die Gebäudeautomation.",
+    href: "https://www.ehiv3.de/news-knx-integration-beta.html",
+    tags: ["App", "KNX", "Freigegeben"]
+  },
+  {
     date: "2026-10-18",
     dateLabel: "18. Oktober 2026",
     title: "Frag mich: KI-Hilfe für eHive One und evcc",
@@ -38,14 +46,6 @@ window.EHIVE_NEWS = [
     excerpt: "Browser-SSH oder direkter SSH-Zugang vom eigenen Rechner: eHive One hilft Elektrofachbetrieben, Diagnose und Anpassungen aus der Ferne zu erledigen und unnötige Kundentermine zu vermeiden.",
     href: "https://www.ehiv3.de/news-ehive-fuer-elektrofachbetriebe-fernwartung.html",
     tags: ["Elektrofachbetrieb", "Fernwartung", "SSH"]
-  },
-  {
-    date: "2026-08-13",
-    dateLabel: "13. August 2026",
-    title: "KNX trifft Energiemanagement: Die eHive KNX Bridge kommt",
-    excerpt: "Die kommende KNX Bridge verbindet evcc-Datenpunkte mit KNX-Gruppenadressen und bringt Energieinformationen in die Gebäudeautomation. Die Beta läuft bereits – Tester sind willkommen.",
-    href: "https://www.ehiv3.de/news-knx-integration-beta.html",
-    tags: ["Vorschau", "KNX", "Beta"]
   },
   {
     date: "2026-08-13",

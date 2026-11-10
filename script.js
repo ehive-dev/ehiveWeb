@@ -659,7 +659,7 @@ Name:
 Firma (optional):
 Telefon (optional):
 
-KNX-Betatest
+KNX Bridge
 KNX/IP-Gateway (Hersteller / Modell):
 eHive-One- und SmartHub-Version:
 evcc-Version:
