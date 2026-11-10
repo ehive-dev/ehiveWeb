@@ -181,10 +181,11 @@
       shareOutput.textContent = `${number.format(flexibleShare)} % flexibel · ${number.format(100 - flexibleShare)} % fest`;
       row.classList.toggle("is-disabled", !enabled.checked);
       if (!enabled.checked) return;
-      const annual = Math.max(0, value(kwh));
+      const deviceName = row.querySelector(".savings-device-name b")?.textContent.trim();
+      const enteredAnnual = Math.max(0, value(kwh));
+      const annual = deviceName === "E-Auto" ? enteredAnnual * .2 : enteredAnnual;
       totalKwh += annual;
       flexibleKwh += annual * flexibleShare / 100;
-      const deviceName = row.querySelector(".savings-device-name b")?.textContent.trim();
       if (deviceName === "E-Auto") {
         car.enabled = true;
         car.annual = annual;
