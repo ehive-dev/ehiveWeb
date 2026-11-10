@@ -99,6 +99,7 @@
       : "Aktiviere mindestens PV-Tageslicht, einen dynamischen Tarif oder ein günstiges Zeitfenster.";
 
     const batteryEnabled = Boolean(form.elements.batteryEnabled?.checked);
+    form.querySelector(".savings-battery")?.classList.toggle("is-disabled", !batteryEnabled);
     const batteryCapacity = Math.max(0, value(form.elements.batteryCapacity));
     const batteryCycles = Math.max(0, value(form.elements.batteryCycles));
     const batteryEfficiency = Math.max(50, Math.min(100, value(form.elements.batteryEfficiency))) / 100;
