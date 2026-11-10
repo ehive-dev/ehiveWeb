@@ -5056,6 +5056,44 @@ body.lightbox-open{
   text-decoration-color:var(--accent);
 }
 
+.app-entry-video{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-top:12px;
+  padding:0;
+  border:0;
+  background:transparent;
+  color:var(--accent);
+  font:inherit;
+  font-size:.9rem;
+  font-weight:750;
+  text-decoration:underline;
+  text-decoration-color:#9bc7c1;
+  text-underline-offset:4px;
+  cursor:pointer;
+}
+
+.app-entry-video::before{
+  content:"";
+  width:0;
+  height:0;
+  border-top:5px solid transparent;
+  border-bottom:5px solid transparent;
+  border-left:8px solid currentColor;
+}
+
+.app-entry-video:hover{
+  color:var(--text);
+  text-decoration-color:var(--text);
+}
+
+.app-entry-video:focus-visible{
+  outline:3px solid rgba(13,127,118,.34);
+  outline-offset:5px;
+  border-radius:2px;
+}
+
 .app-store-preview{
   background:#15201e;
   color:#fff;
