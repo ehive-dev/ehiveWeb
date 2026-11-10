@@ -116,7 +116,7 @@
         <div class="savings-manual-stage" data-manual-stage data-mode="auto" aria-label="Schematischer Energiefluss im gewählten Betriebsmodus">
           <div class="savings-manual-node savings-manual-node--top" data-manual-node="pv">
             <svg viewBox="0 0 32 32" aria-hidden="true"><circle cx="24" cy="8" r="4"></circle><path d="M24 1v3m0 8v3m-7-7h3m8 0h3M4 16h17l-3 11H1zM3 21h16M9 16 7 27m8-11-2 11"></path></svg>
-            <span><small>PV-Anlage</small><strong>5,2 kW</strong></span>
+            <span><small>PV-Anlage</small><strong data-manual-pv>5,2 kW</strong></span>
           </div>
           <div class="savings-manual-node savings-manual-node--left" data-manual-node="house">
             <svg viewBox="0 0 32 32" aria-hidden="true"><path d="m3 15 13-10 13 10M7 13v14h18V13M13 27v-8h6v8"></path></svg>
@@ -147,11 +147,11 @@
           </div>
         </div>
         <dl class="savings-manual-balance">
-          <div><dt>PV nach Hausverbrauch</dt><dd>4,0 kW</dd></div>
+          <div><dt>PV nach Hausverbrauch</dt><dd data-manual-pv-balance>4,0 kW</dd></div>
           <div><dt>Batteriespeicher</dt><dd data-manual-battery-balance>0,0 kW</dd></div>
           <div><dt data-manual-balance-label>Zusätzlicher Netzbezug</dt><dd data-manual-balance>0,0 kW</dd></div>
         </dl>
-        <p>Beispielanlage mit 5,2 kW PV-Erzeugung und 1,2 kW aktuellem Hausverbrauch.</p>
+        <p>Beispielanlage mit leicht schwankender PV-Erzeugung um 5,2 kW und 1,2 kW aktuellem Hausverbrauch.</p>
       </div>
     </div>
   </section>
@@ -302,6 +302,6 @@
 <div data-include="footer"></div>
 <script src="config.js"></script>
 <script src="script.js?v=20261110-knx-release"></script>
-<script src="stromkosten-rechner.js?v=20261110-octopus-window"></script>
+<script src="stromkosten-rechner.js?v=20261110-live-pv"></script>
 </body>
 </html>

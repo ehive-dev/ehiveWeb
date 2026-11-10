@@ -145,6 +145,8 @@
   const manualKicker = document.querySelector("[data-manual-kicker]");
   const manualStatus = document.querySelector("[data-manual-status]");
   const manualDetail = document.querySelector("[data-manual-detail]");
+  const manualPv = document.querySelector("[data-manual-pv]");
+  const manualPvBalance = document.querySelector("[data-manual-pv-balance]");
   const manualCar = document.querySelector("[data-manual-car]");
   const manualGrid = document.querySelector("[data-manual-grid]");
   const manualBattery = document.querySelector("[data-manual-battery]");
@@ -154,6 +156,10 @@
   const manualBalance = document.querySelector("[data-manual-balance]");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   let manualMode = "auto";
+  let manualPvPower = 5.2;
+  let manualPvStep = 0;
+  let manualPvTimer;
+  let manualPvEffectTimer;
   let manualTransitionTimer;
   let manualSettleTimer;
 
@@ -169,7 +175,8 @@
 
   function renderManualDemo() {
     if (!manualStage || !manualPower) return;
-    const surplus = 4;
+    const housePower = 1.2;
+    const surplus = Math.max(0, manualPvPower - housePower);
     const requested = Math.max(1.4, Math.min(11, value(manualPower)));
     let charge = surplus;
     let grid = 0;
@@ -223,12 +230,38 @@
       setManualRoute("grid", false);
     }
 
+    manualPv.textContent = formatPower(manualPvPower);
+    manualPvBalance.textContent = formatPower(surplus);
     manualCar.textContent = formatPower(charge);
     manualBattery.textContent = battery === 0 ? "bereit · 62 %" : `${formatPower(battery)} ${batteryCharging ? "Laden" : "Abgabe"}`;
     manualBatteryBalance.textContent = battery === 0 ? "0,0 kW" : `${formatPower(battery)} ${batteryCharging ? "Laden" : "Abgabe"}`;
     manualGrid.textContent = grid === 0 ? "0,0 kW" : `${formatPower(grid)} Bezug`;
     manualBalanceLabel.textContent = "Zusätzlicher Netzbezug";
     manualBalance.textContent = formatPower(grid);
+  }
+
+  function updateManualPv() {
+    if (!manualStage || manualStage.classList.contains("is-switching") || document.hidden) return;
+    const pvPattern = [5.0, 5.3, 5.1, 5.4, 5.2, 4.9, 5.2];
+    manualPvPower = pvPattern[manualPvStep % pvPattern.length];
+    manualPvStep += 1;
+    window.clearTimeout(manualPvEffectTimer);
+    if (!reduceMotion) {
+      manualStage.classList.remove("is-pv-updating");
+      void manualStage.offsetWidth;
+      manualStage.classList.add("is-pv-updating");
+      manualPvEffectTimer = window.setTimeout(() => manualStage.classList.remove("is-pv-updating"), 900);
+    }
+    renderManualDemo();
+  }
+
+  function startManualPv() {
+    if (!manualPvTimer) manualPvTimer = window.setInterval(updateManualPv, 3600);
+  }
+
+  function stopManualPv() {
+    window.clearInterval(manualPvTimer);
+    manualPvTimer = undefined;
   }
 
   manualButtons.forEach(button => button.addEventListener("click", () => {
@@ -258,6 +291,16 @@
     }, 180);
   }));
   manualPower?.addEventListener("input", renderManualDemo);
+
+  if (manualStage && "IntersectionObserver" in window) {
+    const manualObserver = new IntersectionObserver(entries => {
+      if (entries.some(entry => entry.isIntersecting)) startManualPv();
+      else stopManualPv();
+    }, { threshold: .15 });
+    manualObserver.observe(manualStage);
+  } else if (manualStage) {
+    startManualPv();
+  }
 
   form.addEventListener("input", calculate);
   form.addEventListener("change", calculate);
