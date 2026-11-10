@@ -4323,6 +4323,7 @@ body.lightbox-open{
 .compat-steps p{margin:0;color:#c8d7d2;line-height:1.7}
 .compat-faq{padding:clamp(68px,9vw,110px) 0;background:#fff}
 .compat-faq-grid{display:grid;grid-template-columns:minmax(250px,.72fr) minmax(0,1.28fr);gap:clamp(32px,8vw,100px)}
+.compat-faq h2{font-size:clamp(2rem,3.4vw,3rem);hyphens:auto;overflow-wrap:anywhere}
 .compat-faq details{padding:20px 0;border-bottom:1px solid #cbd6d2}
 .compat-faq details:first-child{border-top:1px solid #9fb0aa}
 .compat-faq summary{font-size:1.05rem;font-weight:760}
