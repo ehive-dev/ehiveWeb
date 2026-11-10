@@ -641,6 +641,28 @@
     });
   }
 
+  function initProductNavMenus() {
+    const menus = Array.from(document.querySelectorAll("[data-nav-product-menu]"));
+    if (!menus.length) return;
+
+    menus.forEach(menu => {
+      menu.addEventListener("keydown", event => {
+        if (event.key !== "Escape") return;
+        menu.open = false;
+        menu.querySelector("summary")?.focus();
+      });
+      menu.querySelectorAll("a").forEach(link => {
+        link.addEventListener("click", () => { menu.open = false; });
+      });
+    });
+
+    document.addEventListener("click", event => {
+      menus.forEach(menu => {
+        if (!menu.contains(event.target)) menu.open = false;
+      });
+    });
+  }
+
   function setActiveNav() {
     const path = navKeyFromPageKey(pageKeyFromUrl(location.href));
     document.querySelectorAll(".nav-links a, .mobile-panel a").forEach(a => {
@@ -650,6 +672,9 @@
       } else {
         a.removeAttribute("aria-current");
       }
+    });
+    document.querySelectorAll("[data-nav-product-menu]").forEach(menu => {
+      menu.classList.toggle("is-current", Boolean(menu.querySelector('a[aria-current="page"]')));
     });
   }
 
@@ -1853,6 +1878,7 @@
         initHeroProductVideo();
         initHeroDemoWindow();
         initMobileNav();
+        initProductNavMenus();
         setActiveNav();
         initNewsNavHighlight();
         initPaypalCartLinks();
