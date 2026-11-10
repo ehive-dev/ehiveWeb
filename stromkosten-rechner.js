@@ -151,7 +151,6 @@
   const manualGrid = document.querySelector("[data-manual-grid]");
   const manualBattery = document.querySelector("[data-manual-battery]");
   const manualBatteryBalance = document.querySelector("[data-manual-battery-balance]");
-  const manualHubLabel = document.querySelector("[data-manual-hub-label]");
   const manualBalanceLabel = document.querySelector("[data-manual-balance-label]");
   const manualBalance = document.querySelector("[data-manual-balance]");
   const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -205,7 +204,6 @@
         : battery > 0
           ? `Der PV-Überschuss liefert ${formatPower(surplus)}. Die fehlenden ${formatPower(battery)} kommen aus dem Batteriespeicher; zusätzlicher Netzbezug ist nicht nötig.`
           : "Die gewünschte Ladeleistung kann in diesem Beispiel vollständig aus dem PV-Überschuss bereitgestellt werden.";
-      manualHubLabel.textContent = "manuell";
       setManualRoute("car", true);
       setManualRoute("battery", battery > 0, true);
       setManualRoute("grid", grid > 0, true);
@@ -216,7 +214,6 @@
       manualKicker.textContent = "Laden pausiert";
       manualStatus.textContent = "Das E-Auto erhält vorübergehend keine Ladeleistung.";
       manualDetail.textContent = "Der verfügbare PV-Überschuss lädt in diesem Beispiel den Batteriespeicher. Erst wenn dieser keine Energie mehr aufnehmen kann, würde überschüssige Leistung in das Stromnetz fließen.";
-      manualHubLabel.textContent = "pausiert";
       setManualRoute("car", false);
       setManualRoute("battery", true);
       setManualRoute("grid", false);
@@ -224,7 +221,6 @@
       manualKicker.textContent = "Automatik aktiv";
       manualStatus.textContent = "Das E-Auto lädt mit verfügbarem PV-Überschuss.";
       manualDetail.textContent = "Der Hausverbrauch ist bereits abgezogen. Für das Laden wird in diesem Beispiel kein zusätzlicher Netzstrom benötigt.";
-      manualHubLabel.textContent = "optimiert";
       setManualRoute("car", true);
       setManualRoute("battery", false);
       setManualRoute("grid", false);
