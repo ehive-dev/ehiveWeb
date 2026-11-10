@@ -1,0 +1,56 @@
+(() => {
+  const input = document.querySelector("[data-compat-search]");
+  const reset = document.querySelector("[data-compat-reset]");
+  const status = document.querySelector("[data-compat-status]");
+  const noResults = document.querySelector("[data-compat-empty]");
+  const categories = [...document.querySelectorAll("[data-compat-category]")];
+
+  if (!input || !reset || !status || !noResults || !categories.length) return;
+
+  const normalize = (value) => value
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLocaleLowerCase("de")
+    .trim();
+
+  const filterManufacturers = () => {
+    const query = normalize(input.value);
+    let visibleManufacturers = 0;
+    let visibleCategories = 0;
+
+    categories.forEach((category) => {
+      let categoryMatches = 0;
+      category.querySelectorAll("[data-manufacturer]").forEach((manufacturer) => {
+        const matches = !query || normalize(manufacturer.textContent).includes(query);
+        manufacturer.hidden = !matches;
+        if (matches) categoryMatches += 1;
+      });
+
+      category.hidden = categoryMatches === 0;
+      if (categoryMatches) {
+        visibleCategories += 1;
+        visibleManufacturers += categoryMatches;
+      }
+    });
+
+    reset.hidden = !query;
+    noResults.hidden = visibleManufacturers !== 0;
+    status.textContent = query
+      ? `${visibleManufacturers} Hersteller in ${visibleCategories} ${visibleCategories === 1 ? "Kategorie" : "Kategorien"} gefunden.`
+      : "";
+  };
+
+  input.addEventListener("input", filterManufacturers);
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && input.value) {
+      input.value = "";
+      filterManufacturers();
+    }
+  });
+
+  reset.addEventListener("click", () => {
+    input.value = "";
+    filterManufacturers();
+    input.focus();
+  });
+})();

@@ -3,86 +3,223 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>eHive One Kompatibilität: Wallbox, PV, Speicher und Fahrzeug</title>
-  <meta name="description" content="Offizielle evcc-Kompatibilitätslisten für eHive One: Wallboxen, Wechselrichter, Zähler, Batteriespeicher, Fahrzeuge und schaltbare Verbraucher.">
+  <title>evcc-kompatible Geräte für eHive One | Wallbox, PV &amp; Speicher</title>
+  <meta name="description" content="Welche Geräte funktionieren mit eHive One und evcc? Kompatibilitätsübersicht für Wallboxen, Wechselrichter, Speicher, Wärmepumpen, Fahrzeuge und Energiezähler.">
   <link rel="canonical" href="https://www.ehiv3.de/kompatibilitaet.html">
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="style.css">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="evcc-kompatible Geräte für eHive One">
+  <meta property="og:description" content="Kompatibilitätsübersicht für Wallboxen, Wechselrichter, Speicher, Wärmepumpen, Fahrzeuge und Energiezähler.">
+  <meta property="og:url" content="https://www.ehiv3.de/kompatibilitaet.html">
+  <meta property="og:image" content="https://www.ehiv3.de/products/ehive-one.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="evcc-kompatible Geräte für eHive One">
+  <meta name="twitter:description" content="Finde unterstützte Hersteller für Wallbox, PV, Speicher, Wärmepumpe, Fahrzeug und Energiezähler.">
+  <meta name="twitter:image" content="https://www.ehiv3.de/products/ehive-one.png">
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebPage",
-    "name": "eHive One Kompatibilität",
-    "url": "https://www.ehiv3.de/kompatibilitaet.html",
-    "description": "Kompatibilität von eHive One mit Wallboxen, Wechselrichtern, Zählern, Batteriespeichern, Fahrzeugen und schaltbaren Verbrauchern.",
-    "isPartOf": {"@type": "WebSite", "name": "eHive", "url": "https://www.ehiv3.de/"}
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": "https://www.ehiv3.de/kompatibilitaet.html#webpage",
+        "url": "https://www.ehiv3.de/kompatibilitaet.html",
+        "name": "evcc-kompatible Geräte für eHive One",
+        "description": "Kompatibilitätsübersicht für Wallboxen, Wechselrichter, Batteriespeicher, Wärmepumpen, Fahrzeuge und Energiezähler.",
+        "inLanguage": "de-DE",
+        "isPartOf": {"@id": "https://www.ehiv3.de/#website"},
+        "about": {"@id": "https://www.ehiv3.de/ehive-one.html#product"},
+        "breadcrumb": {"@id": "https://www.ehiv3.de/kompatibilitaet.html#breadcrumb"}
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://www.ehiv3.de/#website",
+        "url": "https://www.ehiv3.de/",
+        "name": "eHive One"
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": "https://www.ehiv3.de/kompatibilitaet.html#breadcrumb",
+        "itemListElement": [
+          {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://www.ehiv3.de/"},
+          {"@type": "ListItem", "position": 2, "name": "eHive One", "item": "https://www.ehiv3.de/ehive-one.html"},
+          {"@type": "ListItem", "position": 3, "name": "Gerätekompatibilität", "item": "https://www.ehiv3.de/kompatibilitaet.html"}
+        ]
+      }
+    ]
   }
   </script>
 </head>
-<body class="content-page">
+<body class="content-page compatibility-page">
 <div data-include="header"></div>
 <main>
-  <section class="article-hero">
-    <div class="container narrow">
-      <p class="eyebrow">eHive One · Kompatibilität</p>
-      <h1>Welche Geräte funktionieren mit eHive One?</h1>
-      <p class="lead">eHive One nutzt evcc für die herstellerübergreifende Einbindung von Wallboxen, PV-Anlagen, Zählern, Batteriespeichern, Fahrzeugen und weiteren Verbrauchern.</p>
-    </div>
-  </section>
-  <article class="container article-body">
-    <h2>Unterstützte Hersteller</h2>
-    <div class="infobox">
-      <div class="infobox_inner">
-        <div class="infobox_entry" style="grid-area: charger;">
-          <img src="img/evcc-assets/icons/charger.svg" alt="Wallboxen" width="140" height="140">
-          <h3>Wallboxen</h3>
-          <p class="products">ABB • ABL • Alfen • Alphatec • Alpitronic • Amperfied • Ampure • Audi • AUTEL • Autoaid • Bender • BMW • cFos • Charge Amps • ChargeLine • ChargeX • Compleo • CUBOS • Cupra • Dadapower • DaheimLaden • Delta • E.ON Drive • E3/DC • Easee • Ebee • echarge • EcoHarmony • Edgetech • Elecq • eledio • Elli • EM2GO • EN+ • enercab • Ensto • EntraTek • ESL • eSystems • ETEK • Etrel • EV Expert • EVBox • FoxESS • Free2Move • Free2move eSolutions • Fronius • Garo • go-e • Hardy Barth • Heidelberg • Hesotec • Home Assistant • Homecharge • Huawei • Innogy • INRO • Juice • Kathrein • KEBA • Kontron Solar • Kostal • KSE • LadeFoxx • LRT • Mennekes • Neoom • NRGkick • OBO Bettermann • OpenEVSE • openWB • Optec • Orbis • PC Electric • Peblar • Phoenix Contact • Plugchoice • Porsche • Pracht • Pulsares • Pulsatrix • Qcells • Schneider • Schrack • SENEC • Shelly • Siemens • Sigenergy • Skoda • SMA • Smartfox • SolarEdge • Solax • Sonnen • Spelsberg • Stark in Strom • Sungrow • TechniSat • Tesla • Tigo • TinkerForge • Ubitricity • V2C • Vestel • Veton • Victron • Viridian EV • Volkswagen • Volt Time • Voltie • Wallbe • wallbox • Walther Werke • Webasto • Weidmüller • Zaptec • ZJ Beny</p>
+  <section class="compat-hero">
+    <div class="container">
+      <nav class="compat-breadcrumb" aria-label="Brotkrümelnavigation"><a href="index.html">Home</a> / <a href="ehive-one.html">eHive One</a> / <span aria-current="page">Gerätekompatibilität</span></nav>
+      <div class="compat-hero-grid">
+        <div>
+          <p class="eyebrow">eHive One · Gerätekompatibilität</p>
+          <h1>evcc-kompatible Geräte für eHive One</h1>
+          <p class="lead">eHive One verbindet Wallboxen, Wechselrichter, Batteriespeicher, Wärmepumpen, Fahrzeuge und Energiezähler auf einer lokalen, herstellerübergreifenden Plattform. Die Geräteintegration erfolgt über evcc und weitere eHive-Anwendungen.</p>
+          <ul class="compat-facts" aria-label="Gerätegruppen"><li>Wallboxen</li><li>Fahrzeuge</li><li>Wechselrichter</li><li>Speicher</li><li>Wärmepumpen</li><li>Zähler</li></ul>
         </div>
-        <div class="infobox_entry" style="grid-area: vehicle;">
-          <img src="img/evcc-assets/icons/vehicle.svg" alt="Fahrzeuge" width="140" height="140">
-          <h3>Fahrzeuge</h3>
-          <p class="products">Aiways • Audi • BMW • Citroën • Dacia • DS • Fiat • Ford (FordConnect Query) • Home Assistant • Hyundai • Hyundai (US) • Jeep • Kia • Mercedes-Benz • MG • Mini • Nissan • NIU • Opel • Peugeot • Polestar • Renault • Seat • Skoda • Smart • Subaru • Tesla • Toyota • Volkswagen • Volvo • Zero Motorcycles</p>
-        </div>
-        <div class="infobox_entry" style="grid-area: inverter;">
-          <img src="img/evcc-assets/icons/inverter.svg" alt="Wechselrichter und Speichersysteme" width="140" height="140">
-          <h3>Wechselrichter &amp; Speichersysteme</h3>
-          <p class="products">A-Tronix • ABB • Acrel • Ads-tec • Alpha ESS • Ampere • amsleser.no • Anker • APsystems • Atmoce • AVM • Axitec • B+GE-TECH • batterX • Bernecker Engineering • Bosch • Bosswerk • Carlo Gavazzi • DDM • Deye • DZG • E3/DC • Eastron • EcoFlow • Enphase • FENECON • Finder • FoxESS • FRITZ! • Fronius • Ginlong • go-e • GoodWe • Growatt • Home Assistant • Homematic IP • HomeWizard • Hoymiles • Huawei • IAMMETER • IGEN Tech • inepro • INTILION • Janitza • Kostal • LG • Lovato • Loxone • M-TEC • Marstek • myStrom • OpenEMS • ORNO • Powerfox • Qcells • RCT • Saia-Burgess Controls (SBC) • SAJ • SAX • Schneider Electric • SENEC • Senergy • Sermatec • Shelly • Siemens • Sigenergy • SMA • Smartfox • SofarSolar • Solakon • Solaranzeige • SolarEdge • SolarMax • Solarwatt • Solax • Solinteng • Sonnen • St-ems • Steca • Strong Energy • Sungrow • Sunsynk • Sunway • Tasmota • Tepto • Tesla • TP-Link • VARTA • Victron • Wago • Wattsonic • Weidmüller • Youless • ZCS Azzurro • Zendure</p>
-        </div>
-        <div class="infobox_entry" style="grid-area: smartswitch;">
-          <img src="img/evcc-assets/icons/smartswitch.svg" alt="Smarte Schalter" width="140" height="140">
-          <h3>Smarte Schalter</h3>
-          <p class="products">AVM • FRITZ! • Home Assistant • Homematic IP • HomeWizard • myStrom • Shelly • Tasmota • TP-Link</p>
-        </div>
-        <div class="infobox_entry" style="grid-area: heating;">
-          <img src="img/evcc-assets/icons/heating.svg" alt="Wärmepumpen und Heizstäbe" width="140" height="140">
-          <h3>Wärmepumpen &amp; Heizstäbe</h3>
-          <p class="products">alpha innotec • Bosch • Buderus • Bösch • CTA All-In-One • Daikin • E.G.O. • Elco • Glen Dimplex • IDM • Junkers • Kermi • Lambda • LG • my-PV • Nibe • Novelan • Ochsner • Roth • Stiebel Eltron • Tecalor • Vaillant • Viessmann • Wolf • Xtherma • Zewotherm</p>
-        </div>
-        <div class="infobox_entry" style="grid-area: meter;">
-          <img src="img/evcc-assets/icons/meter.svg" alt="Energiemesstechnik" width="140" height="140">
-          <h3>Energiemesstechnik</h3>
-          <p class="products">A-Tronix • Aandewiel • ABB • Acrel • Alpha ESS • Ampere • amsleser.no • Atmoce • AVM • Axitec • B+GE-TECH • batterX • Bernecker Engineering • Bosch • Carlo Gavazzi • cFos • Cozify HAN • DDM • Deye • DSMR • DZG • E3/DC • Eastron • EcoFlow • Enphase • ESPHome • FENECON • Finder • FoxESS • FRITZ! • Fronius • Ginlong • go-e • GoodWe • Growatt • Home Assistant • Homematic IP • HomeWizard • Huawei • IAMMETER • inepro • INTILION • IOmeter • Janitza • KEBA • Kostal • LG • Lovato • Loxone • M-TEC • my-PV • myStrom • OpenEMS • ORNO • P1Monitor • Powerfox • Pstryk.pl • Qcells • RCT • Saia-Burgess Controls (SBC) • SAJ • SAX • Schneider Electric • SENEC • Senergy • Sermatec • Shelly • Siemens • Sigenergy • SMA • Smartfox • Smartstuff • SofarSolar • Solakon • Solaranzeige • SolarEdge • SolarMax • Solarwatt • Solax • Solinteng • Sonnen • St-ems • Strong Energy • Sungrow • Sunsynk • Sunway • Tasmota • Tepto • Tesla • Tibber • TP-Link • TQ • VARTA • Victron • Volkszähler • Wago • Wattsonic • Weidmüller • Youless • ZCS Azzurro • Zendure • Zuidwijk</p>
-        </div>
+        <figure class="compat-hero-device"><img src="products/ehive-one.png" width="900" height="900" alt="eHive One Hutschienen-Computer für evcc"></figure>
       </div>
     </div>
-    <h2>Offizielle evcc-Detailseiten</h2>
-    <ul>
-      <li><a href="https://docs.evcc.io/de/chargers/" target="_blank" rel="noopener noreferrer">Wallboxen sowie generische Wärmepumpen-Anbindungen</a></li>
-      <li><a href="https://docs.evcc.io/de/meters/" target="_blank" rel="noopener noreferrer">PV, Netz, Energiezähler und Batteriespeicher</a></li>
-      <li><a href="https://docs.evcc.io/de/vehicles/" target="_blank" rel="noopener noreferrer">Fahrzeuge</a></li>
-      <li><a href="https://docs.evcc.io/de/smartswitches/" target="_blank" rel="noopener noreferrer">Schaltbare Steckdosen und Verbraucher</a></li>
-    </ul>
-    <h2>Was ein Listeneintrag bedeutet</h2>
-    <p>Ein Gerät in der evcc-Liste ist grundsätzlich integrierbar. Der tatsächliche Funktionsumfang hängt jedoch vom genauen Modell, der Firmware, der freigeschalteten Schnittstelle, der Netzwerk- oder Busverbindung und der eingesetzten evcc-Version ab. Kennzeichnungen wie Batteriesteuerung, Abregelbarkeit, Phasenumschaltung oder Sponsoring zeigen zusätzliche Voraussetzungen und Funktionen.</p>
-    <h2>Vor der Bestellung prüfen</h2>
-    <p>Vergleiche Hersteller und Modellbezeichnung exakt mit dem Eintrag in der evcc-Liste. Kläre außerdem, ob das Gerät lokal per Ethernet, Modbus oder einer anderen Schnittstelle erreichbar ist oder einen externen Cloud-Dienst benötigt. Bei Wärmepumpen und Anwendungen nach § 14a EnWG muss zusätzlich die konkrete Signal- und Anlagenplanung durch eine Elektrofachkraft geprüft werden.</p>
-    <div class="answer-box"><strong>Konkrete Kombination prüfen:</strong> Sende uns Hersteller, vollständige Modellbezeichnung, Firmware und die vorgesehene Schnittstelle an <a href="mailto:kontakt@ehiv3.de?subject=%5BKompatibilit%C3%A4t%5D%20eHive%20One">kontakt@ehiv3.de</a>. Wir helfen bei der technischen Einordnung vor der Bestellung.</div>
-    <h2>eHive One</h2>
-    <p><a href="ehive-one.html">eHive One</a> stellt die lokale Hardware- und Softwareplattform bereit. Ob eine bestimmte Funktion in einer konkreten Anlage verfügbar ist, ergibt sich aus dem Zusammenspiel aller Komponenten und ihrer Konfiguration.</p>
-  </article>
+  </section>
+
+  <section class="compat-intro" aria-labelledby="compat-intro-title">
+    <div class="container compat-intro-grid">
+      <div><p class="eyebrow">Vor der Einbindung</p><h2 id="compat-intro-title">Das genaue Modell entscheidet.</h2></div>
+      <p>Die Herstellerübersicht zeigt grundsätzlich unterstützte Gerätefamilien. Ob eine konkrete Komponente vollständig funktioniert, hängt von Modell, Firmware, freigeschalteter Schnittstelle, Netzwerkverbindung und eingesetzter evcc-Version ab.</p>
+    </div>
+  </section>
+
+  <section class="compat-directory" aria-labelledby="compat-directory-title">
+    <div class="container">
+      <div class="compat-section-heading">
+        <div><p class="eyebrow">Geräteübersicht</p><h2 id="compat-directory-title">Unterstützte Hersteller und Geräte</h2></div>
+        <p>Finde passende Hersteller für Wallboxen, Wechselrichter, Batteriespeicher, Wärmepumpen, Fahrzeuge, Energiezähler und weitere steuerbare Verbraucher.</p>
+      </div>
+      <div class="compat-search" role="search">
+        <label for="compat-search">Hersteller suchen</label>
+        <input id="compat-search" type="search" placeholder="Zum Beispiel SMA, Fronius, go-e oder Viessmann" autocomplete="off" aria-controls="compatibility-lists" data-compat-search>
+        <button class="compat-reset" type="button" data-compat-reset hidden>Suche zurücksetzen</button>
+      </div>
+      <p class="compat-search-status" role="status" aria-live="polite" data-compat-status></p>
+      <p class="compat-empty" data-compat-empty hidden>Kein passender Hersteller gefunden. Prüfe zusätzlich die genaue Modellbezeichnung in der evcc-Dokumentation.</p>
+
+      <div class="compat-categories" id="compatibility-lists">
+        <section class="compat-category" aria-labelledby="compat-chargers-title" data-compat-category>
+          <div class="compat-category-heading">
+            <img src="img/evcc-assets/icons/charger.svg" alt="" width="140" height="140" aria-hidden="true">
+            <h2 id="compat-chargers-title">Wallboxen</h2>
+            <p>evcc steuert kompatible Wallboxen anhand von PV-Überschuss, Stromtarifen, Ladeplänen und Netzvorgaben. Der Funktionsumfang hängt vom Modell und seiner Schnittstelle ab.</p>
+          </div>
+          <ul class="compat-manufacturer-list" aria-label="Unterstützte Wallbox-Hersteller">
+            <li data-manufacturer>ABB</li><li data-manufacturer>ABL</li><li data-manufacturer>Alfen</li><li data-manufacturer>Alphatec</li><li data-manufacturer>Alpitronic</li><li data-manufacturer>Amperfied</li><li data-manufacturer>Ampure</li><li data-manufacturer>Audi</li><li data-manufacturer>AUTEL</li><li data-manufacturer>Autoaid</li><li data-manufacturer>Bender</li><li data-manufacturer>BMW</li><li data-manufacturer>cFos</li><li data-manufacturer>Charge Amps</li><li data-manufacturer>ChargeLine</li><li data-manufacturer>ChargeX</li><li data-manufacturer>Compleo</li><li data-manufacturer>CUBOS</li><li data-manufacturer>Cupra</li><li data-manufacturer>Dadapower</li><li data-manufacturer>DaheimLaden</li><li data-manufacturer>Delta</li><li data-manufacturer>E.ON Drive</li><li data-manufacturer>E3/DC</li><li data-manufacturer>Easee</li><li data-manufacturer>Ebee</li><li data-manufacturer>echarge</li><li data-manufacturer>EcoHarmony</li><li data-manufacturer>Edgetech</li><li data-manufacturer>Elecq</li><li data-manufacturer>eledio</li><li data-manufacturer>Elli</li><li data-manufacturer>EM2GO</li><li data-manufacturer>EN+</li><li data-manufacturer>enercab</li><li data-manufacturer>Ensto</li><li data-manufacturer>EntraTek</li><li data-manufacturer>ESL</li><li data-manufacturer>eSystems</li><li data-manufacturer>ETEK</li><li data-manufacturer>Etrel</li><li data-manufacturer>EV Expert</li><li data-manufacturer>EVBox</li><li data-manufacturer>FoxESS</li><li data-manufacturer>Free2Move</li><li data-manufacturer>Free2move eSolutions</li><li data-manufacturer>Fronius</li><li data-manufacturer>Garo</li><li data-manufacturer>go-e</li><li data-manufacturer>Hardy Barth</li><li data-manufacturer>Heidelberg</li><li data-manufacturer>Hesotec</li><li data-manufacturer>Home Assistant</li><li data-manufacturer>Homecharge</li><li data-manufacturer>Huawei</li><li data-manufacturer>Innogy</li><li data-manufacturer>INRO</li><li data-manufacturer>Juice</li><li data-manufacturer>Kathrein</li><li data-manufacturer>KEBA</li><li data-manufacturer>Kontron Solar</li><li data-manufacturer>Kostal</li><li data-manufacturer>KSE</li><li data-manufacturer>LadeFoxx</li><li data-manufacturer>LRT</li><li data-manufacturer>Mennekes</li><li data-manufacturer>Neoom</li><li data-manufacturer>NRGkick</li><li data-manufacturer>OBO Bettermann</li><li data-manufacturer>OpenEVSE</li><li data-manufacturer>openWB</li><li data-manufacturer>Optec</li><li data-manufacturer>Orbis</li><li data-manufacturer>PC Electric</li><li data-manufacturer>Peblar</li><li data-manufacturer>Phoenix Contact</li><li data-manufacturer>Plugchoice</li><li data-manufacturer>Porsche</li><li data-manufacturer>Pracht</li><li data-manufacturer>Pulsares</li><li data-manufacturer>Pulsatrix</li><li data-manufacturer>Qcells</li><li data-manufacturer>Schneider</li><li data-manufacturer>Schrack</li><li data-manufacturer>SENEC</li><li data-manufacturer>Shelly</li><li data-manufacturer>Siemens</li><li data-manufacturer>Sigenergy</li><li data-manufacturer>Skoda</li><li data-manufacturer>SMA</li><li data-manufacturer>Smartfox</li><li data-manufacturer>SolarEdge</li><li data-manufacturer>Solax</li><li data-manufacturer>Sonnen</li><li data-manufacturer>Spelsberg</li><li data-manufacturer>Stark in Strom</li><li data-manufacturer>Sungrow</li><li data-manufacturer>TechniSat</li><li data-manufacturer>Tesla</li><li data-manufacturer>Tigo</li><li data-manufacturer>TinkerForge</li><li data-manufacturer>Ubitricity</li><li data-manufacturer>V2C</li><li data-manufacturer>Vestel</li><li data-manufacturer>Veton</li><li data-manufacturer>Victron</li><li data-manufacturer>Viridian EV</li><li data-manufacturer>Volkswagen</li><li data-manufacturer>Volt Time</li><li data-manufacturer>Voltie</li><li data-manufacturer>Wallbe</li><li data-manufacturer>wallbox</li><li data-manufacturer>Walther Werke</li><li data-manufacturer>Webasto</li><li data-manufacturer>Weidmüller</li><li data-manufacturer>Zaptec</li><li data-manufacturer>ZJ Beny</li>
+          </ul>
+        </section>
+
+        <section class="compat-category" aria-labelledby="compat-inverters-title" data-compat-category>
+          <div class="compat-category-heading">
+            <img src="img/evcc-assets/icons/inverter.svg" alt="" width="140" height="140" aria-hidden="true">
+            <h2 id="compat-inverters-title">Wechselrichter und Batteriespeicher</h2>
+            <p>Wechselrichter, Energiezähler und Batteriespeicher liefern Messwerte für Erzeugung, Netzbezug und Speicherzustand. Bei ausgewählten Systemen kann evcc zusätzlich Lade- und Entladevorgänge beeinflussen.</p>
+          </div>
+          <ul class="compat-manufacturer-list" aria-label="Unterstützte Hersteller von Wechselrichtern und Batteriespeichern">
+            <li data-manufacturer>A-Tronix</li><li data-manufacturer>ABB</li><li data-manufacturer>Acrel</li><li data-manufacturer>Ads-tec</li><li data-manufacturer>Alpha ESS</li><li data-manufacturer>Ampere</li><li data-manufacturer>amsleser.no</li><li data-manufacturer>Anker</li><li data-manufacturer>APsystems</li><li data-manufacturer>Atmoce</li><li data-manufacturer>AVM</li><li data-manufacturer>Axitec</li><li data-manufacturer>B+GE-TECH</li><li data-manufacturer>batterX</li><li data-manufacturer>Bernecker Engineering</li><li data-manufacturer>Bosch</li><li data-manufacturer>Bosswerk</li><li data-manufacturer>Carlo Gavazzi</li><li data-manufacturer>DDM</li><li data-manufacturer>Deye</li><li data-manufacturer>DZG</li><li data-manufacturer>E3/DC</li><li data-manufacturer>Eastron</li><li data-manufacturer>EcoFlow</li><li data-manufacturer>Enphase</li><li data-manufacturer>FENECON</li><li data-manufacturer>Finder</li><li data-manufacturer>FoxESS</li><li data-manufacturer>FRITZ!</li><li data-manufacturer>Fronius</li><li data-manufacturer>Ginlong</li><li data-manufacturer>go-e</li><li data-manufacturer>GoodWe</li><li data-manufacturer>Growatt</li><li data-manufacturer>Home Assistant</li><li data-manufacturer>Homematic IP</li><li data-manufacturer>HomeWizard</li><li data-manufacturer>Hoymiles</li><li data-manufacturer>Huawei</li><li data-manufacturer>IAMMETER</li><li data-manufacturer>IGEN Tech</li><li data-manufacturer>inepro</li><li data-manufacturer>INTILION</li><li data-manufacturer>Janitza</li><li data-manufacturer>Kostal</li><li data-manufacturer>LG</li><li data-manufacturer>Lovato</li><li data-manufacturer>Loxone</li><li data-manufacturer>M-TEC</li><li data-manufacturer>Marstek</li><li data-manufacturer>myStrom</li><li data-manufacturer>OpenEMS</li><li data-manufacturer>ORNO</li><li data-manufacturer>Powerfox</li><li data-manufacturer>Qcells</li><li data-manufacturer>RCT</li><li data-manufacturer>Saia-Burgess Controls (SBC)</li><li data-manufacturer>SAJ</li><li data-manufacturer>SAX</li><li data-manufacturer>Schneider Electric</li><li data-manufacturer>SENEC</li><li data-manufacturer>Senergy</li><li data-manufacturer>Sermatec</li><li data-manufacturer>Shelly</li><li data-manufacturer>Siemens</li><li data-manufacturer>Sigenergy</li><li data-manufacturer>SMA</li><li data-manufacturer>Smartfox</li><li data-manufacturer>SofarSolar</li><li data-manufacturer>Solakon</li><li data-manufacturer>Solaranzeige</li><li data-manufacturer>SolarEdge</li><li data-manufacturer>SolarMax</li><li data-manufacturer>Solarwatt</li><li data-manufacturer>Solax</li><li data-manufacturer>Solinteng</li><li data-manufacturer>Sonnen</li><li data-manufacturer>St-ems</li><li data-manufacturer>Steca</li><li data-manufacturer>Strong Energy</li><li data-manufacturer>Sungrow</li><li data-manufacturer>Sunsynk</li><li data-manufacturer>Sunway</li><li data-manufacturer>Tasmota</li><li data-manufacturer>Tepto</li><li data-manufacturer>Tesla</li><li data-manufacturer>TP-Link</li><li data-manufacturer>VARTA</li><li data-manufacturer>Victron</li><li data-manufacturer>Wago</li><li data-manufacturer>Wattsonic</li><li data-manufacturer>Weidmüller</li><li data-manufacturer>Youless</li><li data-manufacturer>ZCS Azzurro</li><li data-manufacturer>Zendure</li>
+          </ul>
+        </section>
+
+        <section class="compat-category" aria-labelledby="compat-heating-title" data-compat-category>
+          <div class="compat-category-heading">
+            <img src="img/evcc-assets/icons/heating.svg" alt="" width="140" height="140" aria-hidden="true">
+            <h2 id="compat-heating-title">Wärmepumpen und Heizstäbe</h2>
+            <p>Wärmepumpen und Heizstäbe können abhängig vom Gerät über SG Ready, EEBUS, Relais, Modbus oder weitere Schnittstellen eingebunden werden. Die Nennung eines Herstellers gilt nicht pauschal für jedes Modell.</p>
+          </div>
+          <ul class="compat-manufacturer-list" aria-label="Unterstützte Hersteller von Wärmepumpen und Heizstäben">
+            <li data-manufacturer>alpha innotec</li><li data-manufacturer>Bosch</li><li data-manufacturer>Bösch</li><li data-manufacturer>Buderus</li><li data-manufacturer>CTA All-In-One</li><li data-manufacturer>Daikin</li><li data-manufacturer>E.G.O.</li><li data-manufacturer>Elco</li><li data-manufacturer>Glen Dimplex</li><li data-manufacturer>IDM</li><li data-manufacturer>Junkers</li><li data-manufacturer>Kermi</li><li data-manufacturer>Lambda</li><li data-manufacturer>LG</li><li data-manufacturer>my-PV</li><li data-manufacturer>NIBE</li><li data-manufacturer>Novelan</li><li data-manufacturer>Ochsner</li><li data-manufacturer>Roth</li><li data-manufacturer>Stiebel Eltron</li><li data-manufacturer>Tecalor</li><li data-manufacturer>Vaillant</li><li data-manufacturer>Viessmann</li><li data-manufacturer>Wolf</li><li data-manufacturer>Xtherma</li><li data-manufacturer>Zewotherm</li>
+          </ul>
+        </section>
+
+        <section class="compat-category" aria-labelledby="compat-meters-title" data-compat-category>
+          <div class="compat-category-heading">
+            <img src="img/evcc-assets/icons/meter.svg" alt="" width="140" height="140" aria-hidden="true">
+            <h2 id="compat-meters-title">Energiezähler und Messtechnik</h2>
+            <p>Verlässliche Messwerte am Netzanschluss, an der PV-Anlage, am Speicher und am Ladepunkt bilden die Grundlage für eine korrekte Energieregelung.</p>
+          </div>
+          <ul class="compat-manufacturer-list" aria-label="Unterstützte Hersteller von Energiezählern und Messtechnik">
+            <li data-manufacturer>A-Tronix</li><li data-manufacturer>Aandewiel</li><li data-manufacturer>ABB</li><li data-manufacturer>Acrel</li><li data-manufacturer>Alpha ESS</li><li data-manufacturer>Ampere</li><li data-manufacturer>amsleser.no</li><li data-manufacturer>Atmoce</li><li data-manufacturer>AVM</li><li data-manufacturer>Axitec</li><li data-manufacturer>B+GE-TECH</li><li data-manufacturer>batterX</li><li data-manufacturer>Bernecker Engineering</li><li data-manufacturer>Bosch</li><li data-manufacturer>Carlo Gavazzi</li><li data-manufacturer>cFos</li><li data-manufacturer>Cozify HAN</li><li data-manufacturer>DDM</li><li data-manufacturer>Deye</li><li data-manufacturer>DSMR</li><li data-manufacturer>DZG</li><li data-manufacturer>E3/DC</li><li data-manufacturer>Eastron</li><li data-manufacturer>EcoFlow</li><li data-manufacturer>Enphase</li><li data-manufacturer>ESPHome</li><li data-manufacturer>FENECON</li><li data-manufacturer>Finder</li><li data-manufacturer>FoxESS</li><li data-manufacturer>FRITZ!</li><li data-manufacturer>Fronius</li><li data-manufacturer>Ginlong</li><li data-manufacturer>go-e</li><li data-manufacturer>GoodWe</li><li data-manufacturer>Growatt</li><li data-manufacturer>Home Assistant</li><li data-manufacturer>Homematic IP</li><li data-manufacturer>HomeWizard</li><li data-manufacturer>Huawei</li><li data-manufacturer>IAMMETER</li><li data-manufacturer>inepro</li><li data-manufacturer>INTILION</li><li data-manufacturer>IOmeter</li><li data-manufacturer>Janitza</li><li data-manufacturer>KEBA</li><li data-manufacturer>Kostal</li><li data-manufacturer>LG</li><li data-manufacturer>Lovato</li><li data-manufacturer>Loxone</li><li data-manufacturer>M-TEC</li><li data-manufacturer>my-PV</li><li data-manufacturer>myStrom</li><li data-manufacturer>OpenEMS</li><li data-manufacturer>ORNO</li><li data-manufacturer>P1Monitor</li><li data-manufacturer>Powerfox</li><li data-manufacturer>Pstryk.pl</li><li data-manufacturer>Qcells</li><li data-manufacturer>RCT</li><li data-manufacturer>Saia-Burgess Controls (SBC)</li><li data-manufacturer>SAJ</li><li data-manufacturer>SAX</li><li data-manufacturer>Schneider Electric</li><li data-manufacturer>SENEC</li><li data-manufacturer>Senergy</li><li data-manufacturer>Sermatec</li><li data-manufacturer>Shelly</li><li data-manufacturer>Siemens</li><li data-manufacturer>Sigenergy</li><li data-manufacturer>SMA</li><li data-manufacturer>Smartfox</li><li data-manufacturer>Smartstuff</li><li data-manufacturer>SofarSolar</li><li data-manufacturer>Solakon</li><li data-manufacturer>Solaranzeige</li><li data-manufacturer>SolarEdge</li><li data-manufacturer>SolarMax</li><li data-manufacturer>Solarwatt</li><li data-manufacturer>Solax</li><li data-manufacturer>Solinteng</li><li data-manufacturer>Sonnen</li><li data-manufacturer>St-ems</li><li data-manufacturer>Strong Energy</li><li data-manufacturer>Sungrow</li><li data-manufacturer>Sunsynk</li><li data-manufacturer>Sunway</li><li data-manufacturer>Tasmota</li><li data-manufacturer>Tepto</li><li data-manufacturer>Tesla</li><li data-manufacturer>Tibber</li><li data-manufacturer>TP-Link</li><li data-manufacturer>TQ</li><li data-manufacturer>VARTA</li><li data-manufacturer>Victron</li><li data-manufacturer>Volkszähler</li><li data-manufacturer>Wago</li><li data-manufacturer>Wattsonic</li><li data-manufacturer>Weidmüller</li><li data-manufacturer>Youless</li><li data-manufacturer>ZCS Azzurro</li><li data-manufacturer>Zendure</li><li data-manufacturer>Zuidwijk</li>
+          </ul>
+        </section>
+
+        <section class="compat-category" aria-labelledby="compat-vehicles-title" data-compat-category>
+          <div class="compat-category-heading">
+            <img src="img/evcc-assets/icons/vehicle.svg" alt="" width="140" height="140" aria-hidden="true">
+            <h2 id="compat-vehicles-title">Fahrzeuge</h2>
+            <p>Unterstützte Fahrzeuganbindungen können Ladestand, Reichweite und Ladestatus bereitstellen. Qualität und Verfügbarkeit der Hersteller-Schnittstellen können sich ändern.</p>
+          </div>
+          <ul class="compat-manufacturer-list" aria-label="Unterstützte Fahrzeughersteller">
+            <li data-manufacturer>Aiways</li><li data-manufacturer>Audi</li><li data-manufacturer>BMW</li><li data-manufacturer>Citroën</li><li data-manufacturer>Dacia</li><li data-manufacturer>DS</li><li data-manufacturer>Fiat</li><li data-manufacturer>Ford (FordConnect Query)</li><li data-manufacturer>Home Assistant</li><li data-manufacturer>Hyundai</li><li data-manufacturer>Hyundai (US)</li><li data-manufacturer>Jeep</li><li data-manufacturer>Kia</li><li data-manufacturer>Mercedes-Benz</li><li data-manufacturer>MG</li><li data-manufacturer>Mini</li><li data-manufacturer>Nissan</li><li data-manufacturer>NIU</li><li data-manufacturer>Opel</li><li data-manufacturer>Peugeot</li><li data-manufacturer>Polestar</li><li data-manufacturer>Renault</li><li data-manufacturer>Seat</li><li data-manufacturer>Skoda</li><li data-manufacturer>Smart</li><li data-manufacturer>Subaru</li><li data-manufacturer>Tesla</li><li data-manufacturer>Toyota</li><li data-manufacturer>Volkswagen</li><li data-manufacturer>Volvo</li><li data-manufacturer>Zero Motorcycles</li>
+          </ul>
+        </section>
+
+        <section class="compat-category" aria-labelledby="compat-switches-title" data-compat-category>
+          <div class="compat-category-heading">
+            <img src="img/evcc-assets/icons/smartswitch.svg" alt="" width="140" height="140" aria-hidden="true">
+            <h2 id="compat-switches-title">Smarte Schalter und Steckdosen</h2>
+            <p>Schaltbare Steckdosen und Relais ermöglichen die Einbindung zusätzlicher Verbraucher und können abhängig vom Gerät auch Messwerte bereitstellen.</p>
+          </div>
+          <ul class="compat-manufacturer-list" aria-label="Unterstützte Hersteller smarter Schalter und Steckdosen">
+            <li data-manufacturer>AVM</li><li data-manufacturer>FRITZ!</li><li data-manufacturer>Home Assistant</li><li data-manufacturer>Homematic IP</li><li data-manufacturer>HomeWizard</li><li data-manufacturer>myStrom</li><li data-manufacturer>Shelly</li><li data-manufacturer>Tasmota</li><li data-manufacturer>TP-Link</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="compat-check" aria-labelledby="compat-check-title">
+    <div class="container">
+      <p class="eyebrow">Kompatibilität richtig einordnen</p>
+      <h2 id="compat-check-title">Hersteller gefunden – was bedeutet das?</h2>
+      <ol class="compat-steps">
+        <li><span class="compat-step-number">01</span><h3>Hersteller und Modell vergleichen</h3><p>Prüfe die vollständige Modellbezeichnung. Ein Hersteller kann unterstützte und nicht unterstützte Produktserien anbieten.</p></li>
+        <li><span class="compat-step-number">02</span><h3>Schnittstelle und Firmware prüfen</h3><p>Kontrolliere, ob die benötigte lokale oder cloudbasierte Schnittstelle aktiviert ist und ob die Firmware zum verwendeten evcc-Treiber passt.</p></li>
+        <li><span class="compat-step-number">03</span><h3>Gewünschte Funktion verifizieren</h3><p>Ein Gerät kann Messwerte liefern, ohne alle Steuerfunktionen zu unterstützen. Prüfe deshalb die benötigte Funktion für die konkrete Anlage.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="compat-resources" aria-labelledby="compat-sources-title">
+    <div class="container compat-resource-grid">
+      <div class="compat-sources"><p class="eyebrow">Primärquellen</p><h2 id="compat-sources-title">Offizielle evcc-Gerätelisten</h2></div>
+      <div>
+        <ul class="compat-source-list">
+          <li><a href="https://docs.evcc.io/de/chargers/" target="_blank" rel="noopener noreferrer">Wallboxen und Wärmepumpenanbindungen</a></li>
+          <li><a href="https://docs.evcc.io/de/meters/" target="_blank" rel="noopener noreferrer">PV, Netz, Zähler und Batteriespeicher</a></li>
+          <li><a href="https://docs.evcc.io/de/vehicles/" target="_blank" rel="noopener noreferrer">Fahrzeuge</a></li>
+          <li><a href="https://docs.evcc.io/de/smartswitches/" target="_blank" rel="noopener noreferrer">Schaltbare Steckdosen und Verbraucher</a></li>
+        </ul>
+        <p class="compat-source-note">Die evcc-Gerätelisten werden fortlaufend aktualisiert. Prüfe dort das genaue Modell und die verfügbaren Funktionen.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="compat-faq" aria-labelledby="compat-faq-title">
+    <div class="container compat-faq-grid">
+      <div><p class="eyebrow">Häufige Fragen</p><h2 id="compat-faq-title">Gerätekompatibilität im Detail</h2></div>
+      <div>
+        <details><summary>Welche Wallboxen funktionieren mit eHive One?</summary><p>Grundsätzlich lassen sich die von evcc unterstützten Wallboxen einbinden. Entscheidend sind das genaue Modell, die verfügbare Schnittstelle und die gewünschten Funktionen wie Phasenumschaltung, RFID oder externe Leistungsbegrenzung.</p></details>
+        <details><summary>Welche Wechselrichter unterstützt evcc?</summary><p>evcc unterstützt Wechselrichter, Hybridwechselrichter und Messsysteme zahlreicher Hersteller. Welche Mess- oder Steuerwerte verfügbar sind, zeigt der konkrete Geräteeintrag in der evcc-Dokumentation.</p></details>
+        <details><summary>Kann eine Wärmepumpe eingebunden werden?</summary><p>Je nach Gerät ist eine Einbindung beispielsweise über SG Ready, EEBUS, Modbus oder Relais möglich. Die konkrete Signal- und Anlagenplanung muss zu Wärmepumpe, Energiemanagement und Elektroinstallation passen.</p></details>
+        <details><summary>Ist jedes Modell eines aufgeführten Herstellers kompatibel?</summary><p>Nein. Die Herstellerliste ist eine erste Orientierung. Modellbezeichnung, Firmware, Schnittstelle und Funktionsumfang müssen vor der Einbindung einzeln geprüft werden.</p></details>
+        <details><summary>Benötigt eHive One für die Geräteintegration eine Cloud?</summary><p>Viele Geräte lassen sich lokal über das Heimnetz oder einen Feldbus ansprechen. Einzelne Fahrzeug-, Tarif- oder Herstellerdienste können jedoch eine externe Schnittstelle und Internetzugriff benötigen.</p></details>
+        <details><summary>Was muss vor dem Kauf geprüft werden?</summary><p>Vergleiche das genaue Modell mit der evcc-Geräteliste und prüfe Firmware, Kommunikationsweg, benötigte Lizenz sowie die gewünschte Mess- oder Steuerfunktion. Arbeiten im Verteiler gehören in die Hände einer Elektrofachkraft.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <section class="compat-contact" aria-labelledby="compat-contact-title">
+    <div class="container compat-contact-grid">
+      <div><p class="eyebrow">Technische Einordnung</p><h2 id="compat-contact-title">Deine Gerätekombination ist nicht eindeutig?</h2><p>Sende uns Hersteller, vollständige Modellbezeichnung, Firmware und die vorgesehene Schnittstelle. Wir helfen dir bei der technischen Einordnung vor der Bestellung.</p></div>
+      <a class="compat-contact-link" href="mailto:kontakt@ehiv3.de?subject=%5BKompatibilit%C3%A4t%5D%20eHive%20One">Kompatibilität anfragen</a>
+    </div>
+  </section>
+
+  <section class="compat-related" aria-labelledby="compat-related-title">
+    <div class="container">
+      <h2 id="compat-related-title">Mehr zu eHive One und evcc</h2>
+      <ul class="compat-related-links">
+        <li><a href="ehive-one.html">eHive One kennenlernen</a></li><li><a href="evcc.html">evcc auf eHive One</a></li><li><a href="pv-ueberschussladen-evcc.html">PV-Überschussladen verstehen</a></li><li><a href="wallbox-waermepumpe-energiemanagement.html">Wallbox und Wärmepumpe verbinden</a></li><li><a href="shop.html">eHive One im Shop</a></li>
+      </ul>
+    </div>
+  </section>
 </main>
 <div data-include="footer"></div>
 <script src="config.js"></script>
 <script src="script.js"></script>
+<script src="kompatibilitaet.js"></script>
 </body>
 </html>
