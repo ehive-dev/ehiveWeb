@@ -160,59 +160,67 @@
     <div class="container">
       <header class="savings-section-heading">
         <div><p class="eyebrow">Interaktiver Rechner</p><h2 id="calculator-title">Dein Verbrauch. Deine Annahmen.</h2></div>
-        <p>Wähle ein Modell, passe die Preise an und trage für jeden Verbraucher den Jahresverbrauch sowie den realistisch verschiebbaren Anteil ein.</p>
+        <p>Kombiniere PV und passende Tarifzeiten, passe die Preise an und lege für jeden Verbraucher fest, welcher Anteil zeitlich flexibel oder fest genutzt wird.</p>
       </header>
 
       <div class="savings-calculator-grid">
         <form class="savings-form" data-savings-form>
-          <fieldset class="savings-models">
-            <legend>1. Vergleichsmodell wählen</legend>
-            <label class="savings-model-option">
-              <input type="radio" name="model" value="pv" checked>
-              <span><strong>PV-Tageslicht</strong><small>Netzbezug durch selbst erzeugten Solarstrom ersetzen</small></span>
-            </label>
-            <label class="savings-model-option">
-              <input type="radio" name="model" value="dynamic">
-              <span><strong>Dynamischer Tarif</strong><small>Verbrauch in günstige Viertelstunden legen</small></span>
-            </label>
-            <label class="savings-model-option">
-              <input type="radio" name="model" value="window">
-              <span><strong>Günstiges Zeitfenster</strong><small>Definierter Preis in bestimmten Stunden</small></span>
-            </label>
-          </fieldset>
-
-          <fieldset class="savings-prices">
-            <legend>2. Preise und erreichbaren Anteil eintragen</legend>
-            <div class="savings-input-grid">
-              <label><span>Normaler Arbeitspreis</span><span class="savings-input-unit"><input type="number" name="basePrice" min="0" max="200" step="0.1" value="35" inputmode="decimal"><b>ct/kWh</b></span></label>
-              <label><span data-target-price-label>Einspeisevergütung</span><span class="savings-input-unit"><input type="number" name="targetPrice" min="-50" max="200" step="0.1" value="8" inputmode="decimal"><b>ct/kWh</b></span></label>
-              <label class="savings-range-label"><span>Davon wirklich erreichbar <output data-reach-output>70&nbsp;%</output></span><input type="range" name="reach" min="0" max="100" step="5" value="70"></label>
+          <fieldset class="savings-strategies">
+            <legend>1. Energiequellen und Tarifzeiten kombinieren</legend>
+            <div class="savings-base-price">
+              <label><span>Normaler Arbeitspreis als Vergleich</span><span class="savings-input-unit"><input type="number" name="basePrice" min="0" max="200" step="0.1" value="35" inputmode="decimal"><b>ct/kWh</b></span></label>
+              <p>Aktiviere alle Möglichkeiten, die dir tatsächlich zur Verfügung stehen. Die Anteile werden zusammen höchstens bis 100&nbsp;% der zeitlich flexiblen Energie berücksichtigt.</p>
             </div>
-            <p class="savings-field-help" data-price-help>Bei eigenem PV-Strom werden als wirtschaftliche Kosten die entgangene Einspeisevergütung angesetzt.</p>
+            <div class="savings-strategy-list">
+              <article class="savings-strategy-card" data-strategy-card="pv">
+                <label class="savings-strategy-toggle"><input type="checkbox" name="strategyPv" checked><span><strong>PV-Tageslicht</strong><small>Verbrauch in Zeiten eigener Solarerzeugung legen</small></span></label>
+                <div class="savings-strategy-fields">
+                  <label><span>Einspeisevergütung</span><span class="savings-input-unit"><input type="number" name="pricePv" min="-50" max="200" step="0.1" value="8" inputmode="decimal"><b>ct/kWh</b></span></label>
+                  <label class="savings-strategy-share"><span>Flexibler Anteil in PV-Zeit <output data-strategy-output="pv">45&nbsp;%</output></span><input type="range" name="sharePv" min="0" max="100" step="5" value="45"></label>
+                </div>
+              </article>
+              <article class="savings-strategy-card" data-strategy-card="dynamic">
+                <label class="savings-strategy-toggle"><input type="checkbox" name="strategyDynamic"><span><strong>Dynamischer Tarif</strong><small>Günstige Viertelstunden des Strommarkts nutzen</small></span></label>
+                <div class="savings-strategy-fields">
+                  <label><span>Ø günstiger Endpreis</span><span class="savings-input-unit"><input type="number" name="priceDynamic" min="-50" max="200" step="0.1" value="24" inputmode="decimal"><b>ct/kWh</b></span></label>
+                  <label class="savings-strategy-share"><span>Flexibler Anteil in günstigen Zeiten <output data-strategy-output="dynamic">35&nbsp;%</output></span><input type="range" name="shareDynamic" min="0" max="100" step="5" value="35"></label>
+                </div>
+              </article>
+              <article class="savings-strategy-card" data-strategy-card="window">
+                <label class="savings-strategy-toggle"><input type="checkbox" name="strategyWindow"><span><strong>Festes günstiges Zeitfenster</strong><small>Zum Beispiel ein vertraglich günstiger Nachtzeitraum</small></span></label>
+                <div class="savings-strategy-fields">
+                  <label><span>Preis im Zeitfenster</span><span class="savings-input-unit"><input type="number" name="priceWindow" min="-50" max="200" step="0.1" value="22" inputmode="decimal"><b>ct/kWh</b></span></label>
+                  <label class="savings-strategy-share"><span>Flexibler Anteil im Zeitfenster <output data-strategy-output="window">40&nbsp;%</output></span><input type="range" name="shareWindow" min="0" max="100" step="5" value="40"></label>
+                </div>
+              </article>
+            </div>
+            <p class="savings-strategy-status" data-strategy-status role="status" aria-live="polite"></p>
           </fieldset>
 
           <fieldset class="savings-devices">
-            <legend>3. Flexible Verbraucher anpassen</legend>
-            <div class="savings-device-head" aria-hidden="true"><span>Verbraucher</span><span>kWh/Jahr</span><span>verschiebbar</span></div>
+            <legend>2. Zeitliche Flexibilität der Verbraucher anpassen</legend>
+            <p class="savings-field-help savings-flex-help"><strong>Zeitlich flexibel</strong> bedeutet: Dieser Anteil darf innerhalb des Tages in PV-Zeiten, dynamisch günstige Viertelstunden oder ein festes günstiges Zeitfenster gelegt werden. Der übrige Anteil bleibt zeitlich fest.</p>
+            <div class="savings-device-head" aria-hidden="true"><span>Verbraucher</span><span>kWh/Jahr</span><span>zeitlich flexibel / fest</span></div>
             <div class="savings-device-list">
-              <label class="savings-device-row"><span class="savings-device-name"><input type="checkbox" checked><b>Waschmaschine</b></span><input class="savings-kwh" type="number" min="0" max="30000" step="10" value="160" aria-label="Jahresverbrauch Waschmaschine in Kilowattstunden"><span class="savings-device-share"><input type="range" min="0" max="100" step="5" value="80" aria-label="Verschiebbarer Anteil Waschmaschine"><output>80&nbsp;%</output></span></label>
-              <label class="savings-device-row"><span class="savings-device-name"><input type="checkbox" checked><b>Geschirrspüler</b></span><input class="savings-kwh" type="number" min="0" max="30000" step="10" value="220" aria-label="Jahresverbrauch Geschirrspüler in Kilowattstunden"><span class="savings-device-share"><input type="range" min="0" max="100" step="5" value="75" aria-label="Verschiebbarer Anteil Geschirrspüler"><output>75&nbsp;%</output></span></label>
-              <label class="savings-device-row"><span class="savings-device-name"><input type="checkbox" checked><b>Wäschetrockner</b></span><input class="savings-kwh" type="number" min="0" max="30000" step="10" value="280" aria-label="Jahresverbrauch Wäschetrockner in Kilowattstunden"><span class="savings-device-share"><input type="range" min="0" max="100" step="5" value="70" aria-label="Verschiebbarer Anteil Wäschetrockner"><output>70&nbsp;%</output></span></label>
-              <label class="savings-device-row"><span class="savings-device-name"><input type="checkbox" checked><b>E-Auto</b></span><input class="savings-kwh" type="number" min="0" max="30000" step="50" value="2400" aria-label="Jahresverbrauch E-Auto in Kilowattstunden"><span class="savings-device-share"><input type="range" min="0" max="100" step="5" value="65" aria-label="Verschiebbarer Anteil E-Auto"><output>65&nbsp;%</output></span></label>
-              <label class="savings-device-row"><span class="savings-device-name"><input type="checkbox"><b>Wärmepumpe</b></span><input class="savings-kwh" type="number" min="0" max="30000" step="50" value="4000" aria-label="Jahresverbrauch Wärmepumpe in Kilowattstunden"><span class="savings-device-share"><input type="range" min="0" max="100" step="5" value="25" aria-label="Verschiebbarer Anteil Wärmepumpe"><output>25&nbsp;%</output></span></label>
-              <label class="savings-device-row"><span class="savings-device-name"><input type="checkbox"><b>Weitere Verbraucher</b></span><input class="savings-kwh" type="number" min="0" max="30000" step="10" value="500" aria-label="Jahresverbrauch weiterer Verbraucher in Kilowattstunden"><span class="savings-device-share"><input type="range" min="0" max="100" step="5" value="50" aria-label="Verschiebbarer Anteil weiterer Verbraucher"><output>50&nbsp;%</output></span></label>
+              <label class="savings-device-row"><span class="savings-device-name"><input type="checkbox" checked><b>Waschmaschine</b></span><input class="savings-kwh" type="number" min="0" max="30000" step="10" value="160" aria-label="Jahresverbrauch Waschmaschine in Kilowattstunden"><span class="savings-device-share"><input type="range" min="0" max="100" step="5" value="80" aria-label="Zeitlich flexibler Anteil Waschmaschine"><output>80 % flexibel · 20 % fest</output></span></label>
+              <label class="savings-device-row"><span class="savings-device-name"><input type="checkbox" checked><b>Geschirrspüler</b></span><input class="savings-kwh" type="number" min="0" max="30000" step="10" value="220" aria-label="Jahresverbrauch Geschirrspüler in Kilowattstunden"><span class="savings-device-share"><input type="range" min="0" max="100" step="5" value="75" aria-label="Zeitlich flexibler Anteil Geschirrspüler"><output>75 % flexibel · 25 % fest</output></span></label>
+              <label class="savings-device-row"><span class="savings-device-name"><input type="checkbox" checked><b>Wäschetrockner</b></span><input class="savings-kwh" type="number" min="0" max="30000" step="10" value="280" aria-label="Jahresverbrauch Wäschetrockner in Kilowattstunden"><span class="savings-device-share"><input type="range" min="0" max="100" step="5" value="70" aria-label="Zeitlich flexibler Anteil Wäschetrockner"><output>70 % flexibel · 30 % fest</output></span></label>
+              <label class="savings-device-row"><span class="savings-device-name"><input type="checkbox" checked><b>E-Auto</b></span><input class="savings-kwh" type="number" min="0" max="30000" step="50" value="2400" aria-label="Jahresverbrauch E-Auto in Kilowattstunden"><span class="savings-device-share"><input type="range" min="0" max="100" step="5" value="65" aria-label="Zeitlich flexibler Anteil E-Auto"><output>65 % flexibel · 35 % fest</output></span></label>
+              <label class="savings-device-row"><span class="savings-device-name"><input type="checkbox"><b>Wärmepumpe</b></span><input class="savings-kwh" type="number" min="0" max="30000" step="50" value="4000" aria-label="Jahresverbrauch Wärmepumpe in Kilowattstunden"><span class="savings-device-share"><input type="range" min="0" max="100" step="5" value="25" aria-label="Zeitlich flexibler Anteil Wärmepumpe"><output>25 % flexibel · 75 % fest</output></span></label>
+              <label class="savings-device-row"><span class="savings-device-name"><input type="checkbox"><b>Weitere Verbraucher</b></span><input class="savings-kwh" type="number" min="0" max="30000" step="10" value="500" aria-label="Jahresverbrauch weiterer Verbraucher in Kilowattstunden"><span class="savings-device-share"><input type="range" min="0" max="100" step="5" value="50" aria-label="Zeitlich flexibler Anteil weiterer Verbraucher"><output>50 % flexibel · 50 % fest</output></span></label>
             </div>
           </fieldset>
 
           <fieldset class="savings-battery" id="speicher-rechner">
-            <legend>4. Batteriespeicher berücksichtigen</legend>
+            <legend>3. Batteriespeicher berücksichtigen</legend>
             <label class="savings-battery-toggle"><input type="checkbox" name="batteryEnabled" checked><span><strong>Batteriespeicher einrechnen</strong><small>Günstig geladene Energie später anstelle von teurem Netzstrom nutzen</small></span></label>
             <div class="savings-battery-inputs">
               <label><span>Nutzbare Kapazität</span><span class="savings-input-unit"><input type="number" name="batteryCapacity" min="0" max="200" step="0.5" value="10" inputmode="decimal"><b>kWh</b></span></label>
               <label><span>Vollzyklen pro Jahr</span><span class="savings-input-unit"><input type="number" name="batteryCycles" min="0" max="365" step="1" value="120" inputmode="numeric"><b>Zyklen</b></span></label>
               <label><span>Gesamtwirkungsgrad</span><span class="savings-input-unit"><input type="number" name="batteryEfficiency" min="50" max="100" step="1" value="90" inputmode="decimal"><b>%</b></span></label>
             </div>
-            <p class="savings-field-help">Der Rechner bewertet die abgegebene Speicherenergie zum normalen Arbeitspreis und die dafür benötigte Ladeenergie zum günstigen Preis. Mögliche Überschneidungen mit bereits verschobenen Verbrauchern werden nicht automatisch erkannt.</p>
+            <label class="savings-grid-charge"><input type="checkbox" name="batteryGridCharge"><span><strong>Netzladen in günstigen Tarifzeiten erlauben</strong><small>Zum Beispiel im Winter, wenn wenig PV-Energie vorhanden ist. Dafür muss ein dynamischer Tarif oder ein festes günstiges Zeitfenster aktiviert sein.</small></span></label>
+            <p class="savings-field-help">Die Vollzyklen sollten bereits berücksichtigen, wie oft PV- oder günstige Tarifenergie realistisch verfügbar ist. Der Rechner bewertet die abgegebene Speicherenergie zum normalen Arbeitspreis und die benötigte Ladeenergie einschließlich Speicherverlusten zum günstigsten aktivierten Ladepreis. Mögliche Überschneidungen mit bereits flexiblen Verbrauchern werden nicht automatisch erkannt.</p>
           </fieldset>
 
           <button class="savings-reset" type="reset">Beispielwerte wiederherstellen</button>
@@ -227,10 +235,10 @@
           </div>
           <dl class="savings-result-facts">
             <div><dt>Verglichene Energiemenge</dt><dd data-total-kwh>0 kWh</dd></div>
-            <div><dt>Technisch verschiebbar</dt><dd data-flex-kwh>0 kWh</dd></div>
-            <div><dt>Im Modell verschoben</dt><dd data-shifted-kwh>0 kWh</dd></div>
+            <div><dt>Zeitlich flexibel</dt><dd data-flex-kwh>0 kWh</dd></div>
+            <div><dt>In günstige Zeiten gelegt</dt><dd data-shifted-kwh>0 kWh</dd></div>
             <div><dt>Aus Speicher bereitgestellt</dt><dd data-battery-kwh>0 kWh</dd></div>
-            <div><dt>Preisvorteil je verschobener kWh</dt><dd data-price-gap>0 ct</dd></div>
+            <div><dt>Ø Preisvorteil je flexible kWh</dt><dd data-price-gap>0 ct</dd></div>
           </dl>
           <div class="savings-formula">
             <span>So wird gerechnet</span>
@@ -247,7 +255,7 @@
       <div>
         <p class="eyebrow">Bildlich erklärt</p>
         <h2 id="savings-day-title">Lasten dorthin legen, wo Energie günstiger ist.</h2>
-        <p data-chart-explanation>Im PV-Modell werden verschiebbare Verbraucher bevorzugt in die hellen Stunden gelegt. Der Tagesverlauf ist eine schematische Darstellung und keine Erzeugungsprognose.</p>
+        <p data-chart-explanation>Die markierten Bereiche zeigen die gemeinsam ausgewählten PV- und Tarifzeiten. Der Tagesverlauf ist eine schematische Darstellung und keine Preis- oder Erzeugungsprognose.</p>
         <div class="savings-chart-legend"><span><i></i>ohne Steuerung</span><span><i></i>mit eHive-Planung</span><span><i></i>günstiger Bereich</span></div>
       </div>
       <div class="savings-day-chart" data-day-chart role="img" aria-label="Schematischer Tagesverlauf vor und nach dem Verschieben von Stromverbrauch"></div>
@@ -286,6 +294,6 @@
 <div data-include="footer"></div>
 <script src="config.js"></script>
 <script src="script.js?v=20261110-knx-release"></script>
-<script src="stromkosten-rechner.js?v=20261110-battery"></script>
+<script src="stromkosten-rechner.js?v=20261110-combined"></script>
 </body>
 </html>

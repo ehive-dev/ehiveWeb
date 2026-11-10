@@ -5,28 +5,10 @@
   const euro = new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
   const number = new Intl.NumberFormat("de-DE", { maximumFractionDigits: 0 });
   const decimal = new Intl.NumberFormat("de-DE", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
-  const modelCopy = {
-    pv: {
-      label: "Einspeisevergütung",
-      help: "Bei eigenem PV-Strom werden als wirtschaftliche Kosten die entgangene Einspeisevergütung angesetzt.",
-      chart: "Im PV-Modell werden verschiebbare Verbraucher bevorzugt in die hellen Stunden gelegt. Der Tagesverlauf ist eine schematische Darstellung und keine Erzeugungsprognose.",
-      defaultPrice: 8,
-      window: [9, 16]
-    },
-    dynamic: {
-      label: "Ø günstiger Endpreis",
-      help: "Trage einen realistischen durchschnittlichen Endpreis der günstigen Viertelstunden ein – einschließlich aller verbrauchsabhängigen Preisbestandteile.",
-      chart: "Bei einem dynamischen Tarif liegen günstige Viertelstunden jeden Tag anders. Die Grafik zeigt deshalb nur beispielhaft, wie Lasten in ein preiswertes Zeitfenster wandern können.",
-      defaultPrice: 24,
-      window: [1, 6]
-    },
-    window: {
-      label: "Preis im Zeitfenster",
-      help: "Nutze den vertraglichen Endpreis des günstigen Zeitfensters. Feste Grundpreise und einmalige Boni bleiben unberücksichtigt.",
-      chart: "Im Zeitfenster-Modell werden geeignete Lasten in die vertraglich günstigen Stunden gelegt. Die dargestellten Stunden sind ein Beispiel; maßgeblich ist dein Vertrag.",
-      defaultPrice: 22,
-      window: [0, 5]
-    }
+  const strategyConfig = {
+    pv: { enabled: "strategyPv", price: "pricePv", share: "sharePv", label: "PV", window: [9, 16] },
+    dynamic: { enabled: "strategyDynamic", price: "priceDynamic", share: "shareDynamic", label: "Dynamisch", window: [1, 6] },
+    window: { enabled: "strategyWindow", price: "priceWindow", share: "shareWindow", label: "Zeitfenster", window: [0, 5] }
   };
 
   const get = selector => document.querySelector(selector);
@@ -40,9 +22,7 @@
     battery: get("[data-battery-kwh]"),
     gap: get("[data-price-gap]"),
     formula: get("[data-formula]"),
-    reach: get("[data-reach-output]"),
-    targetLabel: get("[data-target-price-label]"),
-    help: get("[data-price-help]"),
+    strategyStatus: get("[data-strategy-status]"),
     chartText: get("[data-chart-explanation]"),
     chart: get("[data-day-chart]")
   };
@@ -52,28 +32,26 @@
     return Number.isFinite(parsed) ? parsed : 0;
   }
 
-  function renderChart(model, reach) {
-    const copy = modelCopy[model];
+  function renderChart(strategies, coverage) {
     const before = [22,18,16,15,16,22,42,72,66,48,40,36,34,32,34,40,52,78,92,82,62,48,38,28];
     const after = before.slice();
-    const movable = Math.round(23 * (reach / 100));
+    const movable = Math.round(23 * (coverage / 100));
     [7, 8, 17, 18, 19].forEach(hour => { after[hour] = Math.max(12, after[hour] - movable); });
-    for (let hour = copy.window[0]; hour <= copy.window[1]; hour += 1) after[hour] = Math.min(96, after[hour] + Math.round(movable * .72));
+    strategies.forEach(strategy => {
+      for (let hour = strategy.window[0]; hour <= strategy.window[1]; hour += 1) after[hour] = Math.min(96, after[hour] + Math.round(movable * .38));
+    });
     output.chart.replaceChildren();
     before.forEach((height, hour) => {
       const column = document.createElement("span");
       column.className = "savings-chart-column";
-      if (hour >= copy.window[0] && hour <= copy.window[1]) column.classList.add("is-cheap");
+      if (strategies.some(strategy => hour >= strategy.window[0] && hour <= strategy.window[1])) column.classList.add("is-cheap");
       column.innerHTML = `<i class="before" style="--bar:${height}%"></i><i class="after" style="--bar:${after[hour]}%"></i><small>${hour % 3 === 0 ? String(hour).padStart(2, "0") : ""}</small>`;
       output.chart.appendChild(column);
     });
   }
 
   function calculate() {
-    const model = form.elements.model.value;
     const basePrice = Math.max(0, value(form.elements.basePrice));
-    const targetPrice = value(form.elements.targetPrice);
-    const reach = Math.max(0, Math.min(100, value(form.elements.reach)));
     let totalKwh = 0;
     let flexibleKwh = 0;
 
@@ -82,29 +60,63 @@
       const kwh = row.querySelector(".savings-kwh");
       const share = row.querySelector('.savings-device-share input[type="range"]');
       const shareOutput = row.querySelector(".savings-device-share output");
-      shareOutput.textContent = `${number.format(value(share))} %`;
+      const flexibleShare = Math.max(0, Math.min(100, value(share)));
+      shareOutput.textContent = `${number.format(flexibleShare)} % flexibel · ${number.format(100 - flexibleShare)} % fest`;
       row.classList.toggle("is-disabled", !enabled.checked);
       if (!enabled.checked) return;
       const annual = Math.max(0, value(kwh));
       totalKwh += annual;
-      flexibleKwh += annual * Math.max(0, Math.min(100, value(share))) / 100;
+      flexibleKwh += annual * flexibleShare / 100;
     });
 
-    const shiftedKwh = flexibleKwh * reach / 100;
-    const priceGap = Math.max(0, basePrice - targetPrice);
-    const loadSaving = shiftedKwh * priceGap / 100;
+    const strategies = Object.entries(strategyConfig).map(([key, config]) => {
+      const enabled = Boolean(form.elements[config.enabled]?.checked);
+      const price = value(form.elements[config.price]);
+      const share = Math.max(0, Math.min(100, value(form.elements[config.share])));
+      const card = form.querySelector(`[data-strategy-card="${key}"]`);
+      card?.classList.toggle("is-disabled", !enabled);
+      const shareOutput = form.querySelector(`[data-strategy-output="${key}"]`);
+      if (shareOutput) shareOutput.textContent = `${number.format(share)} %`;
+      return { key, ...config, enabled, price, share, allocated: 0 };
+    });
+    const activeStrategies = strategies.filter(strategy => strategy.enabled).sort((a, b) => a.price - b.price);
+    let remainingFlexibleKwh = flexibleKwh;
+    activeStrategies.forEach(strategy => {
+      const requestedKwh = flexibleKwh * strategy.share / 100;
+      strategy.allocated = Math.min(requestedKwh, remainingFlexibleKwh);
+      remainingFlexibleKwh -= strategy.allocated;
+    });
+    const shiftedKwh = activeStrategies.reduce((sum, strategy) => sum + strategy.allocated, 0);
+    const loadSaving = activeStrategies.reduce((sum, strategy) => sum + strategy.allocated * Math.max(0, basePrice - strategy.price) / 100, 0);
+    const averageTargetPrice = shiftedKwh > 0
+      ? activeStrategies.reduce((sum, strategy) => sum + strategy.allocated * strategy.price, 0) / shiftedKwh
+      : basePrice;
+    const priceGap = Math.max(0, basePrice - averageTargetPrice);
+    const requestedCoverage = activeStrategies.reduce((sum, strategy) => sum + strategy.share, 0);
+    const usedCoverage = flexibleKwh > 0 ? shiftedKwh / flexibleKwh * 100 : 0;
+    output.strategyStatus.textContent = activeStrategies.length
+      ? `${number.format(usedCoverage)} % der zeitlich flexiblen Energie werden berücksichtigt.${requestedCoverage > 100 ? " Anteile über 100 % werden automatisch begrenzt." : ""}`
+      : "Aktiviere mindestens PV-Tageslicht, einen dynamischen Tarif oder ein günstiges Zeitfenster.";
+
     const batteryEnabled = Boolean(form.elements.batteryEnabled?.checked);
     const batteryCapacity = Math.max(0, value(form.elements.batteryCapacity));
     const batteryCycles = Math.max(0, value(form.elements.batteryCycles));
     const batteryEfficiency = Math.max(50, Math.min(100, value(form.elements.batteryEfficiency))) / 100;
-    const batteryDischargeKwh = batteryEnabled ? batteryCapacity * batteryCycles * reach / 100 : 0;
+    const gridStrategies = activeStrategies.filter(strategy => strategy.key === "dynamic" || strategy.key === "window");
+    const gridChargeAvailable = gridStrategies.length > 0;
+    const gridChargeInput = form.elements.batteryGridCharge;
+    if (!gridChargeAvailable) gridChargeInput.checked = false;
+    gridChargeInput.disabled = !gridChargeAvailable;
+    const batteryGridCharge = gridChargeAvailable && gridChargeInput.checked;
+    const batteryChargeSources = activeStrategies.filter(strategy => strategy.key === "pv" || batteryGridCharge);
+    const batteryChargePrice = batteryChargeSources.length ? Math.min(...batteryChargeSources.map(strategy => strategy.price)) : basePrice;
+    const batteryCanCharge = batteryChargeSources.length > 0;
+    const batteryDischargeKwh = batteryEnabled && batteryCanCharge ? batteryCapacity * batteryCycles : 0;
     const batteryChargeKwh = batteryDischargeKwh / batteryEfficiency;
-    const batterySaving = Math.max(0, (batteryDischargeKwh * basePrice - batteryChargeKwh * targetPrice) / 100);
+    const batterySaving = Math.max(0, (batteryDischargeKwh * basePrice - batteryChargeKwh * batteryChargePrice) / 100);
     const saving = loadSaving + batterySaving;
     const before = (totalKwh + batteryDischargeKwh) * basePrice / 100;
     const after = Math.max(0, before - saving);
-    const copy = modelCopy[model];
-
     output.saving.textContent = euro.format(saving);
     output.before.textContent = euro.format(before);
     output.after.textContent = euro.format(after);
@@ -113,14 +125,16 @@
     output.shifted.textContent = `${number.format(shiftedKwh)} kWh`;
     output.battery.textContent = `${number.format(batteryDischargeKwh)} kWh`;
     output.gap.textContent = `${decimal.format(priceGap)} ct`;
-    output.formula.textContent = batteryEnabled
-      ? `Verbrauch: ${number.format(shiftedKwh)} kWh × ${decimal.format(priceGap)} ct ÷ 100 + Speicher: (${number.format(batteryDischargeKwh)} kWh × ${decimal.format(basePrice)} ct − ${number.format(batteryChargeKwh)} kWh × ${decimal.format(targetPrice)} ct) ÷ 100 = ${euro.format(saving)}`
-      : `${number.format(shiftedKwh)} kWh × ${decimal.format(priceGap)} ct/kWh ÷ 100 = ${euro.format(saving)}`;
-    output.reach.textContent = `${number.format(reach)} %`;
-    output.targetLabel.textContent = copy.label;
-    output.help.textContent = copy.help;
-    output.chartText.textContent = copy.chart;
-    renderChart(model, reach);
+    const loadParts = activeStrategies.filter(strategy => strategy.allocated > 0).map(strategy => `${strategy.label}: ${number.format(strategy.allocated)} kWh × ${decimal.format(Math.max(0, basePrice - strategy.price))} ct`);
+    const storagePart = batteryDischargeKwh > 0 ? `Speicher: (${number.format(batteryDischargeKwh)} kWh × ${decimal.format(basePrice)} ct − ${number.format(batteryChargeKwh)} kWh × ${decimal.format(batteryChargePrice)} ct)` : "";
+    const formulaParts = [...loadParts, storagePart].filter(Boolean);
+    output.formula.textContent = formulaParts.length
+      ? `${formulaParts.join(" + ")} ÷ 100 = ${euro.format(saving)}`
+      : "Aktiviere mindestens eine Energiequelle oder Tarifzeit für die Berechnung.";
+    output.chartText.textContent = activeStrategies.length > 1
+      ? "Die markierten Bereiche verbinden die ausgewählten PV- und Tarifzeiten. Die günstigste verfügbare Möglichkeit wird zuerst genutzt; Überschneidungen werden nicht doppelt gezählt."
+      : "Der markierte Bereich zeigt die ausgewählte PV- oder Tarifzeit. Der Tagesverlauf ist eine schematische Darstellung und keine Preis- oder Erzeugungsprognose.";
+    renderChart(activeStrategies, usedCoverage);
   }
 
   const manualButtons = Array.from(document.querySelectorAll("[data-manual-mode]"));
@@ -220,12 +234,7 @@
   manualPower?.addEventListener("input", renderManualDemo);
 
   form.addEventListener("input", calculate);
-  form.addEventListener("change", event => {
-    if (event.target instanceof HTMLInputElement && event.target.name === "model") {
-      form.elements.targetPrice.value = modelCopy[event.target.value].defaultPrice;
-    }
-    calculate();
-  });
+  form.addEventListener("change", calculate);
   form.addEventListener("reset", () => window.setTimeout(calculate, 0));
   renderManualDemo();
   calculate();
