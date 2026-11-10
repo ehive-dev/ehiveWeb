@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Stromkosten-Rechner: Verbrauch verschieben | eHive One</title>
+  <meta name="description" content="Berechne transparent, wie viel du durch PV-Eigenverbrauch, dynamische Strompreise oder günstige Zeitfenster sparen könntest. Mit eigenen Verbrauchs- und Preisangaben.">
+  <link rel="canonical" href="https://www.ehiv3.de/stromkosten-rechner.html">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="style.css">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="eHive">
+  <meta property="og:title" content="Stromkosten-Rechner | eHive One">
+  <meta property="og:description" content="Eigene Verbräuche eingeben, Lasten verschieben und ein mögliches Einsparpotenzial nachvollziehbar berechnen.">
+  <meta property="og:url" content="https://www.ehiv3.de/stromkosten-rechner.html">
+  <meta property="og:image" content="https://www.ehiv3.de/products/ehive-one.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Stromkosten-Rechner | eHive One">
+  <meta name="twitter:description" content="PV, dynamischer Tarif oder günstiges Zeitfenster: mögliche Ersparnis mit eigenen Werten berechnen.">
+  <meta name="twitter:image" content="https://www.ehiv3.de/products/ehive-one.png">
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"WebApplication",
+    "@id":"https://www.ehiv3.de/stromkosten-rechner.html#calculator",
+    "url":"https://www.ehiv3.de/stromkosten-rechner.html",
+    "name":"eHive Stromkosten-Rechner",
+    "description":"Rechner für mögliche Einsparungen durch zeitlich verschobenen Stromverbrauch.",
+    "applicationCategory":"UtilitiesApplication",
+    "operatingSystem":"Web",
+    "isAccessibleForFree":true,
+    "inLanguage":"de-DE",
+    "publisher":{"@type":"Organization","name":"eHive","url":"https://www.ehiv3.de/"},
+    "dateModified":"2026-11-10"
+  }
+  </script>
+</head>
+<body class="content-page savings-page">
+<div data-include="header"></div>
+
+<main>
+  <section class="savings-hero" aria-labelledby="savings-title">
+    <div class="container savings-hero-grid">
+      <div class="savings-hero-copy">
+        <p class="eyebrow">eHive One · Stromkosten-Rechner</p>
+        <h1 id="savings-title">Was bringt es, deinen Stromverbrauch zu verschieben?</h1>
+        <p class="lead">Waschmaschine in die Sonnenstunden, E-Auto in günstige Viertelstunden oder Wärmepumpe in ein preiswertes Zeitfenster: Berechne mit deinen eigenen Werten, welches Einsparpotenzial darin steckt.</p>
+        <a class="btn primary" href="#rechner">Jetzt berechnen</a>
+      </div>
+
+      <figure class="savings-energy-flow" aria-label="eHive One verbindet Erzeugung, flexible Verbraucher und Stromtarif">
+        <div class="savings-flow-stage" aria-hidden="true">
+          <div class="savings-flow-node savings-flow-node--top">
+            <svg viewBox="0 0 32 32"><circle cx="24" cy="8" r="4"></circle><path d="M24 1v3m0 8v3m-7-7h3m8 0h3M4 16h17l-3 11H1zM3 21h16M9 16 7 27m8-11-2 11"></path></svg>
+            <span><small>Erzeugung</small>PV-Anlage</span>
+          </div>
+          <div class="savings-flow-node savings-flow-node--left">
+            <svg viewBox="0 0 32 32"><rect x="4" y="6" width="24" height="21" rx="2"></rect><circle cx="16" cy="17" r="6"></circle><path d="M8 10h5m10 0h1"></path></svg>
+            <span><small>Verschiebbar</small>Haushalt</span>
+          </div>
+          <div class="savings-flow-node savings-flow-node--right">
+            <svg viewBox="0 0 32 32"><path d="M6 20h20l-2-7a4 4 0 0 0-4-3h-8a4 4 0 0 0-4 3zm2 0v5m16-5v5"></path><circle cx="10" cy="22" r="2"></circle><circle cx="22" cy="22" r="2"></circle></svg>
+            <span><small>Laden</small>E-Auto</span>
+          </div>
+          <div class="savings-flow-node savings-flow-node--bottom">
+            <svg viewBox="0 0 32 32"><path d="M5 24h22M7 24V9h18v15M11 15h10m-10 4h10"></path><path d="M12 9c0-3 2-5 4-5s4 2 4 5"></path></svg>
+            <span><small>Preissignal</small>Stromtarif</span>
+          </div>
+          <span class="savings-flow-line savings-flow-line--top"><i></i><i></i></span>
+          <span class="savings-flow-line savings-flow-line--left"><i></i><i></i></span>
+          <span class="savings-flow-line savings-flow-line--right"><i></i><i></i></span>
+          <span class="savings-flow-line savings-flow-line--bottom"><i></i><i></i></span>
+          <div class="savings-flow-hub">
+            <span>lokal koordinieren</span>
+            <img src="img/ehive-one-v73-top-transparent.webp" width="1024" height="1536" alt="">
+            <strong>eHive One</strong>
+          </div>
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <section class="savings-intro" aria-labelledby="savings-intro-title">
+    <div class="container savings-intro-grid">
+      <div><p class="eyebrow">Deine Werte entscheiden</p><h2 id="savings-intro-title">Keine Tarifwerbung. Eine nachvollziehbare Modellrechnung.</h2></div>
+      <p>Der Rechner verwendet ausschließlich deine Eingaben. Er zeigt, wie sich der Arbeitspreis für den tatsächlich verschobenen Verbrauch verändern könnte. Grundpreis, Hardwarekosten, Steuern außerhalb des eingegebenen Endpreises und mögliche Komfortgrenzen werden nicht hinzugerechnet.</p>
+    </div>
+  </section>
+
+  <section class="savings-calculator" id="rechner" aria-labelledby="calculator-title">
+    <div class="container">
+      <header class="savings-section-heading">
+        <div><p class="eyebrow">Interaktiver Rechner</p><h2 id="calculator-title">Dein Verbrauch. Deine Annahmen.</h2></div>
+        <p>Wähle ein Modell, passe die Preise an und trage für jeden Verbraucher den Jahresverbrauch sowie den realistisch verschiebbaren Anteil ein.</p>
+      </header>
+
+      <div class="savings-calculator-grid">
+        <form class="savings-form" data-savings-form>
+          <fieldset class="savings-models">
+            <legend>1. Vergleichsmodell wählen</legend>
+            <label class="savings-model-option">
+              <input type="radio" name="model" value="pv" checked>
+              <span><strong>PV-Tageslicht</strong><small>Netzbezug durch selbst erzeugten Solarstrom ersetzen</small></span>
+            </label>
+            <label class="savings-model-option">
+              <input type="radio" name="model" value="dynamic">
+              <span><strong>Dynamischer Tarif</strong><small>Verbrauch in günstige Viertelstunden legen</small></span>
+            </label>
+            <label class="savings-model-option">
+              <input type="radio" name="model" value="window">
+              <span><strong>Günstiges Zeitfenster</strong><small>Definierter Preis in bestimmten Stunden</small></span>
+            </label>
+          </fieldset>
+
+          <fieldset class="savings-prices">
+            <legend>2. Preise und erreichbaren Anteil eintragen</legend>
+            <div class="savings-input-grid">
+              <label><span>Normaler Arbeitspreis</span><span class="savings-input-unit"><input type="number" name="basePrice" min="0" max="200" step="0.1" value="35" inputmode="decimal"><b>ct/kWh</b></span></label>
+              <label><span data-target-price-label>Einspeisevergütung</span><span class="savings-input-unit"><input type="number" name="targetPrice" min="-50" max="200" step="0.1" value="8" inputmode="decimal"><b>ct/kWh</b></span></label>
+              <label class="savings-range-label"><span>Davon wirklich erreichbar <output data-reach-output>70&nbsp;%</output></span><input type="range" name="reach" min="0" max="100" step="5" value="70"></label>
+            </div>
+            <p class="savings-field-help" data-price-help>Bei eigenem PV-Strom werden als wirtschaftliche Kosten die entgangene Einspeisevergütung angesetzt.</p>
+          </fieldset>
+
+          <fieldset class="savings-devices">
+            <legend>3. Flexible Verbraucher anpassen</legend>
+            <div class="savings-device-head" aria-hidden="true"><span>Verbraucher</span><span>kWh/Jahr</span><span>verschiebbar</span></div>
+            <div class="savings-device-list">
+              <label class="savings-device-row"><span class="savings-device-name"><input type="checkbox" checked><b>Waschmaschine</b></span><input class="savings-kwh" type="number" min="0" max="30000" step="10" value="160" aria-label="Jahresverbrauch Waschmaschine in Kilowattstunden"><span class="savings-device-share"><input type="range" min="0" max="100" step="5" value="80" aria-label="Verschiebbarer Anteil Waschmaschine"><output>80&nbsp;%</output></span></label>
+              <label class="savings-device-row"><span class="savings-device-name"><input type="checkbox" checked><b>Geschirrspüler</b></span><input class="savings-kwh" type="number" min="0" max="30000" step="10" value="220" aria-label="Jahresverbrauch Geschirrspüler in Kilowattstunden"><span class="savings-device-share"><input type="range" min="0" max="100" step="5" value="75" aria-label="Verschiebbarer Anteil Geschirrspüler"><output>75&nbsp;%</output></span></label>
+              <label class="savings-device-row"><span class="savings-device-name"><input type="checkbox" checked><b>Wäschetrockner</b></span><input class="savings-kwh" type="number" min="0" max="30000" step="10" value="280" aria-label="Jahresverbrauch Wäschetrockner in Kilowattstunden"><span class="savings-device-share"><input type="range" min="0" max="100" step="5" value="70" aria-label="Verschiebbarer Anteil Wäschetrockner"><output>70&nbsp;%</output></span></label>
+              <label class="savings-device-row"><span class="savings-device-name"><input type="checkbox" checked><b>E-Auto</b></span><input class="savings-kwh" type="number" min="0" max="30000" step="50" value="2400" aria-label="Jahresverbrauch E-Auto in Kilowattstunden"><span class="savings-device-share"><input type="range" min="0" max="100" step="5" value="65" aria-label="Verschiebbarer Anteil E-Auto"><output>65&nbsp;%</output></span></label>
+              <label class="savings-device-row"><span class="savings-device-name"><input type="checkbox"><b>Wärmepumpe</b></span><input class="savings-kwh" type="number" min="0" max="30000" step="50" value="4000" aria-label="Jahresverbrauch Wärmepumpe in Kilowattstunden"><span class="savings-device-share"><input type="range" min="0" max="100" step="5" value="25" aria-label="Verschiebbarer Anteil Wärmepumpe"><output>25&nbsp;%</output></span></label>
+              <label class="savings-device-row"><span class="savings-device-name"><input type="checkbox"><b>Weitere Verbraucher</b></span><input class="savings-kwh" type="number" min="0" max="30000" step="10" value="500" aria-label="Jahresverbrauch weiterer Verbraucher in Kilowattstunden"><span class="savings-device-share"><input type="range" min="0" max="100" step="5" value="50" aria-label="Verschiebbarer Anteil weiterer Verbraucher"><output>50&nbsp;%</output></span></label>
+            </div>
+          </fieldset>
+
+          <button class="savings-reset" type="reset">Beispielwerte wiederherstellen</button>
+        </form>
+
+        <aside class="savings-results" aria-labelledby="savings-result-title" aria-live="polite">
+          <p class="eyebrow">Mögliches Ergebnis pro Jahr</p>
+          <h3 id="savings-result-title"><span data-savings-value>0 €</span> weniger Stromkosten</h3>
+          <div class="savings-result-comparison">
+            <div><span>Ohne Verschiebung</span><strong data-cost-before>0 €</strong></div>
+            <div><span>Mit Verschiebung</span><strong data-cost-after>0 €</strong></div>
+          </div>
+          <dl class="savings-result-facts">
+            <div><dt>Ausgewählter Verbrauch</dt><dd data-total-kwh>0 kWh</dd></div>
+            <div><dt>Technisch verschiebbar</dt><dd data-flex-kwh>0 kWh</dd></div>
+            <div><dt>Im Modell verschoben</dt><dd data-shifted-kwh>0 kWh</dd></div>
+            <div><dt>Preisvorteil je verschobener kWh</dt><dd data-price-gap>0 ct</dd></div>
+          </dl>
+          <div class="savings-formula">
+            <span>So wird gerechnet</span>
+            <code data-formula>verschobene kWh × Preisunterschied = Ersparnis</code>
+          </div>
+          <p class="savings-disclaimer">Unverbindliche Modellrechnung, keine Ersparnisgarantie. Tatsächliche Werte hängen unter anderem von Wetter, Verbrauchsprofil, Anlagenleistung, Tarif, Messkonzept, Geräteverfügbarkeit und Steuerbarkeit ab.</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <section class="savings-day" aria-labelledby="savings-day-title">
+    <div class="container savings-day-grid">
+      <div>
+        <p class="eyebrow">Bildlich erklärt</p>
+        <h2 id="savings-day-title">Lasten dorthin legen, wo Energie günstiger ist.</h2>
+        <p data-chart-explanation>Im PV-Modell werden verschiebbare Verbraucher bevorzugt in die hellen Stunden gelegt. Der Tagesverlauf ist eine schematische Darstellung und keine Erzeugungsprognose.</p>
+        <div class="savings-chart-legend"><span><i></i>ohne Steuerung</span><span><i></i>mit eHive-Planung</span><span><i></i>günstiger Bereich</span></div>
+      </div>
+      <div class="savings-day-chart" data-day-chart role="img" aria-label="Schematischer Tagesverlauf vor und nach dem Verschieben von Stromverbrauch"></div>
+    </div>
+  </section>
+
+  <section class="savings-model-info" aria-labelledby="model-info-title">
+    <div class="container">
+      <header class="savings-section-heading">
+        <div><p class="eyebrow">Drei Wege</p><h2 id="model-info-title">Was wird hier verglichen?</h2></div>
+        <p>Die Modelle beschreiben unterschiedliche Preissignale. Welches davon zu deinem Anschluss passt, hängt von Vertrag, Zähler und steuerbaren Geräten ab.</p>
+      </header>
+      <div class="savings-model-info-grid">
+        <article><span>01</span><h3>PV-Tageslicht</h3><p>Ein Verbraucher startet dann, wenn die eigene PV-Anlage ausreichend Leistung bereitstellt. Gespart wird die Differenz zwischen vermiedenem Netzbezug und entgangener Einspeisevergütung.</p></article>
+        <article><span>02</span><h3>Dynamischer Tarif</h3><p>Der Arbeitspreis folgt dem Strommarkt. Mit passendem Messsystem kann zeitlich genau abgerechnet werden. eHive One kann verfügbare Preissignale für die Planung steuerbarer Verbraucher berücksichtigen.</p></article>
+        <article><span>03</span><h3>Günstiges Zeitfenster</h3><p>In vorgegebenen Stunden gilt ein anderer Preis oder Bonus. Entscheidend ist, wie viel Verbrauch tatsächlich in dieses Zeitfenster passt, ohne Komfort oder technische Grenzen zu verletzen.</p></article>
+      </div>
+      <p class="savings-source-note">Tarifbedingungen ändern sich. Informiere dich direkt beim Anbieter, zum Beispiel über die offiziellen Erläuterungen von <a href="https://support.tibber.com/hc/de/articles/48143572102033-So-funktionieren-dynamische-Strompreise" target="_blank" rel="noopener noreferrer">Tibber zu dynamischen Strompreisen</a>, <a href="https://octopusenergy.de/dynamic-octopus" target="_blank" rel="noopener noreferrer">Octopus Energy zu dynamicOctopus</a> und <a href="https://octopusenergy.de/octopus-go" target="_blank" rel="noopener noreferrer">Octopus Go zum festen günstigen Nachtzeitfenster</a>. eHive ist mit diesen Anbietern nicht verbunden.</p>
+    </div>
+  </section>
+
+  <section class="savings-how" aria-labelledby="savings-how-title">
+    <div class="container savings-how-grid">
+      <div><p class="eyebrow">Vom Wert zur Steuerung</p><h2 id="savings-how-title">Was eHive One dabei macht.</h2></div>
+      <ol>
+        <li><span>01</span><div><h3>Daten zusammenführen</h3><p>eHive One verbindet verfügbare Messwerte, Erzeugung, Speicher, Verbraucher und Preissignale über passende Anwendungen und Schnittstellen.</p></div></li>
+        <li><span>02</span><div><h3>Spielraum erkennen</h3><p>Ladeziel, Abfahrtszeit, Wärmebedarf oder Gerätevorgabe bestimmen, welcher Verbrauch verschoben werden darf.</p></div></li>
+        <li><span>03</span><div><h3>Geeigneten Zeitpunkt nutzen</h3><p>Die jeweilige Anwendung plant den Betrieb innerhalb der technischen und von dir festgelegten Grenzen.</p></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section product-closing" id="abschluss"><div class="cta-sun" aria-hidden="true"><svg viewBox="0 0 240 240" focusable="false"><defs><radialGradient id="savings-sun-fill" cx="38%" cy="34%"><stop offset="0" stop-color="#fff7a8"/><stop offset=".62" stop-color="#ffd84d"/><stop offset="1" stop-color="#f6b51f"/></radialGradient></defs><g class="cta-sun-rays"><path d="M120 8c8 13 8 26 0 39M120 193c8 13 8 26 0 39M8 120c13-8 26-8 39 0M193 120c13-8 26-8 39 0M40 40c15 4 24 13 27 27M173 173c15 4 24 13 27 27M200 40c-15 4-24 13-27 27M67 173c-15 4-24 13-27 27"/></g><circle class="cta-sun-disc" cx="120" cy="120" r="61" fill="url(#savings-sun-fill)"/><g class="cta-sun-face"><path class="cta-sun-eye" d="M87 110q9-10 18 0"/><path class="cta-sun-eye" d="M135 110q9-10 18 0"/><path class="cta-sun-smile" d="M92 135q28 27 56 0"/><circle class="cta-sun-cheek" cx="85" cy="131" r="7"/><circle class="cta-sun-cheek" cx="155" cy="131" r="7"/></g></svg></div><div class="container cta-panel"><div class="cta-panel-copy"><span class="cta-label">Deine Energie. Deine Kontrolle.</span><h2 class="cta-kicker" aria-label="Bist du bereit?"><span aria-hidden="true"><i style="--i:0">B</i><i style="--i:1">I</i><i style="--i:2">S</i><i style="--i:3">T</i><i class="cta-space" style="--i:4">&nbsp;</i><i style="--i:5">D</i><i style="--i:6">U</i><br><i style="--i:7">B</i><i style="--i:8">E</i><i style="--i:9">R</i><i style="--i:10">E</i><i style="--i:11">I</i><i style="--i:12">T</i><i style="--i:13">?</i></span></h2><p class="cta-question">Für dein Energiemanagement.</p><p class="cta-text">Verbinde Erzeugung, flexible Verbraucher und Stromtarif in einem lokalen System.</p><a class="cta-shop-link" href="shop.html">eHive One</a></div></div></section>
+</main>
+
+<div data-include="footer"></div>
+<script src="config.js"></script>
+<script src="script.js?v=20261110-knx-release"></script>
+<script src="stromkosten-rechner.js?v=20261110"></script>
+</body>
+</html>
