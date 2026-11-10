@@ -527,7 +527,193 @@
     const parts = [];
     if (subject) parts.push("subject=" + encodeURIComponent(subject));
     if (body) parts.push("body=" + encodeURIComponent(body));
-    return "mailto:" + encodeURIComponent(email) + (parts.length ? "?" + parts.join("&") : "");
+    return "mailto:" + String(email).trim() + (parts.length ? "?" + parts.join("&") : "");
+  }
+
+  function inquiryTemplate(type) {
+    const templates = {
+      general: `Guten Tag eHive-Team,
+
+Kontakt
+Name:
+Firma (optional):
+Telefon (optional):
+PLZ / Ort:
+
+Anfrage
+Thema:
+Gewünschtes Produkt / Anzahl:
+Vorhandene Geräte (Hersteller und vollständiges Modell):
+Kurze Beschreibung:
+Gewünschter Zeitrahmen:
+
+Viele Grüße`,
+      support: `Guten Tag eHive-Support,
+
+Kontakt
+Name:
+Firma (optional):
+Telefon (optional):
+
+System
+Seriennummer des eHive One:
+SmartHub-Version:
+Betroffene App und Version:
+Angeschlossene Geräte (Hersteller / Modell / Firmware):
+
+Fehlerbild
+Was passiert genau?
+Seit wann tritt der Fehler auf?
+Welche Schritte wurden bereits geprüft?
+Zeitpunkt des letzten Auftretens:
+
+Bitte keine Passwörter oder Zugangsschlüssel per E-Mail senden.
+
+Viele Grüße`,
+      compatibility: `Guten Tag eHive-Team,
+
+Kontakt
+Name:
+Firma (optional):
+Telefon (optional):
+
+Anlage
+Wallbox (Hersteller / Modell / Firmware):
+Wechselrichter:
+Batteriespeicher:
+Wärmepumpe / Heizstab:
+Energiezähler:
+Fahrzeug:
+Weitere Geräte:
+
+Technik
+Vorgesehene Schnittstellen (LAN, Modbus, EEBUS, SG Ready usw.):
+Gewünschte Mess- oder Steuerfunktion:
+Ist eHive One bereits vorhanden? Ja / Nein
+Kurze Beschreibung der Anlage:
+
+Viele Grüße`,
+      regulation: `Guten Tag eHive-Team,
+
+Kontakt
+Name:
+Firma (optional):
+Telefon (optional):
+Anlagenstandort (PLZ / Ort):
+
+Zuständige Stellen
+Netzbetreiber:
+Messstellenbetreiber:
+Elektrofachbetrieb bereits beauftragt? Ja / Nein
+
+Vorhaben
+Thema: § 14a EnWG / § 9 EEG / EEBUS / Steuerkontakt / Sonstiges
+Betroffene Geräte (Hersteller / Modell / Firmware):
+Vorhandene oder geforderte Schnittstelle:
+Veröffentlichte Vorgabe des Netz- oder Messstellenbetreibers:
+Konkrete technische Frage:
+
+Viele Grüße`,
+      funding: `Guten Tag eHive-Team,
+
+Kontakt
+Name:
+Firma (optional):
+Telefon (optional):
+PLZ / Ort:
+
+Vorhaben
+Privates Wohngebäude / Unternehmen:
+Gebäude oder betrieblicher Prozess:
+Geplante Maßnahme:
+Vorgesehene Geräte und Schnittstellen:
+Projektstand: Planung / Angebot / Antrag / Umsetzung
+Gewünschte technische Unterlagen:
+Geplanter Zeitraum:
+
+Hinweis: Die verbindliche Förderprüfung erfolgt durch die zuständige Förderstelle beziehungsweise eine qualifizierte Fachperson.
+
+Viele Grüße`,
+      b2b: `Guten Tag eHive-Team,
+
+Unternehmen
+Firma:
+Ansprechpartner:
+E-Mail:
+Telefon:
+Anschrift / Land:
+
+Projekt
+Geplante Stückzahl:
+Gewünschte Variante:
+Typische Anlagenkomponenten:
+Einsatzgebiet / Projektbeschreibung:
+Gewünschter Lieferzeitraum:
+Benötigte technische oder kaufmännische Unterlagen:
+
+Viele Grüße`,
+      knx: `Guten Tag eHive-Team,
+
+Kontakt
+Name:
+Firma (optional):
+Telefon (optional):
+
+KNX-Betatest
+KNX/IP-Gateway (Hersteller / Modell):
+eHive-One- und SmartHub-Version:
+evcc-Version:
+Gewünschte KNX-Gruppenadressen / Datenpunkte:
+Nur Visualisierung oder auch Schreiben in Richtung evcc?
+Kurze Beschreibung der Testanlage:
+
+Viele Grüße`,
+      chargego: `Guten Tag eHive-Team,
+
+Kontakt
+Name:
+Firma (optional):
+Telefon (optional):
+
+charge&go Vorabtest
+Standorttyp:
+Anzahl Ladepunkte:
+Wallboxen (Hersteller / Modell):
+Zähler / Backend / vorhandene Abrechnung:
+Öffentlich oder halböffentlich geplant:
+Gewünschter Einsatz und Zeitrahmen:
+
+Viele Grüße`,
+      electrician: `Guten Tag eHive-Team,
+
+Unternehmen
+Firma:
+Ansprechpartner:
+Telefon:
+Installateurverzeichnis / Netzgebiet (optional):
+
+Projekt
+Typische Anlagenkomponenten:
+Anzahl geplanter eHive One:
+Anforderungen an Fernzugriff und Service:
+Gewünschte Funktionen:
+Projektbeschreibung und Zeitrahmen:
+
+Viele Grüße`
+    };
+    return templates[type] || templates.general;
+  }
+
+  function wireMailTemplates() {
+    document.querySelectorAll("a[data-mail-template]").forEach(link => {
+      const rawHref = link.getAttribute("href") || "";
+      const match = rawHref.match(/^mailto:([^?]+)(?:\?(.*))?$/i);
+      if (!match) return;
+      const params = new URLSearchParams(match[2] || "");
+      const email = decodeURIComponent(match[1]);
+      const subject = params.get("subject") || "[eHive] Anfrage";
+      link.href = buildMailto(email, subject, inquiryTemplate(link.dataset.mailTemplate));
+    });
   }
 
   function newsItems() {
@@ -1886,6 +2072,7 @@
         fixPaypalCartQuantityLabel();
         wireFooter();
         wireContactLinks();
+        wireMailTemplates();
         wireBrand();
         initCommunityStats();
         initScrollReveal();
