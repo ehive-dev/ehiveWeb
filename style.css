@@ -5013,7 +5013,7 @@ body.lightbox-open{
 }
 
 .app-entry-icon--node-red img{
-  width:62px;
+  width:72px;
   height:72px;
 }
 
@@ -5296,7 +5296,7 @@ body.lightbox-open{
   .app-entry-icon--app img{width:62px;height:62px}
   .app-entry-icon--evcc img{width:68px;height:68px}
   .app-entry-icon--hivescope img{width:64px;height:64px}
-  .app-entry-icon--node-red img{width:54px;height:62px}
+  .app-entry-icon--node-red img{width:62px;height:62px}
   .app-entry-icon--iobroker img{width:60px;height:60px}
   .app-entry-icon--wide{width:104px}
   .app-entry-icon--ehive img{width:62px;height:62px}
