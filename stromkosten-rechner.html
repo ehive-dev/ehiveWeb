@@ -261,7 +261,7 @@
     </div>
   </section>
 
-  <section class="savings-day" aria-labelledby="savings-day-title">
+  <section class="savings-day" id="tagesplan" aria-labelledby="savings-day-title">
     <div class="container savings-day-grid">
       <div>
         <p class="eyebrow">Bildlich erklärt</p>
@@ -270,6 +270,22 @@
         <div class="savings-chart-legend"><span><i></i>ohne Steuerung</span><span><i></i>mit eHive-Planung</span><span><i></i>günstiger Bereich</span></div>
       </div>
       <div class="savings-day-chart" data-day-chart role="img" aria-label="Schematischer Tagesverlauf vor und nach dem Verschieben von Stromverbrauch"></div>
+    </div>
+    <div class="container savings-schedule">
+      <header class="savings-schedule-heading">
+        <div><p class="eyebrow">Deine Einstellungen im Tagesverlauf</p><h3>Wann wird Energie geladen oder genutzt?</h3></div>
+        <p>Der Tagesplan reagiert direkt auf deine Auswahl im Rechner. Er zeigt typische Zeitfenster, keine verbindliche Schaltprognose.</p>
+      </header>
+      <div class="savings-schedule-legend" aria-hidden="true">
+        <span><i class="is-pv"></i>PV verfügbar</span>
+        <span><i class="is-tariff"></i>günstiger Tarif</span>
+        <span><i class="is-battery-pv"></i>Speicher aus PV</span>
+        <span><i class="is-battery-grid"></i>Speicher aus Netz</span>
+        <span><i class="is-load"></i>Verbrauch geplant</span>
+      </div>
+      <div class="savings-schedule-scale" aria-hidden="true"><span></span><b>00 Uhr</b><b>06 Uhr</b><b>12 Uhr</b><b>18 Uhr</b><b>24 Uhr</b></div>
+      <div class="savings-schedule-timeline" data-energy-schedule role="img" aria-label="Noch keine Tagesplanung berechnet"></div>
+      <p class="savings-schedule-summary" data-schedule-summary></p>
     </div>
   </section>
 
@@ -305,6 +321,6 @@
 <div data-include="footer"></div>
 <script src="config.js"></script>
 <script src="script.js?v=20261110-knx-release"></script>
-<script src="stromkosten-rechner.js?v=20261110-battery-step-one"></script>
+<script src="stromkosten-rechner.js?v=20261110-energy-trend"></script>
 </body>
 </html>
