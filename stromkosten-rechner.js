@@ -26,7 +26,9 @@
     chartText: get("[data-chart-explanation]"),
     chart: get("[data-day-chart]"),
     schedule: get("[data-energy-schedule]"),
-    scheduleSummary: get("[data-schedule-summary]")
+    scheduleSummary: get("[data-schedule-summary]"),
+    inlineTrend: get("[data-inline-trend]"),
+    inlineTrendSummary: get("[data-inline-trend-summary]")
   };
 
   function value(input) {
@@ -93,7 +95,81 @@
     return ranges.map(([from, to]) => `${String(from).padStart(2, "0")}:00–${String(to).padStart(2, "0")}:00 Uhr`).join(" und ");
   }
 
-  function renderSchedule({ activeStrategies, gridStrategies, batteryEnabled, batteryGridCharge, batteryChargeKwh, batteryDischargeKwh, car, householdFlexibleKwh }) {
+  function renderInlineTrend({ activeStrategies, basePrice, batteryPvHours, batteryGridHours, carHours, householdHours }) {
+    if (!output.inlineTrend || !output.inlineTrendSummary) return;
+    const svgNs = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(svgNs, "svg");
+    svg.setAttribute("viewBox", "0 0 720 180");
+    svg.setAttribute("aria-hidden", "true");
+    const prices = Array.from({ length: 24 }, () => basePrice);
+    const preferredHours = new Set();
+    activeStrategies.forEach(strategy => {
+      hoursForStrategy(strategy).forEach(hour => {
+        prices[hour] = Math.min(prices[hour], strategy.price);
+        preferredHours.add(hour);
+      });
+    });
+    const minPrice = Math.min(...prices);
+    const maxPrice = Math.max(...prices);
+    const priceRange = Math.max(1, maxPrice - minPrice);
+    const hourWidth = 720 / 24;
+
+    preferredHours.forEach(hour => {
+      const area = document.createElementNS(svgNs, "rect");
+      area.setAttribute("x", String(hour * hourWidth));
+      area.setAttribute("y", "8");
+      area.setAttribute("width", String(hourWidth));
+      area.setAttribute("height", "88");
+      area.setAttribute("class", "savings-inline-trend-window");
+      svg.append(area);
+    });
+    [18, 55, 92].forEach(y => {
+      const line = document.createElementNS(svgNs, "line");
+      line.setAttribute("x1", "0");
+      line.setAttribute("x2", "720");
+      line.setAttribute("y1", String(y));
+      line.setAttribute("y2", String(y));
+      line.setAttribute("class", "savings-inline-trend-grid");
+      svg.append(line);
+    });
+    const path = document.createElementNS(svgNs, "path");
+    const points = prices.map((price, hour) => {
+      const x = hour * hourWidth + hourWidth / 2;
+      const y = 18 + ((maxPrice - price) / priceRange) * 74;
+      return `${hour === 0 ? "M" : "L"}${x.toFixed(1)} ${y.toFixed(1)}`;
+    });
+    path.setAttribute("d", points.join(" "));
+    path.setAttribute("class", "savings-inline-trend-line");
+    svg.append(path);
+
+    const activityRows = [
+      { hours: batteryGridHours, y: 112, className: "is-battery-grid" },
+      { hours: batteryPvHours, y: 126, className: "is-battery-pv" },
+      { hours: carHours, y: 140, className: "is-car" },
+      { hours: householdHours, y: 154, className: "is-home" }
+    ];
+    activityRows.forEach(row => row.hours.forEach(hour => {
+      const activity = document.createElementNS(svgNs, "rect");
+      activity.setAttribute("x", String(hour * hourWidth + 1));
+      activity.setAttribute("y", String(row.y));
+      activity.setAttribute("width", String(hourWidth - 2));
+      activity.setAttribute("height", "9");
+      activity.setAttribute("rx", "2");
+      activity.setAttribute("class", row.className);
+      svg.append(activity);
+    }));
+
+    output.inlineTrend.replaceChildren(svg);
+    const summary = [`Angesetzter Wert: ${decimal.format(minPrice)} bis ${decimal.format(maxPrice)} ct/kWh.`];
+    if (batteryGridHours.length) summary.push(`Batterie aus Netz: ${formatHourRanges(batteryGridHours)}.`);
+    if (batteryPvHours.length) summary.push(`Batterie aus PV: ${formatHourRanges(batteryPvHours)}.`);
+    if (carHours.length) summary.push(`E-Auto: ${formatHourRanges(carHours)}.`);
+    const summaryText = summary.join(" ");
+    output.inlineTrendSummary.textContent = summaryText;
+    output.inlineTrend.setAttribute("aria-label", summaryText);
+  }
+
+  function renderSchedule({ activeStrategies, basePrice, gridStrategies, batteryEnabled, batteryGridCharge, batteryChargeKwh, batteryDischargeKwh, car, householdFlexibleKwh }) {
     if (!output.schedule || !output.scheduleSummary) return;
     const pvStrategy = activeStrategies.find(strategy => strategy.key === "pv");
     const pvHours = pvStrategy ? hoursForStrategy(pvStrategy).sort((a, b) => a - b) : [];
@@ -165,6 +241,7 @@
     const summaryText = summary.length ? summary.join(" ") : "Aktiviere eine Energiequelle oder günstige Tarifzeit, um einen Tagesplan zu sehen.";
     output.scheduleSummary.textContent = summaryText;
     output.schedule.setAttribute("aria-label", summaryText);
+    renderInlineTrend({ activeStrategies, basePrice, batteryPvHours, batteryGridHours, carHours, householdHours });
   }
 
   function calculate() {
@@ -265,7 +342,7 @@
       ? "Die markierten Bereiche verbinden die ausgewählten PV- und Tarifzeiten. Die günstigste verfügbare Möglichkeit wird zuerst genutzt; Überschneidungen werden nicht doppelt gezählt."
       : "Der markierte Bereich zeigt die ausgewählte PV- oder Tarifzeit. Der Tagesverlauf ist eine schematische Darstellung und keine Preis- oder Erzeugungsprognose.";
     renderChart(activeStrategies, usedCoverage);
-    renderSchedule({ activeStrategies, gridStrategies, batteryEnabled, batteryGridCharge, batteryChargeKwh, batteryDischargeKwh, car, householdFlexibleKwh });
+    renderSchedule({ activeStrategies, basePrice, gridStrategies, batteryEnabled, batteryGridCharge, batteryChargeKwh, batteryDischargeKwh, car, householdFlexibleKwh });
   }
 
   const manualButtons = Array.from(document.querySelectorAll("[data-manual-mode]"));
