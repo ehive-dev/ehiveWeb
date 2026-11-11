@@ -24,6 +24,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Test savings model
+        run: node --test tests/stromkosten-model.test.cjs
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
