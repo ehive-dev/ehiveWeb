@@ -154,9 +154,15 @@
     const points = prices.map((price, hour) => {
       const x = hour * hourWidth + hourWidth / 2;
       const y = 18 + ((maxPrice - price) / priceRange) * 74;
-      return `${hour === 0 ? "M" : "L"}${x.toFixed(1)} ${y.toFixed(1)}`;
+      return { x, y };
     });
-    path.setAttribute("d", points.join(" "));
+    const curve = [`M${points[0].x.toFixed(1)} ${points[0].y.toFixed(1)}`];
+    points.slice(1).forEach((point, index) => {
+      const previous = points[index];
+      const middleX = (previous.x + point.x) / 2;
+      curve.push(`C${middleX.toFixed(1)} ${previous.y.toFixed(1)},${middleX.toFixed(1)} ${point.y.toFixed(1)},${point.x.toFixed(1)} ${point.y.toFixed(1)}`);
+    });
+    path.setAttribute("d", curve.join(" "));
     path.setAttribute("class", "savings-inline-trend-line");
     svg.append(path);
 
