@@ -92,5 +92,39 @@
     return { loadSaving, before, saving, after: Math.max(0, before - saving), capped: saving < uncappedSaving };
   }
 
-  return { allocateConsumption, calculateBattery, calculateCostSummary, recommendedCapacity, representativeBatterySlots };
+  function buildStorageProfile({ active, chargeHours, dischargeHours }) {
+    const charges = new Set(Array.isArray(chargeHours) ? chargeHours : []);
+    const discharges = new Set(Array.isArray(dischargeHours) ? dischargeHours : []);
+    if (!active) return Array.from({ length: 24 }, () => 0);
+    const chargeStep = charges.size ? 70 / charges.size : 0;
+    const dischargeStep = discharges.size ? 80 / discharges.size : 0;
+    let state = 20;
+    return Array.from({ length: 24 }, (_, hour) => {
+      if (charges.has(hour)) state = Math.min(90, state + chargeStep);
+      if (discharges.has(hour)) state = Math.max(10, state - dischargeStep);
+      return state;
+    });
+  }
+
+  function buildEnergySourceProfile({ pvHours, tariffHours, batteryHours }) {
+    const pv = new Set(Array.isArray(pvHours) ? pvHours : []);
+    const tariff = new Set(Array.isArray(tariffHours) ? tariffHours : []);
+    const battery = new Set(Array.isArray(batteryHours) ? batteryHours : []);
+    return Array.from({ length: 24 }, (_, hour) => {
+      if (battery.has(hour)) return "battery";
+      if (pv.has(hour)) return "pv";
+      if (tariff.has(hour)) return "tariff";
+      return "grid";
+    });
+  }
+
+  return {
+    allocateConsumption,
+    calculateBattery,
+    calculateCostSummary,
+    recommendedCapacity,
+    representativeBatterySlots,
+    buildStorageProfile,
+    buildEnergySourceProfile
+  };
 });

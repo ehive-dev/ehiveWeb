@@ -34,6 +34,29 @@
     batteryCapacity: get("[data-battery-capacity-output]"),
     batterySizeHint: get("[data-battery-size-hint]")
   };
+  const inlineTrendModeButtons = Array.from(document.querySelectorAll("[data-inline-trend-mode]"));
+  const inlineTrendLegends = Array.from(document.querySelectorAll("[data-inline-trend-legend]"));
+  let inlineTrendMode = "price";
+  let inlineTrendSummaries = {};
+
+  function setInlineTrendMode(mode) {
+    const allowedModes = new Set(["price", "storage", "sources"]);
+    inlineTrendMode = allowedModes.has(mode) ? mode : "price";
+    inlineTrendModeButtons.forEach(button => {
+      const active = button.dataset.inlineTrendMode === inlineTrendMode;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-pressed", active ? "true" : "false");
+    });
+    output.inlineTrend?.querySelectorAll("[data-trend-view]").forEach(view => {
+      view.hidden = view.dataset.trendView !== inlineTrendMode;
+    });
+    inlineTrendLegends.forEach(legend => {
+      legend.hidden = legend.dataset.inlineTrendLegend !== inlineTrendMode;
+    });
+    const summary = inlineTrendSummaries[inlineTrendMode] || inlineTrendSummaries.price || "Tagestrend wird berechnet.";
+    if (output.inlineTrendSummary) output.inlineTrendSummary.textContent = summary;
+    output.inlineTrend?.setAttribute("aria-label", summary);
+  }
 
   function value(input) {
     const parsed = Number.parseFloat(input?.value || "0");
@@ -106,6 +129,7 @@
     const svg = document.createElementNS(svgNs, "svg");
     svg.setAttribute("viewBox", "0 0 720 194");
     svg.setAttribute("aria-hidden", "true");
+    svg.dataset.trendView = "price";
     const prices = Array.from({ length: 24 }, () => basePrice);
     const batteryLossDifference = batteryEffectivePrice - batteryChargePrice;
     const batteryTrendPrice = Math.min(basePrice, batteryChargePrice + batteryLossDifference * 8);
@@ -217,7 +241,99 @@
       svg.append(activity);
     }));
 
-    output.inlineTrend.replaceChildren(svg);
+    const storageSvg = document.createElementNS(svgNs, "svg");
+    storageSvg.setAttribute("viewBox", "0 0 720 194");
+    storageSvg.setAttribute("aria-hidden", "true");
+    storageSvg.dataset.trendView = "storage";
+    const storageActive = batteryDischargeHours.length > 0;
+    const storageChargeHours = [...new Set([...batteryPvHours, ...batteryGridHours])];
+    const storageProfile = model.buildStorageProfile({ active: storageActive, chargeHours: storageChargeHours, dischargeHours: batteryDischargeHours });
+    [22, 56, 90].forEach((y, index) => {
+      const line = document.createElementNS(svgNs, "line");
+      line.setAttribute("x1", "0");
+      line.setAttribute("x2", "720");
+      line.setAttribute("y1", String(y));
+      line.setAttribute("y2", String(y));
+      line.setAttribute("class", "savings-inline-trend-grid");
+      storageSvg.append(line);
+      const label = document.createElementNS(svgNs, "text");
+      label.setAttribute("x", "708");
+      label.setAttribute("y", String(y - 5));
+      label.setAttribute("text-anchor", "end");
+      label.setAttribute("class", "savings-inline-trend-axis-label");
+      label.textContent = ["100 %", "50 %", "0 %"][index];
+      storageSvg.append(label);
+    });
+    if (storageActive) {
+      const storagePoints = storageProfile.map((state, hour) => ({ x: hour * hourWidth + hourWidth / 2, y: 90 - state * .68 }));
+      const storageCurve = [`M${storagePoints[0].x.toFixed(1)} ${storagePoints[0].y.toFixed(1)}`];
+      storagePoints.slice(1).forEach((point, index) => {
+        const previous = storagePoints[index];
+        const middleX = (previous.x + point.x) / 2;
+        storageCurve.push(`C${middleX.toFixed(1)} ${previous.y.toFixed(1)},${middleX.toFixed(1)} ${point.y.toFixed(1)},${point.x.toFixed(1)} ${point.y.toFixed(1)}`);
+      });
+      const storagePath = document.createElementNS(svgNs, "path");
+      storagePath.setAttribute("d", storageCurve.join(" "));
+      storagePath.setAttribute("class", "savings-inline-trend-storage-line");
+      storageSvg.append(storagePath);
+    } else {
+      const emptyText = document.createElementNS(svgNs, "text");
+      emptyText.setAttribute("x", "360");
+      emptyText.setAttribute("y", "62");
+      emptyText.setAttribute("text-anchor", "middle");
+      emptyText.setAttribute("class", "savings-inline-trend-empty");
+      emptyText.textContent = "Batteriespeicher aktivieren, um den Ladezustand zu sehen";
+      storageSvg.append(emptyText);
+    }
+    [
+      { hours: batteryGridHours, y: 120, className: "is-battery-grid" },
+      { hours: batteryPvHours, y: 138, className: "is-battery-pv" },
+      { hours: batteryDischargeHours, y: 156, className: "is-battery-out" }
+    ].forEach(row => row.hours.forEach(hour => {
+      const activity = document.createElementNS(svgNs, "rect");
+      activity.setAttribute("x", String(hour * hourWidth + 1));
+      activity.setAttribute("y", String(row.y));
+      activity.setAttribute("width", String(hourWidth - 2));
+      activity.setAttribute("height", "11");
+      activity.setAttribute("rx", "2");
+      activity.setAttribute("class", row.className);
+      storageSvg.append(activity);
+    }));
+
+    const sourcesSvg = document.createElementNS(svgNs, "svg");
+    sourcesSvg.setAttribute("viewBox", "0 0 720 194");
+    sourcesSvg.setAttribute("aria-hidden", "true");
+    sourcesSvg.dataset.trendView = "sources";
+    const pvHours = activeStrategies.filter(strategy => strategy.key === "pv" && strategy.allocated > 0).flatMap(hoursForStrategy);
+    const tariffHours = activeStrategies.filter(strategy => strategy.key !== "pv" && strategy.allocated > 0).flatMap(hoursForStrategy);
+    const sourceProfile = model.buildEnergySourceProfile({ pvHours, tariffHours, batteryHours: batteryDischargeHours });
+    sourceProfile.forEach((source, hour) => {
+      const sourceBar = document.createElementNS(svgNs, "rect");
+      sourceBar.setAttribute("x", String(hour * hourWidth + 1));
+      sourceBar.setAttribute("y", "28");
+      sourceBar.setAttribute("width", String(hourWidth - 2));
+      sourceBar.setAttribute("height", "72");
+      sourceBar.setAttribute("rx", "3");
+      sourceBar.setAttribute("class", `is-source-${source}`);
+      sourcesSvg.append(sourceBar);
+    });
+    [0, 6, 12, 18, 24].forEach(hour => {
+      const divider = document.createElementNS(svgNs, "line");
+      divider.setAttribute("x1", String(hour * hourWidth));
+      divider.setAttribute("x2", String(hour * hourWidth));
+      divider.setAttribute("y1", "20");
+      divider.setAttribute("y2", "108");
+      divider.setAttribute("class", "savings-inline-trend-source-divider");
+      sourcesSvg.append(divider);
+    });
+    const sourceTitle = document.createElementNS(svgNs, "text");
+    sourceTitle.setAttribute("x", "0");
+    sourceTitle.setAttribute("y", "135");
+    sourceTitle.setAttribute("class", "savings-inline-trend-source-title");
+    sourceTitle.textContent = "Typisierte günstigste Energiequelle je Stunde";
+    sourcesSvg.append(sourceTitle);
+
+    output.inlineTrend.replaceChildren(svg, storageSvg, sourcesSvg);
     const pvStrategy = activeStrategies.find(strategy => strategy.key === "pv");
     if (output.inlinePvValue) {
       output.inlinePvValue.hidden = !pvStrategy;
@@ -239,9 +355,14 @@
       const sources = [...new Set(carSources)].map(source => sourceLabels[source]).filter(Boolean).join(" und ");
       summary.push(`E-Auto: ${formatHourRanges(carHours)}${sources ? ` nach ${sources}` : ""}.`);
     }
-    const summaryText = summary.join(" ");
-    output.inlineTrendSummary.textContent = summaryText;
-    output.inlineTrend.setAttribute("aria-label", summaryText);
+    const sourceCounts = sourceProfile.reduce((counts, source) => ({ ...counts, [source]: (counts[source] || 0) + 1 }), {});
+    const priceSummary = summary.join(" ");
+    const storageSummary = storageActive
+      ? `Typisierter Ladezustand für den ${decimal.format(batteryCapacity)}-kWh-Speicher. Laden ist für ${formatHourRanges(storageChargeHours)} vorgesehen, die Abgabe für ${formatHourRanges(batteryDischargeHours)}. Die Kurve ist eine Tagesdarstellung und keine Messung.`
+      : "Aktiviere den Batteriespeicher und eine wirtschaftliche Ladequelle, um einen typisierten Ladezustand zu sehen.";
+    const sourcesSummary = `Typisierte Energiequellen im Tagesverlauf: ${sourceCounts.pv || 0} Stunden PV direkt, ${sourceCounts.tariff || 0} Stunden günstiger Tarif, ${sourceCounts.battery || 0} Stunden Batterie und ${sourceCounts.grid || 0} Stunden Netz. Überschneidungen werden nach Batterie, PV, Tarif und Netz priorisiert.`;
+    inlineTrendSummaries = { price: priceSummary, storage: storageSummary, sources: sourcesSummary };
+    setInlineTrendMode(inlineTrendMode);
   }
 
   function renderLiveTrend({ activeStrategies, basePrice, gridStrategies, batteryEnabled, batteryGridCharge, batteryCapacity, recommendedBatteryCapacity, batteryChargeKwh, batteryDischargeKwh, batteryChargePrice, batteryChargeLabel, batteryEffectivePrice, car, householdFlexibleKwh }) {
@@ -572,6 +693,7 @@
   form.addEventListener("input", calculate);
   form.addEventListener("change", calculate);
   form.addEventListener("reset", () => window.setTimeout(calculate, 0));
+  inlineTrendModeButtons.forEach(button => button.addEventListener("click", () => setInlineTrendMode(button.dataset.inlineTrendMode)));
   renderManualDemo();
   calculate();
 })();

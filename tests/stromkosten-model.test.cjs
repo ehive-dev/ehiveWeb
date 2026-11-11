@@ -148,3 +148,20 @@ test("ausgewiesene Ersparnis kann die Ausgangskosten nicht überschreiten", () =
   assert.equal(result.after, 0);
   assert.equal(result.capped, true);
 });
+
+test("Speicherfüllstand steigt beim Laden und sinkt beim Entladen", () => {
+  const profile = model.buildStorageProfile({ active: true, chargeHours: [11, 12, 13], dischargeHours: [18, 19, 20, 21] });
+  assert.equal(profile.length, 24);
+  assert.equal(profile[10], 20);
+  assert.ok(profile[13] > profile[10]);
+  assert.ok(Math.abs(profile[13] - 90) < 0.00001);
+  assert.ok(Math.abs(profile[21] - 10) < 0.00001);
+});
+
+test("Energiequellen verwenden Batterie, PV, Tarif und Netz in eindeutiger Priorität", () => {
+  const sources = model.buildEnergySourceProfile({ pvHours: [10, 11, 12], tariffHours: [2, 10], batteryHours: [18, 19] });
+  assert.equal(sources[0], "grid");
+  assert.equal(sources[2], "tariff");
+  assert.equal(sources[10], "pv");
+  assert.equal(sources[18], "battery");
+});
