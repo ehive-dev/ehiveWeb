@@ -25,8 +25,6 @@
     strategyStatus: get("[data-strategy-status]"),
     chartText: get("[data-chart-explanation]"),
     chart: get("[data-day-chart]"),
-    schedule: get("[data-energy-schedule]"),
-    scheduleSummary: get("[data-schedule-summary]"),
     inlineTrend: get("[data-inline-trend]"),
     inlineTrendSummary: get("[data-inline-trend-summary]")
   };
@@ -169,11 +167,8 @@
     output.inlineTrend.setAttribute("aria-label", summaryText);
   }
 
-  function renderSchedule({ activeStrategies, basePrice, gridStrategies, batteryEnabled, batteryGridCharge, batteryChargeKwh, batteryDischargeKwh, car, householdFlexibleKwh }) {
-    if (!output.schedule || !output.scheduleSummary) return;
+  function renderLiveTrend({ activeStrategies, basePrice, gridStrategies, batteryEnabled, batteryGridCharge, batteryChargeKwh, car, householdFlexibleKwh }) {
     const pvStrategy = activeStrategies.find(strategy => strategy.key === "pv");
-    const pvHours = pvStrategy ? hoursForStrategy(pvStrategy).sort((a, b) => a - b) : [];
-    const tariffHours = [...new Set(gridStrategies.flatMap(hoursForStrategy))].sort((a, b) => a - b);
     const batteryChargeSlots = batteryEnabled && batteryChargeKwh > 0 ? Math.max(1, Math.min(6, Math.ceil((batteryChargeKwh / 365) / 3))) : 0;
     const gridBatterySources = batteryGridCharge && gridStrategies.length
       ? gridStrategies.filter(strategy => strategy.price === Math.min(...gridStrategies.map(item => item.price)))
@@ -184,8 +179,6 @@
     const batteryGridSlots = hasGridCharging ? (hasPvCharging ? Math.max(1, batteryChargeSlots - batteryPvSlots) : batteryChargeSlots) : 0;
     const batteryPvHours = pickScheduleHours(pvStrategy ? [pvStrategy] : [], batteryPvSlots).map(slot => slot.hour);
     const batteryGridHours = pickScheduleHours(gridBatterySources, batteryGridSlots).map(slot => slot.hour);
-    const batteryDischargeSlots = batteryEnabled && batteryDischargeKwh > 0 ? Math.max(1, Math.min(4, Math.ceil((batteryDischargeKwh / 365) / 3))) : 0;
-    const batteryDischargeHours = [18, 19, 20, 21].slice(0, batteryDischargeSlots);
     const carSlots = car.enabled && car.share > 0 && activeStrategies.length
       ? Math.max(1, Math.min(6, Math.ceil(((car.annual / 365) * car.share / 100) / 3.7)))
       : 0;
@@ -194,53 +187,6 @@
       ? Math.max(1, Math.min(4, Math.ceil((householdFlexibleKwh / 365) / 2)))
       : 0;
     const householdHours = pickScheduleHours(activeStrategies, householdSlots).map(slot => slot.hour);
-
-    const activeCells = (hours, className) => new Map(hours.map(hour => [hour, className]));
-    const batteryCells = activeCells(batteryPvHours, "is-battery-pv");
-    batteryGridHours.forEach(hour => batteryCells.set(hour, "is-battery-grid"));
-    const rows = [
-      { label: "PV-Erzeugung", detail: pvHours.length ? formatHourRanges(pvHours) : "nicht gewählt", cells: activeCells(pvHours, "is-pv") },
-      { label: "Günstiger Tarif", detail: tariffHours.length ? formatHourRanges(tariffHours) : "nicht gewählt", cells: activeCells(tariffHours, "is-tariff") },
-      { label: "Batterie laden", detail: !batteryEnabled ? "nicht gewählt" : batteryCells.size ? (batteryGridHours.length ? "günstigste Quelle berücksichtigt" : "aus PV") : "keine Ladequelle", cells: batteryCells },
-      { label: "Batterie abgeben", detail: batteryDischargeHours.length ? "typischer Abendbedarf" : "nicht eingeplant", cells: activeCells(batteryDischargeHours, "is-battery-out") },
-      { label: "E-Auto laden", detail: !car.enabled ? "nicht gewählt" : carHours.length ? `${number.format(car.share)} % flexibel` : "keine günstige Zeit gewählt", cells: activeCells(carHours, "is-load") },
-      { label: "Flexible Geräte", detail: householdHours.length ? "Waschen, Spülen und weitere" : "keine günstige Zeit gewählt", cells: activeCells(householdHours, "is-load-soft") }
-    ];
-
-    output.schedule.replaceChildren();
-    rows.forEach(row => {
-      const line = document.createElement("div");
-      line.className = "savings-schedule-row";
-      const label = document.createElement("span");
-      label.className = "savings-schedule-label";
-      const strong = document.createElement("strong");
-      const small = document.createElement("small");
-      strong.textContent = row.label;
-      small.textContent = row.detail;
-      label.append(strong, small);
-      line.append(label);
-      for (let hour = 0; hour < 24; hour += 1) {
-        const cell = document.createElement("i");
-        cell.className = "savings-schedule-cell";
-        if (hour % 6 === 0) cell.classList.add("is-major");
-        const activeClass = row.cells.get(hour);
-        if (activeClass) {
-          cell.classList.add(activeClass);
-          cell.title = `${row.label}: ${String(hour).padStart(2, "0")}:00–${String(hour + 1).padStart(2, "0")}:00 Uhr`;
-        }
-        line.append(cell);
-      }
-      output.schedule.append(line);
-    });
-
-    const summary = [];
-    if (batteryPvHours.length) summary.push(`Die Batterie lädt beispielhaft ${formatHourRanges(batteryPvHours)} aus PV.`);
-    if (batteryGridHours.length) summary.push(`Die Batterie lädt beispielhaft ${formatHourRanges(batteryGridHours)} aus dem Netz.`);
-    if (carHours.length) summary.push(`Das E-Auto lädt bevorzugt ${formatHourRanges(carHours)}.`);
-    if (householdHours.length) summary.push(`Weitere flexible Geräte sind für ${formatHourRanges(householdHours)} eingeplant.`);
-    const summaryText = summary.length ? summary.join(" ") : "Aktiviere eine Energiequelle oder günstige Tarifzeit, um einen Tagesplan zu sehen.";
-    output.scheduleSummary.textContent = summaryText;
-    output.schedule.setAttribute("aria-label", summaryText);
     renderInlineTrend({ activeStrategies, basePrice, batteryPvHours, batteryGridHours, carHours, householdHours });
   }
 
@@ -342,7 +288,7 @@
       ? "Die markierten Bereiche verbinden die ausgewählten PV- und Tarifzeiten. Die günstigste verfügbare Möglichkeit wird zuerst genutzt; Überschneidungen werden nicht doppelt gezählt."
       : "Der markierte Bereich zeigt die ausgewählte PV- oder Tarifzeit. Der Tagesverlauf ist eine schematische Darstellung und keine Preis- oder Erzeugungsprognose.";
     renderChart(activeStrategies, usedCoverage);
-    renderSchedule({ activeStrategies, basePrice, gridStrategies, batteryEnabled, batteryGridCharge, batteryChargeKwh, batteryDischargeKwh, car, householdFlexibleKwh });
+    renderLiveTrend({ activeStrategies, basePrice, gridStrategies, batteryEnabled, batteryGridCharge, batteryChargeKwh, car, householdFlexibleKwh });
   }
 
   const manualButtons = Array.from(document.querySelectorAll("[data-manual-mode]"));
