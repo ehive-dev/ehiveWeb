@@ -315,23 +315,33 @@
       return { key, ...config, enabled, price, share, allocated: 0 };
     });
     const activeStrategies = strategies.filter(strategy => strategy.enabled).sort((a, b) => a.price - b.price);
-    let remainingFlexibleKwh = flexibleKwh;
-    activeStrategies.forEach(strategy => {
+    const pvStrategy = activeStrategies.find(strategy => strategy.key === "pv");
+    const directPvKwh = pvStrategy ? Math.min(totalKwh, totalKwh * pvStrategy.share / 100) : 0;
+    if (pvStrategy) pvStrategy.allocated = directPvKwh;
+    let remainingFlexibleKwh = Math.max(0, flexibleKwh - Math.min(flexibleKwh, directPvKwh));
+    activeStrategies.filter(strategy => strategy.key !== "pv").forEach(strategy => {
       const requestedKwh = flexibleKwh * strategy.share / 100;
       strategy.allocated = Math.min(requestedKwh, remainingFlexibleKwh);
       remainingFlexibleKwh -= strategy.allocated;
     });
+    const shiftedFlexibleKwh = activeStrategies.filter(strategy => strategy.key !== "pv").reduce((sum, strategy) => sum + strategy.allocated, 0);
     const shiftedKwh = activeStrategies.reduce((sum, strategy) => sum + strategy.allocated, 0);
     const loadSaving = activeStrategies.reduce((sum, strategy) => sum + strategy.allocated * Math.max(0, basePrice - strategy.price) / 100, 0);
     const averageTargetPrice = shiftedKwh > 0
       ? activeStrategies.reduce((sum, strategy) => sum + strategy.allocated * strategy.price, 0) / shiftedKwh
       : basePrice;
     const priceGap = Math.max(0, basePrice - averageTargetPrice);
-    const requestedCoverage = activeStrategies.reduce((sum, strategy) => sum + strategy.share, 0);
-    const usedCoverage = flexibleKwh > 0 ? shiftedKwh / flexibleKwh * 100 : 0;
-    output.strategyStatus.textContent = activeStrategies.length
-      ? `${number.format(usedCoverage)} % der zeitlich flexiblen Energie werden berücksichtigt.${requestedCoverage > 100 ? " Anteile über 100 % werden automatisch begrenzt." : ""}`
-      : "Aktiviere mindestens die PV-Anlage, einen dynamischen Spotmarkt-Tarif oder ein günstiges Zeitfenster.";
+    const requestedFlexibleCoverage = activeStrategies.filter(strategy => strategy.key !== "pv").reduce((sum, strategy) => sum + strategy.share, 0);
+    const usedFlexibleCoverage = flexibleKwh > 0 ? shiftedFlexibleKwh / flexibleKwh * 100 : 0;
+    const optimizedCoverage = totalKwh > 0 ? shiftedKwh / totalKwh * 100 : 0;
+    if (pvStrategy) {
+      const flexibleText = shiftedFlexibleKwh > 0 ? ` Zusätzlich werden ${number.format(shiftedFlexibleKwh)} kWh flexibler Verbrauch in günstige Tarifzeiten verschoben.` : "";
+      output.strategyStatus.textContent = `Direkter PV-Eigenverbrauch: ${number.format(pvStrategy.share)} % des Gesamtverbrauchs beziehungsweise ${number.format(directPvKwh)} kWh pro Jahr.${flexibleText}${requestedFlexibleCoverage > 100 ? " Tarifanteile über 100 % werden automatisch begrenzt." : ""}`;
+    } else if (activeStrategies.length) {
+      output.strategyStatus.textContent = `${number.format(usedFlexibleCoverage)} % der zeitlich flexiblen Energie werden berücksichtigt.${requestedFlexibleCoverage > 100 ? " Anteile über 100 % werden automatisch begrenzt." : ""}`;
+    } else {
+      output.strategyStatus.textContent = "Aktiviere mindestens die PV-Anlage, einen dynamischen Spotmarkt-Tarif oder ein günstiges Zeitfenster.";
+    }
 
     const batteryEnabled = Boolean(form.elements.batteryEnabled?.checked);
     form.querySelector("[data-battery-choice]")?.classList.toggle("is-disabled", !batteryEnabled);
@@ -386,7 +396,7 @@
     output.chartText.textContent = activeStrategies.length > 1
       ? "Die markierten Bereiche verbinden die ausgewählten PV- und Tarifzeiten. Die günstigste verfügbare Möglichkeit wird zuerst genutzt; Überschneidungen werden nicht doppelt gezählt."
       : "Der markierte Bereich zeigt die ausgewählte PV- oder Tarifzeit. Der Tagesverlauf ist eine schematische Darstellung und keine Preis- oder Erzeugungsprognose.";
-    renderChart(activeStrategies, usedCoverage);
+    renderChart(activeStrategies, optimizedCoverage);
     renderLiveTrend({ activeStrategies, basePrice, gridStrategies, batteryEnabled, batteryGridCharge, batteryCapacity, recommendedBatteryCapacity, batteryChargeKwh, batteryDischargeKwh, batteryChargePrice, batteryChargeLabel, batteryEffectivePrice, car, householdFlexibleKwh });
   }
 
