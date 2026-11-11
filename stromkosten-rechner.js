@@ -301,7 +301,12 @@
     sourcesSvg.dataset.trendView = "sources";
     const pvHours = activeStrategies.filter(strategy => strategy.key === "pv" && strategy.allocated > 0).flatMap(hoursForStrategy);
     const tariffHours = activeStrategies.filter(strategy => strategy.key !== "pv" && strategy.allocated > 0).flatMap(hoursForStrategy);
-    const sourceProfile = model.buildEnergySourceProfile({ pvHours, tariffHours, batteryHours: batteryDischargeHours });
+    const sourceProfile = model.buildEnergySourceProfile({
+      pvHours,
+      tariffHours,
+      batteryHours: batteryDischargeHours,
+      gridChargeHours: batteryGridHours
+    });
     sourceProfile.forEach((source, hour) => {
       const sourceBar = document.createElementNS(svgNs, "rect");
       sourceBar.setAttribute("x", String(hour * hourWidth + 1));
@@ -325,7 +330,7 @@
     sourceTitle.setAttribute("x", "0");
     sourceTitle.setAttribute("y", "135");
     sourceTitle.setAttribute("class", "savings-inline-trend-source-title");
-    sourceTitle.textContent = "Typisierte günstigste Energiequelle je Stunde";
+    sourceTitle.textContent = "Typisierter Energiefluss je Stunde";
     sourcesSvg.append(sourceTitle);
 
     output.inlineTrend.replaceChildren(svg, storageSvg, sourcesSvg);
@@ -358,7 +363,7 @@
     const storageSummary = storageActive
       ? `Typisierter Ladezustand für den ${decimal.format(batteryCapacity)}-kWh-Speicher. Laden ist für ${formatHourRanges(storageChargeHours)} vorgesehen, die Abgabe für ${formatHourRanges(batteryDischargeHours)}. Die Kurve ist eine Tagesdarstellung und keine Messung.`
       : "Aktiviere den Batteriespeicher und eine wirtschaftliche Ladequelle, um einen typisierten Ladezustand zu sehen.";
-    const sourcesSummary = `Typisierte Energiequellen im Tagesverlauf: ${sourceCounts.pv || 0} Stunden PV direkt, ${sourceCounts.tariff || 0} Stunden günstiger Tarif, ${sourceCounts.battery || 0} Stunden Batterie und ${sourceCounts.grid || 0} Stunden Netz. Überschneidungen werden nach Batterie, PV, Tarif und Netz priorisiert.`;
+    const sourcesSummary = `Typisierte Energieflüsse im Tagesverlauf: ${sourceCounts.pv || 0} Stunden PV direkt, ${sourceCounts["grid-charge"] || 0} Stunden netzgünstiges Batterieladen, ${sourceCounts.tariff || 0} Stunden günstiger Tarif, ${sourceCounts.battery || 0} Stunden Batterieabgabe und ${sourceCounts.grid || 0} Stunden normaler Netzbezug. Überschneidungen werden nach Batterieabgabe, PV, Netzladen, günstigem Tarif und Netz priorisiert.`;
     inlineTrendSummaries = { price: priceSummary, storage: storageSummary, sources: sourcesSummary };
     setInlineTrendMode(inlineTrendMode);
   }
@@ -376,7 +381,8 @@
     const batteryPvSlots = hasPvCharging ? (hasGridCharging ? Math.max(1, Math.ceil(batteryChargeSlots / 2)) : batteryChargeSlots) : 0;
     const batteryGridSlots = hasGridCharging ? (hasPvCharging ? Math.max(1, batteryChargeSlots - batteryPvSlots) : batteryChargeSlots) : 0;
     const batteryPvHours = pickScheduleHours(pvStrategy ? [pvStrategy] : [], batteryPvSlots).map(slot => slot.hour);
-    const batteryGridHours = pickScheduleHours(gridBatterySources, batteryGridSlots).map(slot => slot.hour);
+    const batteryGridCandidates = pickScheduleHours(gridBatterySources, 24).map(slot => slot.hour);
+    const batteryGridHours = model.selectAvailableHours(batteryGridCandidates, pvTrendHours, batteryGridSlots);
     const batteryDischargeSlots = batteryEnabled && batteryDischargeKwh > 0 && batteryEffectivePrice < basePrice
       ? model.representativeBatteryDischargeSlots(totalKwh, batteryDischargeKwh, pvTrendHours)
       : 0;

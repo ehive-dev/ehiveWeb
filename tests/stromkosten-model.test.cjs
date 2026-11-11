@@ -1,5 +1,7 @@
 const test = require("node:test");
 const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
 const model = require("../stromkosten-model.js");
 
 test("direkter PV-Eigenverbrauch wird aus dem Gesamtverbrauch berechnet", () => {
@@ -180,10 +182,61 @@ test("Speicherfüllstand steigt beim Laden und sinkt beim Entladen", () => {
   assert.ok(Math.abs(profile[21] - 10) < 0.00001);
 });
 
-test("Energiequellen verwenden Batterie, PV, Tarif und Netz in eindeutiger Priorität", () => {
-  const sources = model.buildEnergySourceProfile({ pvHours: [10, 11, 12], tariffHours: [2, 10], batteryHours: [18, 19] });
+test("Energiequellen verwenden Batterie, PV, Netzladen, Tarif und Netz in eindeutiger Priorität", () => {
+  const sources = model.buildEnergySourceProfile({
+    pvHours: [10, 11, 12],
+    tariffHours: [2, 3, 10],
+    batteryHours: [18, 19],
+    gridChargeHours: [3, 10]
+  });
   assert.equal(sources[0], "grid");
   assert.equal(sources[2], "tariff");
+  assert.equal(sources[3], "grid-charge");
   assert.equal(sources[10], "pv");
   assert.equal(sources[18], "battery");
+});
+
+test("Trend-Szenarien zeigen Netzladen nur bei tatsächlicher Batterieladung", () => {
+  const scenarios = [
+    { name: "Tarif ohne Netzladen", gridChargeHours: [], expectedAt2: "tariff" },
+    { name: "Tarif mit Netzladen", gridChargeHours: [2, 3], expectedAt2: "grid-charge" },
+    { name: "deaktivierte Batterie", gridChargeHours: [], expectedAt2: "tariff" }
+  ];
+  scenarios.forEach(scenario => {
+    const sources = model.buildEnergySourceProfile({
+      pvHours: [9, 10, 11, 12, 13, 14, 15, 16],
+      tariffHours: [2, 3, 4],
+      batteryHours: [17, 18, 19],
+      gridChargeHours: scenario.gridChargeHours
+    });
+    assert.equal(sources[2], scenario.expectedAt2, scenario.name);
+    assert.equal(sources[12], "pv", scenario.name);
+    assert.equal(sources[17], "battery", scenario.name);
+  });
+});
+
+test("Netzladezeiten erhöhen gleichzeitig den SOC und erscheinen als Netzladen", () => {
+  const gridChargeHours = [2, 3, 4];
+  const storage = model.buildStorageProfile({ active: true, chargeHours: gridChargeHours, dischargeHours: [18, 19, 20] });
+  const sources = model.buildEnergySourceProfile({ pvHours: [], tariffHours: gridChargeHours, batteryHours: [18, 19, 20], gridChargeHours });
+  assert.ok(storage[4] > storage[1]);
+  assert.equal(sources[2], "grid-charge");
+  assert.equal(sources[18], "battery");
+});
+
+test("Netzladen wird nicht gleichzeitig in aktive PV-Stunden gelegt", () => {
+  const candidates = [2, 3, 12, 16, 4];
+  const selected = model.selectAvailableHours(candidates, [9, 10, 11, 12, 13, 14, 15, 16], 3);
+  assert.deepEqual(selected, [2, 3, 4]);
+});
+
+test("Netzladen ist vom Modell bis zum sichtbaren Energiequellen-Balken verdrahtet", () => {
+  const root = path.resolve(__dirname, "..");
+  const html = fs.readFileSync(path.join(root, "stromkosten-rechner.html"), "utf8");
+  const css = fs.readFileSync(path.join(root, "style.css"), "utf8");
+  const client = fs.readFileSync(path.join(root, "stromkosten-rechner.js"), "utf8");
+  assert.match(html, /is-source-grid-charge[^>]*><\/i>Netzladen Batterie/);
+  assert.match(css, /\.is-source-grid-charge/);
+  assert.match(client, /gridChargeHours:\s*batteryGridHours/);
+  assert.match(client, /class", `is-source-\$\{source\}`/);
 });

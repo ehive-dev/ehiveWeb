@@ -74,6 +74,14 @@
     return hours;
   }
 
+  function selectAvailableHours(hours, excludedHours, limit) {
+    const excluded = new Set(Array.isArray(excludedHours) ? excludedHours.map(finite) : []);
+    const count = Math.max(0, Math.floor(finite(limit)));
+    return [...new Set((Array.isArray(hours) ? hours : []).map(finite))]
+      .filter(hour => hour >= 0 && hour <= 23 && !excluded.has(hour))
+      .slice(0, count);
+  }
+
   function calculateBattery({ totalKwh, optimizedKwh, enabled, canCharge, capacityKwh, cycles, efficiency, basePrice, chargePrice }) {
     const total = Math.max(0, finite(totalKwh));
     const optimized = Math.min(total, Math.max(0, finite(optimizedKwh)));
@@ -130,13 +138,15 @@
     });
   }
 
-  function buildEnergySourceProfile({ pvHours, tariffHours, batteryHours }) {
+  function buildEnergySourceProfile({ pvHours, tariffHours, batteryHours, gridChargeHours }) {
     const pv = new Set(Array.isArray(pvHours) ? pvHours : []);
     const tariff = new Set(Array.isArray(tariffHours) ? tariffHours : []);
     const battery = new Set(Array.isArray(batteryHours) ? batteryHours : []);
+    const gridCharge = new Set(Array.isArray(gridChargeHours) ? gridChargeHours : []);
     return Array.from({ length: 24 }, (_, hour) => {
       if (battery.has(hour)) return "battery";
       if (pv.has(hour)) return "pv";
+      if (gridCharge.has(hour)) return "grid-charge";
       if (tariff.has(hour)) return "tariff";
       return "grid";
     });
@@ -150,6 +160,7 @@
     representativeBatterySlots,
     representativeBatteryDischargeSlots,
     buildBatteryDischargeHours,
+    selectAvailableHours,
     buildStorageProfile,
     buildEnergySourceProfile
   };

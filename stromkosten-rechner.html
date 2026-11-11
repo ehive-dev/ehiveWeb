@@ -7,7 +7,7 @@
   <meta name="description" content="Berechne transparent, wie viel du durch PV-Eigenverbrauch, dynamische Strompreise oder günstige Zeitfenster sparen könntest. Mit eigenen Verbrauchs- und Preisangaben.">
   <link rel="canonical" href="https://www.ehiv3.de/stromkosten-rechner.html">
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=20261111-grid-charge-trend">
+  <link rel="stylesheet" href="style.css?v=20261111-consistent-grid-charge">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="eHive">
   <meta property="og:title" content="Stromkosten-Rechner | eHive One">
@@ -212,7 +212,7 @@
             <div class="savings-inline-trend-scale" aria-hidden="true"><span>00</span><span>06</span><span>12</span><span>18</span><span>24 Uhr</span></div>
             <div class="savings-inline-trend-legend" data-inline-trend-legend="price" aria-hidden="true"><span><i class="is-baseline"></i>Normalpreis</span><span><i class="is-price"></i>direkter PV-/Tarifwert</span><span data-inline-grid-charge hidden><i class="is-grid-charge-window"></i>Netzgünstiges Laden</span><span data-inline-pv-value hidden><i class="is-pv-value"></i><b></b></span><span data-inline-battery-value hidden><i class="is-battery-value"></i><b></b></span></div>
             <div class="savings-inline-trend-legend" data-inline-trend-legend="storage" aria-hidden="true" hidden><span><i class="is-storage-level"></i>typisierter Ladezustand</span><span data-inline-grid-charge hidden><i class="is-grid-charge-window"></i>Netzgünstiges Laden</span></div>
-            <div class="savings-inline-trend-legend" data-inline-trend-legend="sources" aria-hidden="true" hidden><span><i class="is-source-grid"></i>Netz</span><span><i class="is-source-pv"></i>PV direkt</span><span><i class="is-source-tariff"></i>günstiger Tarif</span><span><i class="is-source-battery"></i>Batterie</span></div>
+            <div class="savings-inline-trend-legend" data-inline-trend-legend="sources" aria-hidden="true" hidden><span><i class="is-source-grid"></i>Netzbezug</span><span><i class="is-source-pv"></i>PV direkt</span><span data-inline-grid-charge hidden><i class="is-source-grid-charge"></i>Netzladen Batterie</span><span><i class="is-source-tariff"></i>günstiger Tarif für Verbraucher</span><span><i class="is-source-battery"></i>Batterieabgabe</span></div>
             <p data-inline-trend-summary></p>
           </figure>
 
@@ -334,7 +334,7 @@
 <div data-include="footer"></div>
 <script src="config.js"></script>
 <script src="script.js?v=20261110-knx-release"></script>
-<script src="stromkosten-model.js?v=20261111-capacity-trend"></script>
-<script src="stromkosten-rechner.js?v=20261111-grid-charge-trend"></script>
+<script src="stromkosten-model.js?v=20261111-consistent-grid-charge"></script>
+<script src="stromkosten-rechner.js?v=20261111-consistent-grid-charge"></script>
 </body>
 </html>
