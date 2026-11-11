@@ -14,7 +14,7 @@
     const active = Array.isArray(strategies) ? strategies : [];
     const allocations = Object.fromEntries(active.map(strategy => [strategy.key, 0]));
     const pvStrategy = active.find(strategy => strategy.key === "pv");
-    const directPvKwh = pvStrategy ? Math.min(total, total * clamp(pvStrategy.share, 0, 100) / 100) : 0;
+    const directPvKwh = pvStrategy ? Math.min(total, flexible * clamp(pvStrategy.share, 0, 100) / 100) : 0;
     if (pvStrategy) allocations.pv = directPvKwh;
 
     let remainingFlexibleKwh = Math.max(0, flexible - Math.min(flexible, directPvKwh));

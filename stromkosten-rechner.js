@@ -459,7 +459,7 @@
     const optimizedCoverage = totalKwh > 0 ? shiftedKwh / totalKwh * 100 : 0;
     if (pvStrategy) {
       const flexibleText = shiftedFlexibleKwh > 0 ? ` Zusätzlich werden ${number.format(shiftedFlexibleKwh)} kWh flexibler Verbrauch in günstige Tarifzeiten verschoben.` : "";
-      output.strategyStatus.textContent = `Direkter PV-Eigenverbrauch: ${number.format(pvStrategy.share)} % des Gesamtverbrauchs beziehungsweise ${number.format(directPvKwh)} kWh pro Jahr.${flexibleText}${requestedFlexibleCoverage > 100 ? " Tarifanteile über 100 % werden automatisch begrenzt." : ""}`;
+      output.strategyStatus.textContent = `PV-Nutzung: ${number.format(pvStrategy.share)} % des zeitlich flexiblen Verbrauchs beziehungsweise ${number.format(directPvKwh)} kWh pro Jahr.${flexibleText}${requestedFlexibleCoverage > 100 ? " Tarifanteile über 100 % werden automatisch begrenzt." : ""}`;
     } else if (activeStrategies.length) {
       output.strategyStatus.textContent = `${number.format(usedFlexibleCoverage)} % der zeitlich flexiblen Energie werden berücksichtigt.${requestedFlexibleCoverage > 100 ? " Anteile über 100 % werden automatisch begrenzt." : ""}`;
     } else {

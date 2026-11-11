@@ -4,14 +4,26 @@ const fs = require("node:fs");
 const path = require("node:path");
 const model = require("../stromkosten-model.js");
 
-test("direkter PV-Eigenverbrauch wird aus dem Gesamtverbrauch berechnet", () => {
+test("PV-Nutzung wird aus dem zeitlich flexiblen Verbrauch berechnet", () => {
   const result = model.allocateConsumption({
     totalKwh: 3060,
     flexibleKwh: 2055,
     strategies: [{ key: "pv", share: 45 }]
   });
-  assert.equal(result.directPvKwh, 1377);
-  assert.equal(result.remainingDemandKwh, 1683);
+  assert.equal(result.directPvKwh, 924.75);
+  assert.equal(result.remainingDemandKwh, 2135.25);
+});
+
+test("mehr flexible Haushaltsenergie senkt im PV-Standardfall die Kosten", () => {
+  const strategies = [{ key: "pv", share: 45, price: 8 }];
+  const lessFlexible = model.allocateConsumption({ totalKwh: 3060, flexibleKwh: 1560, strategies });
+  const moreFlexible = model.allocateConsumption({ totalKwh: 3060, flexibleKwh: 2055, strategies });
+  const lessFlexibleCosts = model.calculateCostSummary({ totalKwh: 3060, basePrice: 35, strategies, allocations: lessFlexible.allocations, batterySaving: 0 });
+  const moreFlexibleCosts = model.calculateCostSummary({ totalKwh: 3060, basePrice: 35, strategies, allocations: moreFlexible.allocations, batterySaving: 0 });
+  assert.equal(lessFlexible.directPvKwh, 702);
+  assert.equal(moreFlexible.directPvKwh, 924.75);
+  assert.ok(moreFlexibleCosts.after < lessFlexibleCosts.after);
+  assert.ok(moreFlexibleCosts.saving > lessFlexibleCosts.saving);
 });
 
 test("PV und Tarife werden nicht doppelt gezählt", () => {
@@ -24,21 +36,21 @@ test("PV und Tarife werden nicht doppelt gezählt", () => {
       { key: "window", share: 40 }
     ]
   });
-  assert.equal(result.allocations.pv, 1377);
-  assert.equal(result.allocations.dynamic, 678);
-  assert.equal(result.allocations.window, 0);
+  assert.equal(result.allocations.pv, 924.75);
+  assert.equal(result.allocations.dynamic, 719.25);
+  assert.equal(result.allocations.window, 411);
   assert.equal(result.optimizedKwh, 2055);
   assert.ok(result.optimizedKwh <= 3060);
 });
 
-test("100 Prozent direkter Eigenverbrauch lassen keinen Restverbrauch", () => {
+test("100 Prozent PV-Nutzung optimieren höchstens den flexiblen Verbrauch", () => {
   const result = model.allocateConsumption({
     totalKwh: 4000,
     flexibleKwh: 2200,
     strategies: [{ key: "pv", share: 100 }, { key: "dynamic", share: 100 }]
   });
-  assert.equal(result.optimizedKwh, 4000);
-  assert.equal(result.remainingDemandKwh, 0);
+  assert.equal(result.optimizedKwh, 2200);
+  assert.equal(result.remainingDemandKwh, 1800);
   assert.equal(result.allocations.dynamic, 0);
 });
 
@@ -152,11 +164,11 @@ test("Standardfall liefert eine geschlossene Jahreskostenbilanz", () => {
     allocations: allocation.allocations,
     batterySaving: battery.saving
   });
-  assert.equal(allocation.directPvKwh, 1377);
+  assert.equal(allocation.directPvKwh, 924.75);
   assert.equal(battery.dischargeKwh, 1200);
   assert.ok(Math.abs(costs.before - 1071) < 0.00001);
-  assert.ok(Math.abs(costs.saving - 685.123333) < 0.00001);
-  assert.ok(Math.abs(costs.after - 385.876667) < 0.00001);
+  assert.ok(Math.abs(costs.saving - 563.015833) < 0.00001);
+  assert.ok(Math.abs(costs.after - 507.984167) < 0.00001);
 });
 
 test("ausgewiesene Ersparnis kann die Ausgangskosten nicht überschreiten", () => {

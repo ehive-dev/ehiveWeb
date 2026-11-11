@@ -180,7 +180,7 @@
                 <label class="savings-strategy-toggle"><input type="checkbox" name="strategyPv" checked><span><strong>PV-Anlage</strong><small>Verbrauch in Zeiten eigener Solarerzeugung legen</small></span></label>
                 <div class="savings-strategy-fields">
                   <label><span>Einspeisevergütung</span><span class="savings-input-unit"><input type="number" name="pricePv" min="-50" max="200" step="0.1" value="8" inputmode="decimal"><b>ct/kWh</b></span></label>
-                  <label class="savings-strategy-share"><span>Direkter Eigenverbrauch <output data-strategy-output="pv">45&nbsp;%</output></span><input type="range" name="sharePv" min="0" max="100" step="5" value="45"><small>Anteil deines gesamten Jahresverbrauchs, der zeitgleich direkt aus der PV-Anlage gedeckt wird</small></label>
+                  <label class="savings-strategy-share"><span>Wie viel passt typischerweise in PV-Zeiten? <output data-strategy-output="pv">45&nbsp;%</output></span><input type="range" name="sharePv" min="0" max="100" step="5" value="45"><small>Anteil deines zeitlich flexiblen Verbrauchs, der direkt in Zeiten eigener Solarerzeugung genutzt werden kann</small></label>
                 </div>
               </article>
               <article class="savings-strategy-card is-disabled" data-strategy-card="dynamic">
@@ -314,7 +314,7 @@
 <div data-include="footer"></div>
 <script src="config.js"></script>
 <script src="script.js?v=20261110-knx-release"></script>
-<script src="stromkosten-model.js?v=20261111-consistent-grid-charge"></script>
-<script src="stromkosten-rechner.js?v=20261111-source-colored-line"></script>
+<script src="stromkosten-model.js?v=20261112-flex-price-fix"></script>
+<script src="stromkosten-rechner.js?v=20261112-flex-price-fix"></script>
 </body>
 </html>
