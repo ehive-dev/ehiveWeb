@@ -265,3 +265,10 @@ test("Plausibilitätsvergleich ist vollständig aus der Rechnerseite entfernt", 
   assert.doesNotMatch(html, /Plausibilitätsvergleich|HTW-Jahressimulation|savings-benchmark/);
   assert.doesNotMatch(css, /savings-benchmark/);
 });
+
+test("Verbrauchseingaben besitzen ausreichend breite Desktop- und Mobilspalten", () => {
+  const css = fs.readFileSync(path.resolve(__dirname, "..", "style.css"), "utf8");
+  assert.match(css, /minmax\(132px,\.55fr\)/);
+  assert.match(css, /grid-template-columns:minmax\(0,1fr\) 132px/);
+  assert.match(css, /\.savings-kwh-wrap\{min-width:132px\}/);
+});
