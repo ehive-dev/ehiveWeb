@@ -210,6 +210,27 @@
       const middleX = (previous.x + point.x) / 2;
       curve.push(`C${middleX.toFixed(1)} ${previous.y.toFixed(1)},${middleX.toFixed(1)} ${point.y.toFixed(1)},${point.x.toFixed(1)} ${point.y.toFixed(1)}`);
     });
+    if (batteryDischargeHours.length) {
+      const batteryHours = new Set(batteryDischargeHours);
+      const defs = document.createElementNS(svgNs, "defs");
+      const gradient = document.createElementNS(svgNs, "linearGradient");
+      gradient.setAttribute("id", "savings-price-line-gradient");
+      gradient.setAttribute("gradientUnits", "userSpaceOnUse");
+      gradient.setAttribute("x1", "0");
+      gradient.setAttribute("x2", "720");
+      Array.from({ length: 24 }, (_, hour) => {
+        const color = batteryHours.has(hour) ? "#173f38" : "#087d74";
+        [hour / 24, (hour + 1) / 24].forEach(offset => {
+          const stop = document.createElementNS(svgNs, "stop");
+          stop.setAttribute("offset", `${offset * 100}%`);
+          stop.setAttribute("stop-color", color);
+          gradient.append(stop);
+        });
+      });
+      defs.append(gradient);
+      svg.append(defs);
+      path.style.stroke = "url(#savings-price-line-gradient)";
+    }
     path.setAttribute("d", curve.join(" "));
     path.setAttribute("class", "savings-inline-trend-line");
     svg.append(path);

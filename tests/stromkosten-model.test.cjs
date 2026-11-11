@@ -241,9 +241,12 @@ test("Netzladen ist vom Modell bis zum sichtbaren Energiequellen-Balken verdraht
   assert.match(client, /class", `is-source-\$\{source\}`/);
 });
 
-test("Batteriewert bleibt Teil derselben Strompreis-Kennlinie", () => {
+test("Batteriewert ändert nur die Farbe derselben Strompreis-Kennlinie", () => {
   const client = fs.readFileSync(path.resolve(__dirname, "..", "stromkosten-rechner.js"), "utf8");
   const pricePaths = client.match(/setAttribute\("class", "savings-inline-trend-line"\)/g) || [];
   assert.equal(pricePaths.length, 1);
   assert.doesNotMatch(client, /savings-inline-trend-battery-(?:value|marker)/);
+  assert.match(client, /id", "savings-price-line-gradient"/);
+  assert.match(client, /batteryHours\.has\(hour\) \? "#173f38" : "#087d74"/);
+  assert.match(client, /path\.style\.stroke = "url\(#savings-price-line-gradient\)"/);
 });
