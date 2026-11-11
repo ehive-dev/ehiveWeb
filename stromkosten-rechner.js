@@ -222,27 +222,6 @@
     priceLabel.textContent = "Strompreis";
     svg.append(priceLabel);
 
-    if (batteryDischargeHours.length) {
-      const batteryValueY = yForPrice(batteryTrendPrice);
-      const firstHour = Math.min(...batteryDischargeHours);
-      const lastHour = Math.max(...batteryDischargeHours);
-      const batteryValueLine = document.createElementNS(svgNs, "line");
-      batteryValueLine.setAttribute("x1", String(firstHour * hourWidth + 4));
-      batteryValueLine.setAttribute("x2", String((lastHour + 1) * hourWidth - 4));
-      batteryValueLine.setAttribute("y1", String(batteryValueY));
-      batteryValueLine.setAttribute("y2", String(batteryValueY));
-      batteryValueLine.setAttribute("class", "savings-inline-trend-battery-value");
-      svg.append(batteryValueLine);
-      batteryDischargeHours.forEach(hour => {
-        const marker = document.createElementNS(svgNs, "circle");
-        marker.setAttribute("cx", String(hour * hourWidth + hourWidth / 2));
-        marker.setAttribute("cy", String(batteryValueY));
-        marker.setAttribute("r", "4.5");
-        marker.setAttribute("class", "savings-inline-trend-battery-marker");
-        svg.append(marker);
-      });
-    }
-
     const storageSvg = document.createElementNS(svgNs, "svg");
     storageSvg.setAttribute("viewBox", "0 0 720 122");
     storageSvg.setAttribute("aria-hidden", "true");
