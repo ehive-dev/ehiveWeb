@@ -127,7 +127,7 @@
     if (!output.inlineTrend || !output.inlineTrendSummary) return;
     const svgNs = "http://www.w3.org/2000/svg";
     const svg = document.createElementNS(svgNs, "svg");
-    svg.setAttribute("viewBox", "0 0 720 194");
+    svg.setAttribute("viewBox", "0 0 720 108");
     svg.setAttribute("aria-hidden", "true");
     svg.dataset.trendView = "price";
     const prices = Array.from({ length: 24 }, () => basePrice);
@@ -202,6 +202,14 @@
     path.setAttribute("class", "savings-inline-trend-line");
     svg.append(path);
 
+    const priceLabel = document.createElementNS(svgNs, "text");
+    priceLabel.setAttribute("x", "708");
+    priceLabel.setAttribute("y", String(Math.max(14, Math.min(101, points.at(-1).y - 7))));
+    priceLabel.setAttribute("text-anchor", "end");
+    priceLabel.setAttribute("class", "savings-inline-trend-line-label is-price-label");
+    priceLabel.textContent = "Strompreis";
+    svg.append(priceLabel);
+
     if (batteryDischargeHours.length) {
       const batteryValueY = yForPrice(batteryTrendPrice);
       const firstHour = Math.min(...batteryDischargeHours);
@@ -223,26 +231,8 @@
       });
     }
 
-    const activityRows = [
-      { hours: batteryGridHours, y: 112, className: "is-battery-grid" },
-      { hours: batteryPvHours, y: 126, className: "is-battery-pv" },
-      { hours: batteryDischargeHours, y: 140, className: "is-battery-out" },
-      { hours: carHours, y: 154, className: "is-car" },
-      { hours: householdHours, y: 168, className: "is-home" }
-    ];
-    activityRows.forEach(row => row.hours.forEach(hour => {
-      const activity = document.createElementNS(svgNs, "rect");
-      activity.setAttribute("x", String(hour * hourWidth + 1));
-      activity.setAttribute("y", String(row.y));
-      activity.setAttribute("width", String(hourWidth - 2));
-      activity.setAttribute("height", "9");
-      activity.setAttribute("rx", "2");
-      activity.setAttribute("class", row.className);
-      svg.append(activity);
-    }));
-
     const storageSvg = document.createElementNS(svgNs, "svg");
-    storageSvg.setAttribute("viewBox", "0 0 720 194");
+    storageSvg.setAttribute("viewBox", "0 0 720 108");
     storageSvg.setAttribute("aria-hidden", "true");
     storageSvg.dataset.trendView = "storage";
     const storageActive = batteryDischargeHours.length > 0;
@@ -276,6 +266,13 @@
       storagePath.setAttribute("d", storageCurve.join(" "));
       storagePath.setAttribute("class", "savings-inline-trend-storage-line");
       storageSvg.append(storagePath);
+      const storageLabel = document.createElementNS(svgNs, "text");
+      storageLabel.setAttribute("x", "708");
+      storageLabel.setAttribute("y", String(Math.max(14, Math.min(101, storagePoints.at(-1).y - 7))));
+      storageLabel.setAttribute("text-anchor", "end");
+      storageLabel.setAttribute("class", "savings-inline-trend-line-label is-storage-label");
+      storageLabel.textContent = "Füllstand SOC";
+      storageSvg.append(storageLabel);
     } else {
       const emptyText = document.createElementNS(svgNs, "text");
       emptyText.setAttribute("x", "360");
@@ -285,21 +282,6 @@
       emptyText.textContent = "Batteriespeicher aktivieren, um den Ladezustand zu sehen";
       storageSvg.append(emptyText);
     }
-    [
-      { hours: batteryGridHours, y: 120, className: "is-battery-grid" },
-      { hours: batteryPvHours, y: 138, className: "is-battery-pv" },
-      { hours: batteryDischargeHours, y: 156, className: "is-battery-out" }
-    ].forEach(row => row.hours.forEach(hour => {
-      const activity = document.createElementNS(svgNs, "rect");
-      activity.setAttribute("x", String(hour * hourWidth + 1));
-      activity.setAttribute("y", String(row.y));
-      activity.setAttribute("width", String(hourWidth - 2));
-      activity.setAttribute("height", "11");
-      activity.setAttribute("rx", "2");
-      activity.setAttribute("class", row.className);
-      storageSvg.append(activity);
-    }));
-
     const sourcesSvg = document.createElementNS(svgNs, "svg");
     sourcesSvg.setAttribute("viewBox", "0 0 720 194");
     sourcesSvg.setAttribute("aria-hidden", "true");
