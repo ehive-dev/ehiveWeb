@@ -381,7 +381,10 @@
     const batteryDischargeSlots = batteryEnabled && batteryDischargeKwh > 0 && batteryEffectivePrice < basePrice
       ? representativeBatterySlots
       : 0;
-    const batteryDischargeHours = [18, 19, 20, 21, 22, 23].slice(0, batteryDischargeSlots);
+    const batteryDischargeHours = model.buildBatteryDischargeHours({
+      slots: batteryDischargeSlots,
+      pvHours: pvStrategy ? hoursForStrategy(pvStrategy) : []
+    });
     const carSlots = car.enabled && car.share > 0 && activeStrategies.length
       ? Math.max(1, Math.min(6, Math.ceil(((car.annual / 365) * car.share / 100) / 3.7)))
       : 0;

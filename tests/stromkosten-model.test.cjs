@@ -107,6 +107,19 @@ test("HTW-Verbrauchsrichtwert begrenzt die dargestellte Abenddauer", () => {
   assert.equal(model.representativeBatterySlots(12, recommended, true), 6);
 });
 
+test("Batterie übernimmt direkt in der ersten Stunde nach dem PV-Fenster", () => {
+  const pvHours = [9, 10, 11, 12, 13, 14, 15, 16];
+  const batteryHours = model.buildBatteryDischargeHours({ slots: 3, pvHours });
+  const sources = model.buildEnergySourceProfile({ pvHours, tariffHours: [], batteryHours });
+  assert.deepEqual(batteryHours, [17, 18, 19]);
+  assert.equal(sources[16], "pv");
+  assert.equal(sources[17], "battery");
+});
+
+test("ohne PV beginnt das typisierte Abendfenster um 18 Uhr", () => {
+  assert.deepEqual(model.buildBatteryDischargeHours({ slots: 3, pvHours: [] }), [18, 19, 20]);
+});
+
 test("Standardfall liefert eine geschlossene Jahreskostenbilanz", () => {
   const strategies = [{ key: "pv", share: 45, price: 8 }];
   const allocation = model.allocateConsumption({ totalKwh: 3060, flexibleKwh: 2055, strategies });
