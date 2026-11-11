@@ -229,13 +229,14 @@
             <p class="savings-battery-empty">Aktiviere den Batteriespeicher zuerst unter Punkt 1. Danach erscheinen hier die technischen Angaben.</p>
             <div class="savings-battery-details">
               <div class="savings-battery-inputs">
-                <label><span>Nutzbare Kapazität</span><span class="savings-input-unit"><input type="number" name="batteryCapacity" min="0" max="200" step="0.5" value="10" inputmode="decimal"><b>kWh</b></span></label>
+                <label class="savings-battery-capacity"><span>Nutzbare Kapazität <output data-battery-capacity-output>10,0 kWh</output></span><input type="range" name="batteryCapacity" min="0" max="30" step="0.5" value="10" aria-label="Nutzbare Kapazität des Batteriespeichers in Kilowattstunden"><small>0 kWh = kein nutzbarer Speicher · 30 kWh = großer Heimspeicher</small></label>
                 <label><span>Geschätzte Vollzyklen pro Jahr</span><span class="savings-input-unit"><input type="number" name="batteryCycles" min="0" max="365" step="1" value="120" inputmode="numeric"><b>Zyklen</b></span></label>
                 <label><span>Gesamtwirkungsgrad</span><span class="savings-input-unit"><input type="number" name="batteryEfficiency" min="50" max="100" step="1" value="90" inputmode="decimal"><b>%</b></span></label>
               </div>
+              <p class="savings-plain-help savings-battery-guidance">Orientierung nach <a href="https://solar.htw-berlin.de/faq-unabhaengigkeitsrechner/" target="_blank" rel="noopener noreferrer">HTW Berlin</a>: höchstens etwa 1,5 kWh nutzbare Kapazität je 1.000 kWh Jahresverbrauch und zusätzlich höchstens 1,5 kWh je kW PV-Leistung. <span data-battery-size-hint></span></p>
               <p class="savings-plain-help">Wenn du die Vollzyklen nicht kennst, kannst du zunächst mit 120 rechnen und den Wert später anpassen.</p>
               <label class="savings-grid-charge"><input type="checkbox" name="batteryGridCharge"><span><strong>Netzladen in günstigen Tarifzeiten erlauben</strong><small>Zum Beispiel im Winter. Dafür muss oben ein dynamischer Tarif oder mindestens ein festes günstiges Zeitfenster aktiviert sein.</small></span></label>
-              <details class="savings-explanation"><summary>Wie wird der Speicher berechnet?</summary><p>Die abgegebene Speicherenergie wird mit dem normalen Arbeitspreis verglichen. Die benötigte Ladeenergie wird einschließlich Speicherverlusten zum günstigsten aktivierten Ladepreis angesetzt. Die Vollzyklen sollten bereits berücksichtigen, wie oft günstige Energie realistisch verfügbar ist.</p></details>
+              <details class="savings-explanation"><summary>Wie wird der Speicher berechnet?</summary><p>Die abgegebene Speicherenergie wird mit dem normalen Arbeitspreis verglichen. Die benötigte Ladeenergie wird einschließlich Speicherverlusten zum günstigsten aktivierten Ladepreis angesetzt. Kapazität × Vollzyklen bestimmt den möglichen Jahresdurchsatz. Dieser wird auf den tatsächlich vorhandenen, noch nicht in günstige Zeiten verschobenen Verbrauch begrenzt. Die Vollzyklen sollten bereits berücksichtigen, wie oft günstige Energie realistisch verfügbar ist. Weil PV-Leistung, Wetter und ein zeitaufgelöstes Lastprofil nicht abgefragt werden, ist das Ergebnis eine Kostenabschätzung und keine Autarkieprognose.</p></details>
             </div>
           </fieldset>
 
@@ -310,6 +311,6 @@
 <div data-include="footer"></div>
 <script src="config.js"></script>
 <script src="script.js?v=20261110-knx-release"></script>
-<script src="stromkosten-rechner.js?v=20261111-amplified-storage-trend"></script>
+<script src="stromkosten-rechner.js?v=20261111-variable-storage"></script>
 </body>
 </html>
