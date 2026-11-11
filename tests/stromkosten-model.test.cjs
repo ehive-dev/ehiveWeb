@@ -250,3 +250,11 @@ test("Batteriewert ändert nur die Farbe derselben Strompreis-Kennlinie", () => 
   assert.match(client, /batteryHours\.has\(hour\) \? "#173f38" : "#087d74"/);
   assert.match(client, /path\.style\.stroke = "url\(#savings-price-line-gradient\)"/);
 });
+
+test("Eingabebereiche zwei und drei stehen vollständig vor dem Live-Trend", () => {
+  const html = fs.readFileSync(path.resolve(__dirname, "..", "stromkosten-rechner.html"), "utf8");
+  const devices = html.indexOf('<fieldset class="savings-devices">');
+  const battery = html.indexOf('<fieldset class="savings-battery');
+  const trend = html.indexOf('<figure class="savings-inline-trend">');
+  assert.ok(devices > -1 && battery > devices && trend > battery);
+});
