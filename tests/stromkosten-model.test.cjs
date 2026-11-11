@@ -258,3 +258,10 @@ test("Eingabebereiche zwei und drei stehen vollständig vor dem Live-Trend", () 
   const trend = html.indexOf('<figure class="savings-inline-trend">');
   assert.ok(devices > -1 && battery > devices && trend > battery);
 });
+
+test("Plausibilitätsvergleich ist vollständig aus der Rechnerseite entfernt", () => {
+  const html = fs.readFileSync(path.resolve(__dirname, "..", "stromkosten-rechner.html"), "utf8");
+  const css = fs.readFileSync(path.resolve(__dirname, "..", "style.css"), "utf8");
+  assert.doesNotMatch(html, /Plausibilitätsvergleich|HTW-Jahressimulation|savings-benchmark/);
+  assert.doesNotMatch(css, /savings-benchmark/);
+});
