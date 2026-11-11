@@ -255,15 +255,35 @@
             <div><dt>Zeitlich flexibel</dt><dd data-flex-kwh>0 kWh</dd></div>
             <div><dt>Direkt genutzt oder verschoben</dt><dd data-shifted-kwh>0 kWh</dd></div>
             <div><dt>Aus Speicher bereitgestellt</dt><dd data-battery-kwh>0 kWh</dd></div>
-            <div><dt>Ø Preisvorteil je flexible kWh</dt><dd data-price-gap>0 ct</dd></div>
+            <div><dt>Ø Preisvorteil je direkt genutzter oder verschobener kWh</dt><dd data-price-gap>0 ct</dd></div>
           </dl>
           <details class="savings-formula">
             <summary>Vollständigen Rechenweg anzeigen</summary>
-            <code data-formula>flexible kWh × Preisunterschied = Ersparnis</code>
+            <code data-formula>direkt genutzte oder verschobene kWh × Preisunterschied = Ersparnis</code>
           </details>
           <p class="savings-disclaimer">Unverbindliche Modellrechnung, keine Ersparnisgarantie. Tatsächliche Werte hängen unter anderem von Wetter, Verbrauchsprofil, Anlagenleistung, Tarif, Messkonzept, Geräteverfügbarkeit und Steuerbarkeit ab.</p>
         </aside>
       </div>
+    </div>
+  </section>
+
+  <section class="savings-benchmark" aria-labelledby="savings-benchmark-title">
+    <div class="container">
+      <header class="savings-section-heading">
+        <div><p class="eyebrow">Plausibilitätsvergleich</p><h2 id="savings-benchmark-title">eHive-Eingaben gegenüber einer HTW-Jahressimulation.</h2></div>
+        <p>Referenzfall: 4.000 kWh Jahresverbrauch, 4 kW PV-Leistung und unterschiedlich große Batteriespeicher. Die HTW-Werte stammen aus einer zeitaufgelösten Jahressimulation; eHive übersetzt den zusätzlichen Speicherbeitrag in vergleichbare Vollzyklen.</p>
+      </header>
+      <table class="savings-benchmark-table">
+        <caption>Vergleichswerte aus dem HTW-Unabhängigkeitsrechner</caption>
+        <thead><tr><th scope="col">Speicher</th><th scope="col">HTW Autarkie</th><th scope="col">HTW Eigenverbrauch</th><th scope="col">PV- und Speicheranteil</th><th scope="col">davon zusätzlicher Speicherbeitrag</th><th scope="col">Vergleichswert für eHive</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">0 kWh</th><td data-label="HTW Autarkie">30,4 %</td><td data-label="HTW Eigenverbrauch">29,7 %</td><td data-label="PV- und Speicheranteil">1.218 kWh/Jahr</td><td data-label="zusätzlicher Speicherbeitrag">0 kWh/Jahr</td><td data-label="eHive-Vergleich">30 % direkter Eigenverbrauch</td></tr>
+          <tr><th scope="row">4 kWh</th><td data-label="HTW Autarkie">55,5 %</td><td data-label="HTW Eigenverbrauch">58,8 %</td><td data-label="PV- und Speicheranteil">2.221 kWh/Jahr</td><td data-label="zusätzlicher Speicherbeitrag">1.003 kWh/Jahr</td><td data-label="eHive-Vergleich">etwa 251 Vollzyklen</td></tr>
+          <tr><th scope="row">6 kWh</th><td data-label="HTW Autarkie">62,6 %</td><td data-label="HTW Eigenverbrauch">67,0 %</td><td data-label="PV- und Speicheranteil">2.502 kWh/Jahr</td><td data-label="zusätzlicher Speicherbeitrag">1.284 kWh/Jahr</td><td data-label="eHive-Vergleich">etwa 214 Vollzyklen</td></tr>
+          <tr><th scope="row">8 kWh</th><td data-label="HTW Autarkie">66,0 %</td><td data-label="HTW Eigenverbrauch">70,9 %</td><td data-label="PV- und Speicheranteil">2.639 kWh/Jahr</td><td data-label="zusätzlicher Speicherbeitrag">1.421 kWh/Jahr</td><td data-label="eHive-Vergleich">etwa 178 Vollzyklen</td></tr>
+        </tbody>
+      </table>
+      <p class="savings-benchmark-note">Der Vergleich zeigt den abnehmenden Zusatznutzen größerer Speicher: Die äquivalenten Vollzyklen sinken mit wachsender Kapazität. Wichtig für die Gegenüberstellung: Der HTW-Autarkiegrad bezieht sich auf den Stromverbrauch und ist deshalb mit der eHive-Eingabe zum direkt gedeckten Verbrauch vergleichbar. Der HTW-Eigenverbrauchsanteil bezieht sich dagegen auf die erzeugte PV-Energie und hat einen anderen Nenner. Für den eHive-Rechner entspricht der Referenzfall zunächst rund 30 % direktem PV-Eigenverbrauch; anschließend können Speichergröße und die gegenübergestellten Vollzyklen eingetragen werden. Abweichungen bleiben zu erwarten, weil eHive Strompreise und flexible Verbraucher bewertet, aber keine PV-Leistung, Wetterdaten oder minutengenauen Lastprofile simuliert. Quellen: <a href="https://solar.htw-berlin.de/rechner/unabhaengigkeitsrechner/" target="_blank" rel="noopener noreferrer">HTW-Unabhängigkeitsrechner</a> und <a href="https://solar.htw-berlin.de/faq-unabhaengigkeitsrechner/" target="_blank" rel="noopener noreferrer">HTW-Berechnungsgrundlagen</a>.</p>
     </div>
   </section>
 
@@ -311,6 +331,7 @@
 <div data-include="footer"></div>
 <script src="config.js"></script>
 <script src="script.js?v=20261110-knx-release"></script>
-<script src="stromkosten-rechner.js?v=20261111-direct-self-consumption"></script>
+<script src="stromkosten-model.js?v=20261111-model-v1"></script>
+<script src="stromkosten-rechner.js?v=20261111-tested-model"></script>
 </body>
 </html>

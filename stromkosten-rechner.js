@@ -1,6 +1,7 @@
 (() => {
   const form = document.querySelector("[data-savings-form]");
-  if (!form) return;
+  const model = window.eHiveSavingsModel;
+  if (!form || !model) return;
 
   const euro = new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
   const number = new Intl.NumberFormat("de-DE", { maximumFractionDigits: 0 });
@@ -245,8 +246,7 @@
 
   function renderLiveTrend({ activeStrategies, basePrice, gridStrategies, batteryEnabled, batteryGridCharge, batteryCapacity, recommendedBatteryCapacity, batteryChargeKwh, batteryDischargeKwh, batteryChargePrice, batteryChargeLabel, batteryEffectivePrice, car, householdFlexibleKwh }) {
     const pvStrategy = activeStrategies.find(strategy => strategy.key === "pv");
-    const capacityRatio = recommendedBatteryCapacity > 0 ? Math.min(1, batteryCapacity / recommendedBatteryCapacity) : 0;
-    const representativeBatterySlots = batteryCapacity > 0 ? Math.max(1, Math.min(6, Math.round(capacityRatio * 6))) : 0;
+    const representativeBatterySlots = model.representativeBatterySlots(batteryCapacity, recommendedBatteryCapacity, batteryEnabled && batteryDischargeKwh > 0);
     const batteryChargeSlots = batteryEnabled && batteryChargeKwh > 0 ? representativeBatterySlots : 0;
     const gridBatterySources = batteryGridCharge && gridStrategies.length
       ? gridStrategies.filter(strategy => strategy.price === Math.min(...gridStrategies.map(item => item.price)))
@@ -316,17 +316,11 @@
     });
     const activeStrategies = strategies.filter(strategy => strategy.enabled).sort((a, b) => a.price - b.price);
     const pvStrategy = activeStrategies.find(strategy => strategy.key === "pv");
-    const directPvKwh = pvStrategy ? Math.min(totalKwh, totalKwh * pvStrategy.share / 100) : 0;
-    if (pvStrategy) pvStrategy.allocated = directPvKwh;
-    let remainingFlexibleKwh = Math.max(0, flexibleKwh - Math.min(flexibleKwh, directPvKwh));
-    activeStrategies.filter(strategy => strategy.key !== "pv").forEach(strategy => {
-      const requestedKwh = flexibleKwh * strategy.share / 100;
-      strategy.allocated = Math.min(requestedKwh, remainingFlexibleKwh);
-      remainingFlexibleKwh -= strategy.allocated;
-    });
-    const shiftedFlexibleKwh = activeStrategies.filter(strategy => strategy.key !== "pv").reduce((sum, strategy) => sum + strategy.allocated, 0);
-    const shiftedKwh = activeStrategies.reduce((sum, strategy) => sum + strategy.allocated, 0);
-    const loadSaving = activeStrategies.reduce((sum, strategy) => sum + strategy.allocated * Math.max(0, basePrice - strategy.price) / 100, 0);
+    const allocation = model.allocateConsumption({ totalKwh, flexibleKwh, strategies: activeStrategies });
+    activeStrategies.forEach(strategy => { strategy.allocated = allocation.allocations[strategy.key] || 0; });
+    const directPvKwh = allocation.directPvKwh;
+    const shiftedFlexibleKwh = allocation.shiftedFlexibleKwh;
+    const shiftedKwh = allocation.optimizedKwh;
     const averageTargetPrice = shiftedKwh > 0
       ? activeStrategies.reduce((sum, strategy) => sum + strategy.allocated * strategy.price, 0) / shiftedKwh
       : basePrice;
@@ -349,7 +343,7 @@
     const batteryCapacity = Math.max(0, value(form.elements.batteryCapacity));
     const batteryCycles = Math.max(0, value(form.elements.batteryCycles));
     const batteryEfficiency = Math.max(50, Math.min(100, value(form.elements.batteryEfficiency))) / 100;
-    const recommendedBatteryCapacity = totalKwh * 1.5 / 1000;
+    const recommendedBatteryCapacity = model.recommendedCapacity(totalKwh);
     if (output.batteryCapacity) output.batteryCapacity.textContent = `${decimal.format(batteryCapacity)} kWh`;
     if (output.batterySizeHint) {
       const comparison = batteryCapacity > recommendedBatteryCapacity && recommendedBatteryCapacity > 0
@@ -369,16 +363,31 @@
     const batteryChargeLabels = { pv: "PV", dynamic: "dynamischer Tarif", window: "festes Zeitfenster" };
     const batteryChargeLabel = batteryChargeLabels[batteryChargeSource?.key] || "Normalpreis";
     const batteryCanCharge = batteryChargeSources.length > 0;
-    const remainingDemandKwh = Math.max(0, totalKwh - shiftedKwh);
-    const batteryPotentialKwh = batteryCapacity * batteryCycles;
-    const batteryEffectivePrice = batteryCanCharge ? batteryChargePrice / batteryEfficiency : basePrice;
-    const batteryEconomicallyUseful = batteryEffectivePrice < basePrice;
-    const batteryDischargeKwh = batteryEnabled && batteryCanCharge && batteryEconomicallyUseful ? Math.min(batteryPotentialKwh, remainingDemandKwh) : 0;
-    const batteryChargeKwh = batteryDischargeKwh / batteryEfficiency;
-    const batterySaving = Math.max(0, (batteryDischargeKwh * basePrice - batteryChargeKwh * batteryChargePrice) / 100);
-    const saving = loadSaving + batterySaving;
-    const before = totalKwh * basePrice / 100;
-    const after = Math.max(0, before - saving);
+    const batteryResult = model.calculateBattery({
+      totalKwh,
+      optimizedKwh: shiftedKwh,
+      enabled: batteryEnabled,
+      canCharge: batteryCanCharge,
+      capacityKwh: batteryCapacity,
+      cycles: batteryCycles,
+      efficiency: batteryEfficiency,
+      basePrice,
+      chargePrice: batteryChargePrice
+    });
+    const batteryEffectivePrice = batteryResult.effectivePrice;
+    const batteryDischargeKwh = batteryResult.dischargeKwh;
+    const batteryChargeKwh = batteryResult.chargeKwh;
+    const batterySaving = batteryResult.saving;
+    const costSummary = model.calculateCostSummary({
+      totalKwh,
+      basePrice,
+      strategies: activeStrategies,
+      allocations: allocation.allocations,
+      batterySaving
+    });
+    const saving = costSummary.saving;
+    const before = costSummary.before;
+    const after = costSummary.after;
     output.saving.textContent = euro.format(saving);
     output.before.textContent = euro.format(before);
     output.after.textContent = euro.format(after);
