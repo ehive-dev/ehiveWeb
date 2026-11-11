@@ -159,6 +159,17 @@
       const visibleDifference = Math.max(-.2, Math.min(1.1, relativeDifference));
       return 44 + visibleDifference * 62;
     };
+    const appendGridChargeWindows = target => {
+      batteryGridHours.forEach(hour => {
+        const area = document.createElementNS(svgNs, "rect");
+        area.setAttribute("x", String(hour * hourWidth));
+        area.setAttribute("y", "30");
+        area.setAttribute("width", String(hourWidth));
+        area.setAttribute("height", "88");
+        area.setAttribute("class", "savings-inline-trend-grid-charge-window");
+        target.append(area);
+      });
+    };
 
     preferredHours.forEach(hour => {
       const area = document.createElementNS(svgNs, "rect");
@@ -169,6 +180,7 @@
       area.setAttribute("class", "savings-inline-trend-window");
       svg.append(area);
     });
+    appendGridChargeWindows(svg);
     [44, 78, 112].forEach(y => {
       const line = document.createElementNS(svgNs, "line");
       line.setAttribute("x1", "0");
@@ -238,6 +250,7 @@
     const storageActive = batteryDischargeHours.length > 0;
     const storageChargeHours = [...new Set([...batteryPvHours, ...batteryGridHours])];
     const storageProfile = model.buildStorageProfile({ active: storageActive, chargeHours: storageChargeHours, dischargeHours: batteryDischargeHours });
+    appendGridChargeWindows(storageSvg);
     [44, 78, 112].forEach((y, index) => {
       const line = document.createElementNS(svgNs, "line");
       line.setAttribute("x1", "0");
@@ -316,6 +329,9 @@
     sourcesSvg.append(sourceTitle);
 
     output.inlineTrend.replaceChildren(svg, storageSvg, sourcesSvg);
+    document.querySelectorAll("[data-inline-grid-charge]").forEach(item => {
+      item.hidden = !batteryGridHours.length;
+    });
     const pvStrategy = activeStrategies.find(strategy => strategy.key === "pv");
     if (output.inlinePvValue) {
       output.inlinePvValue.hidden = !pvStrategy;
@@ -329,7 +345,7 @@
     }
     const summary = [`Angesetzter Preis-/Wertbereich: ${decimal.format(minPrice)} bis ${decimal.format(maxPrice)} ct/kWh.`];
     if (activeStrategies.some(strategy => strategy.key === "dynamic")) summary.push("Die Spotmarktlinie ist ein Beispielverlauf und keine Preisprognose.");
-    if (batteryGridHours.length) summary.push(`Batterie aus Netz: ${formatHourRanges(batteryGridHours)}.`);
+    if (batteryGridHours.length) summary.push(`Netzgünstiges Laden der Batterie: ${formatHourRanges(batteryGridHours)}.`);
     if (batteryPvHours.length) summary.push(`Batterie aus PV: ${formatHourRanges(batteryPvHours)}.`);
     if (batteryDischargeHours.length) summary.push(`Der ${decimal.format(batteryCapacity)}-kWh-Speicher versorgt Verbraucher im typisierten Versorgungsfenster von ${formatHourRanges(batteryDischargeHours)}. Aus ${decimal.format(batteryChargePrice)} ct/kWh Ladepreis (${batteryChargeLabel}) werden durch den eingestellten Wirkungsgrad ${decimal.format(batteryEffectivePrice)} ct/kWh Speicherwert. Der Abstand zum direkten Ladepreis ist im Trend zur besseren Erkennbarkeit grafisch verstärkt.`);
     if (carHours.length) {
