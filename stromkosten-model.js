@@ -50,16 +50,28 @@
     return Math.max(1, Math.min(6, Math.round(ratio * 6)));
   }
 
+  function representativeBatteryDischargeSlots(totalKwh, annualDischargeKwh, pvHours) {
+    const total = Math.max(0, finite(totalKwh));
+    const discharge = Math.max(0, finite(annualDischargeKwh));
+    if (total <= 0 || discharge <= 0) return 0;
+    const pv = new Set((Array.isArray(pvHours) ? pvHours : []).map(finite).filter(hour => hour >= 0 && hour <= 23));
+    const availableHours = Math.max(1, 24 - pv.size);
+    return Math.max(1, Math.min(availableHours, Math.round(discharge / total * availableHours)));
+  }
+
   function buildBatteryDischargeHours({ slots, pvHours }) {
-    const duration = Math.max(0, Math.min(6, Math.floor(finite(slots))));
     const validPvHours = (Array.isArray(pvHours) ? pvHours : [])
       .map(finite)
       .filter(hour => hour >= 0 && hour <= 23);
-    const startHour = validPvHours.length ? Math.min(23, Math.max(...validPvHours) + 1) : 18;
-    return Array.from(
-      { length: Math.min(duration, 24 - startHour) },
-      (_, index) => startHour + index
-    );
+    const pv = new Set(validPvHours);
+    const duration = Math.max(0, Math.min(24 - pv.size, Math.floor(finite(slots))));
+    const startHour = validPvHours.length ? (Math.max(...validPvHours) + 1) % 24 : 18;
+    const hours = [];
+    for (let offset = 0; offset < 24 && hours.length < duration; offset += 1) {
+      const hour = (startHour + offset) % 24;
+      if (!pv.has(hour)) hours.push(hour);
+    }
+    return hours;
   }
 
   function calculateBattery({ totalKwh, optimizedKwh, enabled, canCharge, capacityKwh, cycles, efficiency, basePrice, chargePrice }) {
@@ -136,6 +148,7 @@
     calculateCostSummary,
     recommendedCapacity,
     representativeBatterySlots,
+    representativeBatteryDischargeSlots,
     buildBatteryDischargeHours,
     buildStorageProfile,
     buildEnergySourceProfile

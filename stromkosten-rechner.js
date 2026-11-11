@@ -331,7 +331,7 @@
     if (activeStrategies.some(strategy => strategy.key === "dynamic")) summary.push("Die Spotmarktlinie ist ein Beispielverlauf und keine Preisprognose.");
     if (batteryGridHours.length) summary.push(`Batterie aus Netz: ${formatHourRanges(batteryGridHours)}.`);
     if (batteryPvHours.length) summary.push(`Batterie aus PV: ${formatHourRanges(batteryPvHours)}.`);
-    if (batteryDischargeHours.length) summary.push(`Der ${decimal.format(batteryCapacity)}-kWh-Speicher versorgt Verbraucher im typisierten Abendfenster von ${formatHourRanges(batteryDischargeHours)}. Aus ${decimal.format(batteryChargePrice)} ct/kWh Ladepreis (${batteryChargeLabel}) werden durch den eingestellten Wirkungsgrad ${decimal.format(batteryEffectivePrice)} ct/kWh Speicherwert. Der Abstand zum direkten Ladepreis ist im Trend zur besseren Erkennbarkeit grafisch verstärkt.`);
+    if (batteryDischargeHours.length) summary.push(`Der ${decimal.format(batteryCapacity)}-kWh-Speicher versorgt Verbraucher im typisierten Versorgungsfenster von ${formatHourRanges(batteryDischargeHours)}. Aus ${decimal.format(batteryChargePrice)} ct/kWh Ladepreis (${batteryChargeLabel}) werden durch den eingestellten Wirkungsgrad ${decimal.format(batteryEffectivePrice)} ct/kWh Speicherwert. Der Abstand zum direkten Ladepreis ist im Trend zur besseren Erkennbarkeit grafisch verstärkt.`);
     if (carHours.length) {
       const sourceLabels = { pv: "PV", dynamic: "Spotmarkt-Beispiel", window: "festen Tarifzeiten" };
       const sources = [...new Set(carSources)].map(source => sourceLabels[source]).filter(Boolean).join(" und ");
@@ -347,8 +347,9 @@
     setInlineTrendMode(inlineTrendMode);
   }
 
-  function renderLiveTrend({ activeStrategies, basePrice, gridStrategies, batteryEnabled, batteryGridCharge, batteryCapacity, recommendedBatteryCapacity, batteryChargeKwh, batteryDischargeKwh, batteryChargePrice, batteryChargeLabel, batteryEffectivePrice, car, householdFlexibleKwh }) {
+  function renderLiveTrend({ activeStrategies, basePrice, totalKwh, gridStrategies, batteryEnabled, batteryGridCharge, batteryCapacity, recommendedBatteryCapacity, batteryChargeKwh, batteryDischargeKwh, batteryChargePrice, batteryChargeLabel, batteryEffectivePrice, car, householdFlexibleKwh }) {
     const pvStrategy = activeStrategies.find(strategy => strategy.key === "pv");
+    const pvTrendHours = pvStrategy ? hoursForStrategy(pvStrategy) : [];
     const representativeBatterySlots = model.representativeBatterySlots(batteryCapacity, recommendedBatteryCapacity, batteryEnabled && batteryDischargeKwh > 0);
     const batteryChargeSlots = batteryEnabled && batteryChargeKwh > 0 ? representativeBatterySlots : 0;
     const gridBatterySources = batteryGridCharge && gridStrategies.length
@@ -361,11 +362,11 @@
     const batteryPvHours = pickScheduleHours(pvStrategy ? [pvStrategy] : [], batteryPvSlots).map(slot => slot.hour);
     const batteryGridHours = pickScheduleHours(gridBatterySources, batteryGridSlots).map(slot => slot.hour);
     const batteryDischargeSlots = batteryEnabled && batteryDischargeKwh > 0 && batteryEffectivePrice < basePrice
-      ? representativeBatterySlots
+      ? model.representativeBatteryDischargeSlots(totalKwh, batteryDischargeKwh, pvTrendHours)
       : 0;
     const batteryDischargeHours = model.buildBatteryDischargeHours({
       slots: batteryDischargeSlots,
-      pvHours: pvStrategy ? hoursForStrategy(pvStrategy) : []
+      pvHours: pvTrendHours
     });
     const carSlots = car.enabled && car.share > 0 && activeStrategies.length
       ? Math.max(1, Math.min(6, Math.ceil(((car.annual / 365) * car.share / 100) / 3.7)))
@@ -512,7 +513,7 @@
       ? "Die markierten Bereiche verbinden die ausgewählten PV- und Tarifzeiten. Die günstigste verfügbare Möglichkeit wird zuerst genutzt; Überschneidungen werden nicht doppelt gezählt."
       : "Der markierte Bereich zeigt die ausgewählte PV- oder Tarifzeit. Der Tagesverlauf ist eine schematische Darstellung und keine Preis- oder Erzeugungsprognose.";
     renderChart(activeStrategies, optimizedCoverage);
-    renderLiveTrend({ activeStrategies, basePrice, gridStrategies, batteryEnabled, batteryGridCharge, batteryCapacity, recommendedBatteryCapacity, batteryChargeKwh, batteryDischargeKwh, batteryChargePrice, batteryChargeLabel, batteryEffectivePrice, car, householdFlexibleKwh });
+    renderLiveTrend({ activeStrategies, basePrice, totalKwh, gridStrategies, batteryEnabled, batteryGridCharge, batteryCapacity, recommendedBatteryCapacity, batteryChargeKwh, batteryDischargeKwh, batteryChargePrice, batteryChargeLabel, batteryEffectivePrice, car, householdFlexibleKwh });
   }
 
   const manualButtons = Array.from(document.querySelectorAll("[data-manual-mode]"));

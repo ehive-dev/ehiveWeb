@@ -116,6 +116,15 @@ test("Batterie übernimmt direkt in der ersten Stunde nach dem PV-Fenster", () =
   assert.equal(sources[17], "battery");
 });
 
+test("größerer Speicherbeitrag verlängert das Versorgungsfenster bis nach Mitternacht", () => {
+  const pvHours = [9, 10, 11, 12, 13, 14, 15, 16];
+  const small = model.representativeBatteryDischargeSlots(3060, 600, pvHours);
+  const medium = model.representativeBatteryDischargeSlots(3060, 1200, pvHours);
+  const large = model.representativeBatteryDischargeSlots(3060, 1680, pvHours);
+  assert.deepEqual([small, medium, large], [3, 6, 9]);
+  assert.deepEqual(model.buildBatteryDischargeHours({ slots: large, pvHours }), [17, 18, 19, 20, 21, 22, 23, 0, 1]);
+});
+
 test("ohne PV beginnt das typisierte Abendfenster um 18 Uhr", () => {
   assert.deepEqual(model.buildBatteryDischargeHours({ slots: 3, pvHours: [] }), [18, 19, 20]);
 });
