@@ -104,6 +104,8 @@
     svg.setAttribute("viewBox", "0 0 720 194");
     svg.setAttribute("aria-hidden", "true");
     const prices = Array.from({ length: 24 }, () => basePrice);
+    const batteryLossDifference = batteryEffectivePrice - batteryChargePrice;
+    const batteryTrendPrice = Math.min(basePrice, batteryChargePrice + batteryLossDifference * 8);
     const preferredHours = new Set();
     activeStrategies.forEach(strategy => {
       if (strategy.key === "dynamic") {
@@ -119,7 +121,7 @@
       });
     });
     batteryDischargeHours.forEach(hour => {
-      prices[hour] = Math.min(prices[hour], batteryEffectivePrice);
+      prices[hour] = Math.min(prices[hour], batteryTrendPrice);
     });
     const minPrice = Math.min(...prices);
     const maxPrice = Math.max(...prices);
@@ -174,7 +176,7 @@
     svg.append(path);
 
     if (batteryDischargeHours.length) {
-      const batteryValueY = yForPrice(batteryEffectivePrice);
+      const batteryValueY = yForPrice(batteryTrendPrice);
       const firstHour = Math.min(...batteryDischargeHours);
       const lastHour = Math.max(...batteryDischargeHours);
       const batteryValueLine = document.createElementNS(svgNs, "line");
@@ -228,7 +230,7 @@
     if (activeStrategies.some(strategy => strategy.key === "dynamic")) summary.push("Die Spotmarktlinie ist ein Beispielverlauf und keine Preisprognose.");
     if (batteryGridHours.length) summary.push(`Batterie aus Netz: ${formatHourRanges(batteryGridHours)}.`);
     if (batteryPvHours.length) summary.push(`Batterie aus PV: ${formatHourRanges(batteryPvHours)}.`);
-    if (batteryDischargeHours.length) summary.push(`Batterie versorgt Verbraucher am Abend von ${formatHourRanges(batteryDischargeHours)}. Aus ${decimal.format(batteryChargePrice)} ct/kWh Ladepreis (${batteryChargeLabel}) werden durch den eingestellten Wirkungsgrad ${decimal.format(batteryEffectivePrice)} ct/kWh Speicherwert.`);
+    if (batteryDischargeHours.length) summary.push(`Batterie versorgt Verbraucher am Abend von ${formatHourRanges(batteryDischargeHours)}. Aus ${decimal.format(batteryChargePrice)} ct/kWh Ladepreis (${batteryChargeLabel}) werden durch den eingestellten Wirkungsgrad ${decimal.format(batteryEffectivePrice)} ct/kWh Speicherwert. Der Abstand zum direkten Ladepreis ist im Trend zur besseren Erkennbarkeit grafisch verstärkt.`);
     if (carHours.length) {
       const sourceLabels = { pv: "PV", dynamic: "Spotmarkt-Beispiel", window: "festen Tarifzeiten" };
       const sources = [...new Set(carSources)].map(source => sourceLabels[source]).filter(Boolean).join(" und ");
@@ -254,12 +256,7 @@
     const batteryDischargeSlots = batteryEnabled && batteryDischargeKwh > 0 && batteryEffectivePrice < basePrice
       ? Math.max(1, Math.min(4, Math.ceil((batteryDischargeKwh / 365) / 3)))
       : 0;
-    const pvEndHour = pvStrategy ? Math.max(...hoursForStrategy(pvStrategy)) : null;
-    const batteryDischargeStart = pvEndHour === null ? 18 : Math.min(23, pvEndHour + 1);
-    const batteryDischargeHours = Array.from(
-      { length: Math.min(batteryDischargeSlots, 24 - batteryDischargeStart) },
-      (_, index) => batteryDischargeStart + index
-    );
+    const batteryDischargeHours = [18, 19, 20, 21].slice(0, batteryDischargeSlots);
     const carSlots = car.enabled && car.share > 0 && activeStrategies.length
       ? Math.max(1, Math.min(6, Math.ceil(((car.annual / 365) * car.share / 100) / 3.7)))
       : 0;
