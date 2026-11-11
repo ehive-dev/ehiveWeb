@@ -121,8 +121,13 @@
     });
     const minPrice = Math.min(...prices);
     const maxPrice = Math.max(...prices);
-    const priceRange = Math.max(1, maxPrice - minPrice);
     const hourWidth = 720 / 24;
+    const yForPrice = price => {
+      const referencePrice = Math.max(1, basePrice);
+      const relativeDifference = (basePrice - price) / referencePrice;
+      const visibleDifference = Math.max(-.2, Math.min(1.1, relativeDifference));
+      return 22 + visibleDifference * 62;
+    };
 
     preferredHours.forEach(hour => {
       const area = document.createElementNS(svgNs, "rect");
@@ -133,7 +138,7 @@
       area.setAttribute("class", "savings-inline-trend-window");
       svg.append(area);
     });
-    [18, 55, 92].forEach(y => {
+    [22, 56, 90].forEach(y => {
       const line = document.createElementNS(svgNs, "line");
       line.setAttribute("x1", "0");
       line.setAttribute("x2", "720");
@@ -143,7 +148,7 @@
       svg.append(line);
     });
     const baseline = document.createElementNS(svgNs, "line");
-    const baselineY = 18 + ((maxPrice - basePrice) / priceRange) * 74;
+    const baselineY = yForPrice(basePrice);
     baseline.setAttribute("x1", "0");
     baseline.setAttribute("x2", "720");
     baseline.setAttribute("y1", String(baselineY));
@@ -153,7 +158,7 @@
     const path = document.createElementNS(svgNs, "path");
     const points = prices.map((price, hour) => {
       const x = hour * hourWidth + hourWidth / 2;
-      const y = 18 + ((maxPrice - price) / priceRange) * 74;
+      const y = yForPrice(price);
       return { x, y };
     });
     const curve = [`M${points[0].x.toFixed(1)} ${points[0].y.toFixed(1)}`];
