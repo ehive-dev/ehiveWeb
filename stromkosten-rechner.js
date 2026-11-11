@@ -254,7 +254,12 @@
     const batteryDischargeSlots = batteryEnabled && batteryDischargeKwh > 0 && batteryEffectivePrice < basePrice
       ? Math.max(1, Math.min(4, Math.ceil((batteryDischargeKwh / 365) / 3)))
       : 0;
-    const batteryDischargeHours = [18, 19, 20, 21].slice(0, batteryDischargeSlots);
+    const pvEndHour = pvStrategy ? Math.max(...hoursForStrategy(pvStrategy)) : null;
+    const batteryDischargeStart = pvEndHour === null ? 18 : Math.min(23, pvEndHour + 1);
+    const batteryDischargeHours = Array.from(
+      { length: Math.min(batteryDischargeSlots, 24 - batteryDischargeStart) },
+      (_, index) => batteryDischargeStart + index
+    );
     const carSlots = car.enabled && car.share > 0 && activeStrategies.length
       ? Math.max(1, Math.min(6, Math.ceil(((car.annual / 365) * car.share / 100) / 3.7)))
       : 0;
