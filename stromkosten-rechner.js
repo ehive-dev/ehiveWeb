@@ -127,7 +127,7 @@
     if (!output.inlineTrend || !output.inlineTrendSummary) return;
     const svgNs = "http://www.w3.org/2000/svg";
     const svg = document.createElementNS(svgNs, "svg");
-    svg.setAttribute("viewBox", "0 0 720 108");
+    svg.setAttribute("viewBox", "0 0 720 122");
     svg.setAttribute("aria-hidden", "true");
     svg.dataset.trendView = "price";
     const prices = Array.from({ length: 24 }, () => basePrice);
@@ -157,19 +157,19 @@
       const referencePrice = Math.max(1, basePrice);
       const relativeDifference = (basePrice - price) / referencePrice;
       const visibleDifference = Math.max(-.2, Math.min(1.1, relativeDifference));
-      return 22 + visibleDifference * 62;
+      return 44 + visibleDifference * 62;
     };
 
     preferredHours.forEach(hour => {
       const area = document.createElementNS(svgNs, "rect");
       area.setAttribute("x", String(hour * hourWidth));
-      area.setAttribute("y", "8");
+      area.setAttribute("y", "30");
       area.setAttribute("width", String(hourWidth));
       area.setAttribute("height", "88");
       area.setAttribute("class", "savings-inline-trend-window");
       svg.append(area);
     });
-    [22, 56, 90].forEach(y => {
+    [44, 78, 112].forEach(y => {
       const line = document.createElementNS(svgNs, "line");
       line.setAttribute("x1", "0");
       line.setAttribute("x2", "720");
@@ -203,9 +203,9 @@
     svg.append(path);
 
     const priceLabel = document.createElementNS(svgNs, "text");
-    priceLabel.setAttribute("x", "708");
-    priceLabel.setAttribute("y", String(Math.max(14, Math.min(101, points.at(-1).y - 7))));
-    priceLabel.setAttribute("text-anchor", "end");
+    priceLabel.setAttribute("x", "12");
+    priceLabel.setAttribute("y", "18");
+    priceLabel.setAttribute("text-anchor", "start");
     priceLabel.setAttribute("class", "savings-inline-trend-line-label is-price-label");
     priceLabel.textContent = "Strompreis";
     svg.append(priceLabel);
@@ -232,13 +232,13 @@
     }
 
     const storageSvg = document.createElementNS(svgNs, "svg");
-    storageSvg.setAttribute("viewBox", "0 0 720 108");
+    storageSvg.setAttribute("viewBox", "0 0 720 122");
     storageSvg.setAttribute("aria-hidden", "true");
     storageSvg.dataset.trendView = "storage";
     const storageActive = batteryDischargeHours.length > 0;
     const storageChargeHours = [...new Set([...batteryPvHours, ...batteryGridHours])];
     const storageProfile = model.buildStorageProfile({ active: storageActive, chargeHours: storageChargeHours, dischargeHours: batteryDischargeHours });
-    [22, 56, 90].forEach((y, index) => {
+    [44, 78, 112].forEach((y, index) => {
       const line = document.createElementNS(svgNs, "line");
       line.setAttribute("x1", "0");
       line.setAttribute("x2", "720");
@@ -255,7 +255,7 @@
       storageSvg.append(label);
     });
     if (storageActive) {
-      const storagePoints = storageProfile.map((state, hour) => ({ x: hour * hourWidth + hourWidth / 2, y: 90 - state * .68 }));
+      const storagePoints = storageProfile.map((state, hour) => ({ x: hour * hourWidth + hourWidth / 2, y: 112 - state * .68 }));
       const storageCurve = [`M${storagePoints[0].x.toFixed(1)} ${storagePoints[0].y.toFixed(1)}`];
       storagePoints.slice(1).forEach((point, index) => {
         const previous = storagePoints[index];
@@ -267,16 +267,16 @@
       storagePath.setAttribute("class", "savings-inline-trend-storage-line");
       storageSvg.append(storagePath);
       const storageLabel = document.createElementNS(svgNs, "text");
-      storageLabel.setAttribute("x", "708");
-      storageLabel.setAttribute("y", String(Math.max(14, Math.min(101, storagePoints.at(-1).y - 7))));
-      storageLabel.setAttribute("text-anchor", "end");
+      storageLabel.setAttribute("x", "12");
+      storageLabel.setAttribute("y", "18");
+      storageLabel.setAttribute("text-anchor", "start");
       storageLabel.setAttribute("class", "savings-inline-trend-line-label is-storage-label");
       storageLabel.textContent = "Füllstand SOC";
       storageSvg.append(storageLabel);
     } else {
       const emptyText = document.createElementNS(svgNs, "text");
       emptyText.setAttribute("x", "360");
-      emptyText.setAttribute("y", "62");
+      emptyText.setAttribute("y", "80");
       emptyText.setAttribute("text-anchor", "middle");
       emptyText.setAttribute("class", "savings-inline-trend-empty");
       emptyText.textContent = "Batteriespeicher aktivieren, um den Ladezustand zu sehen";
