@@ -27,7 +27,9 @@
     chartText: get("[data-chart-explanation]"),
     chart: get("[data-day-chart]"),
     inlineTrend: get("[data-inline-trend]"),
-    inlineTrendSummary: get("[data-inline-trend-summary]")
+    inlineTrendSummary: get("[data-inline-trend-summary]"),
+    inlinePvValue: get("[data-inline-pv-value]"),
+    inlineBatteryValue: get("[data-inline-battery-value]")
   };
 
   function value(input) {
@@ -95,7 +97,7 @@
     return ranges.map(([from, to]) => `${String(from).padStart(2, "0")}:00–${String(to).padStart(2, "0")}:00 Uhr`).join(" und ");
   }
 
-  function renderInlineTrend({ activeStrategies, basePrice, batteryPvHours, batteryGridHours, batteryDischargeHours, batteryEffectivePrice, carHours, carSources, householdHours }) {
+  function renderInlineTrend({ activeStrategies, basePrice, batteryPvHours, batteryGridHours, batteryDischargeHours, batteryChargePrice, batteryChargeLabel, batteryEffectivePrice, carHours, carSources, householdHours }) {
     if (!output.inlineTrend || !output.inlineTrendSummary) return;
     const svgNs = "http://www.w3.org/2000/svg";
     const svg = document.createElementNS(svgNs, "svg");
@@ -171,6 +173,27 @@
     path.setAttribute("class", "savings-inline-trend-line");
     svg.append(path);
 
+    if (batteryDischargeHours.length) {
+      const batteryValueY = yForPrice(batteryEffectivePrice);
+      const firstHour = Math.min(...batteryDischargeHours);
+      const lastHour = Math.max(...batteryDischargeHours);
+      const batteryValueLine = document.createElementNS(svgNs, "line");
+      batteryValueLine.setAttribute("x1", String(firstHour * hourWidth + 4));
+      batteryValueLine.setAttribute("x2", String((lastHour + 1) * hourWidth - 4));
+      batteryValueLine.setAttribute("y1", String(batteryValueY));
+      batteryValueLine.setAttribute("y2", String(batteryValueY));
+      batteryValueLine.setAttribute("class", "savings-inline-trend-battery-value");
+      svg.append(batteryValueLine);
+      batteryDischargeHours.forEach(hour => {
+        const marker = document.createElementNS(svgNs, "circle");
+        marker.setAttribute("cx", String(hour * hourWidth + hourWidth / 2));
+        marker.setAttribute("cy", String(batteryValueY));
+        marker.setAttribute("r", "4.5");
+        marker.setAttribute("class", "savings-inline-trend-battery-marker");
+        svg.append(marker);
+      });
+    }
+
     const activityRows = [
       { hours: batteryGridHours, y: 112, className: "is-battery-grid" },
       { hours: batteryPvHours, y: 126, className: "is-battery-pv" },
@@ -190,11 +213,22 @@
     }));
 
     output.inlineTrend.replaceChildren(svg);
+    const pvStrategy = activeStrategies.find(strategy => strategy.key === "pv");
+    if (output.inlinePvValue) {
+      output.inlinePvValue.hidden = !pvStrategy;
+      const label = output.inlinePvValue.querySelector("b");
+      if (label && pvStrategy) label.textContent = `PV direkt: ${decimal.format(pvStrategy.price)} ct/kWh`;
+    }
+    if (output.inlineBatteryValue) {
+      output.inlineBatteryValue.hidden = !batteryDischargeHours.length;
+      const label = output.inlineBatteryValue.querySelector("b");
+      if (label && batteryDischargeHours.length) label.textContent = `Speicher: ${decimal.format(batteryEffectivePrice)} ct/kWh inkl. Verluste`;
+    }
     const summary = [`Angesetzter Preis-/Wertbereich: ${decimal.format(minPrice)} bis ${decimal.format(maxPrice)} ct/kWh.`];
     if (activeStrategies.some(strategy => strategy.key === "dynamic")) summary.push("Die Spotmarktlinie ist ein Beispielverlauf und keine Preisprognose.");
     if (batteryGridHours.length) summary.push(`Batterie aus Netz: ${formatHourRanges(batteryGridHours)}.`);
     if (batteryPvHours.length) summary.push(`Batterie aus PV: ${formatHourRanges(batteryPvHours)}.`);
-    if (batteryDischargeHours.length) summary.push(`Batterie versorgt Verbraucher am Abend von ${formatHourRanges(batteryDischargeHours)} mit einem angesetzten Speicherwert von ${decimal.format(batteryEffectivePrice)} ct/kWh inklusive Verlusten.`);
+    if (batteryDischargeHours.length) summary.push(`Batterie versorgt Verbraucher am Abend von ${formatHourRanges(batteryDischargeHours)}. Aus ${decimal.format(batteryChargePrice)} ct/kWh Ladepreis (${batteryChargeLabel}) werden durch den eingestellten Wirkungsgrad ${decimal.format(batteryEffectivePrice)} ct/kWh Speicherwert.`);
     if (carHours.length) {
       const sourceLabels = { pv: "PV", dynamic: "Spotmarkt-Beispiel", window: "festen Tarifzeiten" };
       const sources = [...new Set(carSources)].map(source => sourceLabels[source]).filter(Boolean).join(" und ");
@@ -205,7 +239,7 @@
     output.inlineTrend.setAttribute("aria-label", summaryText);
   }
 
-  function renderLiveTrend({ activeStrategies, basePrice, gridStrategies, batteryEnabled, batteryGridCharge, batteryChargeKwh, batteryDischargeKwh, batteryEffectivePrice, car, householdFlexibleKwh }) {
+  function renderLiveTrend({ activeStrategies, basePrice, gridStrategies, batteryEnabled, batteryGridCharge, batteryChargeKwh, batteryDischargeKwh, batteryChargePrice, batteryChargeLabel, batteryEffectivePrice, car, householdFlexibleKwh }) {
     const pvStrategy = activeStrategies.find(strategy => strategy.key === "pv");
     const batteryChargeSlots = batteryEnabled && batteryChargeKwh > 0 ? Math.max(1, Math.min(6, Math.ceil((batteryChargeKwh / 365) / 3))) : 0;
     const gridBatterySources = batteryGridCharge && gridStrategies.length
@@ -231,7 +265,7 @@
       ? Math.max(1, Math.min(4, Math.ceil((householdFlexibleKwh / 365) / 2)))
       : 0;
     const householdHours = pickScheduleHours(activeStrategies, householdSlots).map(slot => slot.hour);
-    renderInlineTrend({ activeStrategies, basePrice, batteryPvHours, batteryGridHours, batteryDischargeHours, batteryEffectivePrice, carHours, carSources, householdHours });
+    renderInlineTrend({ activeStrategies, basePrice, batteryPvHours, batteryGridHours, batteryDischargeHours, batteryChargePrice, batteryChargeLabel, batteryEffectivePrice, carHours, carSources, householdHours });
   }
 
   function calculate() {
@@ -307,6 +341,9 @@
     const batteryGridCharge = gridChargeAvailable && gridChargeInput.checked;
     const batteryChargeSources = activeStrategies.filter(strategy => strategy.key === "pv" || batteryGridCharge);
     const batteryChargePrice = batteryChargeSources.length ? Math.min(...batteryChargeSources.map(strategy => strategy.price)) : basePrice;
+    const batteryChargeSource = batteryChargeSources.find(strategy => strategy.price === batteryChargePrice);
+    const batteryChargeLabels = { pv: "PV", dynamic: "dynamischer Tarif", window: "festes Zeitfenster" };
+    const batteryChargeLabel = batteryChargeLabels[batteryChargeSource?.key] || "Normalpreis";
     const batteryCanCharge = batteryChargeSources.length > 0;
     const batteryDischargeKwh = batteryEnabled && batteryCanCharge ? batteryCapacity * batteryCycles : 0;
     const batteryChargeKwh = batteryDischargeKwh / batteryEfficiency;
@@ -333,7 +370,7 @@
       ? "Die markierten Bereiche verbinden die ausgewählten PV- und Tarifzeiten. Die günstigste verfügbare Möglichkeit wird zuerst genutzt; Überschneidungen werden nicht doppelt gezählt."
       : "Der markierte Bereich zeigt die ausgewählte PV- oder Tarifzeit. Der Tagesverlauf ist eine schematische Darstellung und keine Preis- oder Erzeugungsprognose.";
     renderChart(activeStrategies, usedCoverage);
-    renderLiveTrend({ activeStrategies, basePrice, gridStrategies, batteryEnabled, batteryGridCharge, batteryChargeKwh, batteryDischargeKwh, batteryEffectivePrice, car, householdFlexibleKwh });
+    renderLiveTrend({ activeStrategies, basePrice, gridStrategies, batteryEnabled, batteryGridCharge, batteryChargeKwh, batteryDischargeKwh, batteryChargePrice, batteryChargeLabel, batteryEffectivePrice, car, householdFlexibleKwh });
   }
 
   const manualButtons = Array.from(document.querySelectorAll("[data-manual-mode]"));
