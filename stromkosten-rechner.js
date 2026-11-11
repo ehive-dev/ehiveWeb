@@ -5,9 +5,10 @@
   const euro = new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
   const number = new Intl.NumberFormat("de-DE", { maximumFractionDigits: 0 });
   const decimal = new Intl.NumberFormat("de-DE", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  const dynamicSpotProfile = [.38,.24,.08,0,.04,.14,.31,.56,.72,.63,.51,.43,.32,.18,.22,.39,.61,.9,1,.88,.72,.58,.47,.4];
   const strategyConfig = {
     pv: { enabled: "strategyPv", price: "pricePv", share: "sharePv", label: "PV", window: [9, 16] },
-    dynamic: { enabled: "strategyDynamic", price: "priceDynamic", share: "shareDynamic", label: "Spotmarkt", window: [1, 6] },
+    dynamic: { enabled: "strategyDynamic", price: "priceDynamic", share: "shareDynamic", label: "Spotmarkt", hours: [3, 4, 2, 5, 13, 14] },
     window: { enabled: "strategyWindow", price: "priceWindow", share: "shareWindow", label: "5 feste Tarifstunden", windows: [[2, 4], [12, 12], [16, 16]] }
   };
 
@@ -52,6 +53,7 @@
   }
 
   function hoursForStrategy(strategy) {
+    if (strategy.hours) return [...strategy.hours];
     const hours = [];
     const windows = strategy.windows || [strategy.window];
     windows.forEach(([from, to]) => {
@@ -93,7 +95,7 @@
     return ranges.map(([from, to]) => `${String(from).padStart(2, "0")}:00–${String(to).padStart(2, "0")}:00 Uhr`).join(" und ");
   }
 
-  function renderInlineTrend({ activeStrategies, basePrice, batteryPvHours, batteryGridHours, carHours, householdHours }) {
+  function renderInlineTrend({ activeStrategies, basePrice, batteryPvHours, batteryGridHours, carHours, carSources, householdHours }) {
     if (!output.inlineTrend || !output.inlineTrendSummary) return;
     const svgNs = "http://www.w3.org/2000/svg";
     const svg = document.createElementNS(svgNs, "svg");
@@ -102,8 +104,15 @@
     const prices = Array.from({ length: 24 }, () => basePrice);
     const preferredHours = new Set();
     activeStrategies.forEach(strategy => {
+      if (strategy.key === "dynamic") {
+        const lowPrice = Math.min(basePrice, strategy.price);
+        dynamicSpotProfile.forEach((factor, hour) => {
+          const examplePrice = lowPrice + (basePrice - lowPrice) * factor;
+          prices[hour] = Math.min(prices[hour], examplePrice);
+        });
+      }
       hoursForStrategy(strategy).forEach(hour => {
-        prices[hour] = Math.min(prices[hour], strategy.price);
+        if (strategy.key !== "dynamic") prices[hour] = Math.min(prices[hour], strategy.price);
         preferredHours.add(hour);
       });
     });
@@ -158,10 +167,15 @@
     }));
 
     output.inlineTrend.replaceChildren(svg);
-    const summary = [`Angesetzter Wert: ${decimal.format(minPrice)} bis ${decimal.format(maxPrice)} ct/kWh.`];
+    const summary = [`Angesetzter Preis-/Wertbereich: ${decimal.format(minPrice)} bis ${decimal.format(maxPrice)} ct/kWh.`];
+    if (activeStrategies.some(strategy => strategy.key === "dynamic")) summary.push("Die Spotmarktlinie ist ein Beispielverlauf und keine Preisprognose.");
     if (batteryGridHours.length) summary.push(`Batterie aus Netz: ${formatHourRanges(batteryGridHours)}.`);
     if (batteryPvHours.length) summary.push(`Batterie aus PV: ${formatHourRanges(batteryPvHours)}.`);
-    if (carHours.length) summary.push(`E-Auto: ${formatHourRanges(carHours)}.`);
+    if (carHours.length) {
+      const sourceLabels = { pv: "PV", dynamic: "Spotmarkt-Beispiel", window: "festen Tarifzeiten" };
+      const sources = [...new Set(carSources)].map(source => sourceLabels[source]).filter(Boolean).join(" und ");
+      summary.push(`E-Auto: ${formatHourRanges(carHours)}${sources ? ` nach ${sources}` : ""}.`);
+    }
     const summaryText = summary.join(" ");
     output.inlineTrendSummary.textContent = summaryText;
     output.inlineTrend.setAttribute("aria-label", summaryText);
@@ -182,12 +196,14 @@
     const carSlots = car.enabled && car.share > 0 && activeStrategies.length
       ? Math.max(1, Math.min(6, Math.ceil(((car.annual / 365) * car.share / 100) / 3.7)))
       : 0;
-    const carHours = pickScheduleHours(activeStrategies, carSlots).map(slot => slot.hour);
+    const carPlan = pickScheduleHours(activeStrategies, carSlots);
+    const carHours = carPlan.map(slot => slot.hour);
+    const carSources = carPlan.map(slot => slot.source);
     const householdSlots = householdFlexibleKwh > 0 && activeStrategies.length
       ? Math.max(1, Math.min(4, Math.ceil((householdFlexibleKwh / 365) / 2)))
       : 0;
     const householdHours = pickScheduleHours(activeStrategies, householdSlots).map(slot => slot.hour);
-    renderInlineTrend({ activeStrategies, basePrice, batteryPvHours, batteryGridHours, carHours, householdHours });
+    renderInlineTrend({ activeStrategies, basePrice, batteryPvHours, batteryGridHours, carHours, carSources, householdHours });
   }
 
   function calculate() {
