@@ -12,6 +12,7 @@
     dynamic: { enabled: "strategyDynamic", price: "priceDynamic", share: "shareDynamic", label: "Spotmarkt", hours: [3, 4, 2, 5, 13, 14] },
     window: { enabled: "strategyWindow", price: "priceWindow", share: "shareWindow", label: "5 feste Tarifstunden", windows: [[2, 4], [12, 12], [16, 16]] }
   };
+  const familyAssumption = { annualKwh: 3500, flexibleShare: 15 };
 
   const get = selector => document.querySelector(selector);
   const output = {
@@ -123,11 +124,12 @@
     return ranges.map(([from, to]) => `${String(from).padStart(2, "0")}:00–${String(to).padStart(2, "0")}:00 Uhr`).join(" und ");
   }
 
-  function renderInlineTrend({ activeStrategies, basePrice, batteryPvHours, batteryGridHours, batteryDischargeHours, batteryCapacity, batteryChargePrice, batteryChargeLabel, batteryEffectivePrice, carHours, carSources, householdHours }) {
+  function renderInlineTrend({ activeStrategies, basePrice, batteryPvHours, batteryGridHours, batteryDischargeHours, batteryCapacity, batteryChargePrice, batteryChargeLabel, batteryEffectivePrice, carHours, carSources, heatPumpHours, heatPumpSources }) {
     if (!output.inlineTrend || !output.inlineTrendSummary) return;
     const svgNs = "http://www.w3.org/2000/svg";
     const svg = document.createElementNS(svgNs, "svg");
-    svg.setAttribute("viewBox", "0 0 720 122");
+    const scheduleRows = [carHours.length, heatPumpHours.length].filter(Boolean).length;
+    svg.setAttribute("viewBox", `0 0 720 ${122 + scheduleRows * 18}`);
     svg.setAttribute("aria-hidden", "true");
     svg.dataset.trendView = "price";
     const prices = Array.from({ length: 24 }, () => basePrice);
@@ -243,6 +245,25 @@
     priceLabel.textContent = "Strompreis";
     svg.append(priceLabel);
 
+    let scheduleY = 124;
+    [
+      { hours: carHours, className: "is-car" },
+      { hours: heatPumpHours, className: "is-heat-pump" }
+    ].forEach(schedule => {
+      if (!schedule.hours.length) return;
+      schedule.hours.forEach(hour => {
+        const bar = document.createElementNS(svgNs, "rect");
+        bar.setAttribute("x", String(hour * hourWidth + 2));
+        bar.setAttribute("y", String(scheduleY));
+        bar.setAttribute("width", String(hourWidth - 4));
+        bar.setAttribute("height", "12");
+        bar.setAttribute("rx", "3");
+        bar.setAttribute("class", schedule.className);
+        svg.append(bar);
+      });
+      scheduleY += 18;
+    });
+
     const storageSvg = document.createElementNS(svgNs, "svg");
     storageSvg.setAttribute("viewBox", "0 0 720 122");
     storageSvg.setAttribute("aria-hidden", "true");
@@ -337,6 +358,12 @@
     document.querySelectorAll("[data-inline-grid-charge]").forEach(item => {
       item.hidden = !batteryGridHours.length;
     });
+    document.querySelectorAll("[data-inline-car]").forEach(item => {
+      item.hidden = !carHours.length;
+    });
+    document.querySelectorAll("[data-inline-heat-pump]").forEach(item => {
+      item.hidden = !heatPumpHours.length;
+    });
     const pvStrategy = activeStrategies.find(strategy => strategy.key === "pv");
     if (output.inlinePvValue) {
       output.inlinePvValue.hidden = !pvStrategy;
@@ -358,6 +385,11 @@
       const sources = [...new Set(carSources)].map(source => sourceLabels[source]).filter(Boolean).join(" und ");
       summary.push(`E-Auto: ${formatHourRanges(carHours)}${sources ? ` nach ${sources}` : ""}.`);
     }
+    if (heatPumpHours.length) {
+      const sourceLabels = { pv: "PV", dynamic: "Spotmarkt-Beispiel", window: "festen Tarifzeiten" };
+      const sources = [...new Set(heatPumpSources)].map(source => sourceLabels[source]).filter(Boolean).join(" und ");
+      summary.push(`Wärmepumpe: ${formatHourRanges(heatPumpHours)}${sources ? ` nach ${sources}` : ""}.`);
+    }
     const sourceCounts = sourceProfile.reduce((counts, source) => ({ ...counts, [source]: (counts[source] || 0) + 1 }), {});
     const priceSummary = summary.join(" ");
     const storageSummary = storageActive
@@ -368,7 +400,7 @@
     setInlineTrendMode(inlineTrendMode);
   }
 
-  function renderLiveTrend({ activeStrategies, basePrice, totalKwh, gridStrategies, batteryEnabled, batteryGridCharge, batteryCapacity, recommendedBatteryCapacity, batteryChargeKwh, batteryDischargeKwh, batteryChargePrice, batteryChargeLabel, batteryEffectivePrice, car, householdFlexibleKwh }) {
+  function renderLiveTrend({ activeStrategies, basePrice, totalKwh, gridStrategies, batteryEnabled, batteryGridCharge, batteryCapacity, recommendedBatteryCapacity, batteryChargeKwh, batteryDischargeKwh, batteryChargePrice, batteryChargeLabel, batteryEffectivePrice, car, heatPump }) {
     const pvStrategy = activeStrategies.find(strategy => strategy.key === "pv");
     const pvTrendHours = pvStrategy ? hoursForStrategy(pvStrategy) : [];
     const representativeBatterySlots = model.representativeBatterySlots(batteryCapacity, recommendedBatteryCapacity, batteryEnabled && batteryDischargeKwh > 0);
@@ -396,19 +428,21 @@
     const carPlan = pickScheduleHours(activeStrategies, carSlots);
     const carHours = carPlan.map(slot => slot.hour);
     const carSources = carPlan.map(slot => slot.source);
-    const householdSlots = householdFlexibleKwh > 0 && activeStrategies.length
-      ? Math.max(1, Math.min(4, Math.ceil((householdFlexibleKwh / 365) / 2)))
+    const heatPumpSlots = heatPump.enabled && heatPump.share > 0 && activeStrategies.length
+      ? Math.max(1, Math.min(6, Math.ceil(((heatPump.annual / 365) * heatPump.share / 100) / 2.5)))
       : 0;
-    const householdHours = pickScheduleHours(activeStrategies, householdSlots).map(slot => slot.hour);
-    renderInlineTrend({ activeStrategies, basePrice, batteryPvHours, batteryGridHours, batteryDischargeHours, batteryCapacity, batteryChargePrice, batteryChargeLabel, batteryEffectivePrice, carHours, carSources, householdHours });
+    const heatPumpPlan = pickScheduleHours(activeStrategies, heatPumpSlots);
+    const heatPumpHours = heatPumpPlan.map(slot => slot.hour);
+    const heatPumpSources = heatPumpPlan.map(slot => slot.source);
+    renderInlineTrend({ activeStrategies, basePrice, batteryPvHours, batteryGridHours, batteryDischargeHours, batteryCapacity, batteryChargePrice, batteryChargeLabel, batteryEffectivePrice, carHours, carSources, heatPumpHours, heatPumpSources });
   }
 
   function calculate() {
     const basePrice = Math.max(0, value(form.elements.basePrice));
-    let totalKwh = 0;
-    let flexibleKwh = 0;
-    let householdFlexibleKwh = 0;
+    let totalKwh = familyAssumption.annualKwh;
+    let flexibleKwh = familyAssumption.annualKwh * familyAssumption.flexibleShare / 100;
     const car = { enabled: false, annual: 0, share: 0 };
+    const heatPump = { enabled: false, annual: 0, share: 0 };
 
     form.querySelectorAll(".savings-device-row").forEach(row => {
       const enabled = row.querySelector('input[type="checkbox"]');
@@ -428,8 +462,10 @@
         car.enabled = true;
         car.annual = annual;
         car.share = flexibleShare;
-      } else {
-        householdFlexibleKwh += annual * flexibleShare / 100;
+      } else if (deviceName === "Wärmepumpe") {
+        heatPump.enabled = true;
+        heatPump.annual = annual;
+        heatPump.share = flexibleShare;
       }
     });
 
@@ -535,7 +571,7 @@
       ? "Die markierten Bereiche verbinden die ausgewählten PV- und Tarifzeiten. Die günstigste verfügbare Möglichkeit wird zuerst genutzt; Überschneidungen werden nicht doppelt gezählt."
       : "Der markierte Bereich zeigt die ausgewählte PV- oder Tarifzeit. Der Tagesverlauf ist eine schematische Darstellung und keine Preis- oder Erzeugungsprognose.";
     renderChart(activeStrategies, optimizedCoverage);
-    renderLiveTrend({ activeStrategies, basePrice, totalKwh, gridStrategies, batteryEnabled, batteryGridCharge, batteryCapacity, recommendedBatteryCapacity, batteryChargeKwh, batteryDischargeKwh, batteryChargePrice, batteryChargeLabel, batteryEffectivePrice, car, householdFlexibleKwh });
+    renderLiveTrend({ activeStrategies, basePrice, totalKwh, gridStrategies, batteryEnabled, batteryGridCharge, batteryCapacity, recommendedBatteryCapacity, batteryChargeKwh, batteryDischargeKwh, batteryChargePrice, batteryChargeLabel, batteryEffectivePrice, car, heatPump });
   }
 
   const manualButtons = Array.from(document.querySelectorAll("[data-manual-mode]"));

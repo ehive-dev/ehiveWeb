@@ -7,7 +7,7 @@
   <meta name="description" content="Berechne transparent, wie viel du durch PV-Eigenverbrauch, dynamische Strompreise oder günstige Zeitfenster sparen könntest. Mit eigenen Verbrauchs- und Preisangaben.">
   <link rel="canonical" href="https://www.ehiv3.de/stromkosten-rechner.html">
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=20261112-wide-consumption-inputs">
+  <link rel="stylesheet" href="style.css?v=20261112-family-trend">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="eHive">
   <meta property="og:title" content="Stromkosten-Rechner | eHive One">
@@ -163,7 +163,7 @@
       </header>
       <ol class="savings-guide" aria-label="Drei Schritte zur Berechnung">
         <li><span>01</span><strong>Energiequellen wählen</strong><small>PV, Batteriespeicher und passende Tarife aktivieren</small></li>
-        <li><span>02</span><strong>Verbrauch eintragen</strong><small>Flexiblen und festen Anteil festlegen</small></li>
+        <li><span>02</span><strong>Verbraucher ergänzen</strong><small>E-Auto oder Wärmepumpe auswählen</small></li>
         <li><span>03</span><strong>Speicher ergänzen</strong><small>Nur wenn einer vorhanden ist</small></li>
       </ol>
 
@@ -206,11 +206,11 @@
           </fieldset>
 
           <fieldset class="savings-devices">
-            <legend>2. Zeitliche Flexibilität der Verbraucher anpassen</legend>
+            <legend>2. Zusätzliche Verbraucher ergänzen</legend>
+            <p class="savings-family-assumption"><strong>Familienhaushalt bereits berücksichtigt</strong><span>Die Modellrechnung setzt pauschal 3.500 kWh Haushaltsstrom pro Jahr an. Davon gelten 15 % als zeitlich flexibel. E-Auto und Wärmepumpe werden zusätzlich berechnet und sind in diesem Haushaltswert nicht enthalten.</span></p>
             <p class="savings-field-help savings-flex-help"><strong>Zeitlich flexibel</strong> bedeutet: Dieser Anteil darf innerhalb des Tages in PV-Zeiten, dynamisch günstige Viertelstunden oder feste günstige Zeitfenster gelegt werden. Der übrige Anteil bleibt zeitlich fest.</p>
             <div class="savings-device-head" aria-hidden="true"><span>Verbraucher</span><span>kWh/Jahr</span><span>zeitlich flexibel / fest</span></div>
             <div class="savings-device-list">
-              <label class="savings-device-row"><span class="savings-device-name"><input type="checkbox" checked><span class="savings-device-title"><b>Haushaltsgeräte</b><small>Waschen, Trocknen, Spülen und weitere Geräte</small></span></span><span class="savings-kwh-wrap"><small>Verbrauch/Jahr</small><input class="savings-kwh" type="number" min="0" max="30000" step="10" value="660" aria-label="Jahresverbrauch der Haushaltsgeräte in Kilowattstunden"><i>kWh</i></span><span class="savings-device-share"><input type="range" min="0" max="100" step="5" value="75" aria-label="Zeitlich flexibler Anteil der Haushaltsgeräte"><output>75 % flexibel · 25 % fest</output></span></label>
               <label class="savings-device-row"><span class="savings-device-name"><input type="checkbox" checked><span class="savings-device-title"><b>E-Auto</b><small>20 kWh/100 km angenommen</small></span></span><span class="savings-kwh-wrap"><small>Fahrleistung/Jahr</small><input class="savings-kwh" type="number" min="0" max="100000" step="500" value="12000" aria-label="Jährliche Fahrleistung des E-Autos in Kilometern"><i>km</i></span><span class="savings-device-share"><input type="range" min="0" max="100" step="5" value="65" aria-label="Zeitlich flexibler Anteil E-Auto"><output>65 % flexibel · 35 % fest</output></span></label>
               <label class="savings-device-row"><span class="savings-device-name"><input type="checkbox"><b>Wärmepumpe</b></span><span class="savings-kwh-wrap"><small>Verbrauch/Jahr</small><input class="savings-kwh" type="number" min="0" max="30000" step="50" value="4000" aria-label="Jahresverbrauch Wärmepumpe in Kilowattstunden"><i>kWh</i></span><span class="savings-device-share"><input type="range" min="0" max="100" step="5" value="25" aria-label="Zeitlich flexibler Anteil Wärmepumpe"><output>25 % flexibel · 75 % fest</output></span></label>
             </div>
@@ -237,7 +237,7 @@
             <div class="savings-inline-trend-modes" role="group" aria-label="Ansicht des Live-Trends wählen"><button type="button" class="is-active" data-inline-trend-mode="price" aria-pressed="true">Preis &amp; Nutzung</button><button type="button" data-inline-trend-mode="storage" aria-pressed="false">Speicherfüllstand</button><button type="button" data-inline-trend-mode="sources" aria-pressed="false">Energiequellen</button></div>
             <div class="savings-inline-trend-visual" data-inline-trend role="img" aria-label="Tagestrend wird berechnet"></div>
             <div class="savings-inline-trend-scale" aria-hidden="true"><span>00</span><span>06</span><span>12</span><span>18</span><span>24 Uhr</span></div>
-            <div class="savings-inline-trend-legend" data-inline-trend-legend="price" aria-hidden="true"><span><i class="is-baseline"></i>Normalpreis</span><span><i class="is-price"></i>direkter PV-/Tarifwert</span><span data-inline-grid-charge hidden><i class="is-grid-charge-window"></i>Netzgünstiges Laden</span><span data-inline-pv-value hidden><i class="is-pv-value"></i><b></b></span><span data-inline-battery-value hidden><i class="is-battery-value"></i><b></b></span></div>
+            <div class="savings-inline-trend-legend" data-inline-trend-legend="price" aria-hidden="true"><span><i class="is-baseline"></i>Normalpreis</span><span><i class="is-price"></i>direkter PV-/Tarifwert</span><span data-inline-car hidden><i class="is-car"></i>E-Auto lädt</span><span data-inline-heat-pump hidden><i class="is-heat-pump"></i>Wärmepumpe läuft</span><span data-inline-grid-charge hidden><i class="is-grid-charge-window"></i>Netzgünstiges Laden</span><span data-inline-pv-value hidden><i class="is-pv-value"></i><b></b></span><span data-inline-battery-value hidden><i class="is-battery-value"></i><b></b></span></div>
             <div class="savings-inline-trend-legend" data-inline-trend-legend="storage" aria-hidden="true" hidden><span><i class="is-storage-level"></i>typisierter Ladezustand</span><span data-inline-grid-charge hidden><i class="is-grid-charge-window"></i>Netzgünstiges Laden</span></div>
             <div class="savings-inline-trend-legend" data-inline-trend-legend="sources" aria-hidden="true" hidden><span><i class="is-source-grid"></i>Netzbezug</span><span><i class="is-source-pv"></i>PV direkt</span><span data-inline-grid-charge hidden><i class="is-source-grid-charge"></i>Netzladen Batterie</span><span><i class="is-source-tariff"></i>günstiger Tarif für Verbraucher</span><span><i class="is-source-battery"></i>Batterieabgabe</span></div>
             <p data-inline-trend-summary></p>
@@ -314,7 +314,7 @@
 <div data-include="footer"></div>
 <script src="config.js"></script>
 <script src="script.js?v=20261110-knx-release"></script>
-<script src="stromkosten-model.js?v=20261112-flex-price-fix"></script>
-<script src="stromkosten-rechner.js?v=20261112-flex-price-fix"></script>
+<script src="stromkosten-model.js?v=20261112-family-trend"></script>
+<script src="stromkosten-rechner.js?v=20261112-family-trend"></script>
 </body>
 </html>

@@ -284,3 +284,26 @@ test("Verbrauchseingaben besitzen ausreichend breite Desktop- und Mobilspalten",
   assert.match(css, /grid-template-columns:minmax\(0,1fr\) 132px/);
   assert.match(css, /\.savings-kwh-wrap\{min-width:132px\}/);
 });
+
+test("Familienhaushalt wird pauschal berücksichtigt und nicht mehr abgefragt", () => {
+  const html = fs.readFileSync(path.resolve(__dirname, "..", "stromkosten-rechner.html"), "utf8");
+  const client = fs.readFileSync(path.resolve(__dirname, "..", "stromkosten-rechner.js"), "utf8");
+  assert.match(html, /3\.500 kWh Haushaltsstrom pro Jahr/);
+  assert.match(html, /Davon gelten 15 % als zeitlich flexibel/);
+  assert.doesNotMatch(html, /<b>Haushaltsgeräte<\/b>/);
+  assert.match(client, /familyAssumption = \{ annualKwh: 3500, flexibleShare: 15 \}/);
+  assert.match(client, /let totalKwh = familyAssumption\.annualKwh/);
+});
+
+test("E-Auto und Wärmepumpe erscheinen bei Aktivierung als Balken im Live-Trend", () => {
+  const html = fs.readFileSync(path.resolve(__dirname, "..", "stromkosten-rechner.html"), "utf8");
+  const client = fs.readFileSync(path.resolve(__dirname, "..", "stromkosten-rechner.js"), "utf8");
+  const css = fs.readFileSync(path.resolve(__dirname, "..", "style.css"), "utf8");
+  assert.match(html, /data-inline-car hidden/);
+  assert.match(html, /data-inline-heat-pump hidden/);
+  assert.match(client, /\{ hours: carHours, className: "is-car" \}/);
+  assert.match(client, /\{ hours: heatPumpHours, className: "is-heat-pump" \}/);
+  assert.match(client, /item\.hidden = !carHours\.length/);
+  assert.match(client, /item\.hidden = !heatPumpHours\.length/);
+  assert.match(css, /\.is-heat-pump/);
+});
