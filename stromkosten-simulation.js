@@ -26,6 +26,23 @@
     return Number.isFinite(parsed) ? parsed : 0;
   }
 
+  function syncSimulationRanges() {
+    form.querySelectorAll("[data-sim-range]").forEach(input => {
+      const current = Number.parseFloat(input.value || "0");
+      const min = Number.parseFloat(input.min || "0");
+      const max = Number.parseFloat(input.max || "0");
+      const progress = max > min ? (current - min) / (max - min) * 100 : 0;
+      const digits = Math.max(0, Number.parseInt(input.dataset.digits || "0", 10));
+      const formatted = new Intl.NumberFormat("de-DE", {
+        minimumFractionDigits: digits,
+        maximumFractionDigits: digits
+      }).format(current);
+      const rangeOutput = input.closest(".simulation-range")?.querySelector("output");
+      if (rangeOutput) rangeOutput.textContent = `${formatted} ${input.dataset.unit || ""}`.trim();
+      input.style.setProperty("--range-progress", `${Math.max(0, Math.min(100, progress))}%`);
+    });
+  }
+
   function timeToHour(time) {
     const [hours, minutes] = String(time || "00:00").split(":").map(Number);
     return (hours || 0) + (minutes || 0) / 60;
@@ -130,6 +147,11 @@
       : result.carTargetReached
         ? `Das E-Auto erreicht das gewünschte Fahrziel bis zur Abfahrt.`
         : `Das gewünschte Fahrziel ist mit 11 kW bis zur Abfahrt nicht vollständig erreichbar.`;
+    const carPriceText = result.carEnabled && result.carExpensiveEnergyKwh > .05
+      ? ` Für das Fahrziel lädt das E-Auto ${number.format(result.carExpensiveEnergyKwh)} kWh auch außerhalb günstiger Zeiten.`
+      : result.carEnabled && result.carTargetReached
+        ? " Das E-Auto kann sein Fahrziel in den günstigeren Zeitfenstern erreichen."
+        : "";
     const gridText = !result.batteryEnabled
       ? " Der Batteriespeicher ist nicht aktiviert."
       : result.gridChargeEnergy > .05
@@ -137,12 +159,16 @@
       : result.pvUsedEnergy + result.pvExportEnergy > .5
         ? " Die Batterie wird nicht vorsorglich aus dem Netz gefüllt, damit Kapazität für den erwarteten PV-Strom frei bleibt."
         : " Die Batterie wird in diesem Szenario nicht aus dem Netz geladen.";
-    outputs.message.textContent = `${targetText}${gridText}`;
+    outputs.message.textContent = `${targetText}${carPriceText}${gridText}`;
   }
 
   function calculate() {
-    outputs.km.textContent = `${number.format(value("carKm"))} km`;
-    outputs.temperature.textContent = `${number.format(value("outdoorTemperature"))} °C`;
+    syncSimulationRanges();
+    const tariff = form.elements.tariff.value;
+    const batteryActive = form.elements.batteryEnabled.checked && value("batteryCapacity") > 0;
+    const cheapPriceField = form.querySelector("[data-sim-cheap-price]");
+    if (cheapPriceField) cheapPriceField.hidden = tariff === "normal";
+    form.elements.gridChargeAllowed.disabled = tariff === "normal" || !batteryActive;
     const result = model.simulate({
       startHour: currentQuarterHour(),
       departureHour: timeToHour(form.elements.departureTime.value),
@@ -151,16 +177,16 @@
       heatPumpEnabled: form.elements.heatPumpEnabled.checked,
       outdoorTemperature: value("outdoorTemperature"),
       heatPumpAnnualKwh: 4000,
-      weather: form.elements.weather.value,
+      pvForecast: value("pvForecast"),
       pvEnabled: value("pvKwp") > 0,
       pvKwp: value("pvKwp"),
       batteryEnabled: form.elements.batteryEnabled.checked,
       batteryCapacityKwh: value("batteryCapacity"),
       initialSoc: value("initialSoc"),
-      tariff: form.elements.tariff.value,
-      gridChargeAllowed: form.elements.gridChargeAllowed.checked,
-      normalPrice: 35,
-      cheapPrice: form.elements.tariff.value === "fixed" ? 27 : 24
+      tariff,
+      gridChargeAllowed: !form.elements.gridChargeAllowed.disabled && form.elements.gridChargeAllowed.checked,
+      normalPrice: value("normalPrice"),
+      cheapPrice: value("cheapPrice")
     });
     render(result);
   }

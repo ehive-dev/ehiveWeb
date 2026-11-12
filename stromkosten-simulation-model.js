@@ -36,10 +36,12 @@
     return normalPrice;
   }
 
-  function pvAt(hour, kwp, weather) {
+  function pvAt(hour, kwp, weather, forecastPercent) {
     const normalized = normalizeHour(hour);
     if (normalized < 7 || normalized >= 18 || kwp <= 0) return 0;
-    const weatherFactor = { sunny: 1, mixed: 0.58, cloudy: 0.22 }[weather] || 0.58;
+    const weatherFactor = Number.isFinite(Number(forecastPercent))
+      ? clamp(forecastPercent, 0, 100) / 100
+      : ({ sunny: 1, mixed: 0.58, cloudy: 0.22 }[weather] || 0.58);
     return Math.max(0, kwp * 0.82 * weatherFactor * Math.sin((normalized - 7) / 11 * Math.PI));
   }
 
@@ -94,7 +96,7 @@
     for (let slot = 0; slot < SLOT_COUNT; slot += 1) {
       const hour = normalizeHour(startHour + slot * SLOT_HOURS);
       prices.push(priceAt(hour, tariff, normalPrice, cheapPrice));
-      pv.push(options.pvEnabled === false ? 0 : pvAt(hour, Math.max(0, finite(options.pvKwp ?? 8)), options.weather || "mixed"));
+      pv.push(options.pvEnabled === false ? 0 : pvAt(hour, Math.max(0, finite(options.pvKwp ?? 8)), options.weather || "mixed", options.pvForecast));
       home.push(averageHomePower * homeProfile[Math.floor(hour)] / homeAverageFactor);
     }
 
@@ -204,6 +206,9 @@
     }
 
     const carEnergyDelivered = car.reduce((sum, power) => sum + power * SLOT_HOURS * carEfficiency, 0);
+    const carExpensiveEnergyKwh = car.reduce((sum, power, slot) => (
+      prices[slot] >= normalPrice - .5 ? sum + power * SLOT_HOURS * carEfficiency : sum
+    ), 0);
     const carKmDelivered = carConsumption > 0 ? carEnergyDelivered / carConsumption * 100 : 0;
     const socBeforePv = firstPvSlot > 0 && capacity > 0 ? slots[firstPvSlot - 1].soc : initialSoc;
     return {
@@ -215,6 +220,7 @@
       carKmRequested,
       carKmDelivered,
       carTargetReached: carKmDelivered + .05 >= carKmRequested,
+      carExpensiveEnergyKwh,
       heatPumpEnergyKwh: heatPump.reduce((sum, power) => sum + power * SLOT_HOURS, 0),
       heatPumpRequiredKwh: heatPumpEnergyKwh,
       totalCost,

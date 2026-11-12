@@ -51,6 +51,29 @@ test("Erwarteter PV-Überschuss begrenzt das nächtliche Netzladen", () => {
   assert.ok(sunny.pvExportEnergy > 0);
 });
 
+test("PV-Mengenregler verändert Erzeugung und reservierten Speicherplatz", () => {
+  const littlePv = simulation.simulate({ ...base, pvForecast: 15, outdoorTemperature: 10, carKm: 40 });
+  const muchPv = simulation.simulate({ ...base, pvForecast: 100, outdoorTemperature: 10, carKm: 40 });
+  const littleGeneration = littlePv.slots.reduce((sum, slot) => sum + slot.pvKw, 0);
+  const muchGeneration = muchPv.slots.reduce((sum, slot) => sum + slot.pvKw, 0);
+  assert.ok(muchGeneration > littleGeneration);
+  assert.ok(muchPv.gridTargetSoc < littlePv.gridTargetSoc);
+});
+
+test("Preisregler verändern Kosten und günstiges Netzladen", () => {
+  const lowSpread = simulation.simulate({ ...base, pvKwp: 0, initialSoc: 20, normalPrice: 35, cheapPrice: 35 });
+  const highSpread = simulation.simulate({ ...base, pvKwp: 0, initialSoc: 20, normalPrice: 60, cheapPrice: 10 });
+  assert.equal(lowSpread.gridChargeEnergy, 0);
+  assert.ok(highSpread.gridChargeEnergy > 0);
+  assert.notEqual(highSpread.totalCost, lowSpread.totalCost);
+});
+
+test("hohes Fahrziel erzwingt Laden außerhalb günstiger Tarifzeiten", () => {
+  const result = simulation.simulate({ ...base, carKm: 300, normalPrice: 55, cheapPrice: 10 });
+  assert.equal(result.carTargetReached, true);
+  assert.ok(result.carExpensiveEnergyKwh > 0);
+});
+
 test("SOC bleibt in Grenzen und Batterie lädt und entlädt nie gleichzeitig", () => {
   const result = simulation.simulate({ ...base, weather: "cloudy", outdoorTemperature: -10 });
   result.slots.forEach(slot => {
@@ -69,10 +92,15 @@ test("Simulationsmodus ist vollständig in der Seite eingebunden", () => {
   assert.match(html, /Außentemperatur/);
   assert.match(html, /type="range" name="carKm"/);
   assert.match(html, /type="range" name="outdoorTemperature"/);
+  assert.match(html, /name="pvForecast"/);
+  assert.match(html, /name="normalPrice"/);
+  assert.match(html, /name="cheapPrice"/);
+  assert.match(html, /data-sim-cheap-price/);
   assert.match(html, /data-sim-km-output/);
   assert.match(html, /data-sim-temperature-output/);
   assert.match(html, /data-simulation-chart/);
   assert.match(html, /stromkosten-simulation-model\.js/);
   assert.match(html, /stromkosten-simulation\.js/);
   assert.match(css, /\.simulation-chart-track/);
+  assert.match(css, /\.simulation-range input\[type="range"\]::-webkit-slider-thumb/);
 });
