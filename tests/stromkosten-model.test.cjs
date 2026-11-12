@@ -307,3 +307,16 @@ test("E-Auto und Wärmepumpe erscheinen bei Aktivierung als Balken im Live-Trend
   assert.match(client, /item\.hidden = !heatPumpHours\.length/);
   assert.match(css, /\.is-heat-pump/);
 });
+
+test("Batteriespeicher zeigt Kunden zuerst nur die Speichergröße", () => {
+  const html = fs.readFileSync(path.resolve(__dirname, "..", "stromkosten-rechner.html"), "utf8");
+  const capacity = html.indexOf("Nutzbare Speichergröße");
+  const advanced = html.indexOf("Erweiterte Annahmen anpassen");
+  const cycles = html.indexOf('name="batteryCycles"');
+  const efficiency = html.indexOf('name="batteryEfficiency"');
+  assert.ok(capacity > -1 && advanced > capacity);
+  assert.ok(cycles > advanced && efficiency > advanced);
+  assert.match(html, /typische Speicherwerte\. Du musst nichts weiter einstellen/);
+  assert.match(html, /value="120"[^>]*inputmode="numeric"/);
+  assert.match(html, /value="90"[^>]*inputmode="decimal"/);
+});
