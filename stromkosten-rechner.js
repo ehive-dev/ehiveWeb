@@ -31,9 +31,7 @@
     inlineTrend: get("[data-inline-trend]"),
     inlineTrendSummary: get("[data-inline-trend-summary]"),
     inlinePvValue: get("[data-inline-pv-value]"),
-    inlineBatteryValue: get("[data-inline-battery-value]"),
-    batteryCapacity: get("[data-battery-capacity-output]"),
-    batterySizeHint: get("[data-battery-size-hint]")
+    inlineBatteryValue: get("[data-inline-battery-value]")
   };
   const inlineTrendModeButtons = Array.from(document.querySelectorAll("[data-inline-trend-mode]"));
   const inlineTrendLegends = Array.from(document.querySelectorAll("[data-inline-trend-legend]"));
@@ -454,44 +452,33 @@
     const basePrice = Math.max(0, value(form.elements.basePrice));
     let totalKwh = familyAssumption.annualKwh;
     let flexibleKwh = familyAssumption.annualKwh * familyAssumption.flexibleShare / 100;
-    const car = { enabled: false, annual: 0, share: 0 };
-    const heatPump = { enabled: false, annual: 0, share: 0 };
-
-    form.querySelectorAll(".savings-device-row").forEach(row => {
-      const enabled = row.querySelector('input[type="checkbox"]');
-      const kwh = row.querySelector(".savings-kwh");
-      const share = row.querySelector('.savings-device-share input[type="range"]');
-      const shareOutput = row.querySelector(".savings-device-share output");
-      const flexibleShare = Math.max(0, Math.min(100, value(share)));
-      shareOutput.textContent = `${number.format(flexibleShare)} % flexibel · ${number.format(100 - flexibleShare)} % fest`;
-      row.classList.toggle("is-disabled", !enabled.checked);
-      if (!enabled.checked) return;
-      const deviceName = row.querySelector(".savings-device-name b")?.textContent.trim();
-      const enteredAnnual = Math.max(0, value(kwh));
-      const annual = deviceName === "E-Auto" ? enteredAnnual * .2 : enteredAnnual;
-      totalKwh += annual;
-      flexibleKwh += annual * flexibleShare / 100;
-      if (deviceName === "E-Auto") {
-        car.enabled = true;
-        car.annual = annual;
-        car.share = flexibleShare;
-      } else if (deviceName === "Wärmepumpe") {
-        heatPump.enabled = true;
-        heatPump.annual = annual;
-        heatPump.share = flexibleShare;
-      }
+    const carAnnualKm = Math.max(0, value(form.elements.carAnnualKm));
+    const car = {
+      enabled: carAnnualKm > 0,
+      annual: carAnnualKm * .2,
+      share: Math.max(0, Math.min(100, value(form.elements.carFlex)))
+    };
+    const heatPump = {
+      enabled: value(form.elements.heatAnnualKwh) > 0,
+      annual: Math.max(0, value(form.elements.heatAnnualKwh)),
+      share: Math.max(0, Math.min(100, value(form.elements.heatFlex)))
+    };
+    [car, heatPump].forEach(device => {
+      if (!device.enabled) return;
+      totalKwh += device.annual;
+      flexibleKwh += device.annual * device.share / 100;
     });
 
-    const strategies = Object.entries(strategyConfig).map(([key, config]) => {
-      const enabled = Boolean(form.elements[config.enabled]?.checked);
-      const price = value(form.elements[config.price]);
-      const share = Math.max(0, Math.min(100, value(form.elements[config.share])));
-      const card = form.querySelector(`[data-strategy-card="${key}"]`);
-      card?.classList.toggle("is-disabled", !enabled);
-      const shareOutput = form.querySelector(`[data-strategy-output="${key}"]`);
-      if (shareOutput) shareOutput.textContent = `${number.format(share)} %`;
-      return { key, ...config, enabled, price, share, allocated: 0 };
-    });
+    const pvPower = Math.max(0, value(form.elements.pvPower));
+    const tariffMode = form.elements.tariffMode?.value || "normal";
+    const cheapPrice = value(form.elements.cheapPrice);
+    const cheapPriceField = form.querySelector("[data-cheap-price]");
+    if (cheapPriceField) cheapPriceField.hidden = tariffMode === "normal";
+    const strategies = [
+      { key: "pv", ...strategyConfig.pv, enabled: pvPower > 0, price: value(form.elements.pricePv), share: 45, maxKwh: pvPower * 900, allocated: 0 },
+      { key: "dynamic", ...strategyConfig.dynamic, enabled: tariffMode === "dynamic", price: cheapPrice, share: 35, allocated: 0 },
+      { key: "window", ...strategyConfig.window, enabled: tariffMode === "window", price: cheapPrice, share: 40, allocated: 0 }
+    ];
     const activeStrategies = strategies.filter(strategy => strategy.enabled).sort((a, b) => a.price - b.price);
     const pvStrategy = activeStrategies.find(strategy => strategy.key === "pv");
     const allocation = model.allocateConsumption({ totalKwh, flexibleKwh, strategies: activeStrategies });
@@ -503,34 +490,24 @@
       ? activeStrategies.reduce((sum, strategy) => sum + strategy.allocated * strategy.price, 0) / shiftedKwh
       : basePrice;
     const priceGap = Math.max(0, basePrice - averageTargetPrice);
-    const requestedFlexibleCoverage = activeStrategies.filter(strategy => strategy.key !== "pv").reduce((sum, strategy) => sum + strategy.share, 0);
     const usedFlexibleCoverage = flexibleKwh > 0 ? shiftedFlexibleKwh / flexibleKwh * 100 : 0;
     const optimizedCoverage = totalKwh > 0 ? shiftedKwh / totalKwh * 100 : 0;
     if (pvStrategy) {
       const flexibleText = shiftedFlexibleKwh > 0 ? ` Zusätzlich werden ${number.format(shiftedFlexibleKwh)} kWh flexibler Verbrauch in günstige Tarifzeiten verschoben.` : "";
-      output.strategyStatus.textContent = `PV-Nutzung: ${number.format(pvStrategy.share)} % des zeitlich flexiblen Verbrauchs beziehungsweise ${number.format(directPvKwh)} kWh pro Jahr.${flexibleText}${requestedFlexibleCoverage > 100 ? " Tarifanteile über 100 % werden automatisch begrenzt." : ""}`;
+      output.strategyStatus.textContent = `Berücksichtigt: ${number.format(directPvKwh)} kWh direkte PV-Nutzung.${flexibleText}`;
     } else if (activeStrategies.length) {
-      output.strategyStatus.textContent = `${number.format(usedFlexibleCoverage)} % der zeitlich flexiblen Energie werden berücksichtigt.${requestedFlexibleCoverage > 100 ? " Anteile über 100 % werden automatisch begrenzt." : ""}`;
+      output.strategyStatus.textContent = `Berücksichtigt: ${number.format(usedFlexibleCoverage)} % der flexiblen Energie in günstigen Tarifzeiten.`;
     } else {
-      output.strategyStatus.textContent = "Aktiviere mindestens die PV-Anlage, einen dynamischen Spotmarkt-Tarif oder ein günstiges Zeitfenster.";
+      output.strategyStatus.textContent = "Trage eine PV-Größe ein oder wähle einen günstigen Tarif.";
     }
 
-    const batteryEnabled = Boolean(form.elements.batteryEnabled?.checked);
-    form.querySelector("[data-battery-choice]")?.classList.toggle("is-disabled", !batteryEnabled);
-    form.querySelector(".savings-battery")?.classList.toggle("is-disabled", !batteryEnabled);
     const batteryCapacity = Math.max(0, value(form.elements.batteryCapacity));
+    const batteryEnabled = batteryCapacity > 0;
     const batteryCycles = Math.max(0, value(form.elements.batteryCycles));
     const batteryEfficiency = Math.max(50, Math.min(100, value(form.elements.batteryEfficiency))) / 100;
     const recommendedBatteryCapacity = model.recommendedCapacity(totalKwh);
-    if (output.batteryCapacity) output.batteryCapacity.textContent = `${decimal.format(batteryCapacity)} kWh`;
-    if (output.batterySizeHint) {
-      const comparison = batteryCapacity > recommendedBatteryCapacity && recommendedBatteryCapacity > 0
-        ? `Mit deinen aktivierten Verbrauchern liegt die verbrauchsseitige Orientierung bei rund ${decimal.format(recommendedBatteryCapacity)} kWh; der gewählte Speicher liegt darüber.`
-        : `Mit deinen aktivierten Verbrauchern liegt die verbrauchsseitige Orientierung bei rund ${decimal.format(recommendedBatteryCapacity)} kWh.`;
-      output.batterySizeHint.textContent = comparison;
-    }
     const gridStrategies = activeStrategies.filter(strategy => strategy.key === "dynamic" || strategy.key === "window");
-    const gridChargeAvailable = gridStrategies.length > 0;
+    const gridChargeAvailable = batteryEnabled && gridStrategies.length > 0;
     const gridChargeInput = form.elements.batteryGridCharge;
     if (!gridChargeAvailable) gridChargeInput.checked = false;
     gridChargeInput.disabled = !gridChargeAvailable;

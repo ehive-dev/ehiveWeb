@@ -14,6 +14,15 @@ test("PV-Nutzung wird aus dem zeitlich flexiblen Verbrauch berechnet", () => {
   assert.equal(result.remainingDemandKwh, 2135.25);
 });
 
+test("kleine PV-Anlagen begrenzen die anrechenbare PV-Energie", () => {
+  const result = model.allocateConsumption({
+    totalKwh: 8000,
+    flexibleKwh: 5000,
+    strategies: [{ key: "pv", share: 45, maxKwh: 900 }]
+  });
+  assert.equal(result.directPvKwh, 900);
+});
+
 test("mehr flexible Haushaltsenergie senkt im PV-Standardfall die Kosten", () => {
   const strategies = [{ key: "pv", share: 45, price: 8 }];
   const lessFlexible = model.allocateConsumption({ totalKwh: 3060, flexibleKwh: 1560, strategies });
@@ -273,12 +282,13 @@ test("Batteriewert ändert nur die Farbe derselben Strompreis-Kennlinie", () => 
   assert.match(client, /path\.style\.stroke = "url\(#savings-price-line-gradient\)"/);
 });
 
-test("Eingabebereiche zwei und drei stehen vollständig vor dem Live-Trend", () => {
+test("die drei Eingabebereiche sind zu einer kompakten Basiseinstellung zusammengefasst", () => {
   const html = fs.readFileSync(path.resolve(__dirname, "..", "stromkosten-rechner.html"), "utf8");
-  const devices = html.indexOf('<fieldset class="savings-devices">');
-  const battery = html.indexOf('<fieldset class="savings-battery');
+  const basics = html.indexOf('<fieldset class="savings-basics">');
   const trend = html.indexOf('<figure class="savings-inline-trend">');
-  assert.ok(devices > -1 && battery > devices && trend > battery);
+  assert.ok(basics > -1 && trend > basics);
+  assert.doesNotMatch(html, /savings-guide|savings-devices|class="savings-battery/);
+  assert.doesNotMatch(html, /1\. Energiequellen|2\. Zusätzliche|3\. Batteriespeicher/);
 });
 
 test("Plausibilitätsvergleich ist vollständig aus der Rechnerseite entfernt", () => {
@@ -288,18 +298,17 @@ test("Plausibilitätsvergleich ist vollständig aus der Rechnerseite entfernt", 
   assert.doesNotMatch(css, /savings-benchmark/);
 });
 
-test("Verbrauchseingaben besitzen ausreichend breite Desktop- und Mobilspalten", () => {
+test("Basiseinstellungen nutzen ein kompaktes responsives Fragenraster", () => {
   const css = fs.readFileSync(path.resolve(__dirname, "..", "style.css"), "utf8");
-  assert.match(css, /minmax\(132px,\.55fr\)/);
-  assert.match(css, /grid-template-columns:minmax\(0,1fr\) 132px/);
-  assert.match(css, /\.savings-kwh-wrap\{min-width:132px\}/);
+  assert.match(css, /\.savings-basics-grid\{display:grid;grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/);
+  assert.match(css, /@media\(max-width:760px\)\{\.savings-basics-grid\{grid-template-columns:repeat\(2,minmax\(0,1fr\)\)/);
+  assert.match(css, /@media\(max-width:520px\)\{\.savings-basics-grid\{grid-template-columns:1fr/);
 });
 
 test("Familienhaushalt wird pauschal berücksichtigt und nicht mehr abgefragt", () => {
   const html = fs.readFileSync(path.resolve(__dirname, "..", "stromkosten-rechner.html"), "utf8");
   const client = fs.readFileSync(path.resolve(__dirname, "..", "stromkosten-rechner.js"), "utf8");
-  assert.match(html, /3\.500 kWh Haushaltsstrom pro Jahr/);
-  assert.match(html, /Davon gelten 15 % als zeitlich flexibel/);
+  assert.match(html, /Familienhaushalt 3\.500 kWh\/Jahr/);
   assert.doesNotMatch(html, /<b>Haushaltsgeräte<\/b>/);
   assert.match(client, /familyAssumption = \{ annualKwh: 3500, flexibleShare: 15 \}/);
   assert.match(client, /let totalKwh = familyAssumption\.annualKwh/);
@@ -318,17 +327,21 @@ test("E-Auto und Wärmepumpe erscheinen bei Aktivierung als Balken im Live-Trend
   assert.match(css, /\.is-heat-pump/);
 });
 
-test("Batteriespeicher zeigt Kunden zuerst nur die Speichergröße", () => {
+test("Batteriespeicher fragt nur die Größe ab und nutzt technische Annahmen im Hintergrund", () => {
   const html = fs.readFileSync(path.resolve(__dirname, "..", "stromkosten-rechner.html"), "utf8");
-  const capacity = html.indexOf("Nutzbare Speichergröße");
-  const advanced = html.indexOf("Erweiterte Annahmen anpassen");
-  const cycles = html.indexOf('name="batteryCycles"');
-  const efficiency = html.indexOf('name="batteryEfficiency"');
-  assert.ok(capacity > -1 && advanced > capacity);
-  assert.ok(cycles > advanced && efficiency > advanced);
-  assert.match(html, /typische Speicherwerte\. Du musst nichts weiter einstellen/);
-  assert.match(html, /value="120"[^>]*inputmode="numeric"/);
-  assert.match(html, /value="90"[^>]*inputmode="decimal"/);
+  assert.match(html, /Wie groß ist dein Batteriespeicher\?/);
+  assert.match(html, /type="hidden" name="batteryCycles" value="120"/);
+  assert.match(html, /type="hidden" name="batteryEfficiency" value="90"/);
+  assert.doesNotMatch(html, /Erweiterte Annahmen anpassen|Speichernutzung pro Jahr|Wirkungsgrad des Speichers/);
+});
+
+test("Kunden sehen kurze direkte Fragen statt Prozent-Schiebereglern", () => {
+  const html = fs.readFileSync(path.resolve(__dirname, "..", "stromkosten-rechner.html"), "utf8");
+  assert.match(html, /Wie ist dein Arbeitspreis\?/);
+  assert.match(html, /Wie groß ist deine PV-Anlage\?/);
+  assert.match(html, /Wie hoch ist deine Einspeisevergütung\?/);
+  assert.match(html, /Wie flexibel kannst du dein Auto laden\?/);
+  assert.doesNotMatch(html, /name="sharePv"|name="shareDynamic"|name="shareWindow"/);
 });
 
 test("Speichertrend zeigt den SOC vor PV nach dem Netzladen", () => {

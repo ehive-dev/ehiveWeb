@@ -7,7 +7,7 @@
   <meta name="description" content="Berechne transparent, wie viel du durch PV-Eigenverbrauch, dynamische Strompreise oder günstige Zeitfenster sparen könntest. Mit eigenen Verbrauchs- und Preisangaben.">
   <link rel="canonical" href="https://www.ehiv3.de/stromkosten-rechner.html">
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=20261112-trend-tabs-fix">
+  <link rel="stylesheet" href="style.css?v=20261112-compact-basics">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="eHive">
   <meta property="og:title" content="Stromkosten-Rechner | eHive One">
@@ -159,76 +159,30 @@
     <div class="container">
       <header class="savings-section-heading">
         <div><p class="eyebrow">Interaktiver Rechner</p><h2 id="calculator-title">Dein Verbrauch. Deine Annahmen.</h2></div>
-        <p>Gehe die drei Bereiche nacheinander durch. Beispielwerte sind bereits eingetragen und können jederzeit angepasst werden.</p>
+        <p>Beantworte wenige kurze Fragen. Das Ergebnis und der Live-Trend passen sich sofort an.</p>
       </header>
       <nav class="savings-mode-links" aria-label="Rechnermodus wählen"><a class="is-active" href="#rechner">Jahresersparnis</a><a href="#tages-simulation">Bis morgen simulieren</a></nav>
-      <ol class="savings-guide" aria-label="Drei Schritte zur Berechnung">
-        <li><span>01</span><strong>Energiequellen wählen</strong><small>PV, Batteriespeicher und passende Tarife aktivieren</small></li>
-        <li><span>02</span><strong>Verbraucher ergänzen</strong><small>E-Auto oder Wärmepumpe auswählen</small></li>
-        <li><span>03</span><strong>Speichergröße angeben</strong><small>Nur wenn einer vorhanden ist</small></li>
-      </ol>
-
       <div class="savings-calculator-grid">
         <form class="savings-form" data-savings-form>
-          <fieldset class="savings-strategies">
-            <legend>1. Energiequellen und Tarifzeiten kombinieren</legend>
-            <div class="savings-base-price">
-              <label><span>Dein normaler Arbeitspreis</span><span class="savings-input-unit"><input type="number" name="basePrice" min="0" max="200" step="0.1" value="35" inputmode="decimal"><b>ct/kWh</b></span></label>
-              <p>Wähle nur aus, was bei dir vorhanden ist. Weitere Einstellungen erscheinen anschließend automatisch.</p>
+          <fieldset class="savings-basics">
+            <legend>Basiseinstellungen</legend>
+            <div class="savings-basics-grid">
+              <label><span>Wie ist dein Arbeitspreis?</span><span class="savings-input-unit"><input type="number" name="basePrice" min="0" max="200" step="0.1" value="35" inputmode="decimal"><b>ct/kWh</b></span></label>
+              <label><span>Wie groß ist deine PV-Anlage?</span><span class="savings-input-unit"><input type="number" name="pvPower" min="0" max="100" step="0.5" value="8" inputmode="decimal"><b>kWp</b></span></label>
+              <label><span>Wie hoch ist deine Einspeisevergütung?</span><span class="savings-input-unit"><input type="number" name="pricePv" min="-50" max="200" step="0.1" value="8" inputmode="decimal"><b>ct/kWh</b></span></label>
+              <label><span>Welchen Stromtarif nutzt du?</span><select name="tariffMode"><option value="normal">Normaler Stromtarif</option><option value="dynamic">Dynamischer Tarif</option><option value="window">Günstige Zeitfenster</option></select></label>
+              <label data-cheap-price hidden><span>Wie hoch ist dein günstiger Preis?</span><span class="savings-input-unit"><input type="number" name="cheapPrice" min="-50" max="200" step="0.1" value="24" inputmode="decimal"><b>ct/kWh</b></span></label>
+              <label><span>Wie groß ist dein Batteriespeicher?</span><span class="savings-input-unit"><input type="number" name="batteryCapacity" min="0" max="100" step="0.5" value="0" inputmode="decimal"><b>kWh</b></span></label>
+              <label><span>Wie viele Kilometer fährst du pro Jahr?</span><span class="savings-input-unit"><input type="number" name="carAnnualKm" min="0" max="100000" step="500" value="12000" inputmode="numeric"><b>km</b></span></label>
+              <label><span>Wie flexibel kannst du dein Auto laden?</span><select name="carFlex"><option value="0">Gar nicht</option><option value="30">Etwas flexibel</option><option value="65" selected>Meist flexibel</option><option value="90">Sehr flexibel</option></select></label>
+              <label><span>Wie viel Strom braucht deine Wärmepumpe?</span><span class="savings-input-unit"><input type="number" name="heatAnnualKwh" min="0" max="30000" step="100" value="0" inputmode="numeric"><b>kWh/Jahr</b></span></label>
+              <label><span>Wie flexibel ist deine Wärmepumpe?</span><select name="heatFlex"><option value="0">Gar nicht</option><option value="15">Etwas flexibel</option><option value="25" selected>Normal flexibel</option><option value="40">Sehr flexibel</option></select></label>
             </div>
-            <div class="savings-strategy-list">
-              <article class="savings-strategy-card" data-strategy-card="pv">
-                <label class="savings-strategy-toggle"><input type="checkbox" name="strategyPv" checked><span><strong>PV-Anlage</strong><small>Verbrauch in Zeiten eigener Solarerzeugung legen</small></span></label>
-                <div class="savings-strategy-fields">
-                  <label><span>Einspeisevergütung</span><span class="savings-input-unit"><input type="number" name="pricePv" min="-50" max="200" step="0.1" value="8" inputmode="decimal"><b>ct/kWh</b></span></label>
-                  <label class="savings-strategy-share"><span>Wie viel passt typischerweise in PV-Zeiten? <output data-strategy-output="pv">45&nbsp;%</output></span><input type="range" name="sharePv" min="0" max="100" step="5" value="45"><small>Anteil deines zeitlich flexiblen Verbrauchs, der direkt in Zeiten eigener Solarerzeugung genutzt werden kann</small></label>
-                </div>
-              </article>
-              <article class="savings-strategy-card is-disabled" data-strategy-card="dynamic">
-                <label class="savings-strategy-toggle"><input type="checkbox" name="strategyDynamic"><span><strong>Dynamischer Spotmarkt-Tarif</strong><small>Der Preis ändert sich stündlich oder viertelstündlich mit dem Spotmarkt</small></span></label>
-                <div class="savings-strategy-fields">
-                  <label><span>Beispiel-Endpreis in günstiger Stunde</span><span class="savings-input-unit"><input type="number" name="priceDynamic" min="-50" max="200" step="0.1" value="24" inputmode="decimal"><b>ct/kWh</b></span><small class="savings-price-example">Beispiel: 8 ct/kWh am Spotmarkt. Mit Steuern, Netzentgelten und Tarifbestandteilen rechnen wir beispielhaft mit 24 ct/kWh Endpreis.</small></label>
-                  <label class="savings-strategy-share"><span>Wie viel kannst du in günstige Spotmarktzeiten verschieben? <output data-strategy-output="dynamic">35&nbsp;%</output></span><input type="range" name="shareDynamic" min="0" max="100" step="5" value="35"><small>Schätze den realistisch planbaren Anteil</small></label>
-                </div>
-              </article>
-              <article class="savings-strategy-card is-disabled" data-strategy-card="window">
-                <label class="savings-strategy-toggle"><input type="checkbox" name="strategyWindow"><span><strong>Feste günstige Zeitfenster</strong><small>Beispiel: insgesamt 5 Stunden täglich – 02:00–05:00, 12:00–13:00 und 16:00–17:00 Uhr</small></span></label>
-                <div class="savings-strategy-fields">
-                  <label><span>Preis im Zeitfenster</span><span class="savings-input-unit"><input type="number" name="priceWindow" min="-50" max="200" step="0.1" value="27" inputmode="decimal"><b>ct/kWh</b></span></label>
-                  <label class="savings-strategy-share"><span>Anteil deines flexiblen Verbrauchs in diesen Zeitfenstern <output data-strategy-output="window">40&nbsp;%</output></span><input type="range" name="shareWindow" min="0" max="100" step="5" value="40"><small>Der Prozentwert bezieht sich nur auf deinen zeitlich verschiebbaren Verbrauch, nicht auf deinen gesamten Stromverbrauch.</small></label>
-                </div>
-              </article>
-              <article class="savings-strategy-card savings-battery-choice is-disabled" data-battery-choice>
-                <label class="savings-strategy-toggle"><input type="checkbox" name="batteryEnabled"><span><strong>Batteriespeicher</strong><small>Gespeicherte Energie später anstelle von teurem Netzstrom nutzen</small></span></label>
-                <div class="savings-strategy-fields"><p>Kapazität, Nutzung und Wirkungsgrad trägst du anschließend in Punkt 3 ein.</p></div>
-              </article>
-            </div>
+            <label class="savings-compact-toggle"><input type="checkbox" name="batteryGridCharge"><span>Speicher bei günstigem Tarif aus dem Netz laden</span></label>
+            <input type="hidden" name="batteryCycles" value="120">
+            <input type="hidden" name="batteryEfficiency" value="90">
+            <p class="savings-compact-note">Angenommen: Familienhaushalt 3.500 kWh/Jahr, E-Auto 20 kWh/100 km und PV-Ertrag 900 kWh/kWp im Jahr.</p>
             <p class="savings-strategy-status" data-strategy-status role="status" aria-live="polite"></p>
-          </fieldset>
-
-          <fieldset class="savings-devices">
-            <legend>2. Zusätzliche Verbraucher ergänzen</legend>
-            <p class="savings-family-assumption"><strong>Familienhaushalt bereits berücksichtigt</strong><span>Die Modellrechnung setzt pauschal 3.500 kWh Haushaltsstrom pro Jahr an. Davon gelten 15 % als zeitlich flexibel. E-Auto und Wärmepumpe werden zusätzlich berechnet und sind in diesem Haushaltswert nicht enthalten.</span></p>
-            <p class="savings-field-help savings-flex-help"><strong>Zeitlich flexibel</strong> bedeutet: Dieser Anteil darf innerhalb des Tages in PV-Zeiten, dynamisch günstige Viertelstunden oder feste günstige Zeitfenster gelegt werden. Der übrige Anteil bleibt zeitlich fest.</p>
-            <div class="savings-device-head" aria-hidden="true"><span>Verbraucher</span><span>kWh/Jahr</span><span>zeitlich flexibel / fest</span></div>
-            <div class="savings-device-list">
-              <label class="savings-device-row"><span class="savings-device-name"><input type="checkbox" checked><span class="savings-device-title"><b>E-Auto</b><small>20 kWh/100 km angenommen</small></span></span><span class="savings-kwh-wrap"><small>Fahrleistung/Jahr</small><input class="savings-kwh" type="number" min="0" max="100000" step="500" value="12000" aria-label="Jährliche Fahrleistung des E-Autos in Kilometern"><i>km</i></span><span class="savings-device-share"><input type="range" min="0" max="100" step="5" value="65" aria-label="Zeitlich flexibler Anteil E-Auto"><output>65 % flexibel · 35 % fest</output></span></label>
-              <label class="savings-device-row"><span class="savings-device-name"><input type="checkbox"><b>Wärmepumpe</b></span><span class="savings-kwh-wrap"><small>Verbrauch/Jahr</small><input class="savings-kwh" type="number" min="0" max="30000" step="50" value="4000" aria-label="Jahresverbrauch Wärmepumpe in Kilowattstunden"><i>kWh</i></span><span class="savings-device-share"><input type="range" min="0" max="100" step="5" value="25" aria-label="Zeitlich flexibler Anteil Wärmepumpe"><output>25 % flexibel · 75 % fest</output></span></label>
-            </div>
-          </fieldset>
-
-          <fieldset class="savings-battery is-disabled" id="speicher-rechner">
-            <legend>3. Batteriespeicher ergänzen</legend>
-            <p class="savings-battery-empty">Aktiviere den Batteriespeicher zuerst unter Punkt 1. Danach musst du nur noch seine Größe angeben.</p>
-            <div class="savings-battery-details">
-              <div class="savings-battery-primary">
-                <label class="savings-battery-capacity"><span>Nutzbare Speichergröße <output data-battery-capacity-output>10,0 kWh</output></span><input type="range" name="batteryCapacity" min="0" max="30" step="0.5" value="10" aria-label="Nutzbare Größe des Batteriespeichers in Kilowattstunden"><small>Die nutzbare Speichergröße findest du meist im Datenblatt oder in der App des Speichers.</small></label>
-                <p class="savings-battery-defaults">Für die erste Einschätzung verwenden wir automatisch typische Speicherwerte. Du musst nichts weiter einstellen.</p>
-              </div>
-              <label class="savings-grid-charge"><input type="checkbox" name="batteryGridCharge"><span><strong>Netzladen in günstigen Tarifzeiten erlauben</strong><small>Zum Beispiel im Winter. Dafür muss oben ein dynamischer Tarif oder mindestens ein festes günstiges Zeitfenster aktiviert sein.</small></span></label>
-              <details class="savings-explanation savings-advanced-assumptions"><summary>Erweiterte Annahmen anpassen</summary><div class="savings-battery-inputs"><label><span>Speichernutzung pro Jahr</span><span class="savings-input-unit"><input type="number" name="batteryCycles" min="0" max="365" step="1" value="120" inputmode="numeric"><b>Zyklen</b></span><small>120 bedeutet: Der Speicher setzt im Jahr insgesamt das 120-Fache seiner nutzbaren Größe um.</small></label><label><span>Wirkungsgrad des Speichers</span><span class="savings-input-unit"><input type="number" name="batteryEfficiency" min="50" max="100" step="1" value="90" inputmode="decimal"><b>%</b></span><small>Berücksichtigt Verluste beim Laden und Entladen.</small></label></div><p class="savings-plain-help savings-battery-guidance">Orientierung nach <a href="https://solar.htw-berlin.de/faq-unabhaengigkeitsrechner/" target="_blank" rel="noopener noreferrer">HTW Berlin</a>: höchstens etwa 1,5 kWh nutzbare Kapazität je 1.000 kWh Jahresverbrauch und zusätzlich höchstens 1,5 kWh je kW PV-Leistung. <span data-battery-size-hint></span></p></details>
-              <details class="savings-explanation"><summary>Wie wird der Speicher berechnet?</summary><p>Die abgegebene Speicherenergie wird mit dem normalen Arbeitspreis verglichen. Die benötigte Ladeenergie wird einschließlich Speicherverlusten zum günstigsten aktivierten Ladepreis angesetzt. Kapazität × Vollzyklen bestimmt den möglichen Jahresdurchsatz. Dieser wird auf den tatsächlich vorhandenen, noch nicht in günstige Zeiten verschobenen Verbrauch begrenzt. Die Vollzyklen sollten bereits berücksichtigen, wie oft günstige Energie realistisch verfügbar ist. Weil PV-Leistung, Wetter und ein zeitaufgelöstes Lastprofil nicht abgefragt werden, ist das Ergebnis eine Kostenabschätzung und keine Autarkieprognose.</p></details>
-            </div>
           </fieldset>
 
           <figure class="savings-inline-trend">
@@ -376,9 +330,9 @@
 <div data-include="footer"></div>
 <script src="config.js"></script>
 <script src="script.js?v=20261110-knx-release"></script>
-<script src="stromkosten-model.js?v=20261112-trend-tabs-fix"></script>
-<script src="stromkosten-rechner.js?v=20261112-trend-tabs-fix"></script>
-<script src="stromkosten-simulation-model.js?v=20261112-trend-tabs-fix"></script>
-<script src="stromkosten-simulation.js?v=20261112-trend-tabs-fix"></script>
+<script src="stromkosten-model.js?v=20261112-compact-basics"></script>
+<script src="stromkosten-rechner.js?v=20261112-compact-basics"></script>
+<script src="stromkosten-simulation-model.js?v=20261112-compact-basics"></script>
+<script src="stromkosten-simulation.js?v=20261112-compact-basics"></script>
 </body>
 </html>
