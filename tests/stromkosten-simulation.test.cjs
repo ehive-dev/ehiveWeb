@@ -67,6 +67,10 @@ test("Simulationsmodus ist vollständig in der Seite eingebunden", () => {
   assert.match(html, /id="tages-simulation"/);
   assert.match(html, /Benötigte Kilometer/);
   assert.match(html, /Außentemperatur/);
+  assert.match(html, /type="range" name="carKm"/);
+  assert.match(html, /type="range" name="outdoorTemperature"/);
+  assert.match(html, /data-sim-km-output/);
+  assert.match(html, /data-sim-temperature-output/);
   assert.match(html, /data-simulation-chart/);
   assert.match(html, /stromkosten-simulation-model\.js/);
   assert.match(html, /stromkosten-simulation\.js/);

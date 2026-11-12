@@ -7,7 +7,7 @@
   <meta name="description" content="Berechne transparent, wie viel du durch PV-Eigenverbrauch, dynamische Strompreise oder günstige Zeitfenster sparen könntest. Mit eigenen Verbrauchs- und Preisangaben.">
   <link rel="canonical" href="https://www.ehiv3.de/stromkosten-rechner.html">
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=20261112-day-simulation">
+  <link rel="stylesheet" href="style.css?v=20261112-simulation-sliders">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="eHive">
   <meta property="og:title" content="Stromkosten-Rechner | eHive One">
@@ -281,7 +281,7 @@
             <legend>E-Auto bis zur Abfahrt</legend>
             <label class="simulation-toggle"><input type="checkbox" name="carEnabled" checked><span><strong>E-Auto einplanen</strong><small>20 kWh je 100 km und 90 % Ladewirkungsgrad werden angenommen.</small></span></label>
             <div class="simulation-input-grid">
-              <label><span>Benötigte Kilometer</span><span class="savings-input-unit"><input type="number" name="carKm" min="0" max="1000" step="10" value="120" inputmode="numeric"><b>km</b></span></label>
+              <label class="simulation-range"><span>Benötigte Kilometer <output data-sim-km-output>120 km</output></span><input type="range" name="carKm" min="0" max="500" step="10" value="120" aria-label="Benötigte Kilometer bis zur Abfahrt"><small><i>0 km</i><i>500 km</i></small></label>
               <label><span>Abfahrt morgen</span><input type="time" name="departureTime" value="07:00"></label>
             </div>
           </fieldset>
@@ -289,7 +289,7 @@
             <legend>Wärme und PV morgen</legend>
             <label class="simulation-toggle"><input type="checkbox" name="heatPumpEnabled" checked><span><strong>Wärmepumpe einplanen</strong><small>Der typisierte Wärmebedarf steigt bei niedriger Außentemperatur.</small></span></label>
             <div class="simulation-input-grid">
-              <label><span>Außentemperatur</span><span class="savings-input-unit"><input type="number" name="outdoorTemperature" min="-20" max="25" step="1" value="0" inputmode="decimal"><b>°C</b></span></label>
+              <label class="simulation-range"><span>Außentemperatur <output data-sim-temperature-output>0 °C</output></span><input type="range" name="outdoorTemperature" min="-20" max="20" step="1" value="0" aria-label="Erwartete Außentemperatur"><small><i>−20 °C</i><i>20 °C</i></small></label>
               <label><span>PV-Wetter</span><select name="weather"><option value="sunny">sonnig</option><option value="mixed" selected>wechselhaft</option><option value="cloudy">bedeckt</option></select></label>
               <label><span>PV-Anlagengröße</span><span class="savings-input-unit"><input type="number" name="pvKwp" min="0" max="100" step="0.5" value="8" inputmode="decimal"><b>kWp</b></span></label>
             </div>
@@ -376,9 +376,9 @@
 <div data-include="footer"></div>
 <script src="config.js"></script>
 <script src="script.js?v=20261110-knx-release"></script>
-<script src="stromkosten-model.js?v=20261112-day-simulation"></script>
-<script src="stromkosten-rechner.js?v=20261112-day-simulation"></script>
-<script src="stromkosten-simulation-model.js?v=20261112-day-simulation"></script>
-<script src="stromkosten-simulation.js?v=20261112-day-simulation"></script>
+<script src="stromkosten-model.js?v=20261112-simulation-sliders"></script>
+<script src="stromkosten-rechner.js?v=20261112-simulation-sliders"></script>
+<script src="stromkosten-simulation-model.js?v=20261112-simulation-sliders"></script>
+<script src="stromkosten-simulation.js?v=20261112-simulation-sliders"></script>
 </body>
 </html>

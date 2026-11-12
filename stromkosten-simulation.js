@@ -16,7 +16,9 @@
     pv: document.querySelector("[data-sim-pv-energy]"),
     gridCharge: document.querySelector("[data-sim-grid-charge]"),
     finalSoc: document.querySelector("[data-sim-final-soc]"),
-    timeScale: document.querySelector("[data-simulation-time-scale]")
+    timeScale: document.querySelector("[data-simulation-time-scale]"),
+    km: document.querySelector("[data-sim-km-output]"),
+    temperature: document.querySelector("[data-sim-temperature-output]")
   };
 
   function value(name) {
@@ -139,6 +141,8 @@
   }
 
   function calculate() {
+    outputs.km.textContent = `${number.format(value("carKm"))} km`;
+    outputs.temperature.textContent = `${number.format(value("outdoorTemperature"))} °C`;
     const result = model.simulate({
       startHour: currentQuarterHour(),
       departureHour: timeToHour(form.elements.departureTime.value),
