@@ -7,7 +7,7 @@
   <meta name="description" content="Berechne transparent, wie viel du durch PV-Eigenverbrauch, dynamische Strompreise oder günstige Zeitfenster sparen könntest. Mit eigenen Verbrauchs- und Preisangaben.">
   <link rel="canonical" href="https://www.ehiv3.de/stromkosten-rechner.html">
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=20261112-grid-soc">
+  <link rel="stylesheet" href="style.css?v=20261112-day-simulation">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="eHive">
   <meta property="og:title" content="Stromkosten-Rechner | eHive One">
@@ -161,6 +161,7 @@
         <div><p class="eyebrow">Interaktiver Rechner</p><h2 id="calculator-title">Dein Verbrauch. Deine Annahmen.</h2></div>
         <p>Gehe die drei Bereiche nacheinander durch. Beispielwerte sind bereits eingetragen und können jederzeit angepasst werden.</p>
       </header>
+      <nav class="savings-mode-links" aria-label="Rechnermodus wählen"><a class="is-active" href="#rechner">Jahresersparnis</a><a href="#tages-simulation">Bis morgen simulieren</a></nav>
       <ol class="savings-guide" aria-label="Drei Schritte zur Berechnung">
         <li><span>01</span><strong>Energiequellen wählen</strong><small>PV, Batteriespeicher und passende Tarife aktivieren</small></li>
         <li><span>02</span><strong>Verbraucher ergänzen</strong><small>E-Auto oder Wärmepumpe auswählen</small></li>
@@ -268,6 +269,69 @@
     </div>
   </section>
 
+  <section class="savings-simulation" id="tages-simulation" aria-labelledby="simulation-title">
+    <div class="container">
+      <header class="savings-section-heading">
+        <div><p class="eyebrow">Simulationsmodus</p><h2 id="simulation-title">Was soll bis morgen geschafft sein?</h2></div>
+        <p>Die Simulation plant die nächsten 24 Stunden in 15-Minuten-Schritten. Sie verbindet Fahrziel, Außentemperatur, PV-Erzeugung, Strompreis und Batteriespeicher zu einem nachvollziehbaren Tagesplan.</p>
+      </header>
+      <div class="simulation-layout">
+        <form class="simulation-form" data-simulation-form>
+          <fieldset>
+            <legend>E-Auto bis zur Abfahrt</legend>
+            <label class="simulation-toggle"><input type="checkbox" name="carEnabled" checked><span><strong>E-Auto einplanen</strong><small>20 kWh je 100 km und 90 % Ladewirkungsgrad werden angenommen.</small></span></label>
+            <div class="simulation-input-grid">
+              <label><span>Benötigte Kilometer</span><span class="savings-input-unit"><input type="number" name="carKm" min="0" max="1000" step="10" value="120" inputmode="numeric"><b>km</b></span></label>
+              <label><span>Abfahrt morgen</span><input type="time" name="departureTime" value="07:00"></label>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Wärme und PV morgen</legend>
+            <label class="simulation-toggle"><input type="checkbox" name="heatPumpEnabled" checked><span><strong>Wärmepumpe einplanen</strong><small>Der typisierte Wärmebedarf steigt bei niedriger Außentemperatur.</small></span></label>
+            <div class="simulation-input-grid">
+              <label><span>Außentemperatur</span><span class="savings-input-unit"><input type="number" name="outdoorTemperature" min="-20" max="25" step="1" value="0" inputmode="decimal"><b>°C</b></span></label>
+              <label><span>PV-Wetter</span><select name="weather"><option value="sunny">sonnig</option><option value="mixed" selected>wechselhaft</option><option value="cloudy">bedeckt</option></select></label>
+              <label><span>PV-Anlagengröße</span><span class="savings-input-unit"><input type="number" name="pvKwp" min="0" max="100" step="0.5" value="8" inputmode="decimal"><b>kWp</b></span></label>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>Speicher und Tarif</legend>
+            <label class="simulation-toggle"><input type="checkbox" name="batteryEnabled" checked><span><strong>Batteriespeicher einplanen</strong><small>Die Simulation hält zwischen 20 und 90 % SOC.</small></span></label>
+            <div class="simulation-input-grid">
+              <label><span>Speichergröße</span><span class="savings-input-unit"><input type="number" name="batteryCapacity" min="0" max="50" step="0.5" value="10" inputmode="decimal"><b>kWh</b></span></label>
+              <label><span>Aktueller SOC</span><span class="savings-input-unit"><input type="number" name="initialSoc" min="20" max="90" step="1" value="30" inputmode="numeric"><b>%</b></span></label>
+              <label><span>Tarifmodell</span><select name="tariff"><option value="fixed" selected>feste günstige Zeiten</option><option value="dynamic">dynamischer Beispieltarif</option><option value="normal">normaler Strompreis</option></select></label>
+            </div>
+            <label class="simulation-toggle simulation-grid-charge"><input type="checkbox" name="gridChargeAllowed" checked><span><strong>Batterie günstig aus dem Netz laden</strong><small>Die Simulation lässt Platz für erwarteten PV-Strom und lädt nicht pauschal bis 90 %.</small></span></label>
+          </fieldset>
+          <details class="savings-explanation"><summary>Verwendete Standardannahmen</summary><p>Familienhaushalt 3.500 kWh/Jahr, Wärmepumpe 4.000 kWh/Jahr, Wallbox 11 kW, Batteriespeicher 5 kW Lade- und Entladeleistung, normaler Strompreis 35 ct/kWh und günstiger Preis 24 ct/kWh. Der Tagesplan ist eine Modellrechnung und keine Wetter-, Preis- oder Wärmebedarfsprognose.</p></details>
+        </form>
+
+        <div class="simulation-results" aria-live="polite">
+          <div class="simulation-result-grid">
+            <div><span>E-Auto bis Abfahrt</span><strong data-sim-car-result>–</strong></div>
+            <div><span>Wärmepumpe</span><strong data-sim-heat-result>–</strong></div>
+            <div><span>Speicher vor PV</span><strong data-sim-soc-result>–</strong></div>
+            <div><span>Kosten bis morgen</span><strong data-sim-cost-result>–</strong></div>
+          </div>
+          <p class="simulation-message" data-sim-message></p>
+          <figure class="simulation-chart" aria-labelledby="simulation-chart-title">
+            <figcaption id="simulation-chart-title"><strong>Geplanter Energieeinsatz über 24 Stunden</strong><small>Jeder Balken entspricht 15 Minuten. Die Höhe beziehungsweise Deckkraft zeigt die relative Leistung.</small></figcaption>
+            <div data-simulation-chart></div>
+            <div class="simulation-time-scale" data-simulation-time-scale aria-hidden="true"></div>
+            <div class="simulation-legend" aria-hidden="true"><span><i class="is-price"></i>Strompreis</span><span><i class="is-pv"></i>PV</span><span><i class="is-car"></i>E-Auto</span><span><i class="is-heat"></i>Wärmepumpe</span><span><i class="is-grid-charge"></i>Netzladen</span><span><i class="is-battery"></i>Batterieabgabe</span><span><i class="is-grid"></i>Netzbezug</span></div>
+          </figure>
+          <dl class="simulation-balance">
+            <div><dt>Netzbezug</dt><dd data-sim-grid-energy>–</dd></div>
+            <div><dt>PV direkt oder gespeichert</dt><dd data-sim-pv-energy>–</dd></div>
+            <div><dt>Netzladen Batterie</dt><dd data-sim-grid-charge>–</dd></div>
+            <div><dt>SOC am Ende</dt><dd data-sim-final-soc>–</dd></div>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="savings-day" id="tagesplan" aria-labelledby="savings-day-title">
     <div class="container savings-day-grid">
       <div>
@@ -312,7 +376,9 @@
 <div data-include="footer"></div>
 <script src="config.js"></script>
 <script src="script.js?v=20261110-knx-release"></script>
-<script src="stromkosten-model.js?v=20261112-grid-soc"></script>
-<script src="stromkosten-rechner.js?v=20261112-grid-soc"></script>
+<script src="stromkosten-model.js?v=20261112-day-simulation"></script>
+<script src="stromkosten-rechner.js?v=20261112-day-simulation"></script>
+<script src="stromkosten-simulation-model.js?v=20261112-day-simulation"></script>
+<script src="stromkosten-simulation.js?v=20261112-day-simulation"></script>
 </body>
 </html>
