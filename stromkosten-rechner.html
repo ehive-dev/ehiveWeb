@@ -7,7 +7,7 @@
   <meta name="description" content="Berechne transparent, wie viel du durch PV-Eigenverbrauch, dynamische Strompreise oder günstige Zeitfenster sparen könntest. Mit eigenen Verbrauchs- und Preisangaben.">
   <link rel="canonical" href="https://www.ehiv3.de/stromkosten-rechner.html">
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=20261112-compact-basics">
+  <link rel="stylesheet" href="style.css?v=20261112-visible-sliders">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="eHive">
   <meta property="og:title" content="Stromkosten-Rechner | eHive One">
@@ -167,16 +167,16 @@
           <fieldset class="savings-basics">
             <legend>Basiseinstellungen</legend>
             <div class="savings-basics-grid">
-              <label><span>Wie ist dein Arbeitspreis?</span><span class="savings-input-unit"><input type="number" name="basePrice" min="0" max="200" step="0.1" value="35" inputmode="decimal"><b>ct/kWh</b></span></label>
-              <label><span>Wie groß ist deine PV-Anlage?</span><span class="savings-input-unit"><input type="number" name="pvPower" min="0" max="100" step="0.5" value="8" inputmode="decimal"><b>kWp</b></span></label>
-              <label><span>Wie hoch ist deine Einspeisevergütung?</span><span class="savings-input-unit"><input type="number" name="pricePv" min="-50" max="200" step="0.1" value="8" inputmode="decimal"><b>ct/kWh</b></span></label>
-              <label><span>Welchen Stromtarif nutzt du?</span><select name="tariffMode"><option value="normal">Normaler Stromtarif</option><option value="dynamic">Dynamischer Tarif</option><option value="window">Günstige Zeitfenster</option></select></label>
-              <label data-cheap-price hidden><span>Wie hoch ist dein günstiger Preis?</span><span class="savings-input-unit"><input type="number" name="cheapPrice" min="-50" max="200" step="0.1" value="24" inputmode="decimal"><b>ct/kWh</b></span></label>
-              <label><span>Wie groß ist dein Batteriespeicher?</span><span class="savings-input-unit"><input type="number" name="batteryCapacity" min="0" max="100" step="0.5" value="0" inputmode="decimal"><b>kWh</b></span></label>
-              <label><span>Wie viele Kilometer fährst du pro Jahr?</span><span class="savings-input-unit"><input type="number" name="carAnnualKm" min="0" max="100000" step="500" value="12000" inputmode="numeric"><b>km</b></span></label>
-              <label><span>Wie flexibel kannst du dein Auto laden?</span><select name="carFlex"><option value="0">Gar nicht</option><option value="30">Etwas flexibel</option><option value="65" selected>Meist flexibel</option><option value="90">Sehr flexibel</option></select></label>
-              <label><span>Wie viel Strom braucht deine Wärmepumpe?</span><span class="savings-input-unit"><input type="number" name="heatAnnualKwh" min="0" max="30000" step="100" value="0" inputmode="numeric"><b>kWh/Jahr</b></span></label>
-              <label><span>Wie flexibel ist deine Wärmepumpe?</span><select name="heatFlex"><option value="0">Gar nicht</option><option value="15">Etwas flexibel</option><option value="25" selected>Normal flexibel</option><option value="40">Sehr flexibel</option></select></label>
+              <label class="savings-slider"><span>Wie ist dein Arbeitspreis?<output data-range-output>35 ct/kWh</output></span><input data-compact-range data-unit="ct/kWh" data-digits="1" type="range" name="basePrice" min="15" max="70" step="0.5" value="35"></label>
+              <label class="savings-slider"><span>Wie groß ist deine PV-Anlage?<output data-range-output>8 kWp</output></span><input data-compact-range data-unit="kWp" data-digits="1" type="range" name="pvPower" min="0" max="40" step="0.5" value="8"></label>
+              <label class="savings-slider"><span>Wie hoch ist deine Einspeisevergütung?<output data-range-output>8 ct/kWh</output></span><input data-compact-range data-unit="ct/kWh" data-digits="1" type="range" name="pricePv" min="0" max="20" step="0.1" value="8"></label>
+              <label class="savings-select"><span>Welchen Stromtarif nutzt du?</span><select name="tariffMode"><option value="normal">Normaler Stromtarif</option><option value="dynamic">Dynamischer Tarif</option><option value="window">Günstige Zeitfenster</option></select></label>
+              <label class="savings-slider" data-cheap-price hidden><span>Wie hoch ist dein günstiger Preis?<output data-range-output>24 ct/kWh</output></span><input data-compact-range data-unit="ct/kWh" data-digits="1" type="range" name="cheapPrice" min="0" max="50" step="0.5" value="24"></label>
+              <label class="savings-slider"><span>Wie groß ist dein Batteriespeicher?<output data-range-output>0 kWh</output></span><input data-compact-range data-unit="kWh" data-digits="1" type="range" name="batteryCapacity" min="0" max="30" step="0.5" value="0"></label>
+              <label class="savings-slider"><span>Wie viele Kilometer fährst du pro Jahr?<output data-range-output>12.000 km</output></span><input data-compact-range data-unit="km" type="range" name="carAnnualKm" min="0" max="50000" step="500" value="12000"></label>
+              <label class="savings-slider"><span>Wie flexibel kannst du dein Auto laden?<output data-range-output>65 %</output></span><input data-compact-range data-unit="%" type="range" name="carFlex" min="0" max="100" step="5" value="65"></label>
+              <label class="savings-slider"><span>Wie viel Strom braucht deine Wärmepumpe?<output data-range-output>0 kWh/Jahr</output></span><input data-compact-range data-unit="kWh/Jahr" type="range" name="heatAnnualKwh" min="0" max="20000" step="250" value="0"></label>
+              <label class="savings-slider"><span>Wie flexibel ist deine Wärmepumpe?<output data-range-output>25 %</output></span><input data-compact-range data-unit="%" type="range" name="heatFlex" min="0" max="100" step="5" value="25"></label>
             </div>
             <label class="savings-compact-toggle"><input type="checkbox" name="batteryGridCharge"><span>Speicher bei günstigem Tarif aus dem Netz laden</span></label>
             <input type="hidden" name="batteryCycles" value="120">
@@ -330,9 +330,9 @@
 <div data-include="footer"></div>
 <script src="config.js"></script>
 <script src="script.js?v=20261110-knx-release"></script>
-<script src="stromkosten-model.js?v=20261112-compact-basics"></script>
-<script src="stromkosten-rechner.js?v=20261112-compact-basics"></script>
-<script src="stromkosten-simulation-model.js?v=20261112-compact-basics"></script>
-<script src="stromkosten-simulation.js?v=20261112-compact-basics"></script>
+<script src="stromkosten-model.js?v=20261112-visible-sliders"></script>
+<script src="stromkosten-rechner.js?v=20261112-visible-sliders"></script>
+<script src="stromkosten-simulation-model.js?v=20261112-visible-sliders"></script>
+<script src="stromkosten-simulation.js?v=20261112-visible-sliders"></script>
 </body>
 </html>

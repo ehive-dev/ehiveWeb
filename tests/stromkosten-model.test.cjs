@@ -335,13 +335,27 @@ test("Batteriespeicher fragt nur die Größe ab und nutzt technische Annahmen im
   assert.doesNotMatch(html, /Erweiterte Annahmen anpassen|Speichernutzung pro Jahr|Wirkungsgrad des Speichers/);
 });
 
-test("Kunden sehen kurze direkte Fragen statt Prozent-Schiebereglern", () => {
+test("Kunden sehen kurze direkte Fragen mit gut spielbaren Schiebereglern", () => {
   const html = fs.readFileSync(path.resolve(__dirname, "..", "stromkosten-rechner.html"), "utf8");
+  const client = fs.readFileSync(path.resolve(__dirname, "..", "stromkosten-rechner.js"), "utf8");
+  const ranges = html.match(/data-compact-range/g) || [];
   assert.match(html, /Wie ist dein Arbeitspreis\?/);
   assert.match(html, /Wie groß ist deine PV-Anlage\?/);
   assert.match(html, /Wie hoch ist deine Einspeisevergütung\?/);
   assert.match(html, /Wie flexibel kannst du dein Auto laden\?/);
+  assert.equal(ranges.length, 9);
+  assert.match(html, /data-range-output>35 ct\/kWh/);
+  assert.match(client, /function syncCompactRanges\(\)/);
+  assert.match(client, /--range-progress/);
   assert.doesNotMatch(html, /name="sharePv"|name="shareDynamic"|name="shareWindow"/);
+});
+
+test("Schieberegler sind groß, kontrastreich und am Desktop nebeneinander", () => {
+  const css = fs.readFileSync(path.resolve(__dirname, "..", "style.css"), "utf8");
+  assert.match(css, /grid-template-columns:repeat\(3,minmax\(0,1fr\)\)/);
+  assert.match(css, /\.savings-slider input\[type="range"\]::-webkit-slider-thumb\{width:22px;height:22px/);
+  assert.match(css, /linear-gradient\(90deg,#087d74 var\(--range-progress\),#c8d6d2 var\(--range-progress\)\)/);
+  assert.match(css, /\.savings-slider output\{[^}]*font-weight:900/);
 });
 
 test("Speichertrend zeigt den SOC vor PV nach dem Netzladen", () => {

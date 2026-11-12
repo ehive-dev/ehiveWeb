@@ -64,6 +64,23 @@
     return Number.isFinite(parsed) ? parsed : 0;
   }
 
+  function syncCompactRanges() {
+    form.querySelectorAll("[data-compact-range]").forEach(input => {
+      const current = value(input);
+      const min = value({ value: input.min });
+      const max = value({ value: input.max });
+      const progress = max > min ? (current - min) / (max - min) * 100 : 0;
+      const digits = Math.max(0, Number.parseInt(input.dataset.digits || "0", 10));
+      const formatted = new Intl.NumberFormat("de-DE", {
+        minimumFractionDigits: digits,
+        maximumFractionDigits: digits
+      }).format(current);
+      const rangeOutput = input.closest(".savings-slider")?.querySelector("[data-range-output]");
+      if (rangeOutput) rangeOutput.textContent = `${formatted} ${input.dataset.unit || ""}`.trim();
+      input.style.setProperty("--range-progress", `${Math.max(0, Math.min(100, progress))}%`);
+    });
+  }
+
   function renderChart(strategies, coverage) {
     const before = [22,18,16,15,16,22,42,72,66,48,40,36,34,32,34,40,52,78,92,82,62,48,38,28];
     const after = before.slice();
@@ -449,6 +466,7 @@
   }
 
   function calculate() {
+    syncCompactRanges();
     const basePrice = Math.max(0, value(form.elements.basePrice));
     let totalKwh = familyAssumption.annualKwh;
     let flexibleKwh = familyAssumption.annualKwh * familyAssumption.flexibleShare / 100;
