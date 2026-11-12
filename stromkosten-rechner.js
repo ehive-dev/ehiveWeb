@@ -271,6 +271,8 @@
     const storageActive = batteryDischargeHours.length > 0;
     const storageChargeHours = [...new Set([...batteryPvHours, ...batteryGridHours])];
     const storageProfile = model.buildStorageProfile({ active: storageActive, chargeHours: storageChargeHours, dischargeHours: batteryDischargeHours });
+    const firstPvChargeHour = batteryPvHours.length ? Math.min(...batteryPvHours) : null;
+    const socBeforePv = firstPvChargeHour === null ? null : (firstPvChargeHour > 0 ? storageProfile[firstPvChargeHour - 1] : 20);
     appendGridChargeWindows(storageSvg);
     [44, 78, 112].forEach((y, index) => {
       const line = document.createElementNS(svgNs, "line");
@@ -358,6 +360,12 @@
     document.querySelectorAll("[data-inline-grid-charge]").forEach(item => {
       item.hidden = !batteryGridHours.length;
     });
+    document.querySelectorAll("[data-soc-before-pv]").forEach(item => {
+      const visible = batteryGridHours.length > 0 && socBeforePv !== null;
+      item.hidden = !visible;
+      const label = item.querySelector("b");
+      if (label && visible) label.textContent = `SOC vor PV: ${number.format(socBeforePv)} % durch Netzladen`;
+    });
     document.querySelectorAll("[data-inline-car]").forEach(item => {
       item.hidden = !carHours.length;
     });
@@ -392,8 +400,11 @@
     }
     const sourceCounts = sourceProfile.reduce((counts, source) => ({ ...counts, [source]: (counts[source] || 0) + 1 }), {});
     const priceSummary = summary.join(" ");
+    const gridSocSummary = batteryGridHours.length && socBeforePv !== null
+      ? ` Durch das Netzladen liegt der modellierte SOC vor dem ersten PV-Ladefenster bereits bei ${number.format(socBeforePv)} %. Für PV-Strom bleibt deshalb nur die noch freie Speicherkapazität.`
+      : "";
     const storageSummary = storageActive
-      ? `Typisierter Ladezustand für den ${decimal.format(batteryCapacity)}-kWh-Speicher. Laden ist für ${formatHourRanges(storageChargeHours)} vorgesehen, die Abgabe für ${formatHourRanges(batteryDischargeHours)}. Die Kurve ist eine Tagesdarstellung und keine Messung.`
+      ? `Typisierter Ladezustand für den ${decimal.format(batteryCapacity)}-kWh-Speicher. Laden ist für ${formatHourRanges(storageChargeHours)} vorgesehen, die Abgabe für ${formatHourRanges(batteryDischargeHours)}.${gridSocSummary} Die Kurve ist eine Tagesdarstellung und keine Messung.`
       : "Aktiviere den Batteriespeicher und eine wirtschaftliche Ladequelle, um einen typisierten Ladezustand zu sehen.";
     const sourcesSummary = `Typisierte Energieflüsse im Tagesverlauf: ${sourceCounts.pv || 0} Stunden PV direkt, ${sourceCounts["grid-charge"] || 0} Stunden netzgünstiges Batterieladen, ${sourceCounts.tariff || 0} Stunden günstiger Tarif, ${sourceCounts.battery || 0} Stunden Batterieabgabe und ${sourceCounts.grid || 0} Stunden normaler Netzbezug. Überschneidungen werden nach Batterieabgabe, PV, Netzladen, günstigem Tarif und Netz priorisiert.`;
     inlineTrendSummaries = { price: priceSummary, storage: storageSummary, sources: sourcesSummary };

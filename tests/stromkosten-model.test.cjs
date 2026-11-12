@@ -236,6 +236,16 @@ test("Netzladezeiten erhöhen gleichzeitig den SOC und erscheinen als Netzladen"
   assert.equal(sources[18], "battery");
 });
 
+test("Netzladen erhöht den SOC bereits vor dem ersten PV-Ladefenster", () => {
+  const pvHours = [11, 12, 13];
+  const pvOnly = model.buildStorageProfile({ active: true, chargeHours: pvHours, dischargeHours: [18, 19, 20] });
+  const gridAndPv = model.buildStorageProfile({ active: true, chargeHours: [2, 3, 4, ...pvHours], dischargeHours: [18, 19, 20] });
+  assert.equal(pvOnly[10], 20);
+  assert.ok(Math.abs(gridAndPv[10] - 55) < 0.00001);
+  assert.ok(gridAndPv[10] > pvOnly[10]);
+  assert.ok(Math.abs(gridAndPv[13] - 90) < 0.00001);
+});
+
 test("Netzladen wird nicht gleichzeitig in aktive PV-Stunden gelegt", () => {
   const candidates = [2, 3, 12, 16, 4];
   const selected = model.selectAvailableHours(candidates, [9, 10, 11, 12, 13, 14, 15, 16], 3);
@@ -319,4 +329,13 @@ test("Batteriespeicher zeigt Kunden zuerst nur die Speichergröße", () => {
   assert.match(html, /typische Speicherwerte\. Du musst nichts weiter einstellen/);
   assert.match(html, /value="120"[^>]*inputmode="numeric"/);
   assert.match(html, /value="90"[^>]*inputmode="decimal"/);
+});
+
+test("Speichertrend zeigt den SOC vor PV nach dem Netzladen", () => {
+  const root = path.resolve(__dirname, "..");
+  const html = fs.readFileSync(path.join(root, "stromkosten-rechner.html"), "utf8");
+  const client = fs.readFileSync(path.join(root, "stromkosten-rechner.js"), "utf8");
+  assert.match(html, /data-soc-before-pv hidden/);
+  assert.match(client, /SOC vor PV: \$\{number\.format\(socBeforePv\)\} % durch Netzladen/);
+  assert.match(client, /Für PV-Strom bleibt deshalb nur die noch freie Speicherkapazität/);
 });
