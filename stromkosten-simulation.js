@@ -6,6 +6,7 @@
 
   const number = new Intl.NumberFormat("de-DE", { maximumFractionDigits: 1 });
   const euro = new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", minimumFractionDigits: 2 });
+  const monthNames = ["Januar", "Februar", "März", "April", "Mai", "Juni", "Juli", "August", "September", "Oktober", "November", "Dezember"];
   const outputs = {
     car: document.querySelector("[data-sim-car-result]"),
     heat: document.querySelector("[data-sim-heat-result]"),
@@ -33,12 +34,14 @@
       const max = Number.parseFloat(input.max || "0");
       const progress = max > min ? (current - min) / (max - min) * 100 : 0;
       const digits = Math.max(0, Number.parseInt(input.dataset.digits || "0", 10));
-      const formatted = new Intl.NumberFormat("de-DE", {
-        minimumFractionDigits: digits,
-        maximumFractionDigits: digits
-      }).format(current);
+      const formatted = input.dataset.format === "month"
+        ? monthNames[Math.max(0, Math.min(11, Math.round(current) - 1))]
+        : new Intl.NumberFormat("de-DE", {
+          minimumFractionDigits: digits,
+          maximumFractionDigits: digits
+        }).format(current);
       const rangeOutput = input.closest(".simulation-range")?.querySelector("output");
-      if (rangeOutput) rangeOutput.textContent = `${formatted} ${input.dataset.unit || ""}`.trim();
+      if (rangeOutput) rangeOutput.textContent = input.dataset.format === "month" ? formatted : `${formatted} ${input.dataset.unit || ""}`.trim();
       input.style.setProperty("--range-progress", `${Math.max(0, Math.min(100, progress))}%`);
     });
   }
@@ -177,7 +180,7 @@
       heatPumpEnabled: form.elements.heatPumpEnabled.checked,
       outdoorTemperature: value("outdoorTemperature"),
       heatPumpAnnualKwh: 4000,
-      pvForecast: value("pvForecast"),
+      month: value("simulationMonth"),
       pvEnabled: value("pvKwp") > 0,
       pvKwp: value("pvKwp"),
       batteryEnabled: form.elements.batteryEnabled.checked,

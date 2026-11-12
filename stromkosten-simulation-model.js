@@ -9,6 +9,20 @@
   const SLOT_COUNT = 96;
   const spotProfile = [.38,.24,.08,0,.04,.14,.31,.56,.72,.63,.51,.43,.32,.18,.22,.39,.61,.9,1,.88,.72,.58,.47,.4];
   const homeProfile = [.72,.64,.6,.58,.58,.66,.9,1.28,1.2,.9,.8,.76,.78,.8,.86,.96,1.18,1.52,1.65,1.48,1.25,1.06,.9,.8];
+  const monthProfiles = [
+    { pv: .18, sunrise: 8.2, sunset: 16.5, heat: 1.15 },
+    { pv: .3, sunrise: 7.5, sunset: 17.5, heat: 1.1 },
+    { pv: .52, sunrise: 6.5, sunset: 18.5, heat: 1 },
+    { pv: .72, sunrise: 5.8, sunset: 20.2, heat: .82 },
+    { pv: .9, sunrise: 5.1, sunset: 21, heat: .62 },
+    { pv: 1, sunrise: 4.8, sunset: 21.4, heat: .5 },
+    { pv: .95, sunrise: 5, sunset: 21.2, heat: .48 },
+    { pv: .82, sunrise: 5.7, sunset: 20.4, heat: .55 },
+    { pv: .62, sunrise: 6.5, sunset: 19.2, heat: .72 },
+    { pv: .4, sunrise: 7.3, sunset: 18.1, heat: .9 },
+    { pv: .23, sunrise: 8, sunset: 16.6, heat: 1.05 },
+    { pv: .15, sunrise: 8.3, sunset: 16.2, heat: 1.18 }
+  ];
   const finite = value => Number.isFinite(Number(value)) ? Number(value) : 0;
   const clamp = (value, min, max) => Math.max(min, Math.min(max, finite(value)));
   const hourInWindow = (hour, from, to) => hour >= from && hour < to;
@@ -36,13 +50,14 @@
     return normalPrice;
   }
 
-  function pvAt(hour, kwp, weather, forecastPercent) {
+  function pvAt(hour, kwp, weather, month) {
     const normalized = normalizeHour(hour);
-    if (normalized < 7 || normalized >= 18 || kwp <= 0) return 0;
-    const weatherFactor = Number.isFinite(Number(forecastPercent))
-      ? clamp(forecastPercent, 0, 100) / 100
-      : ({ sunny: 1, mixed: 0.58, cloudy: 0.22 }[weather] || 0.58);
-    return Math.max(0, kwp * 0.82 * weatherFactor * Math.sin((normalized - 7) / 11 * Math.PI));
+    const profile = month ? monthProfiles[month - 1] : null;
+    const sunrise = profile?.sunrise ?? 7;
+    const sunset = profile?.sunset ?? 18;
+    if (normalized < sunrise || normalized >= sunset || kwp <= 0) return 0;
+    const yieldFactor = profile?.pv ?? ({ sunny: 1, mixed: 0.58, cloudy: 0.22 }[weather] || 0.58);
+    return Math.max(0, kwp * 0.82 * yieldFactor * Math.sin((normalized - sunrise) / (sunset - sunrise) * Math.PI));
   }
 
   function temperatureFactor(celsius) {
@@ -87,6 +102,8 @@
     const normalPrice = Math.max(0, finite(options.normalPrice ?? 35));
     const cheapPrice = Math.max(0, finite(options.cheapPrice ?? 24));
     const tariff = ["normal", "fixed", "dynamic"].includes(options.tariff) ? options.tariff : "fixed";
+    const month = Number.isFinite(Number(options.month)) ? Math.round(clamp(options.month, 1, 12)) : null;
+    const seasonalProfile = month ? monthProfiles[month - 1] : null;
     const prices = [];
     const pv = [];
     const home = [];
@@ -96,14 +113,16 @@
     for (let slot = 0; slot < SLOT_COUNT; slot += 1) {
       const hour = normalizeHour(startHour + slot * SLOT_HOURS);
       prices.push(priceAt(hour, tariff, normalPrice, cheapPrice));
-      pv.push(options.pvEnabled === false ? 0 : pvAt(hour, Math.max(0, finite(options.pvKwp ?? 8)), options.weather || "mixed", options.pvForecast));
+      pv.push(options.pvEnabled === false ? 0 : pvAt(hour, Math.max(0, finite(options.pvKwp ?? 8)), options.weather || "mixed", month));
       home.push(averageHomePower * homeProfile[Math.floor(hour)] / homeAverageFactor);
     }
 
     const heatPump = Array(SLOT_COUNT).fill(0);
     let heatPumpEnergyKwh = 0;
     if (options.heatPumpEnabled !== false) {
-      heatPumpEnergyKwh = Math.max(0, finite(options.heatPumpAnnualKwh ?? 4000)) / 365 * temperatureFactor(options.outdoorTemperature ?? 0);
+      heatPumpEnergyKwh = Math.max(0, finite(options.heatPumpAnnualKwh ?? 4000)) / 365
+        * temperatureFactor(options.outdoorTemperature ?? 0)
+        * (seasonalProfile?.heat ?? 1);
       const heatPumpPower = Math.max(.5, finite(options.heatPumpPowerKw ?? 2.5));
       const heatSlots = Math.min(SLOT_COUNT, Math.ceil(heatPumpEnergyKwh / (heatPumpPower * SLOT_HOURS)));
       const selected = selectHeatPumpSlots({ count: heatSlots, prices, pv, startHour });
@@ -233,6 +252,7 @@
       socBeforePv,
       gridTargetSoc,
       firstPvSlot,
+      month,
       assumptions: { minSoc, maxSoc, carConsumption, carEfficiency, batteryEfficiency }
     };
   }
