@@ -49,10 +49,12 @@
       button.setAttribute("aria-pressed", active ? "true" : "false");
     });
     output.inlineTrend?.querySelectorAll("[data-trend-view]").forEach(view => {
-      view.hidden = view.dataset.trendView !== inlineTrendMode;
+      const active = view.dataset.trendView === inlineTrendMode;
+      view.toggleAttribute("hidden", !active);
+      view.setAttribute("aria-hidden", active ? "false" : "true");
     });
     inlineTrendLegends.forEach(legend => {
-      legend.hidden = legend.dataset.inlineTrendLegend !== inlineTrendMode;
+      legend.toggleAttribute("hidden", legend.dataset.inlineTrendLegend !== inlineTrendMode);
     });
     const summary = inlineTrendSummaries[inlineTrendMode] || inlineTrendSummaries.price || "Tagestrend wird berechnet.";
     if (output.inlineTrendSummary) output.inlineTrendSummary.textContent = summary;

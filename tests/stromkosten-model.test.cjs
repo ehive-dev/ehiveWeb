@@ -339,3 +339,11 @@ test("Speichertrend zeigt den SOC vor PV nach dem Netzladen", () => {
   assert.match(client, /SOC vor PV: \$\{number\.format\(socBeforePv\)\} % durch Netzladen/);
   assert.match(client, /Für PV-Strom bleibt deshalb nur die noch freie Speicherkapazität/);
 });
+
+test("Trend-Umschalter setzen bei SVG-Ansichten echte hidden-Attribute", () => {
+  const client = fs.readFileSync(path.resolve(__dirname, "..", "stromkosten-rechner.js"), "utf8");
+  assert.match(client, /view\.toggleAttribute\("hidden", !active\)/);
+  assert.match(client, /legend\.toggleAttribute\("hidden", legend\.dataset\.inlineTrendLegend !== inlineTrendMode\)/);
+  assert.match(client, /view\.setAttribute\("aria-hidden", active \? "false" : "true"\)/);
+  assert.doesNotMatch(client, /view\.hidden = view\.dataset\.trendView/);
+});
