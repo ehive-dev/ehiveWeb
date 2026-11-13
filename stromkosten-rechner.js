@@ -326,6 +326,8 @@
     const cheapPrice = value(form.elements.cheapPrice);
     const cheapPriceField = form.querySelector("[data-cheap-price]");
     if (cheapPriceField) cheapPriceField.hidden = tariffMode === "normal";
+    const cheapPriceLabel = form.querySelector("[data-cheap-price-label]");
+    if (cheapPriceLabel) cheapPriceLabel.textContent = tariffMode === "window" ? "Preis im Zeitfenster" : "Günstiger Preis";
     const strategies = [
       { key: "pv", ...strategyConfig.pv, enabled: pvPower > 0, price: value(form.elements.pricePv), share: 45, maxKwh: pvPower * 900, allocated: 0 },
       { key: "dynamic", ...strategyConfig.dynamic, enabled: tariffMode === "dynamic", price: cheapPrice, share: 35, allocated: 0 },

@@ -368,6 +368,18 @@ test("Schieberegler sind groß, kontrastreich und am Desktop nebeneinander", () 
   assert.match(css, /\.savings-slider output\{[^}]*font-weight:900/);
 });
 
+test("Preis im Zeitfenster erhält einen breiten gut greifbaren Regler", () => {
+  const root = path.resolve(__dirname, "..");
+  const html = fs.readFileSync(path.join(root, "stromkosten-rechner.html"), "utf8");
+  const css = fs.readFileSync(path.join(root, "style.css"), "utf8");
+  const client = fs.readFileSync(path.join(root, "stromkosten-rechner.js"), "utf8");
+  assert.match(html, /savings-slider savings-price-slider/);
+  assert.match(html, /data-cheap-price-label/);
+  assert.match(css, /\.savings-price-slider\{grid-column:span 2/);
+  assert.match(css, /\.savings-price-slider input\[type="range"\]::-webkit-slider-thumb\{width:26px;height:26px/);
+  assert.match(client, /tariffMode === "window" \? "Preis im Zeitfenster" : "Günstiger Preis"/);
+});
+
 test("Speichertrend zeigt den SOC vor PV nach dem Netzladen", () => {
   const root = path.resolve(__dirname, "..");
   const html = fs.readFileSync(path.join(root, "stromkosten-rechner.html"), "utf8");
