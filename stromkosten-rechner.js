@@ -209,12 +209,13 @@
     pricePath.setAttribute("class", "savings-inline-trend-line");
     svg.append(pricePath);
 
+    const storageVisible = batteryCapacity > 0;
     const storageActive = batteryDischargeHours.length > 0;
     const storageChargeHours = [...new Set([...batteryPvHours, ...batteryGridHours])];
-    const storageProfile = model.buildStorageProfile({ active: storageActive, chargeHours: storageChargeHours, dischargeHours: batteryDischargeHours });
+    const storageProfile = model.buildStorageProfile({ active: storageVisible, chargeHours: storageChargeHours, dischargeHours: batteryDischargeHours });
     const firstPvChargeHour = batteryPvHours.length ? Math.min(...batteryPvHours) : null;
     const socBeforePv = firstPvChargeHour === null ? null : (firstPvChargeHour > 0 ? storageProfile[firstPvChargeHour - 1] : 20);
-    if (storageActive) {
+    if (storageVisible) {
       const storagePoints = storageProfile.map((state, hour) => ({ x: hour * hourWidth + hourWidth / 2, y: 112 - state * .68 }));
       const storageCurve = [`M${storagePoints[0].x.toFixed(1)} ${storagePoints[0].y.toFixed(1)}`];
       storagePoints.slice(1).forEach((point, index) => {
@@ -234,7 +235,7 @@
     priceLabel.setAttribute("class", "savings-inline-trend-line-label is-price-label");
     priceLabel.textContent = "Strompreis";
     svg.append(priceLabel);
-    if (storageActive) {
+    if (storageVisible) {
       const storageLabel = document.createElementNS(svgNs, "text");
       storageLabel.setAttribute("x", "708");
       storageLabel.setAttribute("y", "18");
@@ -246,7 +247,7 @@
 
     output.inlineTrend.replaceChildren(svg);
     document.querySelectorAll("[data-inline-grid-charge]").forEach(item => { item.hidden = !batteryGridHours.length; });
-    document.querySelectorAll("[data-inline-soc]").forEach(item => { item.hidden = !storageActive; });
+    document.querySelectorAll("[data-inline-soc]").forEach(item => { item.hidden = !storageVisible; });
     document.querySelectorAll("[data-soc-before-pv]").forEach(item => {
       const visible = batteryGridHours.length > 0 && socBeforePv !== null;
       item.hidden = !visible;
@@ -269,6 +270,7 @@
     const maxPrice = Math.max(...prices);
     const summary = [`Strompreis: ${decimal.format(minPrice)} bis ${decimal.format(maxPrice)} ct/kWh.`];
     if (storageActive) summary.push(`Der ${decimal.format(batteryCapacity)}-kWh-Speicher lädt in ${formatHourRanges(storageChargeHours)} und versorgt Verbraucher von ${formatHourRanges(batteryDischargeHours)}.`);
+    else if (storageVisible) summary.push(`Der Speicher ist im SOC dargestellt; mit den gewählten Einstellungen ist kein wirtschaftlicher Lade- und Entladezyklus eingeplant.`);
     if (batteryGridHours.length) summary.push(`Netzgünstiges Laden: ${formatHourRanges(batteryGridHours)}.`);
     if (batteryGridHours.length && socBeforePv !== null) summary.push(`Der modellierte SOC vor PV liegt bei ${number.format(socBeforePv)} %. Für PV-Strom bleibt deshalb nur die noch freie Speicherkapazität.`);
     if (storageActive) summary.push(`Der Speicherwert basiert auf ${decimal.format(batteryChargePrice)} ct/kWh Ladepreis (${batteryChargeLabel}) und ${decimal.format(batteryEffectivePrice)} ct/kWh einschließlich Verlusten.`);

@@ -427,3 +427,12 @@ test("Preis und SOC werden in einem gemeinsamen SVG gerendert", () => {
   assert.match(client, /svg\.append\(pricePath\)/);
   assert.match(client, /svg\.append\(storagePath\)/);
 });
+
+test("SOC bleibt bei eingestelltem Speicher auch ohne wirtschaftliche Entladung sichtbar", () => {
+  const client = fs.readFileSync(path.resolve(__dirname, "..", "stromkosten-rechner.js"), "utf8");
+  const combined = client.slice(client.indexOf("function renderCombinedTrend"), client.indexOf("function renderLiveTrend"));
+  assert.match(combined, /const storageVisible = batteryCapacity > 0/);
+  assert.match(combined, /buildStorageProfile\(\{ active: storageVisible/);
+  assert.match(combined, /item\.hidden = !storageVisible/);
+  assert.match(combined, /else if \(storageVisible\) summary\.push/);
+});
