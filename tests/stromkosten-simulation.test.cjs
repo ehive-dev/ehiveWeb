@@ -106,5 +106,6 @@ test("Simulationsmodus ist vollständig in der Seite eingebunden", () => {
   assert.match(html, /stromkosten-simulation\.js/);
   assert.match(css, /\.simulation-chart-track/);
   assert.match(css, /\.simulation-range input\[type="range"\]::-webkit-slider-thumb/);
-  assert.match(css, /@media\(max-width:767px\)\{\.savings-simulation,\.savings-mode-links a\[href="#tages-simulation"\]\{display:none!important\}\}/);
+  assert.match(css, /@media\(max-width:767px\)\{\.savings-simulation\{display:none!important\}\}/);
+  assert.doesNotMatch(html, /href="#tages-simulation">Bis morgen simulieren/);
 });
