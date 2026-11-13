@@ -13,6 +13,7 @@
     window: { enabled: "strategyWindow", price: "priceWindow", share: "shareWindow", label: "5 feste Tarifstunden", windows: [[2, 4], [12, 12], [16, 16]] }
   };
   const familyAssumption = { annualKwh: 3500, flexibleShare: 15 };
+  const carAssumption = { flexibleShare: 65 };
   const heatPumpAssumption = { flexibleShare: 15 };
   const tariffPriceValues = { dynamic: 30.5, window: 24 };
   let previousTariffMode = form.elements.tariffMode?.value || "normal";
@@ -311,7 +312,7 @@
     const car = {
       enabled: carAnnualKm > 0,
       annual: carAnnualKm * .2,
-      share: Math.max(0, Math.min(100, value(form.elements.carFlex)))
+      share: carAssumption.flexibleShare
     };
     const heatPump = {
       enabled: value(form.elements.heatAnnualKwh) > 0,

@@ -352,8 +352,8 @@ test("Kunden sehen kurze direkte Fragen mit gut spielbaren Schiebereglern", () =
   assert.match(html, /Wie ist dein Arbeitspreis\?/);
   assert.match(html, /Wie groß ist deine PV-Anlage\?/);
   assert.match(html, /Wie hoch ist deine Einspeisevergütung\?/);
-  assert.match(html, /Wie flexibel kannst du dein Auto laden\?/);
-  assert.equal(ranges.length, 8);
+  assert.doesNotMatch(html, /Wie flexibel kannst du dein Auto laden\?/);
+  assert.equal(ranges.length, 7);
   assert.match(html, /data-range-output>35 ct\/kWh/);
   assert.match(client, /function syncCompactRanges\(\)/);
   assert.match(client, /--range-progress/);
@@ -389,6 +389,17 @@ test("Wärmepumpen-Flexibilität ist eine feste vorsichtige Modellannahme", () =
   assert.match(html, /kein zugesagter SG-Ready-Spareffekt/);
   assert.match(client, /const heatPumpAssumption = \{ flexibleShare: 15 \}/);
   assert.match(client, /share: heatPumpAssumption\.flexibleShare/);
+});
+
+test("Ladeflexibilität des E-Autos ist eine feste vorsichtige Modellannahme", () => {
+  const root = path.resolve(__dirname, "..");
+  const html = fs.readFileSync(path.join(root, "stromkosten-rechner.html"), "utf8");
+  const client = fs.readFileSync(path.join(root, "stromkosten-rechner.js"), "utf8");
+  assert.doesNotMatch(html, /Wie flexibel kannst du dein Auto laden\?|name="carFlex"/);
+  assert.match(html, /65 % verschiebbarem Ladestrom/);
+  assert.match(html, /durchschnittlich 75,6 % zu Hause geladenes Ladevolumen/);
+  assert.match(client, /const carAssumption = \{ flexibleShare: 65 \}/);
+  assert.match(client, /share: carAssumption\.flexibleShare/);
 });
 
 test("Dynamischer Tarif nutzt einen datierten Tibber-Beispielwert und die Live-Preisquelle", () => {
