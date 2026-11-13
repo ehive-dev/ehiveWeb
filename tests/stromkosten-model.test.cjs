@@ -148,6 +148,19 @@ test("größerer Speicherbeitrag verlängert das Versorgungsfenster bis nach Mit
   assert.deepEqual(model.buildBatteryDischargeHours({ slots: large, pvHours }), [17, 18, 19, 20, 21, 22, 23, 0, 1]);
 });
 
+test("19 kWh Speicher decken im typisierten Verlauf die gesamte Nacht außerhalb der PV-Zeit", () => {
+  const pvHours = [9, 10, 11, 12, 13, 14, 15, 16];
+  const slots = model.representativeBatteryDischargeSlots(5900, 2200, pvHours, 19);
+  assert.equal(slots, 16);
+  const dischargeHours = model.buildBatteryDischargeHours({ slots, pvHours });
+  assert.deepEqual(dischargeHours, [17, 18, 19, 20, 21, 22, 23, 0, 1, 2, 3, 4, 5, 6, 7, 8]);
+  const profile = model.buildStorageProfile({ active: true, chargeHours: pvHours, dischargeHours });
+  assert.ok(profile[0] > profile[8]);
+  assert.ok(profile[23] > profile[0]);
+  assert.ok(Math.abs(profile[8] - 10) < 0.00001);
+  assert.ok(Math.abs(profile[16] - 90) < 0.00001);
+});
+
 test("ohne PV beginnt das typisierte Abendfenster um 18 Uhr", () => {
   assert.deepEqual(model.buildBatteryDischargeHours({ slots: 3, pvHours: [] }), [18, 19, 20]);
 });
@@ -261,25 +274,23 @@ test("Netzladen wird nicht gleichzeitig in aktive PV-Stunden gelegt", () => {
   assert.deepEqual(selected, [2, 3, 4]);
 });
 
-test("Netzladen ist vom Modell bis zum sichtbaren Energiequellen-Balken verdrahtet", () => {
+test("Netzladen ist im kombinierten Trend sichtbar verdrahtet", () => {
   const root = path.resolve(__dirname, "..");
   const html = fs.readFileSync(path.join(root, "stromkosten-rechner.html"), "utf8");
   const css = fs.readFileSync(path.join(root, "style.css"), "utf8");
   const client = fs.readFileSync(path.join(root, "stromkosten-rechner.js"), "utf8");
-  assert.match(html, /is-source-grid-charge[^>]*><\/i>Netzladen Batterie/);
-  assert.match(css, /\.is-source-grid-charge/);
-  assert.match(client, /gridChargeHours:\s*batteryGridHours/);
-  assert.match(client, /class", `is-source-\$\{source\}`/);
+  assert.match(html, /is-grid-charge-window[^>]*><\/i>Netzgünstiges Laden/);
+  assert.match(css, /\.savings-inline-trend-grid-charge-window/);
+  assert.match(client, /batteryGridHours\.forEach\(hour =>/);
+  assert.match(client, /savings-inline-trend-grid-charge-window/);
 });
 
-test("Batteriewert ändert nur die Farbe derselben Strompreis-Kennlinie", () => {
+test("Strompreis und Speicherfüllstand sind getrennte Kennlinien im selben Trend", () => {
   const client = fs.readFileSync(path.resolve(__dirname, "..", "stromkosten-rechner.js"), "utf8");
-  const pricePaths = client.match(/setAttribute\("class", "savings-inline-trend-line"\)/g) || [];
-  assert.equal(pricePaths.length, 1);
-  assert.doesNotMatch(client, /savings-inline-trend-battery-(?:value|marker)/);
-  assert.match(client, /id", "savings-price-line-gradient"/);
-  assert.match(client, /batteryHours\.has\(hour\) \? "#173f38" : "#087d74"/);
-  assert.match(client, /path\.style\.stroke = "url\(#savings-price-line-gradient\)"/);
+  const combined = client.slice(client.indexOf("function renderCombinedTrend"), client.indexOf("function renderLiveTrend"));
+  assert.match(combined, /pricePath\.setAttribute\("class", "savings-inline-trend-line"\)/);
+  assert.match(combined, /storagePath\.setAttribute\("class", "savings-inline-trend-storage-line"\)/);
+  assert.match(combined, /output\.inlineTrend\.replaceChildren\(svg\)/);
 });
 
 test("die drei Eingabebereiche sind zu einer kompakten Basiseinstellung zusammengefasst", () => {
@@ -314,17 +325,16 @@ test("Familienhaushalt wird pauschal berücksichtigt und nicht mehr abgefragt", 
   assert.match(client, /let totalKwh = familyAssumption\.annualKwh/);
 });
 
-test("E-Auto und Wärmepumpe erscheinen bei Aktivierung als Balken im Live-Trend", () => {
+test("Live-Trend zeigt nur Strompreis und Speicherfüllstand", () => {
   const html = fs.readFileSync(path.resolve(__dirname, "..", "stromkosten-rechner.html"), "utf8");
   const client = fs.readFileSync(path.resolve(__dirname, "..", "stromkosten-rechner.js"), "utf8");
-  const css = fs.readFileSync(path.resolve(__dirname, "..", "style.css"), "utf8");
-  assert.match(html, /data-inline-car hidden/);
-  assert.match(html, /data-inline-heat-pump hidden/);
-  assert.match(client, /\{ hours: carHours, className: "is-car" \}/);
-  assert.match(client, /\{ hours: heatPumpHours, className: "is-heat-pump" \}/);
-  assert.match(client, /item\.hidden = !carHours\.length/);
-  assert.match(client, /item\.hidden = !heatPumpHours\.length/);
-  assert.match(css, /\.is-heat-pump/);
+  const start = html.indexOf('<figure class="savings-inline-trend">');
+  const trend = html.slice(start, html.indexOf("</figure>", start));
+  assert.match(trend, /Strompreis und Speicherfüllstand über 24 Stunden/);
+  assert.match(trend, /data-inline-soc hidden/);
+  assert.doesNotMatch(trend, /E-Auto lädt|Wärmepumpe läuft|>Energiequellen</);
+  assert.match(client, /function renderCombinedTrend/);
+  assert.match(client, /renderCombinedTrend\(\{ activeStrategies/);
 });
 
 test("Batteriespeicher fragt nur die Größe ab und nutzt technische Annahmen im Hintergrund", () => {
@@ -367,10 +377,9 @@ test("Speichertrend zeigt den SOC vor PV nach dem Netzladen", () => {
   assert.match(client, /Für PV-Strom bleibt deshalb nur die noch freie Speicherkapazität/);
 });
 
-test("Trend-Umschalter setzen bei SVG-Ansichten echte hidden-Attribute", () => {
+test("Preis und SOC werden in einem gemeinsamen SVG gerendert", () => {
   const client = fs.readFileSync(path.resolve(__dirname, "..", "stromkosten-rechner.js"), "utf8");
-  assert.match(client, /view\.toggleAttribute\("hidden", !active\)/);
-  assert.match(client, /legend\.toggleAttribute\("hidden", legend\.dataset\.inlineTrendLegend !== inlineTrendMode\)/);
-  assert.match(client, /view\.setAttribute\("aria-hidden", active \? "false" : "true"\)/);
-  assert.doesNotMatch(client, /view\.hidden = view\.dataset\.trendView/);
+  assert.match(client, /svg\.setAttribute\("class", "savings-inline-trend-combined"\)/);
+  assert.match(client, /svg\.append\(pricePath\)/);
+  assert.match(client, /svg\.append\(storagePath\)/);
 });

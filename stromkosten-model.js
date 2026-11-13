@@ -53,12 +53,18 @@
     return Math.max(1, Math.min(6, Math.round(ratio * 6)));
   }
 
-  function representativeBatteryDischargeSlots(totalKwh, annualDischargeKwh, pvHours) {
+  function representativeBatteryDischargeSlots(totalKwh, annualDischargeKwh, pvHours, capacityKwh = 0) {
     const total = Math.max(0, finite(totalKwh));
     const discharge = Math.max(0, finite(annualDischargeKwh));
     if (total <= 0 || discharge <= 0) return 0;
     const pv = new Set((Array.isArray(pvHours) ? pvHours : []).map(finite).filter(hour => hour >= 0 && hour <= 23));
     const availableHours = Math.max(1, 24 - pv.size);
+    const capacity = Math.max(0, finite(capacityKwh));
+    if (capacity > 0) {
+      const averageLoadKw = Math.max(.2, total / 365 / 24);
+      const usableEnergyKwh = capacity * .8;
+      return Math.max(1, Math.min(availableHours, Math.round(usableEnergyKwh / averageLoadKw)));
+    }
     return Math.max(1, Math.min(availableHours, Math.round(discharge / total * availableHours)));
   }
 
@@ -131,9 +137,16 @@
     const charges = new Set(Array.isArray(chargeHours) ? chargeHours : []);
     const discharges = new Set(Array.isArray(dischargeHours) ? dischargeHours : []);
     if (!active) return Array.from({ length: 24 }, () => 0);
-    const chargeStep = charges.size ? 70 / charges.size : 0;
     const dischargeStep = discharges.size ? 80 / discharges.size : 0;
-    let state = 20;
+    const sortedCharges = [...charges].sort((a, b) => a - b);
+    const firstCharge = sortedCharges[0];
+    const lastCharge = sortedCharges.at(-1);
+    const wrapsMidnight = charges.size > 0
+      && [...discharges].some(hour => hour < firstCharge)
+      && [...discharges].some(hour => hour > lastCharge);
+    const lateDischargeCount = wrapsMidnight ? [...discharges].filter(hour => hour > lastCharge).length : 0;
+    const chargeStep = charges.size ? (wrapsMidnight ? 80 : 70) / charges.size : 0;
+    let state = wrapsMidnight ? Math.max(10, 90 - lateDischargeCount * dischargeStep) : 20;
     return Array.from({ length: 24 }, (_, hour) => {
       if (charges.has(hour)) state = Math.min(90, state + chargeStep);
       if (discharges.has(hour)) state = Math.max(10, state - dischargeStep);
