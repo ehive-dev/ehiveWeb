@@ -333,9 +333,11 @@
     const cheapPriceField = form.querySelector("[data-cheap-price]");
     if (cheapPriceField) cheapPriceField.hidden = tariffMode === "normal";
     const cheapPriceLabel = form.querySelector("[data-cheap-price-label]");
-    if (cheapPriceLabel) cheapPriceLabel.textContent = tariffMode === "window" ? "Preis im Zeitfenster" : "Günstiger Tibber-Endpreis";
+    if (cheapPriceLabel) cheapPriceLabel.textContent = tariffMode === "window" ? "Preis in 5 günstigen Stunden" : "Günstiger Tibber-Endpreis";
     const tibberPriceNote = form.querySelector("[data-tibber-price]");
     if (tibberPriceNote) tibberPriceNote.hidden = tariffMode !== "dynamic";
+    const windowPriceNote = form.querySelector("[data-window-price]");
+    if (windowPriceNote) windowPriceNote.hidden = tariffMode !== "window";
     const strategies = [
       { key: "pv", ...strategyConfig.pv, enabled: pvPower > 0, price: value(form.elements.pricePv), share: 45, maxKwh: pvPower * 900, allocated: 0 },
       { key: "dynamic", ...strategyConfig.dynamic, enabled: tariffMode === "dynamic", price: cheapPrice, share: 35, allocated: 0 },

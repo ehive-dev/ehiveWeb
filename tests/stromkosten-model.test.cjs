@@ -368,7 +368,7 @@ test("Schieberegler sind groß, kontrastreich und am Desktop nebeneinander", () 
   assert.match(css, /\.savings-slider output\{[^}]*font-weight:900/);
 });
 
-test("Preis im Zeitfenster erhält einen breiten gut greifbaren Regler", () => {
+test("Preis für fünf günstige Stunden erhält einen breiten gut greifbaren Regler", () => {
   const root = path.resolve(__dirname, "..");
   const html = fs.readFileSync(path.join(root, "stromkosten-rechner.html"), "utf8");
   const css = fs.readFileSync(path.join(root, "style.css"), "utf8");
@@ -377,7 +377,10 @@ test("Preis im Zeitfenster erhält einen breiten gut greifbaren Regler", () => {
   assert.match(html, /data-cheap-price-label/);
   assert.match(css, /\.savings-price-slider\{grid-column:span 2/);
   assert.match(css, /\.savings-price-slider input\[type="range"\]::-webkit-slider-thumb\{width:26px;height:26px/);
-  assert.match(client, /tariffMode === "window" \? "Preis im Zeitfenster" : "Günstiger Tibber-Endpreis"/);
+  assert.match(html, /data-window-price hidden>Modellannahme: 5 günstige Stunden pro Tag/);
+  assert.match(client, /tariffMode === "window" \? "Preis in 5 günstigen Stunden" : "Günstiger Tibber-Endpreis"/);
+  assert.match(client, /windowPriceNote\.hidden = tariffMode !== "window"/);
+  assert.match(client, /windows: \[\[2, 4\], \[12, 12\], \[16, 16\]\]/);
 });
 
 test("Wärmepumpen-Flexibilität ist eine feste vorsichtige Modellannahme", () => {

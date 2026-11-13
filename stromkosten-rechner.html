@@ -7,7 +7,7 @@
   <meta name="description" content="Berechne transparent, wie viel du durch PV-Eigenverbrauch, dynamische Strompreise oder günstige Zeitfenster sparen könntest. Mit eigenen Verbrauchs- und Preisangaben.">
   <link rel="canonical" href="https://www.ehiv3.de/stromkosten-rechner.html">
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="style.css?v=20261113-soc-visible">
+  <link rel="stylesheet" href="style.css?v=20261113-five-hour-window">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="eHive">
   <meta property="og:title" content="Stromkosten-Rechner | eHive One">
@@ -171,7 +171,7 @@
               <label class="savings-slider"><span>Wie groß ist deine PV-Anlage?<output data-range-output>8 kWp</output></span><input data-compact-range data-unit="kWp" data-digits="1" type="range" name="pvPower" min="0" max="40" step="0.5" value="8"></label>
               <label class="savings-slider"><span>Wie hoch ist deine Einspeisevergütung?<output data-range-output>8 ct/kWh</output></span><input data-compact-range data-unit="ct/kWh" data-digits="1" type="range" name="pricePv" min="0" max="20" step="0.1" value="8"></label>
               <label class="savings-select"><span>Welchen Stromtarif nutzt du?</span><select name="tariffMode"><option value="normal">Normaler Stromtarif</option><option value="dynamic">Dynamischer Tarif</option><option value="window">Günstige Zeitfenster</option></select></label>
-              <label class="savings-slider savings-price-slider" data-cheap-price hidden><span><b data-cheap-price-label>Wie hoch ist dein günstiger Preis?</b><output data-range-output>24 ct/kWh</output></span><input data-compact-range data-unit="ct/kWh" data-digits="1" type="range" name="cheapPrice" min="0" max="50" step="0.5" value="24"><small class="savings-tibber-price" data-tibber-price hidden>Startwert 30,5 ct/kWh: niedrigster Tibber-Endpreis für Deutschland am 13.11.2026. <a href="https://tibber.com/de/strompreise" target="_blank" rel="noopener noreferrer">Aktuellen Preis für deine PLZ prüfen</a>.</small></label>
+              <label class="savings-slider savings-price-slider" data-cheap-price hidden><span><b data-cheap-price-label>Wie hoch ist dein günstiger Preis?</b><output data-range-output>24 ct/kWh</output></span><input data-compact-range data-unit="ct/kWh" data-digits="1" type="range" name="cheapPrice" min="0" max="50" step="0.5" value="24"><small class="savings-tariff-note" data-tibber-price hidden>Startwert 30,5 ct/kWh: niedrigster Tibber-Endpreis für Deutschland am 13.11.2026. <a href="https://tibber.com/de/strompreise" target="_blank" rel="noopener noreferrer">Aktuellen Preis für deine PLZ prüfen</a>.</small><small class="savings-tariff-note" data-window-price hidden>Modellannahme: 5 günstige Stunden pro Tag – 02–05 Uhr, 12–13 Uhr und 16–17 Uhr.</small></label>
               <label class="savings-slider"><span>Wie groß ist dein Batteriespeicher?<output data-range-output>0 kWh</output></span><input data-compact-range data-unit="kWh" data-digits="1" type="range" name="batteryCapacity" min="0" max="30" step="0.5" value="0"></label>
               <label class="savings-slider"><span>Wie viele Kilometer fährst du pro Jahr?<output data-range-output>12.000 km</output></span><input data-compact-range data-unit="km" type="range" name="carAnnualKm" min="0" max="50000" step="500" value="12000"></label>
               <label class="savings-slider"><span>Wie viel Strom braucht deine Wärmepumpe?<output data-range-output>0 kWh/Jahr</output></span><input data-compact-range data-unit="kWh/Jahr" type="range" name="heatAnnualKwh" min="0" max="20000" step="250" value="0"></label>
@@ -329,9 +329,9 @@
 <div data-include="footer"></div>
 <script src="config.js"></script>
 <script src="script.js?v=20261110-knx-release"></script>
-<script src="stromkosten-model.js?v=20261113-soc-visible"></script>
-<script src="stromkosten-rechner.js?v=20261113-soc-visible"></script>
-<script src="stromkosten-simulation-model.js?v=20261113-soc-visible"></script>
-<script src="stromkosten-simulation.js?v=20261113-soc-visible"></script>
+<script src="stromkosten-model.js?v=20261113-five-hour-window"></script>
+<script src="stromkosten-rechner.js?v=20261113-five-hour-window"></script>
+<script src="stromkosten-simulation-model.js?v=20261113-five-hour-window"></script>
+<script src="stromkosten-simulation.js?v=20261113-five-hour-window"></script>
 </body>
 </html>
