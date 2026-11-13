@@ -353,7 +353,7 @@ test("Kunden sehen kurze direkte Fragen mit gut spielbaren Schiebereglern", () =
   assert.match(html, /Wie groß ist deine PV-Anlage\?/);
   assert.match(html, /Wie hoch ist deine Einspeisevergütung\?/);
   assert.match(html, /Wie flexibel kannst du dein Auto laden\?/);
-  assert.equal(ranges.length, 9);
+  assert.equal(ranges.length, 8);
   assert.match(html, /data-range-output>35 ct\/kWh/);
   assert.match(client, /function syncCompactRanges\(\)/);
   assert.match(client, /--range-progress/);
@@ -377,7 +377,28 @@ test("Preis im Zeitfenster erhält einen breiten gut greifbaren Regler", () => {
   assert.match(html, /data-cheap-price-label/);
   assert.match(css, /\.savings-price-slider\{grid-column:span 2/);
   assert.match(css, /\.savings-price-slider input\[type="range"\]::-webkit-slider-thumb\{width:26px;height:26px/);
-  assert.match(client, /tariffMode === "window" \? "Preis im Zeitfenster" : "Günstiger Preis"/);
+  assert.match(client, /tariffMode === "window" \? "Preis im Zeitfenster" : "Günstiger Tibber-Endpreis"/);
+});
+
+test("Wärmepumpen-Flexibilität ist eine feste vorsichtige Modellannahme", () => {
+  const root = path.resolve(__dirname, "..");
+  const html = fs.readFileSync(path.join(root, "stromkosten-rechner.html"), "utf8");
+  const client = fs.readFileSync(path.join(root, "stromkosten-rechner.js"), "utf8");
+  assert.doesNotMatch(html, /Wie flexibel ist deine Wärmepumpe\?|name="heatFlex"/);
+  assert.match(html, /15 % zeitlich verschiebbar/);
+  assert.match(html, /kein zugesagter SG-Ready-Spareffekt/);
+  assert.match(client, /const heatPumpAssumption = \{ flexibleShare: 15 \}/);
+  assert.match(client, /share: heatPumpAssumption\.flexibleShare/);
+});
+
+test("Dynamischer Tarif nutzt einen datierten Tibber-Beispielwert und die Live-Preisquelle", () => {
+  const root = path.resolve(__dirname, "..");
+  const html = fs.readFileSync(path.join(root, "stromkosten-rechner.html"), "utf8");
+  const client = fs.readFileSync(path.join(root, "stromkosten-rechner.js"), "utf8");
+  assert.match(html, /Startwert 30,5 ct\/kWh: niedrigster Tibber-Endpreis für Deutschland am 13\.11\.2026/);
+  assert.match(html, /href="https:\/\/tibber\.com\/de\/strompreise" target="_blank" rel="noopener noreferrer"/);
+  assert.match(client, /const tariffPriceValues = \{ dynamic: 30\.5, window: 24 \}/);
+  assert.match(client, /tibberPriceNote\.hidden = tariffMode !== "dynamic"/);
 });
 
 test("Speichertrend zeigt den SOC vor PV nach dem Netzladen", () => {

@@ -13,6 +13,9 @@
     window: { enabled: "strategyWindow", price: "priceWindow", share: "shareWindow", label: "5 feste Tarifstunden", windows: [[2, 4], [12, 12], [16, 16]] }
   };
   const familyAssumption = { annualKwh: 3500, flexibleShare: 15 };
+  const heatPumpAssumption = { flexibleShare: 15 };
+  const tariffPriceValues = { dynamic: 30.5, window: 24 };
+  let previousTariffMode = form.elements.tariffMode?.value || "normal";
 
   const get = selector => document.querySelector(selector);
   const output = {
@@ -313,7 +316,7 @@
     const heatPump = {
       enabled: value(form.elements.heatAnnualKwh) > 0,
       annual: Math.max(0, value(form.elements.heatAnnualKwh)),
-      share: Math.max(0, Math.min(100, value(form.elements.heatFlex)))
+      share: heatPumpAssumption.flexibleShare
     };
     [car, heatPump].forEach(device => {
       if (!device.enabled) return;
@@ -327,7 +330,9 @@
     const cheapPriceField = form.querySelector("[data-cheap-price]");
     if (cheapPriceField) cheapPriceField.hidden = tariffMode === "normal";
     const cheapPriceLabel = form.querySelector("[data-cheap-price-label]");
-    if (cheapPriceLabel) cheapPriceLabel.textContent = tariffMode === "window" ? "Preis im Zeitfenster" : "Günstiger Preis";
+    if (cheapPriceLabel) cheapPriceLabel.textContent = tariffMode === "window" ? "Preis im Zeitfenster" : "Günstiger Tibber-Endpreis";
+    const tibberPriceNote = form.querySelector("[data-tibber-price]");
+    if (tibberPriceNote) tibberPriceNote.hidden = tariffMode !== "dynamic";
     const strategies = [
       { key: "pv", ...strategyConfig.pv, enabled: pvPower > 0, price: value(form.elements.pricePv), share: 45, maxKwh: pvPower * 900, allocated: 0 },
       { key: "dynamic", ...strategyConfig.dynamic, enabled: tariffMode === "dynamic", price: cheapPrice, share: 35, allocated: 0 },
@@ -579,8 +584,19 @@
   }
 
   form.addEventListener("input", calculate);
+  form.elements.tariffMode?.addEventListener("change", () => {
+    const nextTariffMode = form.elements.tariffMode.value;
+    if (previousTariffMode in tariffPriceValues) tariffPriceValues[previousTariffMode] = value(form.elements.cheapPrice);
+    if (nextTariffMode in tariffPriceValues) form.elements.cheapPrice.value = String(tariffPriceValues[nextTariffMode]);
+    previousTariffMode = nextTariffMode;
+  });
   form.addEventListener("change", calculate);
-  form.addEventListener("reset", () => window.setTimeout(calculate, 0));
+  form.addEventListener("reset", () => window.setTimeout(() => {
+    tariffPriceValues.dynamic = 30.5;
+    tariffPriceValues.window = 24;
+    previousTariffMode = form.elements.tariffMode?.value || "normal";
+    calculate();
+  }, 0));
   renderManualDemo();
   calculate();
 })();
