@@ -14,6 +14,14 @@ test("KNX-Logger-Beitrag enthält SEO- und Sicherheitsgrundlagen", () => {
   assert.match(html, /Cloud ist für das Erfassen und Auswerten/);
   assert.match(html, /qualifizierten Fachkraft/);
   assert.match(html, /ehive-dev\.github\.io\/doc\/software\/knx-logger\//);
+  assert.match(html, /img\/news\/knx-logger-trends\.webp/);
+  assert.match(html, /img\/news\/knx-logger-datenpunkte\.webp/);
+  assert.match(html, /img\/news\/knx-logger-einstellungen\.webp/);
+  assert.match(html, /Originaloberfläche des KNX Logger/);
+  assert.match(html, /simulierten Beispieldaten/);
+  for (const image of ["knx-logger-trends.webp", "knx-logger-datenpunkte.webp", "knx-logger-einstellungen.webp"]) {
+    assert.ok(fs.existsSync(path.join(root, "img", "news", image)), `${image} fehlt`);
+  }
 });
 
 test("News-Liste und Sitemap führen den KNX-Logger-Beitrag", () => {
