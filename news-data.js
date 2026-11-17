@@ -1,5 +1,13 @@
 window.EHIVE_NEWS = [
   {
+    date: "2026-11-17",
+    dateLabel: "17. November 2026",
+    title: "KNX Logger: KNX-Telegramme lokal aufzeichnen und auswerten",
+    excerpt: "Der KNX Logger importiert Gruppenadressen aus ETS, zeichnet Telegramme lokal auf und macht Zeitreihen als Trends und CSV-Export auswertbar.",
+    href: "https://www.ehiv3.de/news-knx-logger.html",
+    tags: ["App", "KNX", "Analyse"]
+  },
+  {
     date: "2026-11-10",
     dateLabel: "10. November 2026",
     title: "KNX trifft Energiemanagement: Die eHive KNX Bridge ist freigegeben",

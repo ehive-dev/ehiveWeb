@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="KNX Logger für eHive One importiert ETS-Gruppenadressen, zeichnet KNX-Telegramme lokal auf und stellt Zeitreihen als Trends oder CSV bereit." />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="eHive" />
+  <meta property="og:title" content="KNX Logger: KNX-Telegramme lokal aufzeichnen | eHive One" />
+  <meta property="og:description" content="ETS-Import, lokale Aufzeichnung, USB-Langzeitspeicher, Trends und CSV-Export für KNX-Daten auf eHive One." />
+  <meta property="og:url" content="https://www.ehiv3.de/news-knx-logger.html" />
+  <meta property="og:image" content="https://www.ehiv3.de/img/news/ehive-smarthub-appstore.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="KNX Logger: KNX-Telegramme lokal aufzeichnen | eHive One" />
+  <meta name="twitter:description" content="KNX-Zeitreihen lokal erfassen, auswerten und als CSV exportieren." />
+  <meta name="twitter:image" content="https://www.ehiv3.de/img/news/ehive-smarthub-appstore.png" />
+  <title>KNX Logger: KNX-Telegramme lokal aufzeichnen | eHive One</title>
+  <link rel="canonical" href="https://www.ehiv3.de/news-knx-logger.html" />
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="style.css" />
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@graph":[
+      {
+        "@type":"BlogPosting",
+        "headline":"KNX Logger: KNX-Telegramme lokal aufzeichnen und auswerten",
+        "description":"KNX Logger für eHive One importiert ETS-Gruppenadressen, zeichnet KNX-Telegramme lokal auf und stellt Zeitreihen als Trends oder CSV bereit.",
+        "datePublished":"2026-11-17",
+        "dateModified":"2026-11-17",
+        "mainEntityOfPage":"https://www.ehiv3.de/news-knx-logger.html",
+        "image":["https://www.ehiv3.de/img/news/ehive-smarthub-appstore.png"],
+        "author":{"@type":"Organization","name":"eHive"},
+        "publisher":{"@type":"Organization","name":"eHive","logo":{"@type":"ImageObject","url":"https://www.ehiv3.de/img/eHiveWhite.png"}}
+      },
+      {
+        "@type":"BreadcrumbList",
+        "itemListElement":[
+          {"@type":"ListItem","position":1,"name":"Home","item":"https://www.ehiv3.de/"},
+          {"@type":"ListItem","position":2,"name":"News","item":"https://www.ehiv3.de/news.html"},
+          {"@type":"ListItem","position":3,"name":"KNX Logger","item":"https://www.ehiv3.de/news-knx-logger.html"}
+        ]
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+<div data-include="header"></div>
+<main>
+  <section class="section">
+    <div class="container news-detail-layout">
+      <article class="card news-article">
+        <a class="news-backlink" href="news.html">&larr; Zurück zu den News</a>
+        <div class="news-article-meta">
+          <time datetime="2026-11-17">17. November 2026</time>
+          <span class="news-tag">App</span>
+          <span class="news-tag">KNX</span>
+          <span class="news-tag">Analyse</span>
+        </div>
+        <h1>KNX Logger: KNX-Telegramme lokal aufzeichnen und auswerten</h1>
+        <p class="news-lead">Der KNX Logger ergänzt eHive One um eine nachvollziehbare Aufzeichnung von KNX-Daten. Gruppenadressen werden aus ETS übernommen, Telegramme lokal gespeichert und Zeitreihen direkt im Browser ausgewertet.</p>
+
+        <div class="news-article-body">
+          <h2>Gruppenadressen aus ETS übernehmen</h2>
+          <p>Statt Gruppenadressen, Namen und Datenpunkttypen einzeln anzulegen, importiert der KNX Logger einen Gruppenadressen-XML-Export aus ETS. Ein vollständiges <code>.knxproj</code>-Archiv wird nicht direkt verarbeitet und muss vorher in ETS als XML exportiert werden.</p>
+
+          <h2>Telegramme lokal erfassen</h2>
+          <p>Die App empfängt KNXnet/IP-Telegramme über ein erreichbares KNX/IP-Gateway. Für kurze Analysen können Messpunkte begrenzt im Arbeitsspeicher gehalten werden. Für längere Zeiträume speichert der Logger die Daten monatsweise auf einem dafür eingerichteten USB-Datenträger.</p>
+          <p>Die Aufzeichnung läuft auf eHive One. Eine Cloud ist für das Erfassen und Auswerten der KNX-Zeitreihen nicht erforderlich.</p>
+
+          <h2>Trends untersuchen und Daten exportieren</h2>
+          <p>Ausgewählte Gruppenadressen lassen sich als Zeitreihen darstellen. Größere Zeiträume werden für eine lesbare Anzeige verdichtet. Wenn eine weitere Auswertung notwendig ist, können die Daten als CSV exportiert werden. Eine konfigurierbare Aufbewahrungsdauer begrenzt den Langzeitspeicher.</p>
+
+          <h2>KNX Logger und KNX Bridge erfüllen unterschiedliche Aufgaben</h2>
+          <p>Der <strong>KNX Logger</strong> beobachtet, speichert und visualisiert KNX-Telegramme. Die <a href="news-knx-integration-beta.html"><strong>KNX Bridge</strong></a> ordnet dagegen ausgewählte evcc-Datenpunkte KNX-Gruppenadressen zu. Beide Apps ergänzen sich, ersetzen aber weder ETS noch die fachgerechte Planung einer KNX-Anlage.</p>
+
+          <h2>Voraussetzungen und Verfügbarkeit</h2>
+          <p>Benötigt werden ein erreichbares KNX/IP-Gateway, ein passender ETS-XML-Export und ein SmartHub-Systemstand, in dem der KNX Logger angeboten wird. Für die dauerhafte Aufzeichnung muss zusätzlich ein geeigneter USB-Datenträger eingerichtet sein. Der Funktionsumfang kann sich während der Beta-Phase noch ändern.</p>
+          <p><strong>Wichtig:</strong> Gruppenadressen, Datenpunkttypen und Netzwerkzugriffe müssen zur realen KNX-Anlage passen. Änderungen an einer produktiven Gebäudeautomation gehören in die Hände einer entsprechend qualifizierten Fachkraft.</p>
+
+          <p><a href="https://ehive-dev.github.io/doc/software/knx-logger/" target="_blank" rel="noopener noreferrer"><strong>KNX-Logger-Dokumentation öffnen</strong></a></p>
+        </div>
+      </article>
+
+      <aside class="card news-sidecard">
+        <h3>KNX auf eHive One</h3>
+        <p>Aufzeichnung und Datenzuordnung bleiben getrennt und dadurch leichter prüfbar.</p>
+        <div class="news-side-links">
+          <a href="app-store.html"><strong>Alle eHive Apps</strong><span>KNX Logger, KNX Bridge und weitere Anwendungen</span></a>
+          <a href="https://ehive-dev.github.io/doc/software/knx-logger/" target="_blank" rel="noopener noreferrer"><strong>KNX Logger einrichten</strong><span>Import, Verbindung, Speicher und Auswertung</span></a>
+          <a href="https://ehive-dev.github.io/doc/software/knx-bridge/" target="_blank" rel="noopener noreferrer"><strong>KNX Bridge einrichten</strong><span>evcc-Datenpunkte KNX-Gruppenadressen zuordnen</span></a>
+        </div>
+      </aside>
+    </div>
+  </section>
+</main>
+<div data-include="footer"></div>
+<script src="config.js"></script>
+<script src="script.js?v=20261117-knx-logger"></script>
+</body>
+</html>
