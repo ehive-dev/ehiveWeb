@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="HiveBus für eHive One prüft Modbus TCP und RTU, sucht Unit-IDs und unterstützt kontrollierte Registerdiagnosen über eine lokale Oberfläche." />
+  <meta property="og:type" content="article" />
+  <meta property="og:site_name" content="eHive" />
+  <meta property="og:title" content="HiveBus: Modbus TCP und RTU gezielt prüfen | eHive One" />
+  <meta property="og:description" content="Modbus-Geräte finden, Unit-IDs prüfen und Register kontrolliert untersuchen." />
+  <meta property="og:url" content="https://www.ehiv3.de/news-hivebus-modbus-diagnose.html" />
+  <meta property="og:image" content="https://www.ehiv3.de/img/news/hivebus-original.png" />
+  <meta property="og:image:width" content="1440" />
+  <meta property="og:image:height" content="1000" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="HiveBus: Modbus TCP und RTU gezielt prüfen | eHive One" />
+  <meta name="twitter:description" content="Die lokale Modbus-Diagnose-App für eHive One." />
+  <meta name="twitter:image" content="https://www.ehiv3.de/img/news/hivebus-original.png" />
+  <title>HiveBus: Modbus TCP und RTU gezielt prüfen | eHive One</title>
+  <link rel="canonical" href="https://www.ehiv3.de/news-hivebus-modbus-diagnose.html" />
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="style.css" />
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","headline":"HiveBus: Modbus TCP und RTU gezielt prüfen","datePublished":"2026-09-10","dateModified":"2026-11-18","mainEntityOfPage":"https://www.ehiv3.de/news-hivebus-modbus-diagnose.html","image":["https://www.ehiv3.de/img/news/hivebus-original.png"],"author":{"@type":"Organization","name":"eHive"},"publisher":{"@type":"Organization","name":"eHive"}}</script>
+</head>
+<body>
+<div data-include="header"></div>
+<main><section class="section"><div class="container news-detail-layout">
+  <article class="card news-article">
+    <a class="news-backlink" href="news.html">&larr; Zurück zu den News</a>
+    <div class="news-article-meta"><time datetime="2026-09-10">10. September 2026</time><span class="news-tag">App</span><span class="news-tag">Modbus</span><span class="news-tag">Diagnose</span></div>
+    <h1>HiveBus: Modbus TCP und RTU gezielt prüfen</h1>
+    <p class="news-lead">HiveBus unterstützt die technische Modbus-Diagnose auf eHive One. Die App sucht erreichbare TCP-Geräte, prüft Unit-IDs und stellt Registerwerte in mehreren Interpretationen gegenüber.</p>
+    <div class="news-article-body">
+      <figure class="news-preview-media"><img class="news-preview-image" src="img/news/hivebus-original.png" width="1440" height="1000" alt="Originaloberfläche von HiveBus mit Modbus-TCP-Suche, Geräteprüfung und Registerdiagnose" /><figcaption><strong>Originalaufnahme aus HiveBus 0.3.1:</strong> Netzwerksuche, Geräteprüfung und Registerzugriff sind als klar getrennte Schritte aufgebaut.</figcaption></figure>
+      <h2>Vom Netzwerk bis zum Register</h2>
+      <p>HiveBus kann private IPv4-Netze auf ausgewählten Modbus-Ports durchsuchen. Ein Treffer lässt sich anschließend auf erreichbare Unit-IDs und standardisierte Geräteinformationen prüfen. Holding- und Input-Register werden als Rohwert sowie in 16- und 32-Bit-Darstellungen angezeigt.</p>
+      <h2>TCP und RS485 bewusst trennen</h2>
+      <p>Neben Modbus TCP unterstützt HiveBus Modbus RTU am eHive-RS485-Port. Baudrate, Parität, Stopbits und Unit-ID müssen zur Anlage passen. Auf einem RS485-Bus darf nur ein Modbus-Master aktiv sein; HiveBus beendet andere Dienste deshalb nicht automatisch.</p>
+      <h2>Schreiben bleibt eine kontrollierte Fachfunktion</h2>
+      <p>Schreibzugriffe über FC06 oder FC16 erfordern das Bestätigungswort <code>SCHREIBEN</code> und eine zusätzliche Browserbestätigung. Das ersetzt keine Registertabelle des Herstellers. Falsche Adresse, Funktion oder Werte können den Anlagenbetrieb unmittelbar verändern.</p>
+      <p><strong>Hinweis:</strong> Registerzugriffe nur mit passender Herstellerdokumentation und an einer dafür freigegebenen Anlage ausführen.</p>
+    </div>
+  </article>
+  <aside class="card news-sidecard"><h3>HiveBus einsetzen</h3><p>Die App ist ein Diagnosewerkzeug und keine automatische Gerätefreigabe.</p><div class="news-side-links"><a href="app-store.html"><strong>Alle eHive Apps</strong><span>Werkzeuge und Anwendungen im Überblick</span></a><a href="https://github.com/ehive-dev/HiveBus" target="_blank" rel="noopener noreferrer"><strong>HiveBus auf GitHub</strong><span>Quellcode und technische Hinweise</span></a></div></aside>
+</div></section></main>
+<div data-include="footer"></div><script src="config.js"></script><script src="script.js?v=20261118-app-news"></script>
+</body>
+</html>

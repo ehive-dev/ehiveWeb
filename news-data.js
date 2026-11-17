@@ -8,6 +8,22 @@ window.EHIVE_NEWS = [
     tags: ["App", "KNX", "Analyse"]
   },
   {
+    date: "2026-11-13",
+    dateLabel: "13. November 2026",
+    title: "ioBroker auf eHive One: Smart-Home-Dienste über Adapter verbinden",
+    excerpt: "ioBroker verbindet Geräte, Dienste und Protokolle über Adapter. Auf eHive One ist dafür die 2-GB-Variante vorgesehen.",
+    href: "https://www.ehiv3.de/news-iobroker-smarthome.html",
+    tags: ["Smart Home", "ioBroker", "2 GB"]
+  },
+  {
+    date: "2026-11-12",
+    dateLabel: "12. November 2026",
+    title: "Node-RED auf eHive One: Energie- und Gerätedaten in Flows verbinden",
+    excerpt: "Node-RED stellt Abläufe als visuelle Flows zusammen und ist auf eHive One der 2-GB-Variante vorbehalten.",
+    href: "https://www.ehiv3.de/news-node-red-automatisierung.html",
+    tags: ["Smart Home", "Node-RED", "Automatisierung"]
+  },
+  {
     date: "2026-11-10",
     dateLabel: "10. November 2026",
     title: "KNX trifft Energiemanagement: Die eHive KNX Bridge ist freigegeben",
@@ -38,6 +54,14 @@ window.EHIVE_NEWS = [
     excerpt: "SmartHub 1.1.55 verbessert App-Installationen, WLAN- und NTP-Anzeige sowie den Neustart auf eHive One. HiveBus, KNX Bridge und HiveScope stehen gesammelt unter Tools bereit.",
     href: "https://www.ehiv3.de/news-smarthub-1-1-55.html",
     tags: ["Software", "SmartHub", "Update"]
+  },
+  {
+    date: "2026-09-10",
+    dateLabel: "10. September 2026",
+    title: "HiveBus: Modbus TCP und RTU gezielt prüfen",
+    excerpt: "HiveBus findet Modbus-TCP-Geräte, prüft Unit-IDs und hilft bei der kontrollierten Diagnose von Registern und RS485-Verbindungen.",
+    href: "https://www.ehiv3.de/news-hivebus-modbus-diagnose.html",
+    tags: ["App", "Modbus", "Diagnose"]
   },
   {
     date: "2026-09-09",
@@ -93,8 +117,7 @@ window.EHIVE_NEWS = [
     title: "eHive One beim evcc Community Treffen 2026",
     excerpt: "Wir waren beim evcc Community Treffen in Osnabrück dabei, haben eHive One und unsere Apps vorgestellt und erlebt, wie stark Open Source funktioniert, wenn Praxis, Entwicklung und Community zusammenkommen.",
     href: "https://www.ehiv3.de/news-evcc-community-treffen-2026.html",
-    tags: ["Community", "evcc", "Open Source"],
-    hidden: true
+    tags: ["Community", "evcc", "Open Source"]
   },
   {
     date: "2026-05-10",
@@ -105,11 +128,43 @@ window.EHIVE_NEWS = [
     tags: ["Plattform", "Vision", "Erweiterungen"]
   },
   {
+    date: "2026-05-06",
+    dateLabel: "6. Mai 2026",
+    title: "tenantLedger: Mieterstromdaten strukturiert auswerten",
+    excerpt: "tenantLedger ordnet Wohnungen, Zähler und Preisbestandteile zu und erzeugt nachvollziehbare technische Abrechnungsunterlagen.",
+    href: "https://www.ehiv3.de/news-tenantledger-mieterstrom.html",
+    tags: ["App", "Mieterstrom", "Abrechnung"]
+  },
+  {
     date: "2026-03-22",
     dateLabel: "22. März 2026",
     title: "News jetzt an einem Ort",
     excerpt: "Mit dem neuen News-Bereich bündeln wir Änderungen an Website, Shop und Dokumentation an einer festen Stelle.",
     href: "https://www.ehiv3.de/news-updates-hub.html",
     tags: ["Website", "Updates"]
+  },
+  {
+    date: "2025-10-19",
+    dateLabel: "19. Oktober 2025",
+    title: "wattRadar: Energieflüsse und Lastverläufe sichtbar machen",
+    excerpt: "wattRadar zeigt PV, Hausverbrauch, Netz, Speicher und Ladepunkte als zeitliche Verläufe und Energiefluss.",
+    href: "https://www.ehiv3.de/news-wattradar-energiefluesse.html",
+    tags: ["App", "Monitoring", "Energiefluss"]
+  },
+  {
+    date: "2025-09-08",
+    dateLabel: "8. September 2025",
+    title: "TunnelManager: geschützter Fernzugriff auf eHive One",
+    excerpt: "TunnelManager stellt ausgewählte lokale Weboberflächen über einen geschützten Zugang bereit, ohne eHive One direkt freizugeben.",
+    href: "https://www.ehiv3.de/news-tunnelmanager-fernzugriff.html",
+    tags: ["App", "Fernzugriff", "Sicherheit"]
+  },
+  {
+    date: "2025-09-05",
+    dateLabel: "5. September 2025",
+    title: "ioManager: digitale Signale erkennen und zeitlich prüfen",
+    excerpt: "ioManager zeigt HIGH- und LOW-Zustände digitaler Eingänge und macht Schaltverläufe für Diagnose und Energiemanagement sichtbar.",
+    href: "https://www.ehiv3.de/news-iomanager-signale.html",
+    tags: ["App", "Digitale Eingänge", "§ 14a EnWG"]
   }
 ];
