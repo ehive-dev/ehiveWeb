@@ -8,7 +8,7 @@
   const defaults = Object.freeze({
     additionalInvestment: 2000, apartments: 4,
     consumptionPerApartment: 1900, pvYield: 8000, solarCoverage: 50,
-    salePrice: 28, feedInPrice: 8, fullFeedInPrice: 12,
+    salePrice: 28, feedInPrice: 8,
     annualPvCosts: 200, additionalAnnualCosts: 200
   });
   function calculate(input) {
@@ -23,7 +23,7 @@
     const requestedSolar = demand * p.solarCoverage / 100;
     const soldSolar = Math.min(p.pvYield, requestedSolar);
     const exportedSolar = p.pvYield - soldSolar;
-    const fullRevenue = p.pvYield * p.fullFeedInPrice / 100;
+    const fullRevenue = p.pvYield * p.feedInPrice / 100;
     const localRevenue = soldSolar * p.salePrice / 100;
     const surplusRevenue = exportedSolar * p.feedInPrice / 100;
     const baseSurplus = fullRevenue - p.annualPvCosts;

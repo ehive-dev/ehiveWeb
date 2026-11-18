@@ -28,7 +28,7 @@
     error.hidden = true;
     ["demand", "soldSolar", "exportedSolar", "solarPerApartment"].forEach(key => write(key, format.format(r[key]) + " kWh/Jahr"));
     ["fullRevenue", "localRevenue", "surplusRevenue", "rentalRevenue", "baseSurplus", "rentalCosts", "rentalSurplus", "rentalInvestment"].forEach(key => write(key, euro.format(r[key])));
-    write("fullFeedInPrice", decimal.format(p.fullFeedInPrice) + " ct/kWh");
+    write("feedInPrice", decimal.format(p.feedInPrice) + " ct/kWh");
     write("additionalInvestment", euro.format(p.additionalInvestment));
     write("additionalAnnualCosts", euro.format(p.additionalAnnualCosts) + " / Jahr");
     write("baseInvestment", euro.format(0));
