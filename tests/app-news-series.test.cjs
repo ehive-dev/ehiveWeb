@@ -95,3 +95,10 @@ test("Node-RED trägt den gewünschten Flow-Titel", () => {
   assert.match(html, /<h1>Node-RED auf eHive One: Baue deine eigenen Flows<\/h1>/);
   assert.match(news, /title: "Node-RED auf eHive One: Baue deine eigenen Flows"/);
 });
+
+test("KNX Bridge trägt den gewünschten neuen Titel", () => {
+  const html = read("news-knx-integration-beta.html");
+  const news = read("news-data.js");
+  assert.match(html, /<h1>KNX trifft Energiemanagement: Wir übernehmen jetzt<\/h1>/);
+  assert.match(news, /title: "KNX trifft Energiemanagement: Wir übernehmen jetzt"/);
+});

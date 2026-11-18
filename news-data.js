@@ -26,7 +26,7 @@ window.EHIVE_NEWS = [
   {
     date: "2026-11-10",
     dateLabel: "10. November 2026",
-    title: "KNX trifft Energiemanagement: Die eHive KNX Bridge ist freigegeben",
+    title: "KNX trifft Energiemanagement: Wir übernehmen jetzt",
     excerpt: "Die freigegebene KNX Bridge verbindet ausgewählte evcc-Datenpunkte mit KNX-Gruppenadressen und bringt Energieinformationen in die Gebäudeautomation.",
     href: "https://www.ehiv3.de/news-knx-integration-beta.html",
     tags: ["App", "KNX", "Freigegeben"]
