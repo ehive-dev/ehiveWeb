@@ -12,21 +12,24 @@
   function update() {
     const p = {};
     const fields = Object.keys(api.defaults).map(key => form.elements.namedItem(key));
-    const invalid = fields.find(field => !field.validity.valid || !Number.isFinite(field.valueAsNumber));
+    const enabled = form.elements.namedItem("wallboxesEnabled").checked;
+    document.getElementById("ms-wallbox-fields").hidden = !enabled;
+    document.querySelectorAll("#ms-wallbox-fields input").forEach(field => { field.disabled = !enabled; });
+    const invalid = fields.find(field => !field.disabled && field.type !== "checkbox" && (!field.validity.valid || !Number.isFinite(field.valueAsNumber)));
     if (invalid) {
       result.hidden = true;
       error.hidden = false;
       error.textContent = "Bitte vervollständige die Eingaben und beachte die angegebenen Wertebereiche.";
       return;
     }
-    fields.forEach(field => { p[field.name] = field.valueAsNumber; });
+    fields.forEach(field => { p[field.name] = field.type === "checkbox" ? Number(field.checked) : field.disabled ? api.defaults[field.name] : field.valueAsNumber; });
     let r;
     try { r = api.calculate(p); } catch {
       result.hidden = true; error.hidden = false; error.textContent = "Bitte prüfe die Eingabewerte."; return;
     }
     result.hidden = false;
     error.hidden = true;
-    ["demand", "soldSolar", "exportedSolar", "solarPerApartment"].forEach(key => write(key, format.format(r[key]) + " kWh/Jahr"));
+    ["householdDemand", "evDemand", "demand", "soldSolar", "exportedSolar", "solarPerApartment"].forEach(key => write(key, format.format(r[key]) + " kWh/Jahr"));
     ["fullRevenue", "localRevenue", "surplusRevenue", "rentalRevenue", "baseSurplus", "rentalCosts", "rentalSurplus", "rentalInvestment"].forEach(key => write(key, euro.format(r[key])));
     write("feedInPrice", decimal.format(p.feedInPrice) + " ct/kWh");
     write("additionalInvestment", euro.format(p.additionalInvestment));
@@ -40,8 +43,8 @@
     write("improvement", (r.improvement > 0 ? "+" : "") + euro.format(r.improvement) + " / Jahr");
     write("investmentReturn", r.investmentReturn === null ? "Ohne Zusatzinvestition keine Rendite berechenbar" : "Rendite der Zusatzinvestition: " + decimal.format(r.investmentReturn) + " % pro Jahr");
     write("payback", p.additionalInvestment === 0 ? "Keine Zusatzinvestition angegeben" : r.additionalPayback === null ? "Keine Amortisation aus dem Mehrertrag" : decimal.format(r.additionalPayback) + " Jahre für die Zusatzinvestition");
-    write("formulaDemand", `${format.format(p.apartments)} × ${format.format(p.consumptionPerApartment)} = ${format.format(r.demand)} kWh/Jahr`);
-    write("formulaSolar", `Minimum aus ${format.format(r.demand)} × ${format.format(p.solarCoverage)} % und ${format.format(p.pvYield)} = ${format.format(r.soldSolar)} kWh/Jahr`);
+    write("formulaDemand", `${format.format(p.apartments)} × ${format.format(p.consumptionPerApartment)} + ${format.format(r.evDemand)} Wallbox = ${format.format(r.demand)} kWh/Jahr`);
+    write("formulaSolar", `Minimum aus (${format.format(r.householdDemand)} × ${format.format(p.solarCoverage)} % + ${format.format(r.evDemand)} × ${format.format(p.evSolarCoverage)} %) und ${format.format(p.pvYield)} = ${format.format(r.soldSolar)} kWh/Jahr`);
     write("formulaExtra", `${euro.format(r.rentalSurplus)} − ${euro.format(r.baseSurplus)} = ${euro.format(r.improvement)} pro Jahr`);
     const status = document.getElementById("ms-return-status");
     status.textContent = r.improvement > 0 ? "Im gewählten Beispiel verbessert Mieterstrom den jährlichen Überschuss." : r.improvement < 0 ? "Im gewählten Beispiel ist die reine Einspeisung beim jährlichen Überschuss günstiger." : "Beide Varianten erzielen denselben jährlichen Überschuss.";

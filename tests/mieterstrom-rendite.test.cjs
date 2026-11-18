@@ -49,3 +49,18 @@ test('Energiebilanz und Wohnungszuordnung bleiben über Szenarien geschlossen',(
 });
 
 test('Historische PV-Anschaffungskosten verändern die Zusatzrendite nicht',()=>{const a=calc({}),b=calc({installationCost:50000});close(a.improvement,b.improvement);close(a.investmentReturn,b.investmentReturn);});
+
+test('Wallboxen rechnen ein Fahrzeug mit 10000 km je Wohnung und nur den PV-Anteil als Verkauf',()=>{
+ const r=calc({wallboxesEnabled:1});
+ close(r.evDemand,8000);close(r.householdDemand,7600);close(r.demand,15600);
+ close(r.soldSolar,7800);close(r.exportedSolar,200);close(r.improvement,1360);
+ close(r.rentalInvestment,2000);
+});
+test('Wallbox-Ladeorte und PV-Anteil sind getrennt, ausgeschaltete Wallboxen haben keinen Effekt',()=>{
+ close(calc({wallboxesEnabled:1,homeCharging:50}).evDemand,4000);
+ close(calc({wallboxesEnabled:1,evSolarCoverage:0}).improvement,calc({}).improvement);
+ close(calc({wallboxesEnabled:0,annualMileage:100000}).evDemand,0);
+ close(calc({wallboxesEnabled:1,apartments:0}).evDemand,0);
+ const capped=calc({wallboxesEnabled:1,evSolarCoverage:100});close(capped.soldSolar,8000);close(capped.exportedSolar,0);
+ for(const input of [{homeCharging:101},{evSolarCoverage:101},{wallboxesEnabled:2},{annualMileage:-1}])assert.throws(()=>calc(input),RangeError);
+});
