@@ -28,18 +28,17 @@
     error.hidden = true;
     ["demand", "soldSolar", "exportedSolar", "solarPerApartment"].forEach(key => write(key, format.format(r[key]) + " kWh/Jahr"));
     ["fullRevenue", "localRevenue", "surplusRevenue", "rentalRevenue", "baseSurplus", "rentalCosts", "rentalSurplus", "rentalInvestment"].forEach(key => write(key, euro.format(r[key])));
-    ["baseReturn", "rentalReturn"].forEach(key => write(key, r[key] === null ? "–" : decimal.format(r[key]) + " %"));
     write("fullFeedInPrice", decimal.format(p.fullFeedInPrice) + " ct/kWh");
     write("additionalInvestment", euro.format(p.additionalInvestment));
     write("additionalAnnualCosts", euro.format(p.additionalAnnualCosts) + " / Jahr");
-    write("baseInvestment", euro.format(p.installationCost));
+    write("baseInvestment", euro.format(0));
     write("annualPvCosts", euro.format(p.annualPvCosts));
     write("pvYield", format.format(p.pvYield) + " kWh/Jahr");
     write("solarCoverage", format.format(p.solarCoverage) + " %");
     write("effectiveCoverage", decimal.format(r.effectiveCoverage) + " %");
     write("selfConsumption", decimal.format(r.selfConsumption) + " %");
     write("improvement", (r.improvement > 0 ? "+" : "") + euro.format(r.improvement) + " / Jahr");
-    write("returnDifference", r.returnDifference === null ? "Ohne vollständige Investitionskosten nicht vergleichbar" : (r.returnDifference > 0 ? "+" : "") + decimal.format(r.returnDifference) + " Prozentpunkte");
+    write("investmentReturn", r.investmentReturn === null ? "Ohne Zusatzinvestition keine Rendite berechenbar" : "Rendite der Zusatzinvestition: " + decimal.format(r.investmentReturn) + " % pro Jahr");
     write("payback", p.additionalInvestment === 0 ? "Keine Zusatzinvestition angegeben" : r.additionalPayback === null ? "Keine Amortisation aus dem Mehrertrag" : decimal.format(r.additionalPayback) + " Jahre für die Zusatzinvestition");
     write("formulaDemand", `${format.format(p.apartments)} × ${format.format(p.consumptionPerApartment)} = ${format.format(r.demand)} kWh/Jahr`);
     write("formulaSolar", `Minimum aus ${format.format(r.demand)} × ${format.format(p.solarCoverage)} % und ${format.format(p.pvYield)} = ${format.format(r.soldSolar)} kWh/Jahr`);
@@ -48,7 +47,7 @@
     status.textContent = r.improvement > 0 ? "Im gewählten Beispiel verbessert Mieterstrom den jährlichen Überschuss." : r.improvement < 0 ? "Im gewählten Beispiel ist die reine Einspeisung beim jährlichen Überschuss günstiger." : "Beide Varianten erzielen denselben jährlichen Überschuss.";
     status.dataset.outcome = r.improvement >= 0 ? "positive" : "negative";
     document.getElementById("ms-return-cap").hidden = !r.capped;
-    document.getElementById("ms-return-zero").hidden = p.installationCost > 0;
+    document.getElementById("ms-return-zero").hidden = p.additionalInvestment > 0;
     const maxWidth = Math.max(Math.abs(r.baseSurplus), Math.abs(r.rentalSurplus), 1);
     for (const [id, value] of [["ms-bar-base", r.baseSurplus], ["ms-bar-rental", r.rentalSurplus]]) {
       const bar = document.getElementById(id);

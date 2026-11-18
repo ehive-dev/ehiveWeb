@@ -6,7 +6,7 @@
 })(typeof globalThis !== "undefined" ? globalThis : this, function () {
   "use strict";
   const defaults = Object.freeze({
-    installationCost: 18000, additionalInvestment: 2000, apartments: 4,
+    additionalInvestment: 2000, apartments: 4,
     consumptionPerApartment: 1900, pvYield: 8000, solarCoverage: 50,
     salePrice: 28, feedInPrice: 8, fullFeedInPrice: 12,
     annualPvCosts: 200, additionalAnnualCosts: 200
@@ -29,9 +29,6 @@
     const baseSurplus = fullRevenue - p.annualPvCosts;
     const rentalCosts = p.annualPvCosts + p.additionalAnnualCosts;
     const rentalSurplus = localRevenue + surplusRevenue - rentalCosts;
-    const rentalInvestment = p.installationCost + p.additionalInvestment;
-    const baseReturn = p.installationCost > 0 ? baseSurplus / p.installationCost * 100 : null;
-    const rentalReturn = rentalInvestment > 0 ? rentalSurplus / rentalInvestment * 100 : null;
     const improvement = rentalSurplus - baseSurplus;
     return {
       demand, requestedSolar, soldSolar, exportedSolar,
@@ -40,8 +37,9 @@
       selfConsumption: p.pvYield > 0 ? soldSolar / p.pvYield * 100 : 0,
       capped: requestedSolar > p.pvYield,
       fullRevenue, localRevenue, surplusRevenue, rentalRevenue: localRevenue + surplusRevenue,
-      baseSurplus, rentalCosts, rentalSurplus, rentalInvestment, baseReturn, rentalReturn,
-      returnDifference: baseReturn !== null && rentalReturn !== null ? rentalReturn - baseReturn : null,
+      baseSurplus, rentalCosts, rentalSurplus,
+      rentalInvestment: p.additionalInvestment,
+      investmentReturn: p.additionalInvestment > 0 ? improvement / p.additionalInvestment * 100 : null,
       improvement,
       additionalPayback: improvement > 0 && p.additionalInvestment > 0 ? p.additionalInvestment / improvement : null
     };
