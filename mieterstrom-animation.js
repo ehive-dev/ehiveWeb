@@ -8,7 +8,6 @@
   const hub = svg.querySelector(".hub");
   const finish = svg.querySelector(".finish");
   const wires = [...svg.querySelectorAll(".wire")];
-  const replay = figure.querySelector(".ms-replay");
   const motion = window.matchMedia("(prefers-reduced-motion: reduce)");
   let timers = [];
   let observer;
@@ -40,8 +39,6 @@
     wires.forEach((wire, i) => after(5100 + i * 140, () => { wire.style.strokeDashoffset = "0"; }));
     after(8500, () => show(finish));
   }
-  replay.hidden = false;
-  replay.addEventListener("click", () => { observer?.disconnect(); play(); });
   motion.addEventListener("change", () => { if (motion.matches) complete(); });
   if (!motion.matches && "IntersectionObserver" in window) {
     observer = new IntersectionObserver(entries => {

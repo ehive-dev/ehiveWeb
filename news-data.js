@@ -2,10 +2,10 @@ window.EHIVE_NEWS = [
   {
     date: "2026-11-18",
     dateLabel: "18. November 2026",
-    title: "Mieterstrom: Solarstrom für alle – smart und günstig",
+    title: "Mieterstrom: Solarstrom für alle",
     excerpt: "Mehr Solarstrom im Mehrfamilienhaus nutzen: Wie du als Vermieter Eigenverbrauch und Rendite verbessern, kompatible Bestandstechnik weiterverwenden und Wallboxen abgestimmt laden kannst.",
     href: "https://www.ehiv3.de/news-mieterstrom-solarstrom-fuer-alle.html",
-    image: "img/news/mieterstrom-solarstrom-fuer-alle.png",
+    image: "img/news/mieterstrom-solarstrom-fuer-alle.png?v=20261118-clean",
     imageAlt: "Mehrfamilienhaus mit PV, Zählern, eHive One und vier Wallboxen",
     tags: ["Mieterstrom", "Vermieter", "Lastmanagement"]
   },
