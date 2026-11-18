@@ -5905,6 +5905,12 @@ body.lightbox-open{
 .savings-mode-links{display:flex;gap:22px;margin-top:22px;border-bottom:1px solid #bdcbc6}.savings-mode-links a{padding:10px 0 9px;border-bottom:3px solid transparent;color:#62716c;font-size:.78rem;font-weight:850;text-decoration:none}.savings-mode-links a.is-active,.savings-mode-links a:hover{border-bottom-color:#087d74;color:#17332d}.simulation-chart-track .is-price{background:#087d74}.simulation-legend .is-price{background:#087d74}
 .simulation-input-grid .simulation-range>span:first-child{display:flex;justify-content:space-between;gap:12px}.simulation-range output{color:#087d74;font-weight:850;white-space:nowrap}.simulation-input-grid .simulation-range input[type="range"]{min-height:28px;padding:0;border:0;background:transparent;accent-color:#087d74;cursor:pointer}.simulation-range small{display:flex;justify-content:space-between;margin-top:2px;color:#76827e;font-size:.62rem}.simulation-range small i{font-style:normal}
 
-/* Optional preview for illustrated News entries. */
-.news-card-image-link{display:block;margin-bottom:20px;overflow:hidden;border-radius:12px;background:var(--hero-bg)}
-.news-card-image-link img{width:100%;height:auto;aspect-ratio:1200/630;object-fit:cover}
+/* Article thumbnails align to the right of the headline and summary. */
+.news-card--illustrated{grid-template-columns:minmax(0,1fr) 160px;column-gap:24px}
+.news-card--illustrated .news-card-top{grid-column:1 / -1;grid-row:1}
+.news-card--illustrated h3{grid-column:1;grid-row:2}
+.news-card--illustrated>p{grid-column:1;grid-row:3}
+.news-card--illustrated .news-card-footer{grid-column:1;grid-row:4}
+.news-card--illustrated .news-card-image-link{grid-column:2;grid-row:2 / span 2;align-self:start;display:block;overflow:hidden;border-radius:8px;background:var(--hero-bg);aspect-ratio:3 / 2}
+.news-card-image-link img{display:block;width:100%;height:100%;object-fit:contain}
+@media(max-width:600px){.news-card--illustrated{grid-template-columns:minmax(0,1fr) 96px;column-gap:14px}.news-card--illustrated>p{grid-column:1 / -1;grid-row:3}.news-card--illustrated .news-card-image-link{grid-row:2}.news-card--illustrated h3{font-size:20px}}

@@ -20,9 +20,13 @@ Der News-Bereich ist so aufgebaut, dass Startseite und [news.html](./news.html) 
   title: "Titel des Beitrags",
   excerpt: "Kurze Zusammenfassung für Startseite und Übersicht.",
   href: "https://www.ehiv3.de/news-mein-thema.html",
+  image: "img/news/mein-beitragsbild.webp",
+  imageAlt: "Kurze Beschreibung des Bildinhalts",
   tags: ["Software", "Release"]
 }
 ```
+
+Jeder Beitrag erhält ein `image` und einen passenden `imageAlt`. Verwende bevorzugt ein Inhaltsbild oder Video-Poster aus dem Artikel, alternativ dessen hinterlegtes Social-Vorschaubild. Die Übersicht zeigt das Bild rechts neben der Überschrift. Die statischen Karten in `news.html` müssen dieselben Angaben enthalten.
 
 ## Artikelseite
 

@@ -782,12 +782,13 @@ Viele Grüße`
       const image = document.createElement("img");
       image.src = item.image;
       image.alt = item.imageAlt || item.title || "";
-      image.width = 1200;
-      image.height = 630;
+      image.width = 240;
+      image.height = 160;
       image.loading = "lazy";
       image.decoding = "async";
       imageLink.appendChild(image);
       article.appendChild(imageLink);
+      article.classList.add("news-card--illustrated");
     }
     article.appendChild(top);
     article.appendChild(title);
