@@ -78,7 +78,8 @@ test("tenantLedger-News erklärt den Ablauf ausführlich und trägt den gewünsc
   assert.match(html, /Wohnungen und Mieter/);
   assert.match(html, /PV-Strom und Netzbezug getrennt betrachten/);
   assert.match(html, /Betreiberübersicht/);
-  assert.match(html, /rechtliche, steuerliche, mess- oder abrechnungstechnische Bewertung/);
+  assert.doesNotMatch(html, /Einfacher bedeutet nicht ungeprüft/);
+  assert.doesNotMatch(html, /Eine übersichtliche PDF ist noch kein Nachweis/);
 });
 
 test("ioBroker trägt in News-Liste und Artikel den kurzen Titel", () => {
