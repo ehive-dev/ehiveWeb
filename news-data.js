@@ -130,8 +130,8 @@ window.EHIVE_NEWS = [
   {
     date: "2026-05-06",
     dateLabel: "6. Mai 2026",
-    title: "tenantLedger: Mieterstromdaten strukturiert auswerten",
-    excerpt: "tenantLedger ordnet Wohnungen, Zähler und Preisbestandteile zu und erzeugt nachvollziehbare technische Abrechnungsunterlagen.",
+    title: "tenantLedger: Mietstrom endlich einfach",
+    excerpt: "tenantLedger führt Wohnungen, Zähler, PV- und Netzanteile sowie Preisbestandteile vom Messwert bis zur kontrollierbaren PDF-Vorschau zusammen.",
     href: "https://www.ehiv3.de/news-tenantledger-mieterstrom.html",
     tags: ["App", "Mieterstrom", "Abrechnung"]
   },

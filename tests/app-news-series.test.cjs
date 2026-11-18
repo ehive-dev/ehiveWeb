@@ -69,3 +69,14 @@ test("KNX-Bridge-News verwendet nur die echte App-Oberfläche", () => {
   assert.match(html, /img\/news\/knx-bridge-beta\.webp/);
   assert.doesNotMatch(html, /knx-energy-building|KI-generierte Illustration/);
 });
+
+test("tenantLedger-News erklärt den Ablauf ausführlich und trägt den gewünschten Titel", () => {
+  const html = read("news-tenantledger-mieterstrom.html");
+  const news = read("news-data.js");
+  assert.match(html, /<h1>tenantLedger: Mietstrom endlich einfach<\/h1>/);
+  assert.match(news, /title: "tenantLedger: Mietstrom endlich einfach"/);
+  assert.match(html, /Wohnungen und Mieter/);
+  assert.match(html, /PV-Strom und Netzbezug getrennt betrachten/);
+  assert.match(html, /Betreiberübersicht/);
+  assert.match(html, /rechtliche, steuerliche, mess- oder abrechnungstechnische Bewertung/);
+});
