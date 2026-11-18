@@ -1,5 +1,15 @@
 window.EHIVE_NEWS = [
   {
+    date: "2026-11-18",
+    dateLabel: "18. November 2026",
+    title: "Mieterstrom: Solarstrom für alle – smart und günstig",
+    excerpt: "Mehr Solarstrom im Mehrfamilienhaus nutzen: Wie du als Vermieter Eigenverbrauch und Rendite verbessern, kompatible Bestandstechnik weiterverwenden und Wallboxen abgestimmt laden kannst.",
+    href: "https://www.ehiv3.de/news-mieterstrom-solarstrom-fuer-alle.html",
+    image: "img/news/mieterstrom-solarstrom-fuer-alle.png",
+    imageAlt: "Mehrfamilienhaus mit PV, Zählern, eHive One und vier Wallboxen",
+    tags: ["Mieterstrom", "Vermieter", "Lastmanagement"]
+  },
+  {
     date: "2026-11-17",
     dateLabel: "17. November 2026",
     title: "KNX Logger: KNX-Telegramme lokal aufzeichnen und auswerten",

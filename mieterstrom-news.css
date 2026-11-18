@@ -1,0 +1,18 @@
+.ms-layout{grid-template-columns:minmax(0,900px)}
+.ms-figure{margin:6px 0 28px;padding:24px;border:1px solid var(--border);border-radius:var(--radius);background:var(--hero-bg);overflow:hidden}
+.ms-figure-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;color:var(--text);font-size:14px;font-weight:650}
+.ms-replay{padding:7px 12px;border:1px solid var(--border);border-radius:20px;background:var(--bg);color:var(--accent);cursor:pointer;font-size:12px;white-space:nowrap}
+.ms-replay[hidden]{display:none}.ms-replay:hover{border-color:var(--accent)}.ms-replay:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.ms-figure svg{display:block;width:100%;max-width:720px;height:auto;margin:12px auto;font-family:inherit}
+.ms-figure figcaption{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;color:var(--muted);font-size:11px;line-height:1.6}
+.ms-figure figcaption a{text-decoration:underline}.ms-key{display:inline-block;width:18px;height:3px;vertical-align:middle;margin:0 5px 0 10px;border-radius:2px}.ms-key:first-child{margin-left:0}.ms-key-data{background:var(--accent)}.ms-key-power{background:#b49b73}
+.ms-figure.is-playing .meter,.ms-figure.is-playing .device,.ms-figure.is-playing .hub,.ms-figure.is-playing .finish{opacity:0;transition:opacity .65s}
+.ms-figure.is-playing .show{opacity:1}.ms-figure.is-playing .wire{transition:stroke-dashoffset 1.8s ease}
+.ms-benefits{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin:24px 0 32px;padding:24px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.ms-benefits span{display:block;color:var(--accent);font-size:12px;margin-bottom:8px}.ms-benefits strong{display:block;font-size:17px;color:var(--text)}.ms-benefits p{font-size:14px;color:var(--muted);margin:7px 0 0}
+.ms-toc{display:flex;flex-wrap:wrap;gap:10px 20px;margin-bottom:30px;font-size:13px}.ms-toc strong{flex-basis:100%;color:var(--text)}.ms-toc a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+.ms-layout .news-article-body a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}.ms-layout h2[id]{scroll-margin-top:90px}
+.ms-cta{margin:24px 0;padding:30px;border:1px solid var(--border);border-radius:var(--radius);background:#fff}.ms-cta h2{margin:10px 0 16px;font-size:clamp(26px,4vw,36px);line-height:1.15}.ms-cta .eyebrow{font-size:11px;color:var(--accent)}.ms-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:22px}.ms-layout .ms-actions a{text-decoration:none}
+.ms-faq{border-bottom:1px solid var(--border);padding:14px 0}.ms-faq summary{cursor:pointer;color:var(--text);font-weight:650}.ms-faq p{padding-top:12px}.ms-sources{font-size:13px;border-top:1px solid var(--border);padding-top:22px;margin-top:16px}.ms-sources h2{font-size:17px}.ms-sources li{margin-bottom:8px}
+@media(max-width:600px){.ms-figure{padding:12px 8px}.ms-figure-heading{flex-wrap:wrap;padding:0 5px;font-size:12px}.ms-benefits{grid-template-columns:1fr;gap:18px}.ms-benefits div{display:grid;grid-template-columns:25px 1fr;gap:0 8px}.ms-benefits p{grid-column:2}.ms-cta{padding:22px}.ms-actions{flex-direction:column}.ms-figure figcaption{padding:0 4px}}
+@media(prefers-reduced-motion:reduce){.ms-figure *{transition:none!important;animation:none!important}}

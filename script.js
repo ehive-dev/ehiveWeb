@@ -775,6 +775,20 @@ Viele Grüße`
     link.textContent = "Weiterlesen";
     footer.appendChild(link);
 
+    if (item.image) {
+      const imageLink = document.createElement("a");
+      imageLink.href = item.href || "#";
+      imageLink.className = "news-card-image-link";
+      const image = document.createElement("img");
+      image.src = item.image;
+      image.alt = item.imageAlt || item.title || "";
+      image.width = 1200;
+      image.height = 630;
+      image.loading = "lazy";
+      image.decoding = "async";
+      imageLink.appendChild(image);
+      article.appendChild(imageLink);
+    }
     article.appendChild(top);
     article.appendChild(title);
     article.appendChild(excerpt);
