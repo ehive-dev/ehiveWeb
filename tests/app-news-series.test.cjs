@@ -80,3 +80,11 @@ test("tenantLedger-News erklärt den Ablauf ausführlich und trägt den gewünsc
   assert.match(html, /Betreiberübersicht/);
   assert.match(html, /rechtliche, steuerliche, mess- oder abrechnungstechnische Bewertung/);
 });
+
+test("ioBroker trägt in News-Liste und Artikel den kurzen Titel", () => {
+  const html = read("news-iobroker-smarthome.html");
+  const news = read("news-data.js");
+  assert.match(html, /<h1>ioBroker auf eHive One<\/h1>/);
+  assert.match(news, /title: "ioBroker auf eHive One"/);
+  assert.doesNotMatch(html, /<h1>ioBroker auf eHive One:/);
+});

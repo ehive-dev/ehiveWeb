@@ -10,7 +10,7 @@ window.EHIVE_NEWS = [
   {
     date: "2026-11-13",
     dateLabel: "13. November 2026",
-    title: "ioBroker auf eHive One: Smart-Home-Dienste über Adapter verbinden",
+    title: "ioBroker auf eHive One",
     excerpt: "ioBroker verbindet Geräte, Dienste und Protokolle über Adapter. Auf eHive One ist dafür die 2-GB-Variante vorgesehen.",
     href: "https://www.ehiv3.de/news-iobroker-smarthome.html",
     tags: ["Smart Home", "ioBroker", "2 GB"]
