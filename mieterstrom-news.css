@@ -12,3 +12,6 @@
 .ms-faq{border-bottom:1px solid var(--border);padding:14px 0}.ms-faq summary{cursor:pointer;color:var(--text);font-weight:650}.ms-faq p{padding-top:12px}.ms-sources{font-size:13px;border-top:1px solid var(--border);padding-top:22px;margin-top:16px}.ms-sources h2{font-size:17px}.ms-sources li{margin-bottom:8px}
 @media(max-width:600px){.ms-figure{padding:0}.ms-benefits{grid-template-columns:1fr;gap:18px}.ms-benefits div{display:grid;grid-template-columns:25px 1fr;gap:0 8px}.ms-benefits p{grid-column:2}.ms-cta{padding:22px}.ms-actions{flex-direction:column}.ms-figure figcaption{padding:0 4px}}
 @media(prefers-reduced-motion:reduce){.ms-figure *{transition:none!important;animation:none!important}}
+
+.ms-layout .ms-actions a.btn.primary{color:#fff;background:var(--accent);border-color:var(--accent)}
+.ms-layout .ms-actions a.btn.primary:hover,.ms-layout .ms-actions a.btn.primary:focus-visible{color:#fff;background:#066b63;border-color:#066b63}
