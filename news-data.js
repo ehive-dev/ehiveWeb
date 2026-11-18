@@ -18,7 +18,7 @@ window.EHIVE_NEWS = [
   {
     date: "2026-11-12",
     dateLabel: "12. November 2026",
-    title: "Node-RED auf eHive One: Energie- und Gerätedaten in Flows verbinden",
+    title: "Node-RED auf eHive One: Baue deine eigenen Flows",
     excerpt: "Node-RED stellt Abläufe als visuelle Flows zusammen und ist auf eHive One der 2-GB-Variante vorbehalten.",
     href: "https://www.ehiv3.de/news-node-red-automatisierung.html",
     tags: ["Smart Home", "Node-RED", "Automatisierung"]

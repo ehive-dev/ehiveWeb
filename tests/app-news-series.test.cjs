@@ -88,3 +88,10 @@ test("ioBroker trägt in News-Liste und Artikel den kurzen Titel", () => {
   assert.match(news, /title: "ioBroker auf eHive One"/);
   assert.doesNotMatch(html, /<h1>ioBroker auf eHive One:/);
 });
+
+test("Node-RED trägt den gewünschten Flow-Titel", () => {
+  const html = read("news-node-red-automatisierung.html");
+  const news = read("news-data.js");
+  assert.match(html, /<h1>Node-RED auf eHive One: Baue deine eigenen Flows<\/h1>/);
+  assert.match(news, /title: "Node-RED auf eHive One: Baue deine eigenen Flows"/);
+});
