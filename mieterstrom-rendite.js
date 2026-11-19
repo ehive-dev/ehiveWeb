@@ -10,6 +10,7 @@
   const error = document.getElementById("ms-return-error");
   const write = (key, value) => document.querySelectorAll(`[data-ms-value="${key}"]`).forEach(el => { el.textContent = value; });
   write("evConsumptionPer100Km", api.evConsumptionPer100Km.toLocaleString("de-DE") + " kWh/100 km");
+  write("evSimultaneity", format.format(api.defaults.evSimultaneity) + " %");
   function renderMonths(r) {
     const ns = "http://www.w3.org/2000/svg";
     const svg = document.getElementById("ms-monthly-chart");
@@ -111,13 +112,12 @@
   }
   const numberValue = field => field.type === "select-one" ? Number(field.value) : field.valueAsNumber;
   function update() {
-    const p = {};
-    const fields = Object.keys(api.defaults).map(key => form.elements.namedItem(key));
+    const p = { evSimultaneity: api.defaults.evSimultaneity };
+    const fields = Object.keys(api.defaults).filter(key => key !== "evSimultaneity")
+      .map(key => form.elements.namedItem(key));
     const enabled = form.elements.namedItem("wallboxesEnabled").checked;
     const optimize = enabled && form.elements.namedItem("evOneOptimized").checked;
     const useSurplus = enabled && (optimize || form.elements.namedItem("evPvSurplus").checked);
-    const powerSummary = document.getElementById("ms-ev-power-summary");
-    powerSummary.hidden = true;
     document.getElementById("ms-wallbox-fields").hidden = !enabled;
     document.getElementById("ms-ev-surplus-option").hidden = optimize;
     document.getElementById("ms-one-tariff-fields").hidden = !optimize;
@@ -154,9 +154,6 @@
     }
     result.hidden = false;
     error.hidden = true;
-    powerSummary.hidden = r.evPowerLimit === 0;
-    write("evPowerLimit", decimal.format(r.evPowerLimit) + " kW");
-    write("evPeakPower", decimal.format(r.evPeakPower) + " kW");
     ["pvHousehold", "pvEv", "gridHousehold", "gridEv", "grid", "householdDemand", "evDemand", "demand", "soldSolar", "exportedSolar", "solarPerApartment"].forEach(key => write(key, format.format(r[key]) + " kWh/Jahr"));
     ["fullRevenue", "localRevenue", "surplusRevenue", "rentalRevenue", "baseSurplus", "rentalCosts", "rentalSurplus", "rentalInvestment"].forEach(key => write(key, euro.format(r[key])));
     write("additionalAnnualCosts", euro.format(p.additionalAnnualCosts) + " / Jahr");
