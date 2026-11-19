@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { calculate, defaults } = require('../mieterstrom-rendite-model.js');
+const { calculate, defaults, evConsumptionPer100Km } = require('../mieterstrom-rendite-model.js');
 
 const calc = values => calculate({ ...defaults, ...values });
 const equal = (actual, expected) => {
@@ -87,7 +87,9 @@ test('Ohne PV-Ertrag deckt das Netz den kompletten Verbrauch', () => {
 
 test('Ein Fahrzeug je Wohnung mit 10.000 km ergibt 2.000 kWh Ladebedarf je Fahrzeug', () => {
   const result = calc({ wallboxesEnabled: 1 });
+  assert.equal(evConsumptionPer100Km, 20);
   equal(result.evDemand, 8000);
+  equal(calc({ wallboxesEnabled: 1, evConsumption: 40 }).evDemand, 8000);
   equal(result.householdDemand, 7600);
   equal(result.demand, 15600);
   assert.ok(result.pvEv > 0 && result.gridEv > 0);

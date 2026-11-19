@@ -9,6 +9,7 @@
   const result = document.getElementById("ms-return-results");
   const error = document.getElementById("ms-return-error");
   const write = (key, value) => document.querySelectorAll(`[data-ms-value="${key}"]`).forEach(el => { el.textContent = value; });
+  write("evConsumptionPer100Km", api.evConsumptionPer100Km.toLocaleString("de-DE") + " kWh/100 km");
   function renderMonths(r) {
     const ns = "http://www.w3.org/2000/svg";
     const svg = document.getElementById("ms-monthly-chart");

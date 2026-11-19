@@ -11,11 +11,12 @@
     additionalInvestment: 2000, apartments: 4,
     consumptionPerApartment: 1900, pvYield: 8000, householdDayShare: 50,
     salePrice: 28, feedInPrice: 8,
-    wallboxesEnabled: 0, annualMileage: 10000, evConsumption: 20, homeCharging: 100,
+    wallboxesEnabled: 0, annualMileage: 10000, homeCharging: 100,
     evDayShare: 50, evChargePower: 11, evSimultaneity: 50, evPvSurplus: 1, evMinChargePower: 1.4,
     evOneOptimized: 0, evStandardGridPrice: 32, evCheapGridPrice: 22,
     annualPvCosts: 200, additionalAnnualCosts: 200
   });
+  const evConsumptionPer100Km = 20; // kWh including charging losses
   const monthNames = ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"];
   const daysPerMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   const householdMonthShares = [10, 9, 9, 8, 8, 7, 7, 7, 8, 9, 9, 9];
@@ -171,7 +172,9 @@
       if (p[key] !== 0 && p[key] !== 1) throw new RangeError(key);
     }
     const householdDemand = p.apartments * p.consumptionPerApartment;
-    const evPerVehicle = p.wallboxesEnabled ? p.annualMileage * p.evConsumption / 100 * p.homeCharging / 100 : 0;
+    const evPerVehicle = p.wallboxesEnabled
+      ? p.annualMileage * evConsumptionPer100Km / 100 * p.homeCharging / 100
+      : 0;
     const evDemand = p.apartments * evPerVehicle;
     const demand = householdDemand + evDemand;
     const oneOptimized = evDemand > 0 && p.evOneOptimized === 1;
@@ -315,5 +318,5 @@
       additionalPayback: improvement > 0 && p.additionalInvestment > 0 ? p.additionalInvestment / improvement : null
     };
   }
-  return Object.freeze({ defaults, calculate });
+  return Object.freeze({ defaults, calculate, evConsumptionPer100Km });
 });
