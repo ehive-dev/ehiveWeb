@@ -148,13 +148,45 @@ test('Mindestladeleistung und verfügbare Tagesladung begrenzen die PV-Nutzung',
   assert.ok(allDaytime.months[5].exported < solar.months[5].exported);
 });
 
+test('Gleichzeitigkeitsfaktor begrenzt Direktladen und Überschussladen bei gleichem Energiebedarf', () => {
+  for (const evPvSurplus of [0, 1]) {
+    const typical = calc({ wallboxesEnabled: 1, evPvSurplus });
+    const reduced = calc({ wallboxesEnabled: 1, evPvSurplus, evSimultaneity: 25 });
+    const unrestricted = calc({ wallboxesEnabled: 1, evPvSurplus, evSimultaneity: 100 });
+    equal(typical.evPowerLimit, 22);
+    equal(reduced.evPowerLimit, 11);
+    equal(unrestricted.evPowerLimit, 44);
+    equal(reduced.evDemand, 8000);
+    equal(reduced.evDemand, typical.evDemand);
+    equal(reduced.evPeakPower, 11);
+    assert.ok(reduced.evPeakPower < unrestricted.evPeakPower);
+    for (const result of [typical, reduced, unrestricted]) {
+      for (const month of result.months) {
+        assert.ok(month.evPeakPower <= result.evPowerLimit + 1e-8);
+        equal(month.pvEv + month.gridEv, month.ev);
+      }
+    }
+  }
+});
+
+test('Ein Ladepunkt kann seine volle Leistung nutzen und zu kleine Gruppenlimits werden erkannt', () => {
+  const single = calc({ wallboxesEnabled: 1, apartments: 1, evSimultaneity: 25 });
+  equal(single.evPowerLimit, 11);
+  equal(single.evDemand, 2000);
+  for (const evPvSurplus of [0, 1]) {
+    assert.throws(() => calc({
+      wallboxesEnabled: 1, evPvSurplus, evSimultaneity: 25, annualMileage: 100000
+    }), /evGroupWindow/);
+  }
+});
+
 test('Unzulässige Eingaben und Ladebedarf außerhalb des Zeitfensters werden erkannt', () => {
   for (const input of [
     { salePrice: NaN }, { apartments: 1.5 }, { additionalInvestment: -1 },
     { pvYield: Infinity }, { householdDayShare: 101 }, { apartments: 1001 },
     { salePrice: '' }, { homeCharging: 101 }, { evDayShare: 101 },
     { wallboxesEnabled: 2 }, { annualMileage: -1 }, { evChargePower: 0 }, { evChargePower: 23 },
-    { evPvSurplus: 2 }
+    { evPvSurplus: 2 }, { evSimultaneity: 0 }, { evSimultaneity: 101 }
   ]) {
     assert.throws(() => calc(input), RangeError);
   }

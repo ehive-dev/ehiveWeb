@@ -110,6 +110,8 @@
     const fields = Object.keys(api.defaults).map(key => form.elements.namedItem(key));
     const enabled = form.elements.namedItem("wallboxesEnabled").checked;
     const useSurplus = enabled && form.elements.namedItem("evPvSurplus").checked;
+    const powerSummary = document.getElementById("ms-ev-power-summary");
+    powerSummary.hidden = true;
     document.getElementById("ms-wallbox-fields").hidden = !enabled;
     document.getElementById("ms-ev-min-power").hidden = !useSurplus;
     document.querySelectorAll("#ms-wallbox-fields input").forEach(field => {
@@ -132,15 +134,19 @@
     } catch (cause) {
       result.hidden = true;
       error.hidden = false;
-      error.textContent = cause.message === "evChargingWindow"
-        ? "Ladebedarf zu hoch für die gewählte Ladeleistung und Zeitaufteilung."
-        : cause.message === "evMinChargePower"
-          ? "Die Mindestleistung für den PV-Start muss zur eingestellten Ladeleistung passen."
-          : "Bitte prüfe die Eingabewerte.";
+      const messages = {
+        evChargingWindow: "Ladebedarf zu hoch für die gewählte Ladeleistung und Zeitaufteilung.",
+        evMinChargePower: "Die Mindestleistung für den PV-Start muss zur eingestellten Ladeleistung passen.",
+        evGroupWindow: "Der Ladebedarf passt mit diesem Wallboxlimit nicht in die angesetzten Ladefenster."
+      };
+      error.textContent = messages[cause.message] || "Bitte prüfe die Eingabewerte.";
       return;
     }
     result.hidden = false;
     error.hidden = true;
+    powerSummary.hidden = r.evPowerLimit === 0;
+    write("evPowerLimit", decimal.format(r.evPowerLimit) + " kW");
+    write("evPeakPower", decimal.format(r.evPeakPower) + " kW");
     ["pvHousehold", "pvEv", "gridHousehold", "gridEv", "grid", "householdDemand", "evDemand", "demand", "soldSolar", "exportedSolar", "solarPerApartment"].forEach(key => write(key, format.format(r[key]) + " kWh/Jahr"));
     ["fullRevenue", "localRevenue", "surplusRevenue", "rentalRevenue", "baseSurplus", "rentalCosts", "rentalSurplus", "rentalInvestment"].forEach(key => write(key, euro.format(r[key])));
     write("additionalAnnualCosts", euro.format(p.additionalAnnualCosts) + " / Jahr");
