@@ -20,23 +20,29 @@
       parent.appendChild(el); return el;
     };
     node("title", { id: "ms-monthly-title" }, "Monatliche Strombilanz in kWh");
-    node("desc", { id: "ms-monthly-desc" }, "Je Monat links PV-Direktverbrauch und Netzbezug, in der Mitte der Gesamtverbrauch von Wohnungen und Wallboxen und rechts die Einspeisung. Die Linie zeigt den PV-Ertrag. Die Tabelle enthält die genauen Werte.");
+    node("desc", { id: "ms-monthly-desc" }, "Je Monat links PV-Direktverbrauch und Netzbezug, in der Mitte der Verbrauch von Wohnungen und Wallboxen und rechts die Einspeisung unter der Nulllinie. Die gelbe Linie zeigt den PV-Ertrag.");
     const months = r.months.map(month => ({
       ...month,
-      pvDirect: month.pvHousehold + month.pvEv
+      pvDirect: month.pvHousehold + month.pvEv,
+      signedExport: -month.exported
     }));
     const maximum = Math.max(1, ...months.map(month => Math.max(month.pv, month.household + month.ev)));
     const magnitude = Math.pow(10, Math.floor(Math.log10(maximum)));
     const step = Math.ceil(maximum / magnitude / 4) * magnitude;
     const top = Math.ceil(maximum / step) * step;
-    const height = 240, baseline = 280;
-    const plotLeft = 65, plotRight = 1020;
+    const largestExport = Math.max(...months.map(month => month.exported));
+    const bottom = largestExport > 1e-8 ? -Math.ceil(largestExport / step) * step : 0;
+    const plotTop = 40, plotBottom = 280;
+    const plotLeft = 88, plotRight = 1020;
     const monthWidth = (plotRight - plotLeft) / months.length;
     const barWidth = 18, barGap = 5;
-    const chartY = value => baseline - value / top * height;
-    for (let value = 0; value <= top; value += step) {
+    const chartY = value => plotBottom - (value - bottom) / (top - bottom) * (plotBottom - plotTop);
+    for (let value = bottom; value <= top; value += step) {
       const y = chartY(value);
-      node("line", { x1: plotLeft, x2: plotRight, y1: y, y2: y, stroke: "#dce4e6" });
+      node("line", {
+        x1: plotLeft, x2: plotRight, y1: y, y2: y,
+        stroke: value === 0 ? "#75848e" : "#dce4e6"
+      });
       node("text", { x: plotLeft - 10, y: y + 4, "text-anchor": "end", class: "ms-axis-label" }, format.format(value));
     }
     node("text", { x: plotLeft, y: 20, class: "ms-axis-label" }, "kWh / Monat");
@@ -50,7 +56,7 @@
         ["ev", "Wallboxen gesamt", "ms-monthly-wallbox"]
       ],
       [
-        ["exported", "Einspeisung", "ms-monthly-export"]
+        ["signedExport", "Einspeisung", "ms-monthly-export"]
       ]
     ];
     const groupWidth = stacks.length * barWidth + (stacks.length - 1) * barGap;
@@ -63,11 +69,13 @@
         let cumulative = 0;
         for (const [key, label, seriesClass] of segments) {
           const value = month[key];
+          const yStart = chartY(cumulative);
           cumulative += value;
-          if (value > 1e-8) {
+          if (Math.abs(value) > 1e-8) {
+            const yEnd = chartY(cumulative);
             const rect = node("rect", {
-              x, y: chartY(cumulative), width: barWidth,
-              height: value / top * height, class: seriesClass
+              x, y: Math.min(yStart, yEnd), width: barWidth,
+              height: Math.abs(yEnd - yStart), class: seriesClass
             }, undefined, group);
             node("title", {}, `${month.name} · ${label} · ${decimal.format(value)} kWh`, rect);
           }
