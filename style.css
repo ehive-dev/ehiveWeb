@@ -5914,3 +5914,14 @@ body.lightbox-open{
 .news-card--illustrated .news-card-image-link{grid-column:2;grid-row:2 / span 2;align-self:start;display:block;overflow:hidden;border-radius:8px;background:var(--hero-bg);aspect-ratio:3 / 2}
 .news-card-image-link img{display:block;width:100%;height:100%;object-fit:contain}
 @media(max-width:600px){.news-card--illustrated{grid-template-columns:minmax(0,1fr) 96px;column-gap:14px}.news-card--illustrated>p{grid-column:1 / -1;grid-row:3}.news-card--illustrated .news-card-image-link{grid-row:2}.news-card--illustrated h3{font-size:20px}}
+
+/* Shop: tokenfreie Geräte und Kombinationen */
+.shop-tokenfree-note{margin:16px 0;font-size:1rem;line-height:1.6}
+.shop-tokenfree-note p{margin:8px 0}
+.shop-tokenfree-note a{color:var(--accent);font-weight:700;text-decoration:underline}
+.tokenfree-table-wrap{overflow-x:auto;margin:24px 0;max-width:100%}
+.tokenfree-table-wrap table{width:100%;border-collapse:collapse;font-size:1rem;line-height:1.6}
+.tokenfree-table-wrap caption{text-align:left;font-weight:700;margin-bottom:12px}
+.tokenfree-table-wrap th,.tokenfree-table-wrap td{padding:12px;text-align:left;vertical-align:top;border-bottom:1px solid var(--border);overflow-wrap:anywhere}
+.tokenfree-table-wrap thead{background:var(--bg)}
+.tokenfree-table-wrap th[scope="row"]{font-weight:600}
