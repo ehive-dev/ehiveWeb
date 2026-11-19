@@ -188,13 +188,64 @@ test('Ein Ladepunkt kann seine volle Leistung nutzen und zu kleine Gruppenlimits
   }
 });
 
+test('eHive One nutzt PV vor günstigen Netzstunden und hält die Leistungsgrenzen ein', () => {
+  const options = { wallboxesEnabled: 1, evOneOptimized: 1 };
+  const noPv = calc({ ...options, pvYield: 0 });
+  const withPv = calc(options);
+  const morePv = calc({ ...options, pvYield: 16000 });
+  equal(noPv.pvEv, 0);
+  equal(noPv.gridEv, 8000);
+  assert.ok(noPv.evCheapGrid > 0);
+  assert.ok(morePv.pvEv > withPv.pvEv && withPv.pvEv > 0);
+  assert.ok(morePv.evCheapGrid < withPv.evCheapGrid);
+  equal(withPv.pvHousehold, calc({}).pvHousehold);
+  const plannedShare = (withPv.pvEv + withPv.evCheapGrid) / withPv.evDemand;
+  assert.ok(plannedShare > 0.90 && plannedShare < 1);
+  const limited = calc({ ...options, evSimultaneity: 25 });
+  assert.ok((limited.pvEv + limited.evCheapGrid) / limited.evDemand < 0.90);
+  for (const result of [noPv, withPv, morePv, limited]) {
+    equal(result.evDemand, 8000);
+    assert.ok(result.evPeakPower <= result.evPowerLimit + 1e-8);
+    for (const month of result.months) {
+      assert.ok(month.evCheapGrid >= 0 && month.evCheapGrid <= month.gridEv + 1e-8);
+      equal(month.ev, month.pvEv + month.gridEv);
+      equal(month.pv, month.pvHousehold + month.pvEv + month.exported);
+    }
+  }
+});
+
+test('Der günstigere Netzpreis wird nur auf Netzladestrom im günstigen Fenster angewendet', () => {
+  const options = { wallboxesEnabled: 1, evOneOptimized: 1 };
+  const result = calc(options);
+  const lower = calc({ ...options, evCheapGridPrice: 12 });
+  equal(result.evCheapGridSavings, result.evCheapGrid * 0.10);
+  equal(lower.evCheapGridSavings, lower.evCheapGrid * 0.20);
+  equal(lower.improvement, result.improvement);
+  const off = calc({ ...options, wallboxesEnabled: 0 });
+  equal(off.evCheapGrid, 0);
+  equal(off.evCheapGridSavings, 0);
+  assert.equal(off.oneOptimized, false);
+  assert.throws(() => calc({ ...options, evCheapGridPrice: 35 }), /evGridPrices/);
+});
+
+test('PV-Größencheck skaliert den Jahresbedarf mit der Zahl der Teilnehmenden', () => {
+  const four = calc({ wallboxesEnabled: 1, evOneOptimized: 1 });
+  const eight = calc({ wallboxesEnabled: 1, evOneOptimized: 1, apartments: 8 });
+  equal(four.demand, 15600);
+  equal(four.pvEstimatedKwp, 8000 / 1089.57);
+  equal(four.pvAnnualBalanceKwp, 15600 / 1089.57);
+  equal(eight.pvAnnualBalanceKwp, 2 * four.pvAnnualBalanceKwp);
+  equal(eight.pvEstimatedKwp, four.pvEstimatedKwp);
+  assert.ok(eight.pvEv / eight.evDemand < four.pvEv / four.evDemand);
+});
+
 test('Unzulässige Eingaben und Ladebedarf außerhalb des Zeitfensters werden erkannt', () => {
   for (const input of [
     { salePrice: NaN }, { apartments: 1.5 }, { additionalInvestment: -1 },
     { pvYield: Infinity }, { householdDayShare: 101 }, { apartments: 1001 },
     { salePrice: '' }, { homeCharging: 101 }, { evDayShare: 101 },
     { wallboxesEnabled: 2 }, { annualMileage: -1 }, { evChargePower: 0 }, { evChargePower: 23 },
-    { evPvSurplus: 2 }, { evSimultaneity: 0 }, { evSimultaneity: 101 }
+    { evPvSurplus: 2 }, { evSimultaneity: 0 }, { evSimultaneity: 101 }, { evOneOptimized: 2 }
   ]) {
     assert.throws(() => calc(input), RangeError);
   }

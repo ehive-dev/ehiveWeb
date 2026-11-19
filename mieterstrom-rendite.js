@@ -78,7 +78,8 @@
               height: Math.abs(yEnd - yStart), class: seriesClass
             }, undefined, group);
             const solarDetail = key === "ev" ? ` · davon ${decimal.format(month.pvEv)} kWh PV` : "";
-            node("title", {}, `${month.name} · ${label} · ${decimal.format(value)} kWh${solarDetail}`, rect);
+            const cheapDetail = key === "ev" && r.oneOptimized ? ` · ${decimal.format(month.evCheapGrid)} kWh günstiger Netzstrom` : "";
+            node("title", {}, `${month.name} · ${label} · ${decimal.format(value)} kWh${solarDetail}${cheapDetail}`, rect);
           }
         }
       });
@@ -96,6 +97,8 @@
       "pv", "pvDirect", "grid", "household", "ev", "exported",
       "pvHousehold", "gridHousehold", "pvEv", "gridEv"
     ];
+    document.getElementById("ms-one-grid-column").hidden = !r.oneOptimized;
+    if (r.oneOptimized) keys.push("evCheapGrid");
     const row = (label, values) => {
       const tr = document.createElement("tr");
       const th = document.createElement("th"); th.scope = "row"; th.textContent = label; tr.appendChild(th);
@@ -109,13 +112,17 @@
     const p = {};
     const fields = Object.keys(api.defaults).map(key => form.elements.namedItem(key));
     const enabled = form.elements.namedItem("wallboxesEnabled").checked;
-    const useSurplus = enabled && form.elements.namedItem("evPvSurplus").checked;
+    const optimize = enabled && form.elements.namedItem("evOneOptimized").checked;
+    const useSurplus = enabled && (optimize || form.elements.namedItem("evPvSurplus").checked);
     const powerSummary = document.getElementById("ms-ev-power-summary");
     powerSummary.hidden = true;
     document.getElementById("ms-wallbox-fields").hidden = !enabled;
+    document.getElementById("ms-ev-surplus-option").hidden = optimize;
+    document.getElementById("ms-one-tariff-fields").hidden = !optimize;
     document.getElementById("ms-ev-min-power").hidden = !useSurplus;
     document.querySelectorAll("#ms-wallbox-fields input").forEach(field => {
-      field.disabled = !enabled || (field.name === "evMinChargePower" && !useSurplus);
+      field.disabled = !enabled || (field.name === "evMinChargePower" && !useSurplus)
+        || (field.name === "evPvSurplus" && optimize) || (field.closest("#ms-one-tariff-fields") && !optimize);
     });
     const invalid = fields.find(field => !field.disabled && field.type !== "checkbox" && (!field.validity.valid || !Number.isFinite(field.valueAsNumber)));
     if (invalid) {
@@ -137,7 +144,8 @@
       const messages = {
         evChargingWindow: "Ladebedarf zu hoch für die gewählte Ladeleistung und Zeitaufteilung.",
         evMinChargePower: "Die Mindestleistung für den PV-Start muss zur eingestellten Ladeleistung passen.",
-        evGroupWindow: "Der Ladebedarf passt mit diesem Wallboxlimit nicht in die angesetzten Ladefenster."
+        evGroupWindow: "Der Ladebedarf passt mit diesem Wallboxlimit nicht in die angesetzten Ladefenster.",
+        evGridPrices: "Der günstige Netzpreis darf höchstens dem normalen Netzpreis entsprechen."
       };
       error.textContent = messages[cause.message] || "Bitte prüfe die Eingabewerte.";
       return;
@@ -167,6 +175,18 @@
     write("grossExtra", euro.format(r.grossExtra));
     write("forgoneFeedIn", euro.format(r.soldSolar * p.feedInPrice / 100));
     write("formulaMargin", `${format.format(r.soldSolar)} kWh × ${decimal.format(p.salePrice - p.feedInPrice)} ct/kWh ÷ 100 − ${euro.format(p.additionalAnnualCosts)} = ${euro.format(r.improvement)} pro Jahr`);
+    document.getElementById("ms-one-summary").hidden = !r.oneOptimized;
+    document.getElementById("ms-one-details").hidden = !r.oneOptimized;
+    if (r.oneOptimized) {
+      const chargeShare = energy => decimal.format(100 * energy / r.evDemand) + " %";
+      write("evPvOrCheapShare", chargeShare(r.pvEv + r.evCheapGrid));
+      write("evPvShare", chargeShare(r.pvEv));
+      write("evCheapGridShare", chargeShare(r.evCheapGrid));
+      write("evCheapGrid", format.format(r.evCheapGrid) + " kWh");
+      write("evCheapGridSavings", euro.format(r.evCheapGridSavings));
+      write("pvEstimatedKwp", decimal.format(r.pvEstimatedKwp) + " kWp");
+      write("pvAnnualBalanceKwp", decimal.format(r.pvAnnualBalanceKwp) + " kWp");
+    }
     document.getElementById("ms-wallbox-season").hidden = r.evDemand === 0;
     if (r.evDemand > 0) {
       const summer = r.months.slice(5, 8);
