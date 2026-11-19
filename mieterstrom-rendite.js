@@ -109,6 +109,7 @@
     months.forEach(month => row(month.name, keys.map(key => month[key])));
     row("Jahr", keys.map(key => months.reduce((sum, month) => sum + month[key], 0)));
   }
+  const numberValue = field => field.type === "select-one" ? Number(field.value) : field.valueAsNumber;
   function update() {
     const p = {};
     const fields = Object.keys(api.defaults).map(key => form.elements.namedItem(key));
@@ -121,11 +122,11 @@
     document.getElementById("ms-ev-surplus-option").hidden = optimize;
     document.getElementById("ms-one-tariff-fields").hidden = !optimize;
     document.getElementById("ms-ev-min-power").hidden = !useSurplus;
-    document.querySelectorAll("#ms-wallbox-fields input").forEach(field => {
+    document.querySelectorAll("#ms-wallbox-fields input, #ms-wallbox-fields select").forEach(field => {
       field.disabled = !enabled || (field.name === "evMinChargePower" && !useSurplus)
         || (field.name === "evPvSurplus" && optimize) || (field.closest("#ms-one-tariff-fields") && !optimize);
     });
-    const invalid = fields.find(field => !field.disabled && field.type !== "checkbox" && (!field.validity.valid || !Number.isFinite(field.valueAsNumber)));
+    const invalid = fields.find(field => !field.disabled && field.type !== "checkbox" && (!field.validity.valid || !Number.isFinite(numberValue(field))));
     if (invalid) {
       result.hidden = true;
       error.hidden = false;
@@ -134,7 +135,7 @@
     }
     fields.forEach(field => {
       if (field.disabled) p[field.name] = api.defaults[field.name];
-      else p[field.name] = field.type === "checkbox" ? Number(field.checked) : field.valueAsNumber;
+      else p[field.name] = field.type === "checkbox" ? Number(field.checked) : numberValue(field);
     });
     let r;
     try {
@@ -144,7 +145,7 @@
       error.hidden = false;
       const messages = {
         evChargingWindow: "Ladebedarf zu hoch für die gewählte Ladeleistung und Zeitaufteilung.",
-        evMinChargePower: "Die Mindestleistung für den PV-Start muss zur eingestellten Ladeleistung passen.",
+        evMinChargePower: "Die Ladeleistung je Fahrzeug muss mindestens so hoch sein wie der PV-Ladestart.",
         evGroupWindow: "Der Ladebedarf passt mit diesem Wallboxlimit nicht in die angesetzten Ladefenster.",
         evGridPrices: "Der günstige Netzpreis darf höchstens dem normalen Netzpreis entsprechen."
       };
