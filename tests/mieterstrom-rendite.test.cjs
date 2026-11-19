@@ -1,5 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
+const { readFileSync } = require('node:fs');
+const { runInNewContext } = require('node:vm');
 const { calculate, defaults, evConsumptionPer100Km } = require('../mieterstrom-rendite-model.js');
 
 const calc = values => calculate({ ...defaults, ...values });
@@ -197,22 +199,88 @@ test('eHive One nutzt PV vor günstigen Netzstunden und hält die Leistungsgrenz
   const morePv = calc({ ...options, pvYield: 16000 });
   equal(noPv.pvEv, 0);
   equal(noPv.gridEv, 8000);
-  assert.ok(noPv.evCheapGrid > 0);
+  equal(noPv.evCheapGrid, 7200);
   assert.ok(morePv.pvEv > withPv.pvEv && withPv.pvEv > 0);
   assert.ok(morePv.evCheapGrid < withPv.evCheapGrid);
   equal(withPv.pvHousehold, calc({}).pvHousehold);
-  const plannedShare = (withPv.pvEv + withPv.evCheapGrid) / withPv.evDemand;
-  assert.ok(plannedShare > 0.90 && plannedShare < 1);
   const limited = calc({ ...options, evSimultaneity: 25 });
-  assert.ok((limited.pvEv + limited.evCheapGrid) / limited.evDemand < 0.90);
+  equal(limited.evPowerLimit, 11);
   for (const result of [noPv, withPv, morePv, limited]) {
     equal(result.evDemand, 8000);
+    assert.ok(result.pvEv + result.evCheapGrid >= 7200 - 1e-8);
     assert.ok(result.evPeakPower <= result.evPowerLimit + 1e-8);
     for (const month of result.months) {
       assert.ok(month.evCheapGrid >= 0 && month.evCheapGrid <= month.gridEv + 1e-8);
       equal(month.ev, month.pvEv + month.gridEv);
       equal(month.pv, month.pvHousehold + month.pvEv + month.exported);
     }
+  }
+});
+
+test('Bei knapper Tarifzeit deckt der normale Netzpreis die Restladung', () => {
+  const result = calc({
+    wallboxesEnabled: 1, evOneOptimized: 1, evDayAvailability: 0,
+    pvYield: 0, evSimultaneity: 25, annualMileage: 25000
+  });
+  equal(result.gridEv, 20000);
+  equal(result.evCheapGrid, 11 * 3 * 365);
+  equal(result.evPeakPower, 11);
+});
+
+test('Zusätzliche Steckzeiten verschieben im Juni Einspeisung in die Wallboxen', () => {
+  const options = { wallboxesEnabled: 1, evOneOptimized: 1 };
+  const evenings = calc({ ...options, evDayAvailability: 0 });
+  const typical = calc(options);
+  const daily = calc({ ...options, evDayAvailability: 7 });
+  const threePhase = calc({ ...options, evMinChargePower: 4.1 });
+  equal(typical.evDemand, daily.evDemand);
+  assert.ok(threePhase.pvEv < typical.pvEv);
+  assert.ok(typical.pvEv > evenings.pvEv && daily.pvEv > typical.pvEv);
+  const june = typical.months[5];
+  assert.ok(june.pvEv > evenings.months[5].pvEv);
+  assert.ok(daily.months[5].exported < june.exported);
+  assert.ok(june.pvEv / june.ev > typical.months[11].pvEv / typical.months[11].ev);
+  for (const result of [evenings, typical, daily, threePhase]) {
+    for (const month of result.months) {
+      equal(month.exportWithoutEv - month.exported, month.pvEv);
+      equal(month.ev, month.pvEv + month.gridEv);
+    }
+  }
+});
+
+test('Bei gleichen Steckzeiten nutzt eHive auch PV-Strom nach dem Anstecken', () => {
+  const profile = Array(365 * 24).fill(0);
+  // Wednesday at plug-in time and again later in the first planning period.
+  profile[2 * 24 + 8] = 2;
+  profile[2 * 24 + 11] = 2;
+  const path = require.resolve('../mieterstrom-rendite-model.js');
+  const sandbox = { module: { exports: {} }, require: () => profile };
+  runInNewContext(readFileSync(path, 'utf8'), sandbox, { filename: path });
+  const model = sandbox.module.exports;
+  const input = {
+    ...model.defaults,
+    apartments: 1, annualMileage: 1825, consumptionPerApartment: 0, pvYield: 4,
+    wallboxesEnabled: 1, evPvSurplus: 0, evOneOptimized: 1, evDayAvailability: 3
+  };
+  const solar = model.calculate(input);
+  // A four-day target of 4 kWh leaves 3.6 kWh flexible.
+  equal(solar.pvEv, 3.6);
+  equal(solar.exportedSolar, 0.4);
+  equal(solar.evCheapGrid, 324.9);
+  const direct = { ...input, evOneOptimized: 0 };
+  const plugged = model.calculate(direct, { sharedPlugTimes: true });
+  const away = model.calculate({ ...direct, evDayAvailability: 2 }, { sharedPlugTimes: true });
+  // Direct charging fills the daily target during the first quarter-hour.
+  equal(plugged.pvEv, 0.5);
+  equal(plugged.exportedSolar, 3.5);
+  equal(plugged.evDemand, solar.evDemand);
+  equal(away.pvEv, 0);
+  equal(away.gridEv, solar.evDemand);
+  for (const change of [{ evDayAvailability: 2 }, { evMinChargePower: 4.1 }]) {
+    const unavailable = model.calculate({ ...input, ...change });
+    equal(unavailable.pvEv, 0);
+    equal(unavailable.exportedSolar, 4);
+    equal(unavailable.evCheapGrid, 328.5);
   }
 });
 
@@ -247,12 +315,16 @@ test('Unzulässige Eingaben und Ladebedarf außerhalb des Zeitfensters werden er
     { pvYield: Infinity }, { householdDayShare: 101 }, { apartments: 1001 },
     { salePrice: '' }, { homeCharging: 101 }, { evDayShare: 101 },
     { wallboxesEnabled: 2 }, { annualMileage: -1 }, { evChargePower: 0 }, { evChargePower: 23 },
-    { evPvSurplus: 2 }, { evSimultaneity: 0 }, { evSimultaneity: 101 }, { evOneOptimized: 2 }
+    { evPvSurplus: 2 }, { evSimultaneity: 0 }, { evSimultaneity: 101 }, { evOneOptimized: 2 },
+    { evDayAvailability: -1 }, { evDayAvailability: 1.5 }, { evDayAvailability: 8 }
   ]) {
     assert.throws(() => calc(input), RangeError);
   }
   assert.throws(() => calc({ wallboxesEnabled: 1, evMinChargePower: 12 }), /evMinChargePower/);
   assert.throws(() => calc({ wallboxesEnabled: 1, annualMileage: 1000000, evChargePower: 2 }), /evChargingWindow/);
+  assert.throws(() => calc({
+    wallboxesEnabled: 1, evOneOptimized: 1, evDayAvailability: 0, annualMileage: 100000, evSimultaneity: 25
+  }), /evGroupWindow/);
 });
 
 test('Energiebilanz schließt für beide Lasten und Erzeugung in jedem Monat', () => {

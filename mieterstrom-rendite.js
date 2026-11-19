@@ -6,6 +6,9 @@
   const format = new Intl.NumberFormat("de-DE", { maximumFractionDigits: 0 });
   const decimal = new Intl.NumberFormat("de-DE", { minimumFractionDigits: 1, maximumFractionDigits: 1 });
   const euro = new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR", maximumFractionDigits: 0 });
+  const signedEuro = new Intl.NumberFormat("de-DE", {
+    style: "currency", currency: "EUR", maximumFractionDigits: 0, signDisplay: "exceptZero"
+  });
   const result = document.getElementById("ms-return-results");
   const error = document.getElementById("ms-return-error");
   const write = (key, value) => document.querySelectorAll(`[data-ms-value="${key}"]`).forEach(el => { el.textContent = value; });
@@ -117,15 +120,17 @@
   }
   const numberValue = field => field.type === "select-one" ? Number(field.value) : field.valueAsNumber;
   function update() {
-    const p = { evSimultaneity: api.defaults.evSimultaneity, evPvSurplus: 0 };
+    const p = { evSimultaneity: api.defaults.evSimultaneity, evDayShare: api.defaults.evDayShare, evPvSurplus: 0 };
     const fields = Object.keys(api.defaults).filter(key => !(key in p))
       .map(key => form.elements.namedItem(key));
     const enabled = form.elements.namedItem("wallboxesEnabled").checked;
     const optimize = enabled && form.elements.namedItem("evOneOptimized").checked;
     document.getElementById("ms-wallbox-fields").hidden = !enabled;
+    document.getElementById("ms-wallbox-assumptions").hidden = !enabled;
     document.getElementById("ms-one-tariff-fields").hidden = !optimize;
     document.getElementById("ms-ev-min-power").hidden = !optimize;
-    document.querySelectorAll("#ms-wallbox-fields input, #ms-wallbox-fields select").forEach(field => {
+    const wallboxControl = "#ms-wallbox-fields input, #ms-wallbox-fields select, #ms-wallbox-assumptions input";
+    document.querySelectorAll(wallboxControl).forEach(field => {
       const onlyForOptimization = field.name === "evMinChargePower" || Boolean(field.closest("#ms-one-tariff-fields"));
       field.disabled = !enabled || (onlyForOptimization && !optimize);
     });
@@ -141,8 +146,11 @@
       else p[field.name] = field.type === "checkbox" ? Number(field.checked) : numberValue(field);
     });
     let r;
+    let direct = null;
     try {
-      r = api.calculate(p);
+      const options = { sharedPlugTimes: true };
+      r = api.calculate(p, options);
+      if (r.oneOptimized) direct = api.calculate({ ...p, evOneOptimized: 0 }, options);
     } catch (cause) {
       result.hidden = true;
       error.hidden = false;
@@ -158,6 +166,7 @@
     result.hidden = false;
     error.hidden = true;
     ["pvHousehold", "pvEv", "gridHousehold", "gridEv", "grid", "householdDemand", "evDemand", "demand", "soldSolar", "exportedSolar", "solarPerApartment"].forEach(key => write(key, format.format(r[key]) + " kWh/Jahr"));
+    write("evPerVehicle", format.format(r.evPerVehicle) + " kWh/Jahr");
     ["fullRevenue", "localRevenue", "surplusRevenue", "rentalRevenue", "baseSurplus", "rentalCosts", "rentalSurplus", "rentalInvestment"].forEach(key => write(key, euro.format(r[key])));
     write("additionalAnnualCosts", euro.format(p.additionalAnnualCosts) + " / Jahr");
     write("baseInvestment", euro.format(0));
@@ -177,6 +186,13 @@
     write("grossExtra", euro.format(r.grossExtra));
     write("forgoneFeedIn", euro.format(r.soldSolar * p.feedInPrice / 100));
     write("formulaMargin", `${format.format(r.soldSolar)} kWh × ${decimal.format(p.salePrice - p.feedInPrice)} ct/kWh ÷ 100 − ${euro.format(p.additionalAnnualCosts)} = ${euro.format(r.improvement)} pro Jahr`);
+    document.getElementById("ms-charge-comparison").hidden = !direct;
+    if (direct) {
+      write("directChargePv", format.format(direct.pvEv) + " kWh");
+      write("oneChargePv", format.format(r.pvEv) + " kWh");
+      write("oneExtraRevenue", signedEuro.format(r.improvement - direct.improvement));
+    }
+    document.getElementById("ms-wallbox-details").hidden = !enabled;
     document.getElementById("ms-one-summary").hidden = !r.oneOptimized;
     document.getElementById("ms-one-details").hidden = !r.oneOptimized;
     if (r.oneOptimized) {

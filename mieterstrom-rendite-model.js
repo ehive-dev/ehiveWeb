@@ -13,7 +13,7 @@
     salePrice: 28, feedInPrice: 8,
     wallboxesEnabled: 0, annualMileage: 10000, homeCharging: 100,
     evDayShare: 50, evChargePower: 11, evSimultaneity: 50, evPvSurplus: 1, evMinChargePower: 1.4,
-    evOneOptimized: 0, evStandardGridPrice: 32, evCheapGridPrice: 22,
+    evOneOptimized: 0, evDayAvailability: 3, evStandardGridPrice: 32, evCheapGridPrice: 22,
     annualPvCosts: 200, additionalAnnualCosts: 200
   });
   const evConsumptionPer100Km = 20; // kWh including charging losses
@@ -27,6 +27,7 @@
   const slotsPerDay = 24 * slotsPerHour;
   const slotHours = 1 / slotsPerHour;
   const oneFixedShare = 0.1;
+  const typicalDaytimeOrder = [5, 6, 2, 0, 4, 1, 3]; // Weekend first, then spread across weekdays.
   const sum = values => values.reduce((total, value) => total + value, 0);
   const referenceYield = sum(pvProfile);
   const referenceKwhPerKwp = referenceYield / 1000;
@@ -40,8 +41,7 @@
     });
   }
 
-  function planChargingSessions(load, month, days, vehicles, energyPerVehicle, power, share, window,
-    connectedCars, fixedShare = connectedCars ? 0 : 1) {
+  function planChargingSessions(load, month, days, vehicles, energyPerVehicle, power, share, window, connectedCars) {
     if (energyPerVehicle === 0 || share === 0) return 0;
     const hoursNeeded = energyPerVehicle * share / power;
     const windowHours = window.end - window.start;
@@ -57,12 +57,14 @@
       const dayOffset = ((vehicle * 17 + month * 13 + window.start * 7) % 37) / 37;
       for (let session = 0; session < sessions; session++) {
         const day = Math.floor((session + dayOffset) * days / sessions);
-        if (connectedCars) connectedCars[day]++;
-        if (fixedShare === 0) continue;
+        if (connectedCars) {
+          connectedCars[day]++;
+          continue;
+        }
         const startFraction = ((vehicle * 13 + session * 7 + month * 11) % 17) / 16;
         const hour = firstStart + (lastStart - firstStart) * startFraction;
         const start = day * slotsPerDay + hour * slotsPerHour;
-        const end = Math.min(day * slotsPerDay + window.end * slotsPerHour, start + duration * fixedShare * slotsPerHour);
+        const end = Math.min(day * slotsPerDay + window.end * slotsPerHour, start + duration * slotsPerHour);
         for (let slot = Math.floor(start); slot < end; slot++) {
           const fraction = Math.min(slot + 1, end) - Math.max(slot, start);
           load[slot] += power * slotHours * fraction;
@@ -130,32 +132,52 @@
     return pending;
   }
 
-  function optimizeCharging(load, connected, window, sessionEnergy, solarSurplus, limits) {
-    for (let day = 0; day < connected.length; day++) {
-      const cars = connected[day];
-      if (cars === 0) continue;
-      const start = day * slotsPerDay + window.start * slotsPerHour;
-      const end = day * slotsPerDay + window.end * slotsPerHour;
-      const limit = Math.min(limits.group, cars * limits.vehicle);
-      const target = cars * sessionEnergy;
-      if (target > limit * (end - start) + 1e-9) throw new RangeError("evGroupWindow");
-      let pending = target;
-      for (let slot = start; slot < end; slot++) pending -= load[slot];
+  function planConnectedCharging(load, solarSurplus, { firstWeekday, daytimeDays, dailyDemand, limit, minimum }) {
+    const days = load.length / slotsPerDay;
+    const weekdays = new Set(typicalDaytimeOrder.slice(0, daytimeDays));
+    const plugInHour = Array.from({ length: days }, (_, day) =>
+      weekdays.has((firstWeekday + day) % 7) ? dayWindow.start : eveningWindow.start);
+    const hourOfSlot = slot => Math.floor(slot / slotsPerHour) % 24;
+    const connected = slot => hourOfSlot(slot) >= plugInHour[Math.floor(slot / slotsPerDay)];
 
-      // Fill the whole availability window in order of preference. Cheap grid
-      // power cannot use energy reserved for solar in a later quarter-hour.
-      pending = fillChargingSlots(load, start, end, pending, limit, slot => {
-        const pv = Math.min(limit, solarSurplus[Math.floor(slot / slotsPerHour)]);
-        return pv >= limits.start ? Math.max(0, pv - load[slot]) : 0;
-      });
-      pending = fillChargingSlots(load, start, end, pending, limit,
-        slot => isCheapHour(Math.floor(slot / slotsPerHour) % 24) ? limit : 0);
-      pending = fillChargingSlots(load, start, end, pending, limit, () => limit);
+    // Keep charging targets twice a week. Within each period the vehicles
+    // share their configured plug-in windows and the existing wallbox limit.
+    for (let day = 0; day < days;) {
+      const weekday = (firstWeekday + day) % 7;
+      const daysUntilTarget = weekday < 4 ? 4 - weekday : 7 - weekday;
+      const next = Math.min(days, day + daysUntilTarget);
+      const start = day * slotsPerDay;
+      const end = next * slotsPerDay;
+      let pending = dailyDemand * (next - day);
+      if (solarSurplus) {
+        const fixed = pending * oneFixedShare;
+        pending -= fixed - fillChargingSlots(load, start, end, fixed, limit, slot => {
+          const hour = hourOfSlot(slot);
+          return hour >= eveningWindow.start && hour < eveningWindow.lastStart ? limit : 0;
+        });
+        pending = fillChargingSlots(load, start, end, pending, limit, slot => {
+          if (!connected(slot)) return 0;
+          const pv = Math.min(limit, solarSurplus[Math.floor(slot / slotsPerHour)]);
+          return pv >= minimum ? Math.max(0, pv - load[slot]) : 0;
+        });
+        pending = fillChargingSlots(load, start, end, pending, limit,
+          slot => connected(slot) && isCheapHour(hourOfSlot(slot)) ? limit : 0);
+      } else {
+        // Recharge each day's driving at plug-in time. Use spare capacity in
+        // the same period when a day cannot serve its full share.
+        for (let chargeDay = day; chargeDay < next; chargeDay++) {
+          const arrival = chargeDay * slotsPerDay + plugInHour[chargeDay] * slotsPerHour;
+          const endOfDay = (chargeDay + 1) * slotsPerDay;
+          pending -= dailyDemand - fillChargingSlots(load, arrival, endOfDay, dailyDemand, limit, () => limit);
+        }
+      }
+      pending = fillChargingSlots(load, start, end, pending, limit, slot => connected(slot) ? limit : 0);
       if (pending > 1e-9) throw new RangeError("evGroupWindow");
+      day = next;
     }
   }
 
-  function calculate(input) {
+  function calculate(input, { sharedPlugTimes = false } = {}) {
     const p = {};
     for (const key of Object.keys(defaults)) {
       const value = input[key];
@@ -168,6 +190,7 @@
     }
     if (p.evChargePower < 1 || p.evChargePower > 22) throw new RangeError("evChargePower");
     if (p.evSimultaneity < 1 || p.evSimultaneity > 100) throw new RangeError("evSimultaneity");
+    if (!Number.isInteger(p.evDayAvailability) || p.evDayAvailability > 7) throw new RangeError("evDayAvailability");
     for (const key of ["wallboxesEnabled", "evPvSurplus", "evOneOptimized"]) {
       if (p[key] !== 0 && p[key] !== 1) throw new RangeError(key);
     }
@@ -201,16 +224,26 @@
       const householdPerDay = household / days;
       const ev = evDemand * days / 365;
       const charging = new Float64Array(days * slotsPerDay);
-      const connected = prioritizeHousehold ? new Uint16Array(days) : null;
+      const connected = surplusCharging ? new Uint16Array(days) : null;
       let daytimeEnergy = 0;
-      if (ev > 0) {
+      if (oneOptimized || (sharedPlugTimes && ev > 0 && !surplusCharging)) {
+        const solarSurplus = oneOptimized
+          ? pvProfile.slice(profileHour, profileHour + days * 24).map((solar, hour) =>
+            Math.max(0, solar * pvScale - householdPerDay * housing[hour % 24]) * slotHours)
+          : null;
+        planConnectedCharging(charging, solarSurplus, {
+          firstWeekday: (profileHour / 24) % 7,
+          daytimeDays: p.evDayAvailability,
+          dailyDemand: ev / days,
+          limit: groupChargingEnergy,
+          minimum: minChargingEnergy
+        });
+      } else if (ev > 0) {
         const energyPerVehicle = ev / p.apartments;
         const dayShare = p.evDayShare / 100;
-        const eveningConnected = oneOptimized ? new Uint16Array(days) : null;
         daytimeEnergy = planChargingSessions(charging, i, days, p.apartments, energyPerVehicle, p.evChargePower, dayShare,
-          dayWindow, connected, oneOptimized ? oneFixedShare : undefined);
-        const eveningEnergy = planChargingSessions(charging, i, days, p.apartments, energyPerVehicle, p.evChargePower, 1 - dayShare,
-          eveningWindow, eveningConnected, oneOptimized ? oneFixedShare : undefined);
+          dayWindow, connected);
+        planChargingSessions(charging, i, days, p.apartments, energyPerVehicle, p.evChargePower, 1 - dayShare, eveningWindow);
         if (surplusCharging) {
           const dayCapacity = evPowerLimit * (dayWindow.end - dayWindow.start);
           if (connected.some(cars => cars * daytimeEnergy > dayCapacity + 1e-9)) {
@@ -220,17 +253,6 @@
           distributeDirectLoad(charging, days, dayWindow, groupChargingEnergy);
         }
         distributeDirectLoad(charging, days, eveningWindow, groupChargingEnergy);
-        if (oneOptimized) {
-          const solarSurplus = new Float64Array(days * 24);
-          for (let hour = 0; hour < solarSurplus.length; hour++) {
-            const solar = pvProfile[profileHour + hour] * pvScale;
-            const house = householdPerDay * housing[hour % 24];
-            solarSurplus[hour] = Math.max(0, solar - house) * slotHours;
-          }
-          const limits = { group: groupChargingEnergy, vehicle: maxChargingEnergy, start: minChargingEnergy };
-          optimizeCharging(charging, connected, dayWindow, daytimeEnergy, solarSurplus, limits);
-          optimizeCharging(charging, eveningConnected, eveningWindow, eveningEnergy, solarSurplus, limits);
-        }
       }
       let pv = 0;
       let pvHousehold = 0;
@@ -299,7 +321,7 @@
     const improvement = grossExtra - p.additionalAnnualCosts;
     const evCheapGrid = sumMonths("evCheapGrid");
     return {
-      householdDemand, evDemand, demand, soldSolar, exportedSolar,
+      householdDemand, evPerVehicle, evDemand, demand, soldSolar, exportedSolar,
       evPowerLimit, evPeakPower: Math.max(...months.map(month => month.evPeakPower)),
       months, pvHousehold, pvEv, gridHousehold, gridEv, grid,
       oneOptimized, evCheapGrid,

@@ -48,44 +48,54 @@
   <p>Berechne den Mehrertrag deiner bestehenden PV-Anlage. Passe dazu die Beispielwerte an.</p>
   <form id="ms-return-form">
     <div class="ms-calc-grid">
-      <label>Umbaukosten für Mieterstrom<div class="ms-input-unit"><input name="additionalInvestment" type="number" min="0" max="10000000" step="any" value="2000" required><span>€</span></div></label>
       <label>Teilnehmende Wohnungen<div class="ms-input-unit"><input name="apartments" type="number" min="0" max="1000" step="1" value="4" required><span>Anzahl</span></div></label>
       <label>Jahresverbrauch je Wohnung<div class="ms-input-unit"><input name="consumptionPerApartment" type="number" min="0" max="100000" step="any" value="1900" required><span>kWh</span></div></label>
       <label>PV-Jahresertrag<div class="ms-input-unit"><input name="pvYield" type="number" min="0" max="10000000" step="any" value="8000" required><span>kWh</span></div></label>
+      <label>Umbaukosten für Mieterstrom<div class="ms-input-unit"><input name="additionalInvestment" type="number" min="0" max="10000000" step="any" value="2000" required><span>€</span></div></label>
       <label>Verkaufspreis für Solarstrom<div class="ms-input-unit"><input name="salePrice" type="number" min="0" max="200" step="any" value="28" required><span>ct/kWh</span></div></label>
       <label>Einspeisevergütung<div class="ms-input-unit"><input name="feedInPrice" type="number" min="0" max="200" step="any" value="8" required><span>ct/kWh</span></div><small>Gilt in beiden Varianten.</small></label>
     </div>
     <div class="ms-wallbox-option">
-      <label class="ms-wallbox-toggle"><input name="wallboxesEnabled" type="checkbox" aria-controls="ms-wallbox-fields"> Wallboxen berücksichtigen (ein Fahrzeug je Wohnung)</label>
+      <label class="ms-wallbox-toggle"><input name="wallboxesEnabled" type="checkbox" aria-controls="ms-wallbox-fields ms-wallbox-assumptions"> Wallboxen berücksichtigen (ein Fahrzeug je Wohnung)</label>
       <div id="ms-wallbox-fields" hidden>
-      <label class="ms-wallbox-toggle"><input name="evOneOptimized" type="checkbox" aria-controls="ms-one-tariff-fields ms-ev-min-power" disabled> Laden mit eHive One optimieren</label>
-      <div class="ms-calc-grid">
-        <label>Fahrleistung je Fahrzeug und Jahr<div class="ms-input-unit"><input name="annualMileage" type="number" min="0" max="1000000" step="any" value="10000" required disabled><span>km</span></div><small>Fester Ladebedarf <strong data-ms-value="evConsumptionPer100Km">–</strong> inkl. Ladeverlusten.</small></label>
-        <label>Ladeanteil zu Hause<div class="ms-input-unit"><input name="homeCharging" type="number" min="0" max="100" step="any" value="100" required disabled><span>%</span></div></label>
-        <label>Ladeanteil zwischen 8 und 18 Uhr<div class="ms-input-unit"><input name="evDayShare" type="number" min="0" max="100" step="any" value="50" required disabled><span>%</span></div></label>
-        <label>Ladeleistung je Fahrzeug<div class="ms-input-unit"><input name="evChargePower" type="number" min="1" max="22" step="any" value="11" required disabled><span>kW</span></div></label>
-        <label id="ms-ev-min-power">PV-Ladestart ab
-          <div class="ms-input-unit">
-            <select name="evMinChargePower" required disabled>
-              <option value="1.4" selected>1,4 kW (einphasig)</option>
-              <option value="4.1">4,1 kW (dreiphasig)</option>
-            </select>
-          </div>
-        </label>
-      </div>
-      <div id="ms-one-tariff-fields" hidden>
-        <p>Im Modell sind 90 % der Lademenge flexibel. Die günstigen Beispielzeiten sind 12–14 und 21–24 Uhr (MEZ).</p>
+        <label class="ms-wallbox-toggle"><input name="evOneOptimized" type="checkbox" aria-controls="ms-one-tariff-fields ms-ev-min-power" disabled> Laden mit eHive One optimieren</label>
         <div class="ms-calc-grid">
-          <label>Normaler Netzpreis<div class="ms-input-unit"><input name="evStandardGridPrice" type="number" min="0" max="200" step="any" value="32" required disabled><span>ct/kWh</span></div></label>
-          <label>Günstiger Netzpreis<div class="ms-input-unit"><input name="evCheapGridPrice" type="number" min="0" max="200" step="any" value="22" required disabled><span>ct/kWh</span></div></label>
+          <label>Autos tagsüber angeschlossen<div class="ms-input-unit"><input name="evDayAvailability" type="number" min="0" max="7" step="1" value="3" required disabled><span>Tage/Woche</span></div></label>
+          <label id="ms-ev-min-power" hidden>PV-Ladestart ab
+            <div class="ms-input-unit">
+              <select name="evMinChargePower" required disabled>
+                <option value="1.4" selected>1,4 kW (einphasig)</option>
+                <option value="4.1">4,1 kW (dreiphasig)</option>
+              </select>
+            </div>
+          </label>
         </div>
-      </div><p>Zusätzliche Wallboxkosten bei Umbau und Betrieb eintragen.</p></div>
+        <p class="ms-calc-note">Ladebedarf zu Hause je Fahrzeug <strong data-ms-value="evPerVehicle">2.000 kWh/Jahr</strong>.</p>
+      </div>
     </div>
-    <div class="ms-coverage"><label for="ms-household-day-share">Wohnungsverbrauch zwischen 8 und 18 Uhr <output for="ms-household-day-share" data-ms-value="householdDayShare">50 %</output></label><input id="ms-household-day-share" name="householdDayShare" type="range" min="0" max="100" step="1" value="50"></div>
-    <details class="ms-calc-details"><summary>Laufende Kosten</summary><div class="ms-calc-grid">
-      <label>Laufende PV-Kosten in beiden Varianten<div class="ms-input-unit"><input name="annualPvCosts" type="number" min="0" max="1000000" step="any" value="200" required><span>€/Jahr</span></div></label>
-      <label>Zusätzliche laufende Mieterstromkosten<div class="ms-input-unit"><input name="additionalAnnualCosts" type="number" min="0" max="1000000" step="any" value="200" required><span>€/Jahr</span></div></label>
-    </div></details>
+    <details class="ms-calc-details" id="ms-assumptions">
+      <summary>Annahmen ändern <small>· Zusatzkosten <span data-ms-value="additionalAnnualCosts">200 € / Jahr</span></small></summary>
+      <div class="ms-calc-grid">
+        <label>Zusätzliche laufende Mieterstromkosten<div class="ms-input-unit"><input name="additionalAnnualCosts" type="number" min="0" max="1000000" step="any" value="200" required><span>€/Jahr</span></div></label>
+        <label>Laufende PV-Kosten in beiden Varianten<div class="ms-input-unit"><input name="annualPvCosts" type="number" min="0" max="1000000" step="any" value="200" required><span>€/Jahr</span></div></label>
+      </div>
+      <div class="ms-coverage"><label for="ms-household-day-share">Wohnungsverbrauch zwischen 8 und 18 Uhr <output for="ms-household-day-share" data-ms-value="householdDayShare">50 %</output></label><input id="ms-household-day-share" name="householdDayShare" type="range" min="0" max="100" step="1" value="50"></div>
+      <div id="ms-wallbox-assumptions" hidden>
+        <div class="ms-calc-grid">
+          <label>Fahrleistung je Fahrzeug und Jahr<div class="ms-input-unit"><input name="annualMileage" type="number" min="0" max="1000000" step="any" value="10000" required disabled><span>km</span></div><small>Fester Ladebedarf <strong data-ms-value="evConsumptionPer100Km">–</strong> inkl. Ladeverlusten.</small></label>
+          <label>Ladeanteil zu Hause<div class="ms-input-unit"><input name="homeCharging" type="number" min="0" max="100" step="any" value="100" required disabled><span>%</span></div></label>
+          <label>Ladeleistung je Fahrzeug<div class="ms-input-unit"><input name="evChargePower" type="number" min="1" max="22" step="any" value="11" required disabled><span>kW</span></div></label>
+        </div>
+        <div id="ms-one-tariff-fields" hidden>
+          <p class="ms-calc-note">90 % der Lademenge sind im Modell flexibel. Günstige Beispielzeiten sind 12–14 und 21–24 Uhr (MEZ).</p>
+          <div class="ms-calc-grid">
+            <label>Normaler Netzpreis<div class="ms-input-unit"><input name="evStandardGridPrice" type="number" min="0" max="200" step="any" value="32" required disabled><span>ct/kWh</span></div></label>
+            <label>Günstiger Netzpreis<div class="ms-input-unit"><input name="evCheapGridPrice" type="number" min="0" max="200" step="any" value="22" required disabled><span>ct/kWh</span></div></label>
+          </div>
+        </div>
+        <p class="ms-calc-note">Zusätzliche Wallboxkosten bei Umbau und Betrieb eintragen.</p>
+      </div>
+    </details>
     <button class="ms-calc-reset" id="ms-return-reset" type="button">Beispielwerte zurücksetzen</button>
   </form>
   <p id="ms-return-error" class="ms-calc-error" role="alert" hidden></p>
@@ -97,6 +107,7 @@
       <span data-ms-value="investmentReturn">–</span>
       <span data-ms-value="payback"></span>
     </div>
+    <p class="ms-calc-note" id="ms-charge-comparison" hidden>PV-Strom fürs Laden pro Jahr <strong data-ms-value="directChargePv">–</strong> beim Direktladen und <strong data-ms-value="oneChargePv">–</strong> mit eHive One. Der jährliche Mieterstrom-Mehrertrag verändert sich dadurch um <strong data-ms-value="oneExtraRevenue">–</strong>.</p>
     <section class="ms-monthly" aria-labelledby="ms-monthly-heading">
       <h3 id="ms-monthly-heading">Strombilanz pro Monat</h3>
       <ul class="ms-monthly-legend">
@@ -121,8 +132,9 @@
       <details class="ms-calc-details">
         <summary>Monatswerte und Profile</summary>
         <p class="ms-calc-note">Die PV-Kurve folgt dem langjährigen PVGIS-Monatsmittel für ein Süddach mit 30° Neigung in Passau. Der mittlere Jahresertrag beträgt dort rund 1.090 kWh je kWp. Für jeden Monat nutzt der Rechner Stundenwerte aus einem Jahr mit ähnlichem Monatsertrag. Er passt sie an die Monatsmittel und den eingegebenen Jahresertrag an. <a href="https://re.jrc.ec.europa.eu/api/v5_3/PVcalc?lat=48.57&amp;lon=13.44&amp;peakpower=1&amp;loss=14&amp;angle=30&amp;aspect=0&amp;raddatabase=PVGIS-SARAH3&amp;outputformat=json" target="_blank" rel="noopener noreferrer">PVGIS-Referenzwerte</a></p>
-        <p class="ms-calc-note">Wohnungen folgen einem Beispielprofil mit Morgen- und Abendspitzen. Je Fahrzeug sind etwa zwei Ladevorgänge pro Woche angesetzt, tagsüber von 8 bis 18 Uhr und abends von 18 bis 24 Uhr (MEZ).</p>
-        <p class="ms-calc-note" id="ms-one-details" hidden>Am geplanten Ladetag stehen die Fahrzeuge im jeweiligen Zeitfenster bereit. Das Modell nutzt für die flexible Ladung zuerst PV nach Abzug des Wohnungsverbrauchs und dann günstige Netzstunden. Bei Bedarf lädt es zum normalen Netzpreis nach. Der Preisvorteil beim Netzladen wird separat ausgewiesen. <a href="https://docs.evcc.io/de/features/plans/" target="_blank" rel="noopener noreferrer">Ladepläne bei evcc</a></p>
+        <p class="ms-calc-note">Wohnungen folgen einem Beispielprofil mit Morgen- und Abendspitzen.</p>
+        <p class="ms-calc-note" id="ms-wallbox-details" hidden>Beide Ladevarianten setzen täglich dieselben Anschlusszeiten von 18 bis 24 Uhr an, an den gewählten Tagen zusätzlich von 8 bis 18 Uhr (MEZ). Zuerst zählen Samstag und Sonntag, dann weitere Wochentage. Beim Direktladen beginnt das tägliche Nachladen beim Anstecken.</p>
+        <p class="ms-calc-note" id="ms-one-details" hidden>Für zwei Ladeziele pro Woche nutzt der Rechner zuerst PV-Überschuss nach dem Wohnungsverbrauch, dann günstigen Netzstrom. Bei Bedarf deckt der normale Tarif die Restladung. <a href="https://docs.evcc.io/de/features/plans/" target="_blank" rel="noopener noreferrer">Ladepläne bei evcc</a></p>
         <p class="ms-calc-note">Das Modell setzt <span data-ms-value="evSimultaneity">–</span> der Summe der Wallboxleistungen an. Als Untergrenze gilt die Leistung eines Ladepunkts. <a href="https://docs.evcc.io/de/features/loadmanagement/" target="_blank" rel="noopener noreferrer">Lastmanagement bei evcc</a></p>
         <p class="ms-calc-note">Sommer umfasst Juni bis August, Winter Dezember bis Februar. Für eine Prognose deines Gebäudes sind Messdaten zur Erzeugung und zum Verbrauch genauer.</p>
         <div class="ms-table-scroll" tabindex="0" role="region" aria-label="Monatswerte in kWh">
@@ -199,4 +211,4 @@
 <details class="ms-faq"><summary>Müssen alle Mieter mitmachen?</summary><p>Ein Konzept muss Nichtteilnehmer und die freie Lieferantenwahl berücksichtigen. Die passende messtechnische und vertragliche Umsetzung wird vor dem Start mit den zuständigen Partnern festgelegt.</p></details>
 <div class="ms-sources"><h2>Quellen und weiterführende Informationen</h2><p>Recherchestand: 18. November 2026. Für das konkrete Gebäude sind die geltenden Vorgaben und das vereinbarte Messkonzept maßgeblich.</p><ul><li><a href="https://www.bundesnetzagentur.de/899948" target="_blank" rel="noopener noreferrer">Bundesnetzagentur: Solaranlagen auf Mehrparteiengebäuden und Mieterstrommodelle</a></li><li><a href="https://www.elektromobilitaet.nrw/infos/lastmanagement/" target="_blank" rel="noopener noreferrer">ElektroMobilität NRW: Statisches und dynamisches Lastmanagement</a></li><li><a href="https://docs.evcc.io/de/features/loadmanagement/" target="_blank" rel="noopener noreferrer">evcc: Lastmanagement und Anforderungen an die Konfiguration</a></li><li><a href="https://www.gesetze-im-internet.de/enwg_2005/__42b.html" target="_blank" rel="noopener noreferrer">§ 42b EnWG: Gemeinschaftliche Gebäudeversorgung</a></li></ul></div>
 </div>
-</article></div></section></main><div data-include="footer"></div><script src="config.js"></script><script src="script.js?v=20261118-mieterstrom"></script><script src="mieterstrom-animation.js?v=20261118-clean" defer></script><script src="mieterstrom-pv-profil.js?v=20261119-pvgis-mittel" defer></script><script src="mieterstrom-rendite-model.js?v=20261119-ladebedarf-fest" defer></script><script src="mieterstrom-rendite.js?v=20261119-ladeoptimierung" defer></script></body></html>
+</article></div></section></main><div data-include="footer"></div><script src="config.js"></script><script src="script.js?v=20261118-mieterstrom"></script><script src="mieterstrom-animation.js?v=20261118-clean" defer></script><script src="mieterstrom-pv-profil.js?v=20261119-pvgis-mittel" defer></script><script src="mieterstrom-rendite-model.js?v=20261119-annahmen" defer></script><script src="mieterstrom-rendite.js?v=20261119-annahmen" defer></script></body></html>
