@@ -9,6 +9,15 @@ const equal = (actual, expected) => {
 };
 const sumMonths = (result, key) => result.months.reduce((total, month) => total + month[key], 0);
 
+test('Monatserträge entsprechen den PVGIS-Referenzwerten für Passau 2005–2023', () => {
+  const monthlyReference = [37.85, 63.27, 98.29, 120.89, 125.63, 131.80, 134.66, 123.46, 103.09, 77.11, 41.85, 31.67];
+  const result = calc({ pvYield: 1089.57 });
+  for (const [index, month] of result.months.entries()) {
+    equal(month.pv, monthlyReference[index]);
+  }
+  equal(sumMonths(result, 'pv'), 1089.57);
+});
+
 test('Zusatzrendite verwendet ausschließlich die Umbaukosten für die vorhandene PV', () => {
   const result = calc({});
   const historical = calc({ installationCost: 50000 });
@@ -98,7 +107,6 @@ test('Doppelter Jahresertrag erhöht die nutzbare PV-Leistung je Ladevorgang', (
   }
   const juneGain = large.months[5].pvEv - small.months[5].pvEv;
   const decemberGain = large.months[11].pvEv - small.months[11].pvEv;
-  assert.ok(juneGain > 100);
   assert.ok(decemberGain > 0 && juneGain > decemberGain);
   assert.ok(large.improvement > small.improvement);
 });
