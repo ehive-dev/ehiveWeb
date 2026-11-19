@@ -1,94 +1,162 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const {calculate, defaults} = require('../mieterstrom-rendite-model.js');
-const calc = values => calculate({...defaults, ...values});
-const close = (a,b) => assert.ok(Math.abs(a-b)<1e-8, `${a} != ${b}`);
-test('Zusatzrendite verwendet ausschließlich die Umstellungskosten der vorhandenen PV',()=>{
- const r=calc({}); close(r.demand,7600);close(r.soldSolar,3376);close(r.exportedSolar,4624);
- close(r.baseSurplus,440);close(r.rentalSurplus,915.2);close(r.improvement,475.2);
- close(r.investmentReturn,23.76);close(r.rentalInvestment,2000);close(r.additionalPayback,2000/475.2);assert.ok(!("installationCost" in defaults));
-});
-test('PV-Abnahme überschreitet weder Ertrag noch Wohnungsbedarf',()=>{
- const r=calc({pvYield:1000,solarCoverage:100});close(r.soldSolar,1000);close(r.exportedSolar,0);assert.equal(r.capped,true);
- const low=calc({pvYield:100000,solarCoverage:100});close(low.soldSolar,7600);close(low.soldSolar+low.exportedSolar,100000);
-});
-test('Gleiche Preise ohne Mehrkosten verändern den Überschuss nicht',()=>{
- const r=calc({salePrice:10,feedInPrice:10,additionalAnnualCosts:0,additionalInvestment:0});close(r.improvement,0);assert.equal(r.investmentReturn,null);
-});
-test('Eine Änderung der Einspeisevergütung wirkt auf beide Varianten',()=>{
- const a=calc({feedInPrice:8}),b=calc({feedInPrice:4});
- close(a.baseSurplus-b.baseSurplus,8000*0.04);
- close(a.rentalSurplus-b.rentalSurplus,4624*0.04);
- close(b.improvement-a.improvement,3376*0.04);
-});
-test('Mehrertrag ist vermiedene Einspeisung durch Mieterstrom abzüglich Zusatzkosten',()=>{
- for(const feedInPrice of [0,4,8,30])for(const apartments of [0,1,4,20]){
-  const r=calc({feedInPrice,apartments});
-  close(r.improvement,r.soldSolar*(defaults.salePrice-feedInPrice)/100-defaults.additionalAnnualCosts);
- }
-});
-test('Unwirtschaftliches Mieterstromszenario bleibt negativ',()=>{
- const r=calc({salePrice:1,additionalAnnualCosts:1000});assert.ok(r.improvement<0);assert.ok(r.investmentReturn<0);assert.equal(r.additionalPayback,null);
-});
-test('Null Wohnungen oder Null Verbrauch erzeugen keine fiktiven PV-Verkäufe',()=>{
- for(const input of [{apartments:0},{consumptionPerApartment:0}]){const r=calc(input);close(r.soldSolar,0);close(r.localRevenue,0);close(r.exportedSolar,8000);assert.ok(Number.isFinite(r.solarPerApartment));}
-});
-test('Ohne PV-Ertrag gibt es keine Stromerlöse',()=>{
- const r=calc({pvYield:0});close(r.localRevenue,0);close(r.fullRevenue,0);close(r.surplusRevenue,0);close(r.selfConsumption,0);
-});
-test('Null Investition erzeugt keine unendliche Rendite',()=>{
- const r=calc({additionalInvestment:0});assert.equal(r.investmentReturn,null);assert.equal(r.additionalPayback,null);assert.ok(Number.isFinite(r.improvement));
-});
-test('Fehlende, nicht endliche und unzulässige Werte werden abgelehnt',()=>{
- for(const input of [{salePrice:NaN},{apartments:1.5},{additionalInvestment:-1},{pvYield:Infinity},{solarCoverage:101},{apartments:1001},{salePrice:''}])assert.throws(()=>calc(input),RangeError);
-});
-test('Energiebilanz und Wohnungszuordnung bleiben über Szenarien geschlossen',()=>{
- for(const pvYield of [0,1000,8000,25000])for(const apartments of [0,1,4,20])for(const solarCoverage of [0,35,100]){
- const r=calc({pvYield,apartments,solarCoverage});close(r.soldSolar+r.exportedSolar,pvYield);assert.ok(r.soldSolar<=r.demand);close(r.solarPerApartment*apartments,r.soldSolar);
- }
+const { calculate, defaults } = require('../mieterstrom-rendite-model.js');
+
+const calc = values => calculate({ ...defaults, ...values });
+const equal = (actual, expected) => {
+  const tolerance = Math.max(1e-8, Math.abs(expected) * 1e-10);
+  assert.ok(Math.abs(actual - expected) < tolerance, `${actual} != ${expected}`);
+};
+const sumMonths = (result, key) => result.months.reduce((total, month) => total + month[key], 0);
+
+test('Zusatzrendite verwendet ausschließlich die Umbaukosten für die vorhandene PV', () => {
+  const result = calc({});
+  const historical = calc({ installationCost: 50000 });
+  equal(result.householdDemand, 7600);
+  equal(result.baseSurplus, 440);
+  equal(result.rentalInvestment, 2000);
+  equal(result.investmentReturn, result.improvement / 2000 * 100);
+  equal(result.additionalPayback, 2000 / result.improvement);
+  equal(historical.improvement, result.improvement);
+  equal(historical.investmentReturn, result.investmentReturn);
+  assert.ok(!('installationCost' in defaults));
 });
 
-test('Historische PV-Anschaffungskosten verändern die Zusatzrendite nicht',()=>{const a=calc({}),b=calc({installationCost:50000});close(a.improvement,b.improvement);close(a.investmentReturn,b.investmentReturn);});
-
-test('Wallboxen rechnen ein Fahrzeug mit 10000 km je Wohnung und nur den PV-Anteil als Verkauf',()=>{
- const r=calc({wallboxesEnabled:1});
- close(r.evDemand,8000);close(r.householdDemand,7600);close(r.demand,15600);
- close(r.soldSolar,5875.479452054795);close(r.exportedSolar,2124.520547945206);close(r.improvement,975.095890410959);
- close(r.rentalInvestment,2000);
-});
-test('Wallbox-Ladeorte und PV-Anteil sind getrennt, ausgeschaltete Wallboxen haben keinen Effekt',()=>{
- close(calc({wallboxesEnabled:1,homeCharging:50}).evDemand,4000);
- close(calc({wallboxesEnabled:1,evSolarCoverage:0}).improvement,calc({}).improvement);
- close(calc({wallboxesEnabled:0,annualMileage:100000}).evDemand,0);
- close(calc({wallboxesEnabled:1,apartments:0}).evDemand,0);
- const capped=calc({wallboxesEnabled:1,evSolarCoverage:100});assert.ok(capped.soldSolar<8000);assert.ok(capped.exportedSolar>0);
- for(const input of [{homeCharging:101},{evSolarCoverage:101},{wallboxesEnabled:2},{annualMileage:-1}])assert.throws(()=>calc(input),RangeError);
+test('Dieselbe Einspeisevergütung gilt für Ausgangslage und Überschuss', () => {
+  const a = calc({ feedInPrice: 8 });
+  const b = calc({ feedInPrice: 4 });
+  equal(a.baseSurplus - b.baseSurplus, 8000 * 0.04);
+  equal(a.rentalSurplus - b.rentalSurplus, a.exportedSolar * 0.04);
+  equal(b.improvement - a.improvement, a.soldSolar * 0.04);
 });
 
-test('Monatsgrenzen verhindern Verschieben von Sommerüberschüssen in den Winter',()=>{
- const r=calc({});
- // Handrechnung: Jan 160 kWh PV vs 380 kWh Ziel, Jun 1120 vs 266.
- close(r.months[0].pv,160);close(r.months[0].pvHousehold,160);close(r.months[0].grid,600);
- close(r.months[5].pv,1120);close(r.months[5].pvHousehold,266);close(r.months[5].exported,854);
- close(r.soldSolar,[160,240,342,304,304,266,266,266,304,342,342,240].reduce((a,b)=>a+b,0));
- assert.ok(r.soldSolar<r.requestedSolar);
-});
-test('Monatliche Energieflüsse schließen sich für jede Last getrennt und im Jahr',()=>{
- for(const pvYield of [0,1000,8000,100000])for(const apartments of [0,1,4,20])for(const solarCoverage of [0,50,100])for(const evSolarCoverage of [0,50,100]){
-  const r=calc({pvYield,apartments,solarCoverage,evSolarCoverage,wallboxesEnabled:1});
-  assert.equal(r.months.length,12);
-  for(const m of r.months){
-   for(const key of ['pv','pvHousehold','pvEv','exported','gridHousehold','gridEv'])assert.ok(m[key]>=0);
-   close(m.pv,m.pvHousehold+m.pvEv+m.exported);
-   close(m.household,m.pvHousehold+m.gridHousehold);close(m.ev,m.pvEv+m.gridEv);
+test('Mehrertrag ergibt sich aus PV-Verkauf, entgangener Vergütung und Zusatzkosten', () => {
+  for (const feedInPrice of [0, 4, 8, 30]) {
+    for (const apartments of [0, 1, 4, 20]) {
+      const result = calc({ feedInPrice, apartments });
+      equal(result.improvement, result.soldSolar * (defaults.salePrice - feedInPrice) / 100 - defaults.additionalAnnualCosts);
+      equal(result.improvement, result.rentalSurplus - result.baseSurplus);
+    }
   }
-  const sum=k=>r.months.reduce((a,m)=>a+m[k],0);
-  close(sum('pv'),pvYield);close(sum('household'),r.householdDemand);close(sum('ev'),r.evDemand);
-  close(r.soldSolar+r.grid,r.demand);close(r.pvHousehold+r.gridHousehold,r.householdDemand);close(r.pvEv+r.gridEv,r.evDemand);
-  close(r.improvement,r.soldSolar*(defaults.salePrice-defaults.feedInPrice)/100-defaults.additionalAnnualCosts);
- }
 });
-test('PV-Knappheit bevorzugt keine Last und 100-Prozent-Ziele garantieren keine Jahresautarkie',()=>{
- const r=calc({wallboxesEnabled:1,solarCoverage:100,evSolarCoverage:100});const jan=r.months[0];
- close(jan.pvHousehold/jan.household,jan.pvEv/jan.ev);assert.ok(r.grid>0);assert.ok(r.exportedSolar>0);
+
+test('Ohne Preisdifferenz und Mehrkosten ändert sich der Überschuss nicht', () => {
+  const result = calc({ salePrice: 10, feedInPrice: 10, additionalAnnualCosts: 0, additionalInvestment: 0 });
+  equal(result.improvement, 0);
+  assert.equal(result.investmentReturn, null);
+});
+
+test('Verluste und null Euro Umbaukosten werden sinnvoll ausgewiesen', () => {
+  const loss = calc({ salePrice: 1, additionalAnnualCosts: 1000 });
+  assert.ok(loss.improvement < 0);
+  assert.ok(loss.investmentReturn < 0);
+  assert.equal(loss.additionalPayback, null);
+  const noInvestment = calc({ additionalInvestment: 0 });
+  assert.equal(noInvestment.investmentReturn, null);
+  assert.equal(noInvestment.additionalPayback, null);
+  assert.ok(Number.isFinite(noInvestment.improvement));
+});
+
+test('Ohne Verbrauch wird die gesamte Erzeugung eingespeist', () => {
+  for (const input of [{ apartments: 0 }, { consumptionPerApartment: 0 }]) {
+    const result = calc(input);
+    equal(result.soldSolar, 0);
+    equal(result.localRevenue, 0);
+    equal(result.exportedSolar, 8000);
+    assert.ok(Number.isFinite(result.solarPerApartment));
+  }
+});
+
+test('Ohne PV-Ertrag deckt das Netz den kompletten Verbrauch', () => {
+  const result = calc({ pvYield: 0, wallboxesEnabled: 1 });
+  equal(result.grid, 15600);
+  equal(result.localRevenue, 0);
+  equal(result.fullRevenue, 0);
+  equal(result.surplusRevenue, 0);
+  equal(result.selfConsumption, 0);
+});
+
+test('Ein Fahrzeug je Wohnung mit 10.000 km ergibt 2.000 kWh Ladebedarf je Fahrzeug', () => {
+  const result = calc({ wallboxesEnabled: 1 });
+  equal(result.evDemand, 8000);
+  equal(result.householdDemand, 7600);
+  equal(result.demand, 15600);
+  assert.ok(result.pvEv > 0 && result.gridEv > 0);
+  equal(calc({ wallboxesEnabled: 1, homeCharging: 50 }).evDemand, 4000);
+  equal(calc({ wallboxesEnabled: 0, annualMileage: 100000 }).evDemand, 0);
+  equal(calc({ wallboxesEnabled: 1, apartments: 0 }).evDemand, 0);
+});
+
+test('Doppelter Jahresertrag erhöht die nutzbare PV-Leistung je Ladevorgang', () => {
+  const small = calc({ wallboxesEnabled: 1, pvYield: 8000 });
+  const large = calc({ wallboxesEnabled: 1, pvYield: 16000 });
+  equal(small.evDemand, large.evDemand);
+  equal(large.months[5].pv, 2 * small.months[5].pv);
+  for (let i = 0; i < 12; i++) {
+    assert.ok(large.months[i].pvEv >= small.months[i].pvEv);
+    assert.ok(large.months[i].grid <= small.months[i].grid);
+  }
+  const juneGain = large.months[5].pvEv - small.months[5].pvEv;
+  const decemberGain = large.months[11].pvEv - small.months[11].pvEv;
+  assert.ok(juneGain > 100);
+  assert.ok(decemberGain > 0 && juneGain > decemberGain);
+  assert.ok(large.improvement > small.improvement);
+});
+
+test('PV-Erzeugung am Tag lässt sich nicht pauschal auf abendliche Ladeenergie anrechnen', () => {
+  const options = { wallboxesEnabled: 1, consumptionPerApartment: 0, pvYield: 16000 };
+  const evening = calc({ ...options, evDayShare: 0 });
+  const daytime = calc({ ...options, evDayShare: 100 });
+  assert.ok(evening.months[11].pv > 0);
+  equal(evening.months[11].pvEv, 0);
+  equal(evening.months[11].gridEv, evening.months[11].ev);
+  assert.ok(daytime.months[11].pvEv > 0);
+  assert.ok(daytime.pvEv > evening.pvEv);
+  equal(daytime.evDemand, evening.evDemand);
+});
+
+test('Ladeleistung verändert die PV-Nutzung bei gleichem Ladebedarf', () => {
+  const fast = calc({ wallboxesEnabled: 1, evChargePower: 11 });
+  const slow = calc({ wallboxesEnabled: 1, evChargePower: 3.7 });
+  equal(fast.evDemand, slow.evDemand);
+  assert.ok(slow.pvEv > fast.pvEv);
+  assert.ok(slow.improvement > fast.improvement);
+});
+
+test('Unzulässige Eingaben und Ladebedarf außerhalb des Zeitfensters werden erkannt', () => {
+  for (const input of [
+    { salePrice: NaN }, { apartments: 1.5 }, { additionalInvestment: -1 },
+    { pvYield: Infinity }, { householdDayShare: 101 }, { apartments: 1001 },
+    { salePrice: '' }, { homeCharging: 101 }, { evDayShare: 101 },
+    { wallboxesEnabled: 2 }, { annualMileage: -1 }, { evChargePower: 0 }, { evChargePower: 23 }
+  ]) {
+    assert.throws(() => calc(input), RangeError);
+  }
+  assert.throws(() => calc({ wallboxesEnabled: 1, annualMileage: 1000000, evChargePower: 1 }), /evChargingWindow/);
+});
+
+test('Energiebilanz schließt für beide Lasten und Erzeugung in jedem Monat', () => {
+  for (const pvYield of [0, 1000, 8000, 100000]) {
+    for (const apartments of [0, 1, 4, 20]) {
+      for (const [householdDayShare, evDayShare, evChargePower] of [[0, 0, 3.7], [50, 50, 11], [100, 100, 22]]) {
+        const result = calc({ pvYield, apartments, householdDayShare, evDayShare, evChargePower, wallboxesEnabled: 1 });
+        assert.equal(result.months.length, 12);
+        for (const month of result.months) {
+          for (const field of ['pv', 'pvHousehold', 'pvEv', 'exported', 'gridHousehold', 'gridEv']) {
+            assert.ok(month[field] >= 0);
+          }
+          equal(month.pv, month.pvHousehold + month.pvEv + month.exported);
+          equal(month.household, month.pvHousehold + month.gridHousehold);
+          equal(month.ev, month.pvEv + month.gridEv);
+        }
+        equal(sumMonths(result, 'pv'), pvYield);
+        equal(sumMonths(result, 'household'), result.householdDemand);
+        equal(sumMonths(result, 'ev'), result.evDemand);
+        equal(result.soldSolar + result.exportedSolar, pvYield);
+        equal(result.soldSolar + result.grid, result.demand);
+        equal(result.solarPerApartment * apartments, result.soldSolar);
+        equal(result.improvement, result.rentalSurplus - result.baseSurplus);
+      }
+    }
+  }
 });

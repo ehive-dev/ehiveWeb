@@ -77,7 +77,8 @@
               x, y: Math.min(yStart, yEnd), width: barWidth,
               height: Math.abs(yEnd - yStart), class: seriesClass
             }, undefined, group);
-            node("title", {}, `${month.name} · ${label} · ${decimal.format(value)} kWh`, rect);
+            const solarDetail = key === "ev" ? ` · davon ${decimal.format(month.pvEv)} kWh PV` : "";
+            node("title", {}, `${month.name} · ${label} · ${decimal.format(value)} kWh${solarDetail}`, rect);
           }
         }
       });
@@ -119,8 +120,15 @@
     }
     fields.forEach(field => { p[field.name] = field.type === "checkbox" ? Number(field.checked) : field.disabled ? api.defaults[field.name] : field.valueAsNumber; });
     let r;
-    try { r = api.calculate(p); } catch {
-      result.hidden = true; error.hidden = false; error.textContent = "Bitte prüfe die Eingabewerte."; return;
+    try {
+      r = api.calculate(p);
+    } catch (cause) {
+      result.hidden = true;
+      error.hidden = false;
+      error.textContent = cause.message === "evChargingWindow"
+        ? "Ladebedarf zu hoch für die gewählte Ladeleistung und Zeitaufteilung."
+        : "Bitte prüfe die Eingabewerte.";
+      return;
     }
     result.hidden = false;
     error.hidden = true;
@@ -130,7 +138,7 @@
     write("baseInvestment", euro.format(0));
     write("annualPvCosts", euro.format(p.annualPvCosts));
     write("pvYield", format.format(p.pvYield) + " kWh/Jahr");
-    write("solarCoverage", format.format(p.solarCoverage) + " %");
+    write("householdDayShare", format.format(p.householdDayShare) + " %");
     write("effectiveCoverage", decimal.format(r.effectiveCoverage) + " %");
     write("selfConsumption", decimal.format(r.selfConsumption) + " %");
     const difference = r.improvement > 0 ? "mehr" : r.improvement < 0 ? "weniger" : "Unterschied";
@@ -144,10 +152,19 @@
     write("grossExtra", euro.format(r.grossExtra));
     write("forgoneFeedIn", euro.format(r.soldSolar * p.feedInPrice / 100));
     write("formulaMargin", `${format.format(r.soldSolar)} kWh × ${decimal.format(p.salePrice - p.feedInPrice)} ct/kWh ÷ 100 − ${euro.format(p.additionalAnnualCosts)} = ${euro.format(r.improvement)} pro Jahr`);
+    document.getElementById("ms-wallbox-season").hidden = r.evDemand === 0;
+    if (r.evDemand > 0) {
+      const chargeShare = monthIndexes => {
+        const months = monthIndexes.map(index => r.months[index]);
+        const demand = months.reduce((sum, month) => sum + month.ev, 0);
+        return months.reduce((sum, month) => sum + month.pvEv, 0) / demand * 100;
+      };
+      write("evSummerShare", decimal.format(chargeShare([5, 6, 7])) + " %");
+      write("evWinterShare", decimal.format(chargeShare([11, 0, 1])) + " %");
+    }
     renderMonths(r);
     const status = document.getElementById("ms-return-status");
     status.dataset.outcome = r.improvement >= 0 ? "positive" : "negative";
-    document.getElementById("ms-return-cap").hidden = !r.capped;
     const maxWidth = Math.max(Math.abs(r.baseSurplus), Math.abs(r.rentalSurplus), 1);
     for (const [id, value] of [["ms-bar-base", r.baseSurplus], ["ms-bar-rental", r.rentalSurplus]]) {
       const bar = document.getElementById(id);
