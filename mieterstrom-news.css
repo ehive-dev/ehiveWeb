@@ -36,6 +36,7 @@
 .ms-monthly-grid{--ms-series-color:#536d87}
 .ms-monthly-household{--ms-series-color:#4d8bb4}
 .ms-monthly-wallbox{--ms-series-color:#88649e}
+.ms-monthly-export{--ms-series-color:#d86d22}
 .ms-monthly-yield{--ms-series-color:#e8c800}
 .news-article-body .ms-monthly-legend{
   display:flex;

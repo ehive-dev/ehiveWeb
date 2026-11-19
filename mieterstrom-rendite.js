@@ -20,7 +20,7 @@
       parent.appendChild(el); return el;
     };
     node("title", { id: "ms-monthly-title" }, "Monatliche Strombilanz in kWh");
-    node("desc", { id: "ms-monthly-desc" }, "Links je Monat PV-Direktverbrauch und Netzbezug, rechts der Gesamtverbrauch von Wohnungen und Wallboxen. Die Linie zeigt den PV-Ertrag. Die Tabelle enthält die genauen Werte.");
+    node("desc", { id: "ms-monthly-desc" }, "Je Monat links PV-Direktverbrauch und Netzbezug, in der Mitte der Gesamtverbrauch von Wohnungen und Wallboxen und rechts die Einspeisung. Die Linie zeigt den PV-Ertrag. Die Tabelle enthält die genauen Werte.");
     const months = r.months.map(month => ({
       ...month,
       pvDirect: month.pvHousehold + month.pvEv
@@ -32,7 +32,7 @@
     const height = 240, baseline = 280;
     const plotLeft = 65, plotRight = 1020;
     const monthWidth = (plotRight - plotLeft) / months.length;
-    const barWidth = 24, barGap = 6;
+    const barWidth = 18, barGap = 5;
     const chartY = value => baseline - value / top * height;
     for (let value = 0; value <= top; value += step) {
       const y = chartY(value);
@@ -48,14 +48,18 @@
       [
         ["household", "Wohnungen gesamt", "ms-monthly-household"],
         ["ev", "Wallboxen gesamt", "ms-monthly-wallbox"]
+      ],
+      [
+        ["exported", "Einspeisung", "ms-monthly-export"]
       ]
     ];
+    const groupWidth = stacks.length * barWidth + (stacks.length - 1) * barGap;
     const pvPoints = [];
     months.forEach((month, i) => {
       const center = plotLeft + (i + 0.5) * monthWidth;
       const group = node("g", {});
       stacks.forEach((segments, index) => {
-        const x = center - barWidth - barGap / 2 + index * (barWidth + barGap);
+        const x = center - groupWidth / 2 + index * (barWidth + barGap);
         let cumulative = 0;
         for (const [key, label, seriesClass] of segments) {
           const value = month[key];
