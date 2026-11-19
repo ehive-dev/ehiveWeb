@@ -117,19 +117,17 @@
   }
   const numberValue = field => field.type === "select-one" ? Number(field.value) : field.valueAsNumber;
   function update() {
-    const p = { evSimultaneity: api.defaults.evSimultaneity };
-    const fields = Object.keys(api.defaults).filter(key => key !== "evSimultaneity")
+    const p = { evSimultaneity: api.defaults.evSimultaneity, evPvSurplus: 0 };
+    const fields = Object.keys(api.defaults).filter(key => !(key in p))
       .map(key => form.elements.namedItem(key));
     const enabled = form.elements.namedItem("wallboxesEnabled").checked;
     const optimize = enabled && form.elements.namedItem("evOneOptimized").checked;
-    const useSurplus = enabled && (optimize || form.elements.namedItem("evPvSurplus").checked);
     document.getElementById("ms-wallbox-fields").hidden = !enabled;
-    document.getElementById("ms-ev-surplus-option").hidden = optimize;
     document.getElementById("ms-one-tariff-fields").hidden = !optimize;
-    document.getElementById("ms-ev-min-power").hidden = !useSurplus;
+    document.getElementById("ms-ev-min-power").hidden = !optimize;
     document.querySelectorAll("#ms-wallbox-fields input, #ms-wallbox-fields select").forEach(field => {
-      field.disabled = !enabled || (field.name === "evMinChargePower" && !useSurplus)
-        || (field.name === "evPvSurplus" && optimize) || (field.closest("#ms-one-tariff-fields") && !optimize);
+      const onlyForOptimization = field.name === "evMinChargePower" || Boolean(field.closest("#ms-one-tariff-fields"));
+      field.disabled = !enabled || (onlyForOptimization && !optimize);
     });
     const invalid = fields.find(field => !field.disabled && field.type !== "checkbox" && (!field.validity.valid || !Number.isFinite(numberValue(field))));
     if (invalid) {
