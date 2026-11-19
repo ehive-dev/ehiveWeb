@@ -32,17 +32,24 @@
       signedExport: -month.exported
     }));
     const maximum = Math.max(1, ...months.map(month => Math.max(month.pv, month.household + month.ev)));
-    const magnitude = Math.pow(10, Math.floor(Math.log10(maximum)));
-    const step = Math.ceil(maximum / magnitude / 4) * magnitude;
-    const top = Math.ceil(maximum / step) * step;
     const largestExport = Math.max(...months.map(month => month.exported));
-    const bottom = largestExport > 1e-8 ? -Math.ceil(largestExport / step) * step : 0;
-    const plotTop = 40, plotBottom = 280;
+    const top = maximum * 1.05;
+    const bottom = largestExport > 1e-8 ? -largestExport * 1.05 : 0;
+    const targetStep = top / 5;
+    const magnitude = 10 ** Math.floor(Math.log10(targetStep));
+    const step = Math.ceil([1, 2, 2.5, 5, 10].find(factor => factor * magnitude >= targetStep) * magnitude);
+    const plotTop = 40, positiveHeight = 240;
     const plotLeft = 88, plotRight = 1020;
     const monthWidth = (plotRight - plotLeft) / months.length;
     const barWidth = 18, barGap = 5;
-    const chartY = value => plotBottom - (value - bottom) / (top - bottom) * (plotBottom - plotTop);
-    for (let value = bottom; value <= top; value += step) {
+    // Give generation and demand a fixed amount of space above zero, then
+    // extend below zero for exports using the same scale.
+    const chartY = value => plotTop + positiveHeight * (1 - value / top);
+    const plotBottom = chartY(bottom);
+    svg.setAttribute("viewBox", `0 0 1040 ${plotBottom + 40}`);
+    const firstTick = Math.ceil(bottom / step) || 0;
+    for (let tick = firstTick; tick <= Math.floor(top / step); tick++) {
+      const value = tick * step;
       const y = chartY(value);
       node("line", {
         x1: plotLeft, x2: plotRight, y1: y, y2: y,
@@ -93,12 +100,12 @@
           node("title", {}, `${month.name} · ${label} · ${decimal.format(value)} kWh${solarDetail}${cheapDetail}`, rect);
         }
       });
-      node("text", { x: center, y: 304, "text-anchor": "middle", class: "ms-axis-label" }, month.name, group);
+      node("text", { x: center, y: plotBottom + 24, "text-anchor": "middle", class: "ms-axis-label" }, month.name, group);
       pvPoints.push(`${center},${chartY(month.pv)}`);
     });
     const pvLine = node("polyline", {
       class: "ms-monthly-yield", points: pvPoints.join(" "), fill: "none",
-      "stroke-width": 3, "stroke-linecap": "round", "stroke-linejoin": "round"
+      "stroke-width": 3, "stroke-linecap": "round", "stroke-linejoin": "round", "vector-effect": "non-scaling-stroke"
     });
     node("title", {}, "PV-Ertrag", pvLine);
     const tbody = document.getElementById("ms-monthly-body");
