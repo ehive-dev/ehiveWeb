@@ -88,8 +88,8 @@ test('Ein Fahrzeug je Wohnung mit 10.000 km ergibt 2.000 kWh Ladebedarf je Fahrz
 });
 
 test('Doppelter Jahresertrag erhöht die nutzbare PV-Leistung je Ladevorgang', () => {
-  const small = calc({ wallboxesEnabled: 1, pvYield: 8000 });
-  const large = calc({ wallboxesEnabled: 1, pvYield: 16000 });
+  const small = calc({ wallboxesEnabled: 1, evPvSurplus: 0, pvYield: 8000 });
+  const large = calc({ wallboxesEnabled: 1, evPvSurplus: 0, pvYield: 16000 });
   equal(small.evDemand, large.evDemand);
   equal(large.months[5].pv, 2 * small.months[5].pv);
   for (let i = 0; i < 12; i++) {
@@ -116,11 +116,36 @@ test('PV-Erzeugung am Tag lässt sich nicht pauschal auf abendliche Ladeenergie 
 });
 
 test('Ladeleistung verändert die PV-Nutzung bei gleichem Ladebedarf', () => {
-  const fast = calc({ wallboxesEnabled: 1, evChargePower: 11 });
-  const slow = calc({ wallboxesEnabled: 1, evChargePower: 3.7 });
+  const fast = calc({ wallboxesEnabled: 1, evPvSurplus: 0, evChargePower: 11 });
+  const slow = calc({ wallboxesEnabled: 1, evPvSurplus: 0, evChargePower: 3.7 });
   equal(fast.evDemand, slow.evDemand);
   assert.ok(slow.pvEv > fast.pvEv);
   assert.ok(slow.improvement > fast.improvement);
+});
+
+test('Überschussladen senkt die Sommer-Einspeisung bei unverändertem Verbrauch', () => {
+  const baseline = calc({});
+  const direct = calc({ wallboxesEnabled: 1, evPvSurplus: 0 });
+  const solar = calc({ wallboxesEnabled: 1 });
+  const summerExport = r => r.months.slice(5, 8).reduce((total, month) => total + month.exported, 0);
+  equal(solar.evDemand, direct.evDemand);
+  equal(solar.pvHousehold, baseline.pvHousehold);
+  equal(baseline.exportedSolar - solar.exportedSolar, solar.pvEv);
+  assert.ok(summerExport(solar) < summerExport(baseline) * 0.7);
+  assert.ok(summerExport(solar) < summerExport(direct));
+  for (let i = 0; i < 12; i++) {
+    equal(solar.months[i].exportWithoutEv, baseline.months[i].exported);
+  }
+});
+
+test('Mindestladeleistung und verfügbare Tagesladung begrenzen die PV-Nutzung', () => {
+  const solar = calc({ wallboxesEnabled: 1 });
+  const threePhase = calc({ wallboxesEnabled: 1, evMinChargePower: 4.1 });
+  const allDaytime = calc({ wallboxesEnabled: 1, evDayShare: 100 });
+  equal(threePhase.evDemand, solar.evDemand);
+  equal(allDaytime.evDemand, solar.evDemand);
+  assert.ok(threePhase.pvEv < solar.pvEv);
+  assert.ok(allDaytime.months[5].exported < solar.months[5].exported);
 });
 
 test('Unzulässige Eingaben und Ladebedarf außerhalb des Zeitfensters werden erkannt', () => {
@@ -128,11 +153,13 @@ test('Unzulässige Eingaben und Ladebedarf außerhalb des Zeitfensters werden er
     { salePrice: NaN }, { apartments: 1.5 }, { additionalInvestment: -1 },
     { pvYield: Infinity }, { householdDayShare: 101 }, { apartments: 1001 },
     { salePrice: '' }, { homeCharging: 101 }, { evDayShare: 101 },
-    { wallboxesEnabled: 2 }, { annualMileage: -1 }, { evChargePower: 0 }, { evChargePower: 23 }
+    { wallboxesEnabled: 2 }, { annualMileage: -1 }, { evChargePower: 0 }, { evChargePower: 23 },
+    { evPvSurplus: 2 }
   ]) {
     assert.throws(() => calc(input), RangeError);
   }
-  assert.throws(() => calc({ wallboxesEnabled: 1, annualMileage: 1000000, evChargePower: 1 }), /evChargingWindow/);
+  assert.throws(() => calc({ wallboxesEnabled: 1, evMinChargePower: 12 }), /evMinChargePower/);
+  assert.throws(() => calc({ wallboxesEnabled: 1, annualMileage: 1000000, evChargePower: 2 }), /evChargingWindow/);
 });
 
 test('Energiebilanz schließt für beide Lasten und Erzeugung in jedem Monat', () => {

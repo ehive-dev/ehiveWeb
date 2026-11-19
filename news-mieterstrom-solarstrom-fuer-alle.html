@@ -57,12 +57,15 @@
     </div>
     <div class="ms-wallbox-option">
       <label class="ms-wallbox-toggle"><input name="wallboxesEnabled" type="checkbox" aria-controls="ms-wallbox-fields"> Wallboxen berücksichtigen (ein Fahrzeug je Wohnung)</label>
-      <div id="ms-wallbox-fields" hidden><div class="ms-calc-grid">
+      <div id="ms-wallbox-fields" hidden>
+      <label class="ms-wallbox-toggle"><input name="evPvSurplus" type="checkbox" aria-controls="ms-ev-min-power" checked disabled> PV-Überschussladen</label>
+      <div class="ms-calc-grid">
         <label>Fahrleistung je Fahrzeug und Jahr<div class="ms-input-unit"><input name="annualMileage" type="number" min="0" max="1000000" step="any" value="10000" required disabled><span>km</span></div></label>
         <label>Ladebedarf inkl. Ladeverlusten<div class="ms-input-unit"><input name="evConsumption" type="number" min="0" max="200" step="any" value="20" required disabled><span>kWh/100 km</span></div></label>
         <label>Ladeanteil zu Hause<div class="ms-input-unit"><input name="homeCharging" type="number" min="0" max="100" step="any" value="100" required disabled><span>%</span></div></label>
         <label>Ladeanteil zwischen 8 und 18 Uhr<div class="ms-input-unit"><input name="evDayShare" type="number" min="0" max="100" step="any" value="50" required disabled><span>%</span></div></label>
         <label>Ladeleistung je Fahrzeug<div class="ms-input-unit"><input name="evChargePower" type="number" min="1" max="22" step="any" value="11" required disabled><span>kW</span></div></label>
+        <label id="ms-ev-min-power">PV-Ladestart ab<div class="ms-input-unit"><input name="evMinChargePower" type="number" min="1.4" max="22" step="any" value="1.4" required disabled><span>kW</span></div><small>1,4 kW einphasig, 4,1 kW dreiphasig.</small></label>
       </div><p>Zusätzliche Wallboxkosten bei Umbau und Betrieb eintragen.</p></div>
     </div>
     <div class="ms-coverage"><label for="ms-household-day-share">Wohnungsverbrauch zwischen 8 und 18 Uhr <output for="ms-household-day-share" data-ms-value="householdDayShare">50 %</output></label><input id="ms-household-day-share" name="householdDayShare" type="range" min="0" max="100" step="1" value="50"></div>
@@ -94,11 +97,12 @@
       <div class="ms-monthly-scroll" tabindex="0" role="region" aria-label="Monatsdiagramm, horizontal scrollbar">
         <svg id="ms-monthly-chart" viewBox="0 0 1040 320" role="img" aria-labelledby="ms-monthly-title" aria-describedby="ms-monthly-desc"></svg>
       </div>
-      <p class="ms-calc-note"><span id="ms-wallbox-season" hidden>Solarstrom deckt <strong data-ms-value="evSummerShare">–</strong> des Ladebedarfs im Sommer und <strong data-ms-value="evWinterShare">–</strong> im Winter. </span>Modellrechnung in Viertelstunden.</p>
+      <p class="ms-calc-note"><span id="ms-wallbox-season" hidden>Im Sommer werden mit Wallboxen <strong data-ms-value="summerExport">–</strong> eingespeist (ohne <strong data-ms-value="summerExportWithoutEv">–</strong>). Der PV-Anteil beim Laden beträgt <strong data-ms-value="evSummerShare">–</strong> im Sommer und <strong data-ms-value="evWinterShare">–</strong> im Winter. </span>Modellrechnung in Viertelstunden.</p>
       <details class="ms-calc-details">
         <summary>Monatswerte und Profile</summary>
         <p class="ms-calc-note">Das PV-Profil zeigt ein Süddach mit 30° Neigung in Passau im Jahr 2021. Die Stundenwerte werden auf den eingegebenen Jahresertrag skaliert und auf Viertelstunden verteilt. <a href="https://joint-research-centre.ec.europa.eu/photovoltaic-geographical-information-system-pvgis/using-pvgis-5/pvgis-5-user-manual_en" target="_blank" rel="noopener noreferrer">PVGIS</a></p>
-        <p class="ms-calc-note">Wohnungen folgen einem Beispielprofil mit Morgen- und Abendspitzen. Pro Fahrzeug sind etwa zwei Ladungen pro Woche angesetzt, tagsüber von 8 bis 18 Uhr und abends von 18 bis 24 Uhr (MEZ). Je Viertelstunde teilen sich Wohnungen und Wallboxen den verfügbaren PV-Strom im Verhältnis ihres Verbrauchs.</p>
+        <p class="ms-calc-note">Wohnungen folgen einem Beispielprofil mit Morgen- und Abendspitzen. Je Fahrzeug sind etwa zwei Ladevorgänge pro Woche angesetzt, tagsüber von 8 bis 18 Uhr und abends von 18 bis 24 Uhr (MEZ).</p>
+        <p class="ms-calc-note">Beim Überschussladen steht das Auto am geplanten Tagesladetermin von 8 bis 18 Uhr bereit. Es nutzt PV-Strom nach Abzug des Wohnungsverbrauchs. Bei Bedarf lädt es den Rest bis 18 Uhr aus dem Netz. Ein Start ab 1,4 kW setzt einphasiges Laden oder geeignete Phasenumschaltung voraus. <a href="https://docs.evcc.io/de/features/solar-charging/" target="_blank" rel="noopener noreferrer">PV-Überschussladen bei evcc</a></p>
         <p class="ms-calc-note">Sommer umfasst Juni bis August, Winter Dezember bis Februar. Für eine Prognose deines Gebäudes sind Messdaten zur Erzeugung und zum Verbrauch genauer.</p>
         <div class="ms-table-scroll" tabindex="0" role="region" aria-label="Monatswerte in kWh">
           <table class="ms-calc-table ms-monthly-table">
@@ -173,4 +177,4 @@
 <details class="ms-faq"><summary>Müssen alle Mieter mitmachen?</summary><p>Ein Konzept muss Nichtteilnehmer und die freie Lieferantenwahl berücksichtigen. Die passende messtechnische und vertragliche Umsetzung wird vor dem Start mit den zuständigen Partnern festgelegt.</p></details>
 <div class="ms-sources"><h2>Quellen und weiterführende Informationen</h2><p>Recherchestand: 18. November 2026. Für das konkrete Gebäude sind die geltenden Vorgaben und das vereinbarte Messkonzept maßgeblich.</p><ul><li><a href="https://www.bundesnetzagentur.de/899948" target="_blank" rel="noopener noreferrer">Bundesnetzagentur: Solaranlagen auf Mehrparteiengebäuden und Mieterstrommodelle</a></li><li><a href="https://www.elektromobilitaet.nrw/infos/lastmanagement/" target="_blank" rel="noopener noreferrer">ElektroMobilität NRW: Statisches und dynamisches Lastmanagement</a></li><li><a href="https://docs.evcc.io/de/features/loadmanagement/" target="_blank" rel="noopener noreferrer">evcc: Lastmanagement und Anforderungen an die Konfiguration</a></li><li><a href="https://www.gesetze-im-internet.de/enwg_2005/__42b.html" target="_blank" rel="noopener noreferrer">§ 42b EnWG: Gemeinschaftliche Gebäudeversorgung</a></li></ul></div>
 </div>
-</article></div></section></main><div data-include="footer"></div><script src="config.js"></script><script src="script.js?v=20261118-mieterstrom"></script><script src="mieterstrom-animation.js?v=20261118-clean" defer></script><script src="mieterstrom-pv-profil.js?v=20261119-ladeprofil" defer></script><script src="mieterstrom-rendite-model.js?v=20261119-ladeprofil" defer></script><script src="mieterstrom-rendite.js?v=20261119-ladeprofil" defer></script></body></html>
+</article></div></section></main><div data-include="footer"></div><script src="config.js"></script><script src="script.js?v=20261118-mieterstrom"></script><script src="mieterstrom-animation.js?v=20261118-clean" defer></script><script src="mieterstrom-pv-profil.js?v=20261119-ladeprofil" defer></script><script src="mieterstrom-rendite-model.js?v=20261119-ueberschussladen" defer></script><script src="mieterstrom-rendite.js?v=20261119-ueberschussladen" defer></script></body></html>

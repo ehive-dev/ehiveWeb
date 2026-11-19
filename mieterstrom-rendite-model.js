@@ -12,7 +12,7 @@
     consumptionPerApartment: 1900, pvYield: 8000, householdDayShare: 50,
     salePrice: 28, feedInPrice: 8,
     wallboxesEnabled: 0, annualMileage: 10000, evConsumption: 20, homeCharging: 100,
-    evDayShare: 50, evChargePower: 11,
+    evDayShare: 50, evChargePower: 11, evPvSurplus: 1, evMinChargePower: 1.4,
     annualPvCosts: 200, additionalAnnualCosts: 200
   });
   const monthNames = ["Jan", "Feb", "Mär", "Apr", "Mai", "Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dez"];
@@ -36,8 +36,8 @@
     });
   }
 
-  function addChargingSessions(load, month, days, vehicles, energyPerVehicle, power, share, window) {
-    if (energyPerVehicle === 0 || share === 0) return;
+  function planChargingSessions(load, month, days, vehicles, energyPerVehicle, power, share, window, connectedCars) {
+    if (energyPerVehicle === 0 || share === 0) return 0;
     const hoursNeeded = energyPerVehicle * share / power;
     const windowHours = window.end - window.start;
     if (hoursNeeded > days * windowHours + 1e-9) throw new RangeError("evChargingWindow");
@@ -52,6 +52,10 @@
       const dayOffset = ((vehicle * 17 + month * 13 + window.start * 7) % 37) / 37;
       for (let session = 0; session < sessions; session++) {
         const day = Math.floor((session + dayOffset) * days / sessions);
+        if (connectedCars) {
+          connectedCars[day]++;
+          continue;
+        }
         const startFraction = ((vehicle * 13 + session * 7 + month * 11) % 17) / 16;
         const hour = firstStart + (lastStart - firstStart) * startFraction;
         const start = day * slotsPerDay + hour * slotsPerHour;
@@ -62,6 +66,22 @@
         }
       }
     }
+    return duration * power;
+  }
+
+  function chargeWithSurplus(remaining, surplus, minEnergy, maxEnergy, slotsLeft) {
+    let charged = 0;
+    for (let car = 0; car < remaining.length; car++) {
+      // Use the surplus first. Add only the energy needed to finish by departure
+      // if the remaining time no longer suffices at maximum power.
+      const neededNow = Math.max(0, remaining[car] - maxEnergy * slotsLeft);
+      const solar = surplus >= minEnergy ? Math.min(surplus, maxEnergy) : 0;
+      const energy = Math.min(remaining[car], Math.max(solar, neededNow));
+      remaining[car] -= energy;
+      surplus = Math.max(0, surplus - energy);
+      charged += energy;
+    }
+    return charged;
   }
 
   function calculate(input) {
@@ -76,11 +96,19 @@
       if (p[key] > 100) throw new RangeError(key);
     }
     if (p.evChargePower < 1 || p.evChargePower > 22) throw new RangeError("evChargePower");
-    if (p.wallboxesEnabled !== 0 && p.wallboxesEnabled !== 1) throw new RangeError("wallboxesEnabled");
+    for (const key of ["wallboxesEnabled", "evPvSurplus"]) {
+      if (p[key] !== 0 && p[key] !== 1) throw new RangeError(key);
+    }
     const householdDemand = p.apartments * p.consumptionPerApartment;
     const evPerVehicle = p.wallboxesEnabled ? p.annualMileage * p.evConsumption / 100 * p.homeCharging / 100 : 0;
     const evDemand = p.apartments * evPerVehicle;
     const demand = householdDemand + evDemand;
+    const surplusCharging = evDemand > 0 && p.evPvSurplus === 1;
+    if (surplusCharging && (p.evMinChargePower < 1.4 || p.evMinChargePower > p.evChargePower)) {
+      throw new RangeError("evMinChargePower");
+    }
+    const minChargingEnergy = p.evMinChargePower * slotHours;
+    const maxChargingEnergy = p.evChargePower * slotHours;
     const pvScale = p.pvYield / referenceYield;
     const housing = householdProfile(p.householdDayShare / 100);
     let profileHour = 0;
@@ -89,34 +117,55 @@
       const household = householdDemand * householdMonthShares[i] / 100;
       const ev = evDemand * days / 365;
       const charging = new Float64Array(days * slotsPerDay);
+      const connected = surplusCharging ? new Uint16Array(days) : null;
+      let daytimeEnergy = 0;
       if (ev > 0) {
         const energyPerVehicle = ev / p.apartments;
         const dayShare = p.evDayShare / 100;
-        addChargingSessions(charging, i, days, p.apartments, energyPerVehicle, p.evChargePower, dayShare, dayWindow);
-        addChargingSessions(charging, i, days, p.apartments, energyPerVehicle, p.evChargePower, 1 - dayShare, eveningWindow);
+        daytimeEnergy = planChargingSessions(charging, i, days, p.apartments, energyPerVehicle, p.evChargePower, dayShare, dayWindow, connected);
+        planChargingSessions(charging, i, days, p.apartments, energyPerVehicle, p.evChargePower, 1 - dayShare, eveningWindow);
       }
       let pv = 0;
       let pvHousehold = 0;
       let pvEv = 0;
+      let householdOnlyPv = 0;
+      let remaining = null;
       const householdPerDay = household / days;
       for (let hour = 0; hour < days * 24; hour++) {
         // One PVGIS hourly average divided into four quarter-hours of equal power.
         const pvSlot = pvProfile[profileHour++] * pvScale * slotHours;
         pv += pvSlot * slotsPerHour;
-        const householdSlot = householdPerDay * housing[hour % 24] * slotHours;
+        const clockHour = hour % 24;
+        const householdSlot = householdPerDay * housing[clockHour] * slotHours;
+        const solarForHome = Math.min(pvSlot, householdSlot);
+        const surplus = pvSlot - solarForHome;
+        householdOnlyPv += solarForHome * slotsPerHour;
+        if (connected && clockHour === dayWindow.start) {
+          remaining = new Float64Array(connected[Math.floor(hour / 24)]).fill(daytimeEnergy);
+        }
+        if (clockHour === dayWindow.end) remaining = null;
         for (let quarter = 0; quarter < slotsPerHour; quarter++) {
-          const evSlot = charging[hour * slotsPerHour + quarter];
-          const need = householdSlot + evSlot;
-          const localShare = need > 0 ? Math.min(1, pvSlot / need) : 0;
-          pvHousehold += householdSlot * localShare;
-          pvEv += evSlot * localShare;
+          let evSlot = charging[hour * slotsPerHour + quarter];
+          if (remaining && remaining.length > 0) {
+            const slotsLeft = (dayWindow.end - clockHour) * slotsPerHour - quarter - 1;
+            evSlot += chargeWithSurplus(remaining, surplus, minChargingEnergy, maxChargingEnergy, slotsLeft);
+          }
+          if (surplusCharging) {
+            pvHousehold += solarForHome;
+            pvEv += Math.min(surplus, evSlot);
+          } else {
+            const need = householdSlot + evSlot;
+            const localShare = need > 0 ? Math.min(1, pvSlot / need) : 0;
+            pvHousehold += householdSlot * localShare;
+            pvEv += evSlot * localShare;
+          }
         }
       }
       const exported = Math.max(0, pv - pvHousehold - pvEv);
       const gridHousehold = Math.max(0, household - pvHousehold);
       const gridEv = Math.max(0, ev - pvEv);
       return { name, pv, household, ev, pvHousehold, pvEv, exported, gridHousehold, gridEv,
-        grid: gridHousehold + gridEv };
+        grid: gridHousehold + gridEv, exportWithoutEv: Math.max(0, pv - householdOnlyPv) };
     });
     const sumMonths = key => months.reduce((total, month) => total + month[key], 0);
     const pvHousehold = sumMonths("pvHousehold");

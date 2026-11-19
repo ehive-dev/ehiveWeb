@@ -109,8 +109,12 @@
     const p = {};
     const fields = Object.keys(api.defaults).map(key => form.elements.namedItem(key));
     const enabled = form.elements.namedItem("wallboxesEnabled").checked;
+    const useSurplus = enabled && form.elements.namedItem("evPvSurplus").checked;
     document.getElementById("ms-wallbox-fields").hidden = !enabled;
-    document.querySelectorAll("#ms-wallbox-fields input").forEach(field => { field.disabled = !enabled; });
+    document.getElementById("ms-ev-min-power").hidden = !useSurplus;
+    document.querySelectorAll("#ms-wallbox-fields input").forEach(field => {
+      field.disabled = !enabled || (field.name === "evMinChargePower" && !useSurplus);
+    });
     const invalid = fields.find(field => !field.disabled && field.type !== "checkbox" && (!field.validity.valid || !Number.isFinite(field.valueAsNumber)));
     if (invalid) {
       result.hidden = true;
@@ -118,7 +122,10 @@
       error.textContent = "Bitte vervollständige die Eingaben und beachte die angegebenen Wertebereiche.";
       return;
     }
-    fields.forEach(field => { p[field.name] = field.type === "checkbox" ? Number(field.checked) : field.disabled ? api.defaults[field.name] : field.valueAsNumber; });
+    fields.forEach(field => {
+      if (field.disabled) p[field.name] = api.defaults[field.name];
+      else p[field.name] = field.type === "checkbox" ? Number(field.checked) : field.valueAsNumber;
+    });
     let r;
     try {
       r = api.calculate(p);
@@ -127,7 +134,9 @@
       error.hidden = false;
       error.textContent = cause.message === "evChargingWindow"
         ? "Ladebedarf zu hoch für die gewählte Ladeleistung und Zeitaufteilung."
-        : "Bitte prüfe die Eingabewerte.";
+        : cause.message === "evMinChargePower"
+          ? "Die Mindestleistung für den PV-Start muss zur eingestellten Ladeleistung passen."
+          : "Bitte prüfe die Eingabewerte.";
       return;
     }
     result.hidden = false;
@@ -154,13 +163,14 @@
     write("formulaMargin", `${format.format(r.soldSolar)} kWh × ${decimal.format(p.salePrice - p.feedInPrice)} ct/kWh ÷ 100 − ${euro.format(p.additionalAnnualCosts)} = ${euro.format(r.improvement)} pro Jahr`);
     document.getElementById("ms-wallbox-season").hidden = r.evDemand === 0;
     if (r.evDemand > 0) {
-      const chargeShare = monthIndexes => {
-        const months = monthIndexes.map(index => r.months[index]);
-        const demand = months.reduce((sum, month) => sum + month.ev, 0);
-        return months.reduce((sum, month) => sum + month.pvEv, 0) / demand * 100;
-      };
-      write("evSummerShare", decimal.format(chargeShare([5, 6, 7])) + " %");
-      write("evWinterShare", decimal.format(chargeShare([11, 0, 1])) + " %");
+      const summer = r.months.slice(5, 8);
+      const winter = [r.months[11], ...r.months.slice(0, 2)];
+      const energy = (months, key) => months.reduce((total, month) => total + month[key], 0);
+      const chargeShare = months => energy(months, "pvEv") / energy(months, "ev") * 100;
+      write("summerExport", format.format(energy(summer, "exported")) + " kWh");
+      write("summerExportWithoutEv", format.format(energy(summer, "exportWithoutEv")) + " kWh");
+      write("evSummerShare", decimal.format(chargeShare(summer)) + " %");
+      write("evWinterShare", decimal.format(chargeShare(winter)) + " %");
     }
     renderMonths(r);
     const status = document.getElementById("ms-return-status");
