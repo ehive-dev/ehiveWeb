@@ -22,7 +22,7 @@
       parent.appendChild(el); return el;
     };
     node("title", { id: "ms-monthly-title" }, "Monatliche Strombilanz in kWh");
-    node("desc", { id: "ms-monthly-desc" }, "Je Monat links PV-Direktverbrauch und Netzbezug, in der Mitte der Verbrauch von Wohnungen und Wallboxen und rechts die Einspeisung unter der Nulllinie. Die gelbe Linie zeigt den PV-Ertrag.");
+    node("desc", { id: "ms-monthly-desc" }, "Je Monat links PV-Direktverbrauch und Netzbezug, in der Mitte der Gesamtverbrauch und rechts die Aufteilung des genutzten PV-Stroms auf Wohnungen und Wallboxen. Rechts unter null steht die Einspeisung. Die gelbe Linie zeigt den PV-Ertrag.");
     const months = r.months.map(month => ({
       ...month,
       pvDirect: month.pvHousehold + month.pvEv,
@@ -58,6 +58,8 @@
         ["ev", "Wallboxen gesamt", "ms-monthly-wallbox"]
       ],
       [
+        ["pvHousehold", "PV für Wohnungen", "ms-monthly-pv-household"],
+        ["pvEv", "PV für Wallboxen", "ms-monthly-pv-wallbox"],
         ["signedExport", "Einspeisung", "ms-monthly-export"]
       ]
     ];
@@ -68,21 +70,24 @@
       const group = node("g", {});
       stacks.forEach((segments, index) => {
         const x = center - groupWidth / 2 + index * (barWidth + barGap);
-        let cumulative = 0;
+        let positive = 0;
+        let negative = 0;
         for (const [key, label, seriesClass] of segments) {
           const value = month[key];
-          const yStart = chartY(cumulative);
-          cumulative += value;
-          if (Math.abs(value) > 1e-8) {
-            const yEnd = chartY(cumulative);
-            const rect = node("rect", {
-              x, y: Math.min(yStart, yEnd), width: barWidth,
-              height: Math.abs(yEnd - yStart), class: seriesClass
-            }, undefined, group);
-            const solarDetail = key === "ev" ? ` · davon ${decimal.format(month.pvEv)} kWh PV` : "";
-            const cheapDetail = key === "ev" && r.oneOptimized ? ` · ${decimal.format(month.evCheapGrid)} kWh günstiger Netzstrom` : "";
-            node("title", {}, `${month.name} · ${label} · ${decimal.format(value)} kWh${solarDetail}${cheapDetail}`, rect);
-          }
+          if (Math.abs(value) <= 1e-8) continue;
+          const start = value < 0 ? negative : positive;
+          const end = start + value;
+          if (value < 0) negative = end;
+          else positive = end;
+          const yStart = chartY(start);
+          const yEnd = chartY(end);
+          const rect = node("rect", {
+            x, y: Math.min(yStart, yEnd), width: barWidth,
+            height: Math.abs(yEnd - yStart), class: seriesClass
+          }, undefined, group);
+          const solarDetail = key === "ev" ? ` · davon ${decimal.format(month.pvEv)} kWh PV` : "";
+          const cheapDetail = key === "ev" && r.oneOptimized ? ` · ${decimal.format(month.evCheapGrid)} kWh günstiger Netzstrom` : "";
+          node("title", {}, `${month.name} · ${label} · ${decimal.format(value)} kWh${solarDetail}${cheapDetail}`, rect);
         }
       });
       node("text", { x: center, y: 304, "text-anchor": "middle", class: "ms-axis-label" }, month.name, group);
