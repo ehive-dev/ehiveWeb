@@ -1815,8 +1815,11 @@ Viele Grüße`
         const preview = card.querySelector(".app-card-video");
         if (!preview) return;
 
+        if (isActive && railVisible && !preview.getAttribute("src")) {
+          preview.preload = "metadata";
+          preview.src = preview.dataset.src;
+        }
         if (isActive && railVisible && !prefersReducedMotion.matches) {
-          if (!preview.getAttribute("src")) preview.src = preview.dataset.src;
           const playPromise = preview.play();
           if (playPromise && typeof playPromise.catch === "function") {
             playPromise.catch(() => {});
