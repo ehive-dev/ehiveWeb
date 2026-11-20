@@ -3,23 +3,75 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>evcc Hardware kaufen: Raspberry Pi oder Hutschienen-Box?</title>
-  <meta name="description" content="Welche Hardware braucht evcc? Raspberry Pi, NAS, Mini-PC und fertige Hutschienen-Box im Vergleich – mit Schnittstellen, Kosten und Kaufhilfe.">
+  <title>evcc Hardware: Empfehlung, Vergleich &amp; Hutschiene | eHive</title>
+  <meta name="description" content="Welche Hardware für evcc? Raspberry Pi, NAS, Mini-PC und Hutschienen-Box vergleichen: konkrete Empfehlungen, Schnittstellen, Lieferumfang und Kaufcheckliste.">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="evcc Hardware: Empfehlung, Vergleich &amp; Hutschiene | eHive">
+  <meta property="og:description" content="Welche Hardware für evcc? Raspberry Pi, NAS, Mini-PC und Hutschienen-Box vergleichen: konkrete Empfehlungen, Schnittstellen, Lieferumfang und Kaufcheckliste.">
+  <meta property="og:url" content="https://www.ehiv3.de/evcc-hardware.html">
+  <meta property="og:image" content="https://www.ehiv3.de/products/ehive-one.png">
   <link rel="canonical" href="https://www.ehiv3.de/evcc-hardware.html">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
   <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@graph":[
-      {"@type":"Article","headline":"evcc Hardware kaufen: Raspberry Pi oder Hutschienen-Box?","description":"Kaufhilfe für passende evcc Hardware im Dauerbetrieb.","mainEntityOfPage":"https://www.ehiv3.de/evcc-hardware.html","publisher":{"@type":"Organization","name":"eHive"}},
-      {"@type":"FAQPage","mainEntity":[
-        {"@type":"Question","name":"Welche Hardware brauche ich für evcc?","acceptedAnswer":{"@type":"Answer","text":"evcc benötigt einen dauerhaft laufenden Rechner, der Wallbox, Energiezähler und weitere Geräte im lokalen Netzwerk erreicht. Geeignet sind unter anderem Raspberry Pi, NAS, Mini-PC oder eine Hutschienen-Hardware."}},
-        {"@type":"Question","name":"Kann ich evcc auf einem Raspberry Pi betreiben?","acceptedAnswer":{"@type":"Answer","text":"Ja. Ein Raspberry Pi eignet sich besonders für Selbstbauer, die Betriebssystem, Speicher, Gehäuse, Netzteil und Wartung selbst übernehmen möchten."}},
-        {"@type":"Question","name":"Gibt es evcc als fertige Hardware für die Hutschiene?","acceptedAnswer":{"@type":"Answer","text":"Ja. eHive One ist eine Hardwareplattform für die Hutschiene und wird als Variante mit oder ohne evcc-Lizenz angeboten. Die Geräte der konkreten Anlage müssen anschließend eingerichtet werden."}}
-      ]}
-    ]
-  }
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "headline": "evcc Hardware: Welche Lösung passt zu deiner Anlage?",
+      "description": "Welche Hardware für evcc? Raspberry Pi, NAS, Mini-PC und Hutschienen-Box vergleichen: konkrete Empfehlungen, Schnittstellen, Lieferumfang und Kaufcheckliste.",
+      "mainEntityOfPage": "https://www.ehiv3.de/evcc-hardware.html",
+      "dateModified": "2026-11-21",
+      "author": {
+        "@type": "Organization",
+        "name": "eHive",
+        "url": "https://www.ehiv3.de/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "eHive"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Welche Hardware brauche ich für evcc?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "evcc benötigt einen dauerhaft laufenden Rechner, der die Geräte deiner Anlage erreicht. Raspberry Pi, NAS, Mini-PC und vorbereitete Hutschienen-Hardware kommen je nach Betriebssystem, Schnittstellen und Einbauort infrage."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Welche evcc Hardware ist für mich empfehlenswert?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Prüfe zuerst vorhandene Hardware. Ein Raspberry Pi passt zu selbst verwalteten Aufbauten; NAS oder Mini-PC können vorhandene Infrastruktur nutzen. Für die feste Hutschienenmontage kommt eine vorbereitete Plattform wie eHive One infrage."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Braucht evcc immer einen RS485-Anschluss?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Nein. Geräte mit unterstützter Netzwerkschnittstelle können über das Netzwerk angebunden werden. Für Modbus RTU ist eine passende RS485-Schnittstelle oder ein geeignetes Gateway erforderlich."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Ist eine fertige evcc Box sofort einsatzbereit?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Vorbereitete Software erleichtert den Start. Wallbox, Zähler und weitere Geräte müssen trotzdem passend zur Anlage eingerichtet werden. Lieferumfang, Versorgung und ein gegebenenfalls benötigter Sponsortoken sind vor dem Kauf zu prüfen."
+          }
+        }
+      ]
+    }
+  ]
+}
   </script>
 </head>
 <body class="content-page">
@@ -28,18 +80,28 @@
   <section class="article-hero">
     <div class="container narrow">
       <p class="eyebrow">eHive Wissen · Kaufberatung</p>
-      <h1>evcc Hardware: selbst bauen oder als Hutschienen-Box kaufen?</h1>
-      <p class="lead">evcc läuft auf unterschiedlicher Hardware. Entscheidend ist nicht nur die Rechenleistung, sondern ob das System dauerhaft, wartbar und passend zur Energieanlage betrieben werden kann.</p>
+      <h1>evcc Hardware: Welche Lösung passt zu deiner Anlage?</h1>
+      <p class="lead">Raspberry Pi, NAS, Mini-PC oder fertige evcc Box: Hier findest du eine Empfehlung für deinen Einsatz, einen Vergleich der Möglichkeiten und eine Checkliste für den Kauf. Entscheidend sind zuverlässiger Dauerbetrieb, passende Schnittstellen und der Einrichtungsaufwand.</p>
     </div>
   </section>
   <article class="container article-body">
     <div class="answer-box"><strong>Kurzantwort:</strong> Ein Raspberry Pi, NAS oder vorhandener Mini-PC ist für technisch versierte Selbstbauer oft ausreichend. Wer evcc sauber im Schaltschrank betreiben möchte, kann eine vorbereitete Hutschienen-Hardware wie <a href="ehive-one.html">eHive One</a> verwenden.</div>
 
+    <h2 id="empfehlung">evcc Hardware Empfehlung nach Einsatz</h2>
+    <ul>
+      <li><strong>Du hast bereits ein dauerhaft laufendes NAS oder einen Mini-PC?</strong> Prüfe zuerst, ob evcc darauf installiert werden kann und die Geräte deiner Anlage erreichbar sind. So lässt sich ein zusätzlicher Rechner vermeiden.</li>
+      <li><strong>Du möchtest selbst installieren und verwalten?</strong> Ein Raspberry Pi ist eine flexible Basis. Plane Gehäuse, Netzteil, geeigneten Speicher, Backups und gegebenenfalls Schnittstellenadapter mit ein.</li>
+      <li><strong>Du planst evcc auf der Hutschiene?</strong> Eine vorbereitete Plattform wie <a href="ehive-one.html">eHive One</a> passt zur festen Montage im Schaltschrank. Prüfe Versorgung, Einbauraum und Geräteanschlüsse gemeinsam mit deinem Elektrofachbetrieb.</li>
+      <li><strong>Du möchtest mehrere Anwendungen betreiben?</strong> Wähle Arbeitsspeicher, Massenspeicher und Rechenleistung anhand aller geplanten Anwendungen. Ein Bedarf durch zusätzliche Software ist kein Mindestbedarf von evcc allein.</li>
+    </ul>
+    <p>Diese Kaufhilfe stammt von eHive, dem Anbieter des eHive One. Die Empfehlung richtet sich nach Einbauort, vorhandener Infrastruktur und dem Aufwand, den du selbst übernehmen möchtest.</p>
+    <p><a href="#vergleich">Hardware vergleichen</a> · <a href="#kaufcheck">Kaufcheckliste</a> · <a href="kompatibilitaet.html">evcc-Kompatibilität prüfen</a></p>
+
     <h2>Welche Hardware braucht evcc?</h2>
     <p>evcc selbst benötigt vergleichsweise wenig Rechenleistung. Die Hardware muss jedoch rund um die Uhr laufen, den Hauszähler und die Wallbox erreichen und nach einem Stromausfall selbstständig wieder starten. Für PV-Überschussladen kommen je nach Anlage Wechselrichter, Batteriespeicher, Fahrzeugdaten und dynamische Stromtarife hinzu.</p>
-    <p>Wichtig sind deshalb ein aktuelles 64-Bit-System, zuverlässiger Massenspeicher, stabiles Ethernet und eine zur Installation passende Stromversorgung. RS485 kann erforderlich sein, wenn ein Energiezähler oder anderes Gerät über Modbus RTU angebunden wird.</p>
+    <p>Wichtig sind deshalb ein von evcc unterstütztes Betriebssystem, zuverlässiger Massenspeicher, stabiles Ethernet und eine zur Installation passende Stromversorgung. RS485 kann erforderlich sein, wenn ein Energiezähler oder anderes Gerät über Modbus RTU angebunden wird.</p>
 
-    <h2>Raspberry Pi, NAS, Mini-PC oder Hutschienen-Box?</h2>
+    <h2 id="vergleich">Raspberry Pi, NAS, Mini-PC oder Hutschienen-Box?</h2>
     <div class="comparison-wrap">
       <table class="comparison-table">
         <thead><tr><th>Hardware</th><th>Geeignet für</th><th>Zu beachten</th></tr></thead>
@@ -52,21 +114,43 @@
       </table>
     </div>
 
+    <h2>Welche Schnittstellen braucht die evcc Hardware?</h2>
+    <p><strong>Geräte im Netzwerk:</strong> Sind Wallbox und Energiezähler über unterstützte Netzwerkschnittstellen erreichbar, muss der evcc-Rechner diese Geräte erreichen können. Ein Ethernet-Anschluss allein garantiert dabei noch keine Gerätekompatibilität.</p>
+    <p><strong>Modbus TCP und Modbus RTU:</strong> Modbus TCP nutzt das Netzwerk. Für Modbus RTU über RS485 ist dagegen eine passende physische Schnittstelle oder ein geeignetes Gateway erforderlich. Prüfe am konkreten Gerät, welche Verbindung vorgesehen ist.</p>
+    <p><strong>NAS und Container:</strong> Beachte Netzwerkmodus, Geräteerkennung und dauerhafte Speicherung der evcc-Daten. Bei einem Neustart oder einer Wartung des Hosts ist auch die darauf laufende evcc-Instanz betroffen. Die <a href="https://docs.evcc.io/de/installation/docker/">offizielle Docker-Anleitung</a> erklärt die Einrichtung.</p>
+
     <h2>Wann passt ein Raspberry Pi?</h2>
-    <p>Ein Raspberry Pi ist sinnvoll, wenn bereits Erfahrung mit Linux vorhanden ist und Installation, Updates, Backups sowie Fehlerdiagnose selbst übernommen werden sollen. Für ein Testsystem oder einen Aufbau außerhalb des Verteilers ist das oft der preisgünstigste Einstieg. Zusätzliche Kosten entstehen durch Gehäuse, Netzteil, Speichermedium und gegebenenfalls RS485-Adapter.</p>
+    <p>Ein Raspberry Pi ist sinnvoll, wenn bereits Erfahrung mit Linux vorhanden ist und Installation, Updates, Backups sowie Fehlerdiagnose selbst übernommen werden sollen. Für ein Testsystem oder einen Aufbau außerhalb des Verteilers ist das ein gut anpassbarer Einstieg. Besonders vorhandenes Zubehör kann die Anschaffungskosten senken. Zusätzliche Kosten entstehen durch Gehäuse, Netzteil, Speichermedium und gegebenenfalls RS485-Adapter.</p>
 
     <h2>Wann lohnt sich fertige evcc Hardware?</h2>
-    <p>Eine fertige Hardwareplattform ist interessant, wenn evcc nicht als Bastelprojekt, sondern als dauerhaftes Energiemanagement betrieben werden soll. Im Schaltschrank zählen eine definierte Montage, klare Anschlüsse, eine passende Spannungsversorgung und ein reproduzierbarer Softwarestand.</p>
+    <p>Eine fertige Hardwareplattform ist interessant, wenn du für den Dauerbetrieb eine vorbereitete Kombination aus Gerät, Gehäuse und Software suchst. Im Schaltschrank zählen eine definierte Montage, klare Anschlüsse, eine passende Spannungsversorgung und ein reproduzierbarer Softwarestand.</p>
     <p><a href="ehive-one.html">eHive One</a> bündelt DIN-Schienen-Montage, 12–30-V-DC- oder PoE-Versorgung, SLC-Speicher, Ethernet, RS485, Digitaleingang und USB-C. Die Hardware ist mit oder ohne evcc-Lizenz erhältlich. Die konkrete Wallbox, PV-Anlage, der Speicher und weitere Geräte werden anschließend passend zur Anlage eingerichtet.</p>
+
+    <h2 id="kaufcheck">Kaufcheckliste für deine evcc Box</h2>
+    <ol>
+      <li><strong>Geräte erfassen:</strong> Hersteller und genaue Modelle von Wallbox, Hauszähler, Wechselrichter und Speicher notieren. Prüfe die benötigten Mess- und Steuerfunktionen in der <a href="kompatibilitaet.html">evcc-Kompatibilitätsliste</a>.</li>
+      <li><strong>Kommunikationsweg klären:</strong> Netzwerk, RS485 oder Herstellerdienst sowie notwendige Freischaltungen, Zugangsdaten und Adapter prüfen.</li>
+      <li><strong>Montage und Versorgung planen:</strong> Einbauort, Platz, Netzwerkanschluss und geeignetes Netzteil oder PoE festlegen. Arbeiten an der Elektroinstallation übernimmt eine Elektrofachkraft.</li>
+      <li><strong>Lieferumfang vergleichen:</strong> Gehäuse, Speicher, Netzteil, Adapter und Softwarestand einzeln kontrollieren. Prüfe auch, ob du für deine Geräte einen evcc-Sponsortoken benötigst oder eine <a href="evcc-ohne-sponsortoken.html">Kombination ohne Sponsortoken</a> möglich ist.</li>
+      <li><strong>Betrieb organisieren:</strong> Zuständigkeit für Einrichtung, Updates, Datensicherung und Wiederanlauf nach Stromausfall festlegen. Vorinstallierte Software ersetzt die Einrichtung deiner konkreten Anlage nicht.</li>
+    </ol>
 
     <h2>Vor dem Kauf: Kompatibilität prüfen</h2>
     <p>Die Hardware allein entscheidet nicht, ob PV-Überschussladen funktioniert. Wallbox und Hauszähler müssen von evcc unterstützt oder über eine geeignete Schnittstelle erreichbar sein. Auch Wechselrichter, Speicher und Fahrzeug-APIs sollten vor dem Kauf anhand der exakten Hersteller- und Modellbezeichnung geprüft werden.</p>
     <p>Auf der <a href="ehive-one.html#ki-frage">eHive-One-Produktseite</a> kannst du Hersteller und Modell eingeben und eine konkrete Kompatibilitätsprüfung starten.</p>
 
     <h2>Was kostet eine evcc Lösung?</h2>
-    <p>Beim Eigenbau gehören neben dem Rechner auch Gehäuse, Netzteil, Speicher, Adapter, Montagezeit und laufende Pflege zur Gesamtrechnung. Bei einer fertigen Box sind diese Bestandteile gebündelt. Die aktuellen Varianten, Preise und der Lieferumfang des eHive One stehen im <a href="shop.html">eHive Shop</a>.</p>
+    <p>Beim Eigenbau gehören neben dem Rechner auch Gehäuse, Netzteil, Speicher, Adapter, Montagezeit und laufende Pflege zur Gesamtrechnung. Bei einer fertigen Box hängt der enthaltene Umfang vom Angebot ab; Netzteil, Adapter und Einrichtung solltest du ausdrücklich abgleichen. Die aktuellen Varianten, Preise und der Lieferumfang des eHive One stehen im <a href="shop.html">eHive Shop</a>.</p>
 
     <div class="answer-box"><strong>Entscheidungshilfe:</strong> Du möchtest Betriebssystem und Hardware selbst verwalten? Dann ist vorhandene Hardware oder ein Raspberry Pi eine gute Wahl. Du suchst eine kompakte evcc Plattform für den Schaltschrank? Dann sieh dir <a href="ehive-one.html">eHive One</a> und die <a href="shop.html">verfügbaren Varianten</a> an.</div>
+
+    <h2>Häufige Fragen zur evcc Hardware</h2>
+    <details><summary>Welche Hardware brauche ich für evcc?</summary><p>evcc benötigt einen dauerhaft laufenden Rechner, der die Geräte deiner Anlage erreicht. Raspberry Pi, NAS, Mini-PC und vorbereitete Hutschienen-Hardware kommen je nach Betriebssystem, Schnittstellen und Einbauort infrage.</p></details>
+    <details><summary>Welche evcc Hardware ist für mich empfehlenswert?</summary><p>Prüfe zuerst vorhandene Hardware. Ein Raspberry Pi passt zu selbst verwalteten Aufbauten; NAS oder Mini-PC können vorhandene Infrastruktur nutzen. Für die feste Hutschienenmontage kommt eine vorbereitete Plattform wie eHive One infrage.</p></details>
+    <details><summary>Braucht evcc immer einen RS485-Anschluss?</summary><p>Nein. Geräte mit unterstützter Netzwerkschnittstelle können über das Netzwerk angebunden werden. Für Modbus RTU ist eine passende RS485-Schnittstelle oder ein geeignetes Gateway erforderlich.</p></details>
+    <details><summary>Ist eine fertige evcc Box sofort einsatzbereit?</summary><p>Vorbereitete Software erleichtert den Start. Wallbox, Zähler und weitere Geräte müssen trotzdem passend zur Anlage eingerichtet werden. Lieferumfang, Versorgung und ein gegebenenfalls benötigter Sponsortoken sind vor dem Kauf zu prüfen.</p></details>
+    <h2>Weiterführende Anleitungen</h2>
+    <p>Für die Installation auf eigener Hardware findest du Anleitungen direkt bei evcc: <a href="https://docs.evcc.io/de/installation/linux-image/">Raspberry Pi &amp; Co.</a> und <a href="https://docs.evcc.io/de/installation/linux/">Linux</a>. Den direkten Gerätevergleich findest du unter <a href="ehive-one-vs-raspberry-pi.html">eHive One oder Raspberry Pi</a>.</p>
   </article>
 </main>
 <div data-include="footer"></div>
