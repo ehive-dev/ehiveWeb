@@ -2350,15 +2350,28 @@ function initSystemReportForm() {
 
   const ensureTurnstile = () => {
     if (!siteKey || !turnstileTarget || turnstileWidgetId !== null || turnstileTimer !== null) return;
+    if (!window.turnstile && !document.querySelector("script[data-system-report-turnstile-api]")) {
+      const api = document.createElement("script");
+      api.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+      api.async = true;
+      api.setAttribute("data-system-report-turnstile-api", "");
+      api.addEventListener("error", () => {
+        api.remove();
+        window.clearInterval(turnstileTimer);
+        turnstileTimer = null;
+      }, { once: true });
+      document.head.appendChild(api);
+    }
     turnstileTimer = window.setInterval(() => {
       if (!window.turnstile) return;
       window.clearInterval(turnstileTimer);
       turnstileTimer = null;
       turnstileWidgetId = window.turnstile.render(turnstileTarget, { sitekey: siteKey, theme: "light" });
     }, 100);
+    const pendingTimer = turnstileTimer;
     window.setTimeout(() => {
-      if (turnstileTimer === null) return;
-      window.clearInterval(turnstileTimer);
+      if (turnstileTimer !== pendingTimer) return;
+      window.clearInterval(pendingTimer);
       turnstileTimer = null;
     }, 10000);
   };
