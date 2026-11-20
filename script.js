@@ -1776,7 +1776,7 @@ Viele Grüße`
     const next = document.querySelector("[data-app-rail-next]");
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let activeIndex = 0;
-    let railVisible = true;
+    let railVisible = !("IntersectionObserver" in window);
     let resizeFrame = 0;
     let wheelDistance = 0;
     let wheelResetTimer = 0;
@@ -1790,12 +1790,12 @@ Viele Grüße`
 
       const preview = document.createElement("video");
       preview.className = "app-card-video";
-      preview.src = src;
+      preview.dataset.src = src;
       preview.muted = true;
       preview.defaultMuted = true;
       preview.loop = true;
       preview.playsInline = true;
-      preview.preload = "auto";
+      preview.preload = "none";
       preview.setAttribute("muted", "");
       preview.setAttribute("playsinline", "");
       preview.setAttribute("aria-hidden", "true");
@@ -1816,6 +1816,7 @@ Viele Grüße`
         if (!preview) return;
 
         if (isActive && railVisible && !prefersReducedMotion.matches) {
+          if (!preview.getAttribute("src")) preview.src = preview.dataset.src;
           const playPromise = preview.play();
           if (playPromise && typeof playPromise.catch === "function") {
             playPromise.catch(() => {});
