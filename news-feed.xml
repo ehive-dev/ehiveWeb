@@ -3,7 +3,7 @@
   <channel>
     <title>eHive News – vorbereitete LinkedIn-Beiträge</title>
     <link>https://www.ehiv3.de/news.html</link>
-    <description>Redaktionell vorbereitete Texte, Bilder und Links zu eHive News. Veröffentlichung erst nach Freigabe im angebundenen Workflow.</description>
+    <description>Alle eHive News mit vorbereiteten LinkedIn-Texten; dieser Feed ist keine Veröffentlichungsfreigabe.</description>
     <language>de-DE</language>
     <atom:link href="https://www.ehiv3.de/news-feed.xml" rel="self" type="application/rss+xml"/>
     <item>
@@ -19,6 +19,7 @@ Mehr erfahren: https://www.ehiv3.de/news-mieterstrom-solarstrom-fuer-alle.html
 
 #eHive #Mieterstrom #Energiemanagement</description>
       <enclosure url="https://www.ehiv3.de/img/news/mieterstrom-solarstrom-fuer-alle.png?v=20261118-clean" length="78459" type="image/png"/>
+      <category domain="https://www.ehiv3.de/linkedin-approval">pending</category>
       <category>Mieterstrom</category>
       <category>Vermieter</category>
       <category>Lastmanagement</category>
@@ -36,6 +37,7 @@ Mehr erfahren: https://www.ehiv3.de/news-knx-logger.html
 
 #eHive #KNX #Gebäudeautomation</description>
       <enclosure url="https://www.ehiv3.de/img/news/social/knx-logger-trends.png" length="213036" type="image/png"/>
+      <category domain="https://www.ehiv3.de/linkedin-approval">pending</category>
       <category>App</category>
       <category>KNX</category>
       <category>Analyse</category>
@@ -53,6 +55,7 @@ Mehr erfahren: https://www.ehiv3.de/news-iobroker-smarthome.html
 
 #eHive #ioBroker #SmartHome</description>
       <enclosure url="https://www.ehiv3.de/img/news/iobroker-admin-official.png" length="299649" type="image/png"/>
+      <category domain="https://www.ehiv3.de/linkedin-approval">pending</category>
       <category>Smart Home</category>
       <category>ioBroker</category>
       <category>2 GB</category>
@@ -70,6 +73,7 @@ Mehr erfahren: https://www.ehiv3.de/news-node-red-automatisierung.html
 
 #eHive #NodeRED #Automatisierung</description>
       <enclosure url="https://www.ehiv3.de/img/news/node-red-editor-official.png" length="140624" type="image/png"/>
+      <category domain="https://www.ehiv3.de/linkedin-approval">pending</category>
       <category>Smart Home</category>
       <category>Node-RED</category>
       <category>Automatisierung</category>
@@ -87,6 +91,7 @@ Mehr erfahren: https://www.ehiv3.de/news-knx-integration-beta.html
 
 #eHive #KNX #evcc</description>
       <enclosure url="https://www.ehiv3.de/img/news/social/knx-bridge-beta.png" length="78526" type="image/png"/>
+      <category domain="https://www.ehiv3.de/linkedin-approval">pending</category>
       <category>App</category>
       <category>KNX</category>
       <category>Freigegeben</category>
@@ -104,6 +109,7 @@ Mehr erfahren: https://www.ehiv3.de/news-ki-kompatibilitaetspruefung.html
 
 #eHive #evcc #Energiemanagement</description>
       <enclosure url="https://www.ehiv3.de/products/ehive-one.png" length="402450" type="image/png"/>
+      <category domain="https://www.ehiv3.de/linkedin-approval">pending</category>
       <category>Website</category>
       <category>KI-Hilfe</category>
       <category>Kompatibilität</category>
@@ -121,6 +127,7 @@ Mehr erfahren: https://www.ehiv3.de/news-smarthub-usb-config.html
 
 #eHive #SmartHub #Inbetriebnahme</description>
       <enclosure url="https://www.ehiv3.de/products/ehive-one.png" length="402450" type="image/png"/>
+      <category domain="https://www.ehiv3.de/linkedin-approval">pending</category>
       <category>Software</category>
       <category>SmartHub</category>
       <category>Inbetriebnahme</category>
@@ -138,6 +145,7 @@ Mehr erfahren: https://www.ehiv3.de/news-smarthub-1-1-55.html
 
 #eHive #SmartHub #SoftwareUpdate</description>
       <enclosure url="https://www.ehiv3.de/img/news/ehive-smarthub-appstore.png" length="31911" type="image/png"/>
+      <category domain="https://www.ehiv3.de/linkedin-approval">pending</category>
       <category>Software</category>
       <category>SmartHub</category>
       <category>Update</category>
@@ -155,6 +163,7 @@ Mehr erfahren: https://www.ehiv3.de/news-hivebus-modbus-diagnose.html
 
 #eHive #Modbus #Diagnose</description>
       <enclosure url="https://www.ehiv3.de/img/news/hivebus-original.png" length="84426" type="image/png"/>
+      <category domain="https://www.ehiv3.de/linkedin-approval">pending</category>
       <category>App</category>
       <category>Modbus</category>
       <category>Diagnose</category>
@@ -172,6 +181,7 @@ Mehr erfahren: https://www.ehiv3.de/news-hivescope-netzwerkscanner.html
 
 #eHive #HiveScope #evcc</description>
       <enclosure url="https://www.ehiv3.de/img/news/social/hivescope-oberflaeche-scan.png" length="238822" type="image/png"/>
+      <category domain="https://www.ehiv3.de/linkedin-approval">pending</category>
       <category>Software</category>
       <category>HiveScope</category>
       <category>Open Source</category>
@@ -189,6 +199,7 @@ Mehr erfahren: https://www.ehiv3.de/news-ehive-fuer-elektrofachbetriebe-fernwart
 
 #eHive #Elektrohandwerk #Fernwartung</description>
       <enclosure url="https://www.ehiv3.de/img/news/social/ehive-electrician-remote-service.png" length="1221902" type="image/png"/>
+      <category domain="https://www.ehiv3.de/linkedin-approval">pending</category>
       <category>Elektrofachbetrieb</category>
       <category>Fernwartung</category>
       <category>SSH</category>
@@ -206,6 +217,7 @@ Mehr erfahren: https://www.ehiv3.de/news-charge-and-go-ladepark.html
 
 #eHive #Ladeinfrastruktur #Elektromobilität</description>
       <enclosure url="https://www.ehiv3.de/img/news/charge-and-go-public-wallbox-v5.png" length="2396578" type="image/png"/>
+      <category domain="https://www.ehiv3.de/linkedin-approval">pending</category>
       <category>Vorschau</category>
       <category>charge&amp;go</category>
       <category>Ladepark</category>
@@ -223,6 +235,7 @@ Mehr erfahren: https://www.ehiv3.de/news-14a-enwg-9-eeg-smartes-energiemanagemen
 
 #eHive #Energiemanagement #Elektrohandwerk</description>
       <enclosure url="https://www.ehiv3.de/products/ehive-one.png" length="402450" type="image/png"/>
+      <category domain="https://www.ehiv3.de/linkedin-approval">pending</category>
       <category>Energiemanagement</category>
       <category>§ 14a EnWG</category>
       <category>§ 9 EEG</category>
@@ -240,6 +253,7 @@ Mehr erfahren: https://www.ehiv3.de/news-chargeledger-update-juli-2026.html
 
 #eHive #chargeLedger #Elektromobilität</description>
       <enclosure url="https://www.ehiv3.de/img/news/chargeledger-main-juli-2026.png" length="245088" type="image/png"/>
+      <category domain="https://www.ehiv3.de/linkedin-approval">pending</category>
       <category>Software</category>
       <category>chargeLedger</category>
       <category>Update</category>
@@ -257,6 +271,7 @@ Mehr erfahren: https://www.ehiv3.de/news-chargeledger.html
 
 #eHive #chargeLedger #Ladeabrechnung</description>
       <enclosure url="https://www.ehiv3.de/products/ehive-one.png" length="402450" type="image/png"/>
+      <category domain="https://www.ehiv3.de/linkedin-approval">pending</category>
       <category>Software</category>
       <category>Verfügbar</category>
     </item>
@@ -273,6 +288,7 @@ Mehr erfahren: https://www.ehiv3.de/news-evcc-community-treffen-2026.html
 
 #eHive #evcc #OpenSource</description>
       <enclosure url="https://www.ehiv3.de/products/ehive-one.png" length="402450" type="image/png"/>
+      <category domain="https://www.ehiv3.de/linkedin-approval">pending</category>
       <category>Community</category>
       <category>evcc</category>
       <category>Open Source</category>
@@ -290,6 +306,7 @@ Mehr erfahren: https://www.ehiv3.de/news-appstore-integration.html
 
 #eHive #SmartHub #OpenSource</description>
       <enclosure url="https://www.ehiv3.de/products/ehive-one.png" length="402450" type="image/png"/>
+      <category domain="https://www.ehiv3.de/linkedin-approval">pending</category>
       <category>Plattform</category>
       <category>Vision</category>
       <category>Erweiterungen</category>
@@ -307,6 +324,7 @@ Mehr erfahren: https://www.ehiv3.de/news-tenantledger-mieterstrom.html
 
 #eHive #Mieterstrom #tenantLedger</description>
       <enclosure url="https://www.ehiv3.de/img/news/tenantledger-original.png" length="104352" type="image/png"/>
+      <category domain="https://www.ehiv3.de/linkedin-approval">pending</category>
       <category>App</category>
       <category>Mieterstrom</category>
       <category>Abrechnung</category>
@@ -324,6 +342,7 @@ Mehr erfahren: https://www.ehiv3.de/news-updates-hub.html
 
 #eHive #Neuigkeiten #Energiemanagement</description>
       <enclosure url="https://www.ehiv3.de/products/ehive-one.png" length="402450" type="image/png"/>
+      <category domain="https://www.ehiv3.de/linkedin-approval">pending</category>
       <category>Website</category>
       <category>Updates</category>
     </item>
@@ -340,6 +359,7 @@ Mehr erfahren: https://www.ehiv3.de/news-wattradar-energiefluesse.html
 
 #eHive #Monitoring #Energiemanagement</description>
       <enclosure url="https://www.ehiv3.de/img/news/wattradar-original.png" length="211762" type="image/png"/>
+      <category domain="https://www.ehiv3.de/linkedin-approval">pending</category>
       <category>App</category>
       <category>Monitoring</category>
       <category>Energiefluss</category>
@@ -357,6 +377,7 @@ Mehr erfahren: https://www.ehiv3.de/news-tunnelmanager-fernzugriff.html
 
 #eHive #Fernzugriff #TunnelManager</description>
       <enclosure url="https://www.ehiv3.de/img/news/tunnelmanager-original.png" length="29415" type="image/png"/>
+      <category domain="https://www.ehiv3.de/linkedin-approval">pending</category>
       <category>App</category>
       <category>Fernzugriff</category>
       <category>Sicherheit</category>
@@ -374,6 +395,7 @@ Mehr erfahren: https://www.ehiv3.de/news-iomanager-signale.html
 
 #eHive #DigitaleEingänge #Energiemanagement</description>
       <enclosure url="https://www.ehiv3.de/img/news/iomanager-original.png" length="18045" type="image/png"/>
+      <category domain="https://www.ehiv3.de/linkedin-approval">pending</category>
       <category>App</category>
       <category>Digitale Eingänge</category>
       <category>§ 14a EnWG</category>

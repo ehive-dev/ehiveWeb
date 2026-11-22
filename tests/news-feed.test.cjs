@@ -37,3 +37,50 @@ test('Feed rejects duplicates, missing text and unsuitable image formats', () =>
   assert(escaped.includes('A &amp; B &lt;C&gt;'));
   assert(escaped.includes('Text &amp; &lt;Test&gt;'));
 });
+
+const { buildLinkedinFeed, approvalFingerprint, isLinkedinApproved } = require('../tools/build-news-feed.cjs');
+const { updateApprovalSource } = require('../tools/set-linkedin-approval.cjs');
+const vm = require('node:vm');
+const parseSource = source => { const c = { window: {} }; vm.runInNewContext(source, c); return c.window.EHIVE_NEWS; };
+const approve = (item, at = '2026-11-22T15:30:00Z') => ({ ...item, linkedinApproved: true, linkedinApprovedAt: at, linkedinApprovalHash: approvalFingerprint(item) });
+
+test('LinkedIn feed excludes unapproved items and is a valid empty RSS feed initially', () => {
+  const xml = buildLinkedinFeed();
+  assert.equal(fs.readFileSync(path.join(root, 'linkedin-feed.xml'), 'utf8'), xml);
+  assert.equal((xml.match(/<item>/g) || []).length, readNews().filter(isLinkedinApproved).length);
+  const empty = buildLinkedinFeed(readNews().map(item => ({ ...item, linkedinApproved: false })));
+  const parsed = spawnSync('python3', ['-c', 'import sys,xml.etree.ElementTree as E;r=E.fromstring(sys.stdin.read());assert r.find("channel") is not None;assert r.findall("./channel/item")==[]'], { input: empty, encoding: 'utf8' });
+  assert.equal(parsed.status, 0, parsed.stderr);
+  const item = readNews()[0];
+  for (const flag of [undefined, false, 'true', 1]) assert(!buildLinkedinFeed([{ ...approve(item), linkedinApproved: flag }]).includes('<item>'));
+});
+test('Later approval uses approval time while retaining article URL and GUID', () => {
+  const item = readNews()[readNews().length - 1];
+  const approved = approve(item);
+  const xml = buildLinkedinFeed([approved]);
+  assert(xml.includes(`<guid isPermaLink="true">${item.href}</guid>`));
+  assert(xml.includes('<pubDate>Sun, 22 Nov 2026 15:30:00 GMT</pubDate>'));
+  assert(buildNewsFeed([approved]).includes(new Date(item.date + 'T00:00:00Z').toUTCString()));
+});
+test('Changed approved content, invalid date or missing fingerprint fails closed', () => {
+  const item = approve(readNews()[0]);
+  assert(isLinkedinApproved(item));
+  for (const change of [{ title: 'Changed title' }, { linkedinText: 'Changed text' }, { linkedinImage: 'https://www.ehiv3.de/products/ehive-one.png' }, { linkedinApprovedAt: null }, { linkedinApprovedAt: 'invalid' }, { linkedinApprovalHash: null }]) {
+    assert(!buildLinkedinFeed([{ ...item, ...change }]).includes('<item>'), JSON.stringify(change));
+  }
+});
+test('Approval helper changes only requested record and preserves first approval timestamp', () => {
+  const original = readNews().slice(0, 2).map(item => ({ ...item, linkedinApproved: false, linkedinApprovedAt: null, linkedinApprovalHash: null }));
+  const source = 'window.EHIVE_NEWS = [\n' + original.map(item => '{\n' + Object.entries(item).map(([key, value]) => '    ' + key + ': ' + JSON.stringify(value) + ',').join('\n') + '\n}').join(',\n') + '\n];';
+  const article = new URL(original[0].href).pathname.slice(1);
+  const changed = updateApprovalSource(source, article, true, '2026-11-22T15:30:00Z');
+  const items = parseSource(changed);
+  assert(isLinkedinApproved(items[0]));
+  assert.equal(JSON.stringify(items.slice(1)), JSON.stringify(original.slice(1)));
+  assert.equal(updateApprovalSource(changed, article, true, '2026-11-23T15:30:00Z'), changed);
+  const revoked = updateApprovalSource(changed, article, false);
+  assert(!buildLinkedinFeed(parseSource(revoked)).includes('<item>'));
+  const reapproved = updateApprovalSource(revoked, article, true, '2026-11-23T15:30:00Z');
+  assert.equal(parseSource(reapproved)[0].linkedinApprovedAt, '2026-11-22T15:30:00Z');
+  assert.throws(() => updateApprovalSource(source, 'not-a-news.html', true), /Unknown article/);
+});

@@ -23,6 +23,9 @@ Der News-Bereich ist so aufgebaut, dass Startseite und [news.html](./news.html) 
   href: "https://www.ehiv3.de/news-mein-thema.html",
   image: "img/news/mein-beitragsbild.webp",
   imageAlt: "Kurze Beschreibung des Bildinhalts",
+  linkedinApproved: false,
+  linkedinApprovedAt: null,
+  linkedinApprovalHash: null,
   linkedinText: "Titel\n\nEigener Kurztext.\n\nMehr erfahren: https://www.ehiv3.de/news-mein-thema.html\n\n#eHive #evcc",
   linkedinImage: "https://www.ehiv3.de/img/news/mein-beitragsbild.png",
   tags: ["Software", "Release"]
@@ -52,25 +55,53 @@ Hinweis:
 - Zeigt der Canonical auf die finale `https://www.ehiv3.de/...`-URL?
 
 
-## LinkedIn und Make
+## LinkedIn-Freigabe im Newsbeitrag
 
-Öffentliche RSS-2.0-Datei: `https://www.ehiv3.de/news-feed.xml`.
-`description` enthält den vollständigen vorbereiteten LinkedIn-Beitrag aus `linkedinText`, inklusive Artikel-Link und Hashtags. `title` ist die Artikelüberschrift; nicht nochmals vor `description` setzen.
-`enclosure.url` liefert das PNG-/JPEG-Bild, `enclosure.type` den MIME-Typ und `enclosure.length` die Dateigröße.
-`link` und der unveränderliche `guid` zeigen auf den Artikel. `pubDate` verwendet das ursprüngliche Artikeldatum mit 00:00 UTC als technische Zeitkonvention; beim Bearbeiten alter Artikel nicht auf das heutige Datum setzen.
+Die Redaktion pflegt weiterhin `news-data.js`. Zusätzliche Make-Datenbanken sind für die Freigabe nicht erforderlich.
+Jede News beginnt mit:
 
-### Einrichtung in Make
+```js
+linkedinApproved: false,
+linkedinApprovedAt: null,
+linkedinApprovalHash: null,
+```
 
-1. RSS-Quelle `https://www.ehiv3.de/news-feed.xml` verwenden.
-2. Beim ersten Aktivieren nur ab dem Einrichtungszeitpunkt starten; vorhandene Meldungen nicht automatisch nachträglich veröffentlichen. Der Feed enthält auch historische Beiträge.
-3. Den Text aus `description`, den Artikel-Link aus `link` und bei Bildbeiträgen das Bild aus `enclosure.url` übernehmen. Ein Bildbeitrag benötigt gegebenenfalls einen zusätzlichen Download-Schritt für die Bilddatei.
-4. Eine ausdrückliche manuelle Freigabe und eine Ablage bereits veröffentlichter GUIDs einrichten, bevor das LinkedIn-Veröffentlichungsmodul aktiviert wird. Freigabe und Doppelpostschutz sind nicht durch die RSS-Datei selbst umgesetzt.
-5. Ausschließlich die eHive-Unternehmensseite auswählen und zuerst mit einem einzeln freigegebenen Beitrag testen.
+Der öffentliche Newsfeed `https://www.ehiv3.de/news-feed.xml` enthält weiterhin alle News. Seine Kategorie mit Domain `https://www.ehiv3.de/linkedin-approval` kennzeichnet Einträge als `pending` oder `approved`. Er darf nicht als direkte Veröffentlichungsquelle verwendet werden.
 
-Der Feed allein veröffentlicht nichts. Eine Make-/LinkedIn-Verbindung oder Automatik ist damit nicht eingerichtet.
-Ein erster Abruf darf auch nicht unbemerkt die 22 bestehenden Meldungen als neue Posts veröffentlichen.
-Die Website-Karten verwenden weiterhin `excerpt` und `image`; Änderungen an LinkedIn-Texten oder PNG-/JPEG-Varianten verändern das Seitenlayout nicht.
+Für Make ist ausschließlich `https://www.ehiv3.de/linkedin-feed.xml` vorgesehen. Dieser Feed enthält nur Beiträge mit expliziter boolescher Freigabe, gültigem Freigabezeitpunkt und passender Prüfsumme der freigegebenen Fassung. Ohne freigegebene Beiträge ist er gültiges RSS mit null Einträgen.
 
-Bei jeder Veröffentlichung erzeugt der Schritt „Build news RSS feed“ in `.github/workflows/pages.yml` den Feed automatisch aus den aktuellen Newsdaten. Anschließend prüfen die Tests den erzeugten Feed; nur bei erfolgreichen Tests wird die Website veröffentlicht. Die erzeugte Datei wird nicht automatisch in das Git-Repository zurückgeschrieben.
+### Einen Beitrag freigeben
 
-Für eine lokale Vorschau oder lokale Tests kann der Feed weiterhin mit `node tools/build-news-feed.cjs` erzeugt werden. Danach `node --test tests/*.test.cjs` ausführen. `node tools/build-news-feed.cjs --check` prüft, ob die lokal vorhandene XML-Datei den aktuellen Daten entspricht.
+Nach Prüfung von Text, Bild und Link:
+
+```bash
+node tools/set-linkedin-approval.cjs news-mein-thema.html --approve
+```
+
+Das Hilfsprogramm setzt `linkedinApproved: true`, hinterlegt beim ersten Mal den UTC-Freigabezeitpunkt in `linkedinApprovedAt` und speichert die Prüfsumme von URL, Titel, LinkedIn-Text und LinkedIn-Bild in `linkedinApprovalHash`. Es verändert nur den ausgewählten Datensatz. Ein wiederholter Aufruf ohne Inhaltsänderung verändert die Freigabe nicht.
+Anschließend die Änderung committen und veröffentlichen. Die Freigabe ist erst nach erfolgreichem Deployment öffentlich wirksam. Der Benutzer kann den gewünschten Beitrag hier im Chat zur Freigabe benennen; er muss dafür in Make keinen Datensatz anlegen.
+
+Wenn Titel, Artikel-URL, LinkedIn-Text oder LinkedIn-Bild geändert werden, passt die gespeicherte Prüfsumme nicht mehr. Der Eintrag verschwindet automatisch aus dem LinkedIn-Feed, bis die geänderte Fassung ausdrücklich erneut freigegeben wird. Eine reine Bearbeitung ist keine neue Veröffentlichung: erster Freigabezeitpunkt und Artikel-GUID bleiben bestehen.
+
+Freigabe zurückziehen:
+
+```bash
+node tools/set-linkedin-approval.cjs news-mein-thema.html --revoke
+```
+
+Das verhindert zukünftige Abrufe aus dem freigegebenen Feed nach dem Deployment. Bereits veröffentlichte oder von Make bereits abgerufene Beiträge werden dadurch nicht zurückgerufen oder gelöscht.
+
+### RSS-Felder und Make-Einrichtung
+
+1. Scenario während der Umstellung deaktivieren. Im RSS-Modul die URL einmalig auf `https://www.ehiv3.de/linkedin-feed.xml` ändern.
+2. Bei der Umstellung den Startpunkt vor der ersten gewünschten Freigabe setzen. Aktuell sind alle vorhandenen Meldungen gesperrt, sodass keine historische Meldung ungefragt nachveröffentlicht wird. Ein leerer Feed liefert zunächst keine neuen Daten für die Mapping-Vorschau.
+3. `description` enthält den vollständigen vorbereiteten LinkedIn-Beitrag inklusive Link und Hashtags. Den Titel nicht zusätzlich voranstellen. `enclosure.url` liefert das PNG-/JPEG-Bild, `enclosure.type` den MIME-Typ und `enclosure.length` die Dateigröße.
+4. Nur die eHive-Unternehmensseite auswählen und den ersten ausdrücklich freigegebenen Beitrag kontrolliert testen. Der Feed allein veröffentlicht nichts. Die Make-/LinkedIn-Verbindung und deren Zeitplan werden separat eingerichtet.
+5. Make nutzt die Artikel-URL als stabile GUID. Diese und den RSS-Startpunkt im laufenden Betrieb nicht zum Wiederholen eines Beitrags ändern. Eine erste späte Freigabe verwendet im LinkedIn-Feed das Freigabedatum als `pubDate`, damit ältere News bei ihrer ersten Freigabe erkannt werden können. Der öffentliche Newsfeed behält das ursprüngliche Artikeldatum.
+
+Der Feed ist kein Versandprotokoll und erhält keine LinkedIn-Erfolgsmeldungen. Make kann bei manuellen Wiederholungen, Zurücksetzen des Startpunkts oder bestimmten Fehlerwiederholungen trotzdem erneut veröffentlichen. Strikte Einmalzustellung benötigt zusätzlich eine dauerhafte Ablage von veröffentlichten GUIDs und eine passende Fehlerbehandlung. Ohne diese keine automatische Wiederholung nach unklarem Veröffentlichungsergebnis starten.
+
+Website-Karten verwenden weiterhin `excerpt` und `image`; Freigabefelder verändern deren Darstellung nicht. Datum und Uhrzeit sind technisch UTC, nicht die lokale Anzeigezeit.
+
+Bei jeder Veröffentlichung erzeugt „Build news RSS feed“ in `.github/workflows/pages.yml` beide Feeds neu. Danach prüfen die Tests die erzeugten Dateien; nur erfolgreiche Tests erlauben das Deployment. Die generierten Dateien werden nicht automatisch in das Git-Repository zurückgeschrieben.
+Lokal: `node tools/build-news-feed.cjs`, danach `node --test tests/*.test.cjs`. Mit `node tools/build-news-feed.cjs --check` lässt sich die Übereinstimmung beider XML-Dateien prüfen.
