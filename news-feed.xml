@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>eHive News – vorbereitete LinkedIn-Beiträge</title>
+    <link>https://www.ehiv3.de/news.html</link>
+    <description>Redaktionell vorbereitete Texte, Bilder und Links zu eHive News. Veröffentlichung erst nach Freigabe im angebundenen Workflow.</description>
+    <language>de-DE</language>
+    <atom:link href="https://www.ehiv3.de/news-feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Mieterstrom: Solarstrom für alle</title>
+      <link>https://www.ehiv3.de/news-mieterstrom-solarstrom-fuer-alle.html</link>
+      <guid isPermaLink="true">https://www.ehiv3.de/news-mieterstrom-solarstrom-fuer-alle.html</guid>
+      <pubDate>Wed, 18 Nov 2026 00:00:00 GMT</pubDate>
+      <description>Mieterstrom: Solarstrom für alle
+
+Mehr Solarstrom im Mehrfamilienhaus nutzen: Wir zeigen, wie Vermieter Eigenverbrauch, Bestandstechnik und abgestimmtes Laden zusammendenken können. Mit einem Rechner lassen sich die eigenen Annahmen durchspielen.
+
+Mehr erfahren: https://www.ehiv3.de/news-mieterstrom-solarstrom-fuer-alle.html
+
+#eHive #Mieterstrom #Energiemanagement</description>
+      <enclosure url="https://www.ehiv3.de/img/news/mieterstrom-solarstrom-fuer-alle.png?v=20261118-clean" length="78459" type="image/png"/>
+      <category>Mieterstrom</category>
+      <category>Vermieter</category>
+      <category>Lastmanagement</category>
+    </item>
+    <item>
+      <title>KNX Logger: KNX-Telegramme lokal aufzeichnen und auswerten</title>
+      <link>https://www.ehiv3.de/news-knx-logger.html</link>
+      <guid isPermaLink="true">https://www.ehiv3.de/news-knx-logger.html</guid>
+      <pubDate>Tue, 17 Nov 2026 00:00:00 GMT</pubDate>
+      <description>KNX Logger: KNX-Telegramme lokal aufzeichnen und auswerten
+
+KNX-Telegramme nachvollziehen statt nur den aktuellen Zustand sehen: Der KNX Logger importiert Gruppenadressen aus ETS, zeichnet Telegramme lokal auf und stellt Verläufe sowie CSV-Exporte bereit. Im Beitrag zeigen wir die Anwendung auf eHive One.
+
+Mehr erfahren: https://www.ehiv3.de/news-knx-logger.html
+
+#eHive #KNX #Gebäudeautomation</description>
+      <enclosure url="https://www.ehiv3.de/img/news/social/knx-logger-trends.png" length="213036" type="image/png"/>
+      <category>App</category>
+      <category>KNX</category>
+      <category>Analyse</category>
+    </item>
+    <item>
+      <title>ioBroker auf eHive One</title>
+      <link>https://www.ehiv3.de/news-iobroker-smarthome.html</link>
+      <guid isPermaLink="true">https://www.ehiv3.de/news-iobroker-smarthome.html</guid>
+      <pubDate>Fri, 13 Nov 2026 00:00:00 GMT</pubDate>
+      <description>ioBroker auf eHive One
+
+Geräte und Dienste über Adapter verbinden: ioBroker ergänzt eHive One um eine Plattform für eigene Smart-Home-Automationen. Im Beitrag zeigen wir den Einsatz und die Voraussetzungen. Für ioBroker ist die eHive-One-Variante mit 2 GB Arbeitsspeicher vorgesehen.
+
+Mehr erfahren: https://www.ehiv3.de/news-iobroker-smarthome.html
+
+#eHive #ioBroker #SmartHome</description>
+      <enclosure url="https://www.ehiv3.de/img/news/iobroker-admin-official.png" length="299649" type="image/png"/>
+      <category>Smart Home</category>
+      <category>ioBroker</category>
+      <category>2 GB</category>
+    </item>
+    <item>
+      <title>Node-RED auf eHive One: Baue deine eigenen Flows</title>
+      <link>https://www.ehiv3.de/news-node-red-automatisierung.html</link>
+      <guid isPermaLink="true">https://www.ehiv3.de/news-node-red-automatisierung.html</guid>
+      <pubDate>Thu, 12 Nov 2026 00:00:00 GMT</pubDate>
+      <description>Node-RED auf eHive One: Baue deine eigenen Flows
+
+Eigene Abläufe als visuelle Flows gestalten: Node-RED verbindet Datenquellen, Ereignisse und Aktionen. Unser Beitrag zeigt, wie die Anwendung eHive One ergänzt. Voraussetzung ist die Variante mit 2 GB Arbeitsspeicher.
+
+Mehr erfahren: https://www.ehiv3.de/news-node-red-automatisierung.html
+
+#eHive #NodeRED #Automatisierung</description>
+      <enclosure url="https://www.ehiv3.de/img/news/node-red-editor-official.png" length="140624" type="image/png"/>
+      <category>Smart Home</category>
+      <category>Node-RED</category>
+      <category>Automatisierung</category>
+    </item>
+    <item>
+      <title>KNX trifft Energiemanagement: Wir übernehmen jetzt</title>
+      <link>https://www.ehiv3.de/news-knx-integration-beta.html</link>
+      <guid isPermaLink="true">https://www.ehiv3.de/news-knx-integration-beta.html</guid>
+      <pubDate>Tue, 10 Nov 2026 00:00:00 GMT</pubDate>
+      <description>KNX trifft Energiemanagement: Wir übernehmen jetzt
+
+Energieinformationen in die Gebäudeautomation bringen: Die freigegebene KNX Bridge verbindet ausgewählte evcc-Datenpunkte mit KNX-Gruppenadressen. Wir zeigen Konfiguration, Zuordnung und die Grenzen der jeweiligen Integration.
+
+Mehr erfahren: https://www.ehiv3.de/news-knx-integration-beta.html
+
+#eHive #KNX #evcc</description>
+      <enclosure url="https://www.ehiv3.de/img/news/social/knx-bridge-beta.png" length="78526" type="image/png"/>
+      <category>App</category>
+      <category>KNX</category>
+      <category>Freigegeben</category>
+    </item>
+    <item>
+      <title>Frag mich: KI-Hilfe für eHive One und evcc</title>
+      <link>https://www.ehiv3.de/news-ki-kompatibilitaetspruefung.html</link>
+      <guid isPermaLink="true">https://www.ehiv3.de/news-ki-kompatibilitaetspruefung.html</guid>
+      <pubDate>Sun, 18 Oct 2026 00:00:00 GMT</pubDate>
+      <description>Frag mich: KI-Hilfe für eHive One und evcc
+
+Passt eine vorhandene Wallbox, ein Wechselrichter oder Speicher zu eHive One und evcc? Unsere KI-Hilfe unterstützt bei der ersten Einordnung anhand von Hersteller und Modell. Schnittstellen, Firmware und gewünschte Funktionen bleiben Teil der konkreten Prüfung.
+
+Mehr erfahren: https://www.ehiv3.de/news-ki-kompatibilitaetspruefung.html
+
+#eHive #evcc #Energiemanagement</description>
+      <enclosure url="https://www.ehiv3.de/products/ehive-one.png" length="402450" type="image/png"/>
+      <category>Website</category>
+      <category>KI-Hilfe</category>
+      <category>Kompatibilität</category>
+    </item>
+    <item>
+      <title>USB-Stick: Konfiguriere den eHive ab sofort in der Werkstatt</title>
+      <link>https://www.ehiv3.de/news-smarthub-usb-config.html</link>
+      <guid isPermaLink="true">https://www.ehiv3.de/news-smarthub-usb-config.html</guid>
+      <pubDate>Thu, 15 Oct 2026 00:00:00 GMT</pubDate>
+      <description>USB-Stick: Konfiguriere den eHive ab sofort in der Werkstatt
+
+Geräte schon in der Werkstatt vorbereiten: Ein konfigurierter USB-Stick erleichtert die wiederholbare Einrichtung von eHive One. Im Beitrag erklären wir den Ablauf und die Voraussetzungen für den Konfigurationsaustausch.
+
+Mehr erfahren: https://www.ehiv3.de/news-smarthub-usb-config.html
+
+#eHive #SmartHub #Inbetriebnahme</description>
+      <enclosure url="https://www.ehiv3.de/products/ehive-one.png" length="402450" type="image/png"/>
+      <category>Software</category>
+      <category>SmartHub</category>
+      <category>Inbetriebnahme</category>
+    </item>
+    <item>
+      <title>SmartHub 1.1.55: Apps sicherer verwalten</title>
+      <link>https://www.ehiv3.de/news-smarthub-1-1-55.html</link>
+      <guid isPermaLink="true">https://www.ehiv3.de/news-smarthub-1-1-55.html</guid>
+      <pubDate>Thu, 17 Sep 2026 00:00:00 GMT</pubDate>
+      <description>SmartHub 1.1.55: Apps sicherer verwalten
+
+Ein Blick auf SmartHub 1.1.55: Das Update verbessert die App-Verwaltung, die WLAN- und NTP-Anzeige sowie den Neustart. HiveBus, KNX Bridge und HiveScope stehen gesammelt unter Tools bereit. Die Änderungen sind im Beitrag beschrieben.
+
+Mehr erfahren: https://www.ehiv3.de/news-smarthub-1-1-55.html
+
+#eHive #SmartHub #SoftwareUpdate</description>
+      <enclosure url="https://www.ehiv3.de/img/news/ehive-smarthub-appstore.png" length="31911" type="image/png"/>
+      <category>Software</category>
+      <category>SmartHub</category>
+      <category>Update</category>
+    </item>
+    <item>
+      <title>HiveBus: Modbus TCP und RTU gezielt prüfen</title>
+      <link>https://www.ehiv3.de/news-hivebus-modbus-diagnose.html</link>
+      <guid isPermaLink="true">https://www.ehiv3.de/news-hivebus-modbus-diagnose.html</guid>
+      <pubDate>Thu, 10 Sep 2026 00:00:00 GMT</pubDate>
+      <description>HiveBus: Modbus TCP und RTU gezielt prüfen
+
+Modbus-Verbindungen gezielt prüfen: HiveBus unterstützt bei der Suche nach Modbus-TCP-Geräten, bei Unit-IDs und bei der Diagnose von Registern und RS485-Verbindungen. Wir zeigen die Oberfläche und den kontrollierten Einsatz auf eHive One.
+
+Mehr erfahren: https://www.ehiv3.de/news-hivebus-modbus-diagnose.html
+
+#eHive #Modbus #Diagnose</description>
+      <enclosure url="https://www.ehiv3.de/img/news/hivebus-original.png" length="84426" type="image/png"/>
+      <category>App</category>
+      <category>Modbus</category>
+      <category>Diagnose</category>
+    </item>
+    <item>
+      <title>HiveScope: Geräte im Netzwerk schneller finden</title>
+      <link>https://www.ehiv3.de/news-hivescope-netzwerkscanner.html</link>
+      <guid isPermaLink="true">https://www.ehiv3.de/news-hivescope-netzwerkscanner.html</guid>
+      <pubDate>Wed, 09 Sep 2026 00:00:00 GMT</pubDate>
+      <description>HiveScope: Geräte im Netzwerk schneller finden
+
+Welche Geräte sind im lokalen Netzwerk erreichbar? HiveScope macht Geräte, offene Dienste und mögliche evcc-Kandidaten sichtbar. Die Open-Source-App läuft direkt auf eHive One und unterstützt bei der Vorbereitung der Einrichtung.
+
+Mehr erfahren: https://www.ehiv3.de/news-hivescope-netzwerkscanner.html
+
+#eHive #HiveScope #evcc</description>
+      <enclosure url="https://www.ehiv3.de/img/news/social/hivescope-oberflaeche-scan.png" length="238822" type="image/png"/>
+      <category>Software</category>
+      <category>HiveScope</category>
+      <category>Open Source</category>
+    </item>
+    <item>
+      <title>eHive One für Elektrofachbetriebe: Fernwartung statt unnötiger Anfahrt</title>
+      <link>https://www.ehiv3.de/news-ehive-fuer-elektrofachbetriebe-fernwartung.html</link>
+      <guid isPermaLink="true">https://www.ehiv3.de/news-ehive-fuer-elektrofachbetriebe-fernwartung.html</guid>
+      <pubDate>Sun, 16 Aug 2026 00:00:00 GMT</pubDate>
+      <description>eHive One für Elektrofachbetriebe: Fernwartung statt unnötiger Anfahrt
+
+Diagnose aus der Ferne kann unnötige Anfahrten vermeiden. Im Beitrag zeigen wir Elektrofachbetrieben den Browser-SSH-Zugang und den direkten SSH-Zugriff auf eHive One sowie die Voraussetzungen für einen abgesicherten Fernzugriff.
+
+Mehr erfahren: https://www.ehiv3.de/news-ehive-fuer-elektrofachbetriebe-fernwartung.html
+
+#eHive #Elektrohandwerk #Fernwartung</description>
+      <enclosure url="https://www.ehiv3.de/img/news/social/ehive-electrician-remote-service.png" length="1221902" type="image/png"/>
+      <category>Elektrofachbetrieb</category>
+      <category>Fernwartung</category>
+      <category>SSH</category>
+    </item>
+    <item>
+      <title>charge&amp;go kommt: Werde unkompliziert zum öffentlichen Ladeparkbetreiber</title>
+      <link>https://www.ehiv3.de/news-charge-and-go-ladepark.html</link>
+      <guid isPermaLink="true">https://www.ehiv3.de/news-charge-and-go-ladepark.html</guid>
+      <pubDate>Thu, 13 Aug 2026 00:00:00 GMT</pubDate>
+      <description>charge&amp;go kommt: Werde unkompliziert zum öffentlichen Ladeparkbetreiber
+
+Ein Ausblick auf charge&amp;go: Mit der geplanten eHive App wollen wir den Einstieg in den öffentlichen Ladebetrieb erleichtern. Der Beitrag beschreibt die Idee und die Suche nach interessierten Testern. Es handelt sich um eine Vorschau.
+
+Mehr erfahren: https://www.ehiv3.de/news-charge-and-go-ladepark.html
+
+#eHive #Ladeinfrastruktur #Elektromobilität</description>
+      <enclosure url="https://www.ehiv3.de/img/news/charge-and-go-public-wallbox-v5.png" length="2396578" type="image/png"/>
+      <category>Vorschau</category>
+      <category>charge&amp;go</category>
+      <category>Ladepark</category>
+    </item>
+    <item>
+      <title>§ 14a EnWG und § 9 EEG: Warum Energiesysteme jetzt zusammenspielen müssen</title>
+      <link>https://www.ehiv3.de/news-14a-enwg-9-eeg-smartes-energiemanagement.html</link>
+      <guid isPermaLink="true">https://www.ehiv3.de/news-14a-enwg-9-eeg-smartes-energiemanagement.html</guid>
+      <pubDate>Sat, 01 Aug 2026 00:00:00 GMT</pubDate>
+      <description>§ 14a EnWG und § 9 EEG: Warum Energiesysteme jetzt zusammenspielen müssen
+
+PV, Speicher, Wallbox und Wärmepumpe müssen als System zusammenspielen. Unser Beitrag ordnet § 14a EnWG und § 9 EEG ein und beschreibt Ansatzpunkte für lokales Energiemanagement mit eHive One. Die konkrete Umsetzung ist anlagenabhängig und fachlich zu planen.
+
+Mehr erfahren: https://www.ehiv3.de/news-14a-enwg-9-eeg-smartes-energiemanagement.html
+
+#eHive #Energiemanagement #Elektrohandwerk</description>
+      <enclosure url="https://www.ehiv3.de/products/ehive-one.png" length="402450" type="image/png"/>
+      <category>Energiemanagement</category>
+      <category>§ 14a EnWG</category>
+      <category>§ 9 EEG</category>
+    </item>
+    <item>
+      <title>chargeLedger: sauberere Abrechnung, bessere Kosten und neues Archiv</title>
+      <link>https://www.ehiv3.de/news-chargeledger-update-juli-2026.html</link>
+      <guid isPermaLink="true">https://www.ehiv3.de/news-chargeledger-update-juli-2026.html</guid>
+      <pubDate>Mon, 06 Jul 2026 00:00:00 GMT</pubDate>
+      <description>chargeLedger: sauberere Abrechnung, bessere Kosten und neues Archiv
+
+Das chargeLedger-Update vom Juli 2026 im Überblick: klarerer MID-Hinweis, Kilometerstand, überarbeitete Kostenoptionen und neue Archivfunktionen. Wir zeigen die Änderungen an der Abrechnung und an der PDF-Vorschau.
+
+Mehr erfahren: https://www.ehiv3.de/news-chargeledger-update-juli-2026.html
+
+#eHive #chargeLedger #Elektromobilität</description>
+      <enclosure url="https://www.ehiv3.de/img/news/chargeledger-main-juli-2026.png" length="245088" type="image/png"/>
+      <category>Software</category>
+      <category>chargeLedger</category>
+      <category>Update</category>
+    </item>
+    <item>
+      <title>chargeLedger ist verfügbar</title>
+      <link>https://www.ehiv3.de/news-chargeledger.html</link>
+      <guid isPermaLink="true">https://www.ehiv3.de/news-chargeledger.html</guid>
+      <pubDate>Sun, 10 May 2026 00:00:00 GMT</pubDate>
+      <description>chargeLedger ist verfügbar
+
+Ladevorgänge monatlich zusammenstellen: chargeLedger ergänzt eHive One um Abrechnungen mit PDF-Vorschau, Versand und Archiv-Anbindungen. Der Beitrag zur Veröffentlichung stellt die Anwendung und ihren Ablauf vor.
+
+Mehr erfahren: https://www.ehiv3.de/news-chargeledger.html
+
+#eHive #chargeLedger #Ladeabrechnung</description>
+      <enclosure url="https://www.ehiv3.de/products/ehive-one.png" length="402450" type="image/png"/>
+      <category>Software</category>
+      <category>Verfügbar</category>
+    </item>
+    <item>
+      <title>eHive One beim evcc Community Treffen 2026</title>
+      <link>https://www.ehiv3.de/news-evcc-community-treffen-2026.html</link>
+      <guid isPermaLink="true">https://www.ehiv3.de/news-evcc-community-treffen-2026.html</guid>
+      <pubDate>Sun, 10 May 2026 00:00:00 GMT</pubDate>
+      <description>eHive One beim evcc Community Treffen 2026
+
+Unser Rückblick auf das evcc Community Treffen 2026 in Osnabrück: Wir haben eHive One und unsere Apps vorgestellt und Erfahrungen mit der Community ausgetauscht. Im Beitrag teilen wir Eindrücke vom Treffen.
+
+Mehr erfahren: https://www.ehiv3.de/news-evcc-community-treffen-2026.html
+
+#eHive #evcc #OpenSource</description>
+      <enclosure url="https://www.ehiv3.de/products/ehive-one.png" length="402450" type="image/png"/>
+      <category>Community</category>
+      <category>evcc</category>
+      <category>Open Source</category>
+    </item>
+    <item>
+      <title>Appstore ist integriert</title>
+      <link>https://www.ehiv3.de/news-appstore-integration.html</link>
+      <guid isPermaLink="true">https://www.ehiv3.de/news-appstore-integration.html</guid>
+      <pubDate>Sun, 10 May 2026 00:00:00 GMT</pubDate>
+      <description>Appstore ist integriert
+
+Anwendungen an einem Ort verwalten: Der Appstore ist in den SmartHub integriert. Der Beitrag zeigt, wie Apps und Erweiterungen mit Status und Metadaten in der eHive-Oberfläche zusammengeführt werden.
+
+Mehr erfahren: https://www.ehiv3.de/news-appstore-integration.html
+
+#eHive #SmartHub #OpenSource</description>
+      <enclosure url="https://www.ehiv3.de/products/ehive-one.png" length="402450" type="image/png"/>
+      <category>Plattform</category>
+      <category>Vision</category>
+      <category>Erweiterungen</category>
+    </item>
+    <item>
+      <title>tenantLedger: Mietstrom endlich einfach</title>
+      <link>https://www.ehiv3.de/news-tenantledger-mieterstrom.html</link>
+      <guid isPermaLink="true">https://www.ehiv3.de/news-tenantledger-mieterstrom.html</guid>
+      <pubDate>Wed, 06 May 2026 00:00:00 GMT</pubDate>
+      <description>tenantLedger: Mietstrom endlich einfach
+
+Vom Messwert zur kontrollierbaren PDF-Vorschau: tenantLedger führt Wohnungen, Zähler, PV- und Netzanteile sowie Preisbestandteile zusammen. Wir zeigen den Ablauf der Mieterstrom-Abrechnung auf eHive One.
+
+Mehr erfahren: https://www.ehiv3.de/news-tenantledger-mieterstrom.html
+
+#eHive #Mieterstrom #tenantLedger</description>
+      <enclosure url="https://www.ehiv3.de/img/news/tenantledger-original.png" length="104352" type="image/png"/>
+      <category>App</category>
+      <category>Mieterstrom</category>
+      <category>Abrechnung</category>
+    </item>
+    <item>
+      <title>News jetzt an einem Ort</title>
+      <link>https://www.ehiv3.de/news-updates-hub.html</link>
+      <guid isPermaLink="true">https://www.ehiv3.de/news-updates-hub.html</guid>
+      <pubDate>Sun, 22 Mar 2026 00:00:00 GMT</pubDate>
+      <description>News jetzt an einem Ort
+
+Änderungen an Website, Shop und Dokumentation gebündelt nachlesen: Im eHive-Newsbereich sammeln wir Beiträge zu Anwendungen, Funktionen und Projekten. Hier stellen wir den Bereich und seine Struktur vor.
+
+Mehr erfahren: https://www.ehiv3.de/news-updates-hub.html
+
+#eHive #Neuigkeiten #Energiemanagement</description>
+      <enclosure url="https://www.ehiv3.de/products/ehive-one.png" length="402450" type="image/png"/>
+      <category>Website</category>
+      <category>Updates</category>
+    </item>
+    <item>
+      <title>wattRadar: Energieflüsse und Lastverläufe sichtbar machen</title>
+      <link>https://www.ehiv3.de/news-wattradar-energiefluesse.html</link>
+      <guid isPermaLink="true">https://www.ehiv3.de/news-wattradar-energiefluesse.html</guid>
+      <pubDate>Sun, 19 Oct 2025 00:00:00 GMT</pubDate>
+      <description>wattRadar: Energieflüsse und Lastverläufe sichtbar machen
+
+Energieflüsse und Lastverläufe nachvollziehen: wattRadar stellt PV, Hausverbrauch, Netz, Speicher und Ladepunkte als zeitliche Verläufe und Energiefluss dar. Der Beitrag zeigt die Anwendung und ihre Ansichten.
+
+Mehr erfahren: https://www.ehiv3.de/news-wattradar-energiefluesse.html
+
+#eHive #Monitoring #Energiemanagement</description>
+      <enclosure url="https://www.ehiv3.de/img/news/wattradar-original.png" length="211762" type="image/png"/>
+      <category>App</category>
+      <category>Monitoring</category>
+      <category>Energiefluss</category>
+    </item>
+    <item>
+      <title>TunnelManager: geschützter Fernzugriff auf eHive One</title>
+      <link>https://www.ehiv3.de/news-tunnelmanager-fernzugriff.html</link>
+      <guid isPermaLink="true">https://www.ehiv3.de/news-tunnelmanager-fernzugriff.html</guid>
+      <pubDate>Mon, 08 Sep 2025 00:00:00 GMT</pubDate>
+      <description>TunnelManager: geschützter Fernzugriff auf eHive One
+
+Gezielter Fernzugriff auf lokale Anwendungen: TunnelManager stellt ausgewählte Weboberflächen über einen geschützten Zugang bereit. Der Beitrag zeigt den Ablauf und die Konfiguration auf eHive One.
+
+Mehr erfahren: https://www.ehiv3.de/news-tunnelmanager-fernzugriff.html
+
+#eHive #Fernzugriff #TunnelManager</description>
+      <enclosure url="https://www.ehiv3.de/img/news/tunnelmanager-original.png" length="29415" type="image/png"/>
+      <category>App</category>
+      <category>Fernzugriff</category>
+      <category>Sicherheit</category>
+    </item>
+    <item>
+      <title>ioManager: digitale Signale erkennen und zeitlich prüfen</title>
+      <link>https://www.ehiv3.de/news-iomanager-signale.html</link>
+      <guid isPermaLink="true">https://www.ehiv3.de/news-iomanager-signale.html</guid>
+      <pubDate>Fri, 05 Sep 2025 00:00:00 GMT</pubDate>
+      <description>ioManager: digitale Signale erkennen und zeitlich prüfen
+
+Digitale Eingänge im zeitlichen Verlauf verstehen: ioManager zeigt HIGH- und LOW-Zustände und macht Schaltverläufe für Diagnose und Energiemanagement sichtbar. Im Beitrag zeigen wir die Oberfläche und ihre Einordnung.
+
+Mehr erfahren: https://www.ehiv3.de/news-iomanager-signale.html
+
+#eHive #DigitaleEingänge #Energiemanagement</description>
+      <enclosure url="https://www.ehiv3.de/img/news/iomanager-original.png" length="18045" type="image/png"/>
+      <category>App</category>
+      <category>Digitale Eingänge</category>
+      <category>§ 14a EnWG</category>
+    </item>
+  </channel>
+</rss>

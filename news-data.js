@@ -5,6 +5,8 @@ window.EHIVE_NEWS = [
     title: "Mieterstrom: Solarstrom für alle",
     excerpt: "Mehr Solarstrom im Mehrfamilienhaus nutzen: Wie du als Vermieter Eigenverbrauch und Rendite verbessern, kompatible Bestandstechnik weiterverwenden und Wallboxen abgestimmt laden kannst.",
     href: "https://www.ehiv3.de/news-mieterstrom-solarstrom-fuer-alle.html",
+    linkedinText: "Mieterstrom: Solarstrom für alle\n\nMehr Solarstrom im Mehrfamilienhaus nutzen: Wir zeigen, wie Vermieter Eigenverbrauch, Bestandstechnik und abgestimmtes Laden zusammendenken können. Mit einem Rechner lassen sich die eigenen Annahmen durchspielen.\n\nMehr erfahren: https://www.ehiv3.de/news-mieterstrom-solarstrom-fuer-alle.html\n\n#eHive #Mieterstrom #Energiemanagement",
+    linkedinImage: "https://www.ehiv3.de/img/news/mieterstrom-solarstrom-fuer-alle.png?v=20261118-clean",
     image: "img/news/mieterstrom-mehrfamilienhaus.svg",
     imageAlt: "Mehrfamilienhaus mit PV, Zählern, eHive One und vier Wallboxen",
     tags: ["Mieterstrom","Vermieter","Lastmanagement"]
@@ -15,6 +17,8 @@ window.EHIVE_NEWS = [
     title: "KNX Logger: KNX-Telegramme lokal aufzeichnen und auswerten",
     excerpt: "Der KNX Logger importiert Gruppenadressen aus ETS, zeichnet Telegramme lokal auf und macht Zeitreihen als Trends und CSV-Export auswertbar.",
     href: "https://www.ehiv3.de/news-knx-logger.html",
+    linkedinText: "KNX Logger: KNX-Telegramme lokal aufzeichnen und auswerten\n\nKNX-Telegramme nachvollziehen statt nur den aktuellen Zustand sehen: Der KNX Logger importiert Gruppenadressen aus ETS, zeichnet Telegramme lokal auf und stellt Verläufe sowie CSV-Exporte bereit. Im Beitrag zeigen wir die Anwendung auf eHive One.\n\nMehr erfahren: https://www.ehiv3.de/news-knx-logger.html\n\n#eHive #KNX #Gebäudeautomation",
+    linkedinImage: "https://www.ehiv3.de/img/news/social/knx-logger-trends.png",
     image: "img/news/knx-logger-trends.webp",
     imageAlt: "Originaloberfläche des KNX Logger mit einem Energieverlauf, Temperaturtrends und der Liste verfügbarer KNX-Datenpunkte",
     tags: ["App","KNX","Analyse"]
@@ -25,6 +29,8 @@ window.EHIVE_NEWS = [
     title: "ioBroker auf eHive One",
     excerpt: "ioBroker verbindet Geräte, Dienste und Protokolle über Adapter. Auf eHive One ist dafür die 2-GB-Variante vorgesehen.",
     href: "https://www.ehiv3.de/news-iobroker-smarthome.html",
+    linkedinText: "ioBroker auf eHive One\n\nGeräte und Dienste über Adapter verbinden: ioBroker ergänzt eHive One um eine Plattform für eigene Smart-Home-Automationen. Im Beitrag zeigen wir den Einsatz und die Voraussetzungen. Für ioBroker ist die eHive-One-Variante mit 2 GB Arbeitsspeicher vorgesehen.\n\nMehr erfahren: https://www.ehiv3.de/news-iobroker-smarthome.html\n\n#eHive #ioBroker #SmartHome",
+    linkedinImage: "https://www.ehiv3.de/img/news/iobroker-admin-official.png",
     image: "img/news/iobroker-admin-official.png",
     imageAlt: "Offizielle Originalaufnahme der ioBroker-Adminübersicht mit Systemstatus, Adaptern, Instanzen und Systeminformationen",
     tags: ["Smart Home","ioBroker","2 GB"]
@@ -35,6 +41,8 @@ window.EHIVE_NEWS = [
     title: "Node-RED auf eHive One: Baue deine eigenen Flows",
     excerpt: "Node-RED stellt Abläufe als visuelle Flows zusammen und ist auf eHive One der 2-GB-Variante vorbehalten.",
     href: "https://www.ehiv3.de/news-node-red-automatisierung.html",
+    linkedinText: "Node-RED auf eHive One: Baue deine eigenen Flows\n\nEigene Abläufe als visuelle Flows gestalten: Node-RED verbindet Datenquellen, Ereignisse und Aktionen. Unser Beitrag zeigt, wie die Anwendung eHive One ergänzt. Voraussetzung ist die Variante mit 2 GB Arbeitsspeicher.\n\nMehr erfahren: https://www.ehiv3.de/news-node-red-automatisierung.html\n\n#eHive #NodeRED #Automatisierung",
+    linkedinImage: "https://www.ehiv3.de/img/news/node-red-editor-official.png",
     image: "img/news/node-red-editor-official.png",
     imageAlt: "Offizielle Originalaufnahme des Node-RED-5-Editors mit Explorer, Arbeitsfläche, Palette und Informationsseitenleiste",
     tags: ["Smart Home","Node-RED","Automatisierung"]
@@ -45,6 +53,8 @@ window.EHIVE_NEWS = [
     title: "KNX trifft Energiemanagement: Wir übernehmen jetzt",
     excerpt: "Die freigegebene KNX Bridge verbindet ausgewählte evcc-Datenpunkte mit KNX-Gruppenadressen und bringt Energieinformationen in die Gebäudeautomation.",
     href: "https://www.ehiv3.de/news-knx-integration-beta.html",
+    linkedinText: "KNX trifft Energiemanagement: Wir übernehmen jetzt\n\nEnergieinformationen in die Gebäudeautomation bringen: Die freigegebene KNX Bridge verbindet ausgewählte evcc-Datenpunkte mit KNX-Gruppenadressen. Wir zeigen Konfiguration, Zuordnung und die Grenzen der jeweiligen Integration.\n\nMehr erfahren: https://www.ehiv3.de/news-knx-integration-beta.html\n\n#eHive #KNX #evcc",
+    linkedinImage: "https://www.ehiv3.de/img/news/social/knx-bridge-beta.png",
     image: "img/news/knx-bridge-beta.webp",
     imageAlt: "Originaloberfläche der eHive KNX Bridge mit KNX-IP-Konfiguration und den Bereichen Verbindungen, Mapping und Status",
     tags: ["App","KNX","Freigegeben"]
@@ -55,6 +65,8 @@ window.EHIVE_NEWS = [
     title: "Frag mich: KI-Hilfe für eHive One und evcc",
     excerpt: "Mit unserer neuen „Frag mich“-Hilfe kannst du konkrete Fragen zu deiner Wallbox, PV-Anlage, deinem Speicher und weiteren Komponenten im Zusammenspiel mit eHive One und evcc stellen.",
     href: "https://www.ehiv3.de/news-ki-kompatibilitaetspruefung.html",
+    linkedinText: "Frag mich: KI-Hilfe für eHive One und evcc\n\nPasst eine vorhandene Wallbox, ein Wechselrichter oder Speicher zu eHive One und evcc? Unsere KI-Hilfe unterstützt bei der ersten Einordnung anhand von Hersteller und Modell. Schnittstellen, Firmware und gewünschte Funktionen bleiben Teil der konkreten Prüfung.\n\nMehr erfahren: https://www.ehiv3.de/news-ki-kompatibilitaetspruefung.html\n\n#eHive #evcc #Energiemanagement",
+    linkedinImage: "https://www.ehiv3.de/products/ehive-one.png",
     image: "products/ehive-one.png",
     imageAlt: "Frag mich: KI-Hilfe für eHive One und evcc",
     tags: ["Website","KI-Hilfe","Kompatibilität"]
@@ -65,6 +77,8 @@ window.EHIVE_NEWS = [
     title: "USB-Stick: Konfiguriere den eHive ab sofort in der Werkstatt",
     excerpt: "Wir kennen es aus eigener Erfahrung: Wiederholtes Einrichten kostet Zeit und nervt. Jetzt genügt ein vorbereiteter USB-Stick für eine schnelle, reproduzierbare Inbetriebnahme.",
     href: "https://www.ehiv3.de/news-smarthub-usb-config.html",
+    linkedinText: "USB-Stick: Konfiguriere den eHive ab sofort in der Werkstatt\n\nGeräte schon in der Werkstatt vorbereiten: Ein konfigurierter USB-Stick erleichtert die wiederholbare Einrichtung von eHive One. Im Beitrag erklären wir den Ablauf und die Voraussetzungen für den Konfigurationsaustausch.\n\nMehr erfahren: https://www.ehiv3.de/news-smarthub-usb-config.html\n\n#eHive #SmartHub #Inbetriebnahme",
+    linkedinImage: "https://www.ehiv3.de/products/ehive-one.png",
     image: "products/ehive-one.png",
     imageAlt: "USB-Stick: Konfiguriere den eHive ab sofort in der Werkstatt",
     tags: ["Software","SmartHub","Inbetriebnahme"]
@@ -75,6 +89,8 @@ window.EHIVE_NEWS = [
     title: "SmartHub 1.1.55: Apps sicherer verwalten",
     excerpt: "SmartHub 1.1.55 verbessert App-Installationen, WLAN- und NTP-Anzeige sowie den Neustart auf eHive One. HiveBus, KNX Bridge und HiveScope stehen gesammelt unter Tools bereit.",
     href: "https://www.ehiv3.de/news-smarthub-1-1-55.html",
+    linkedinText: "SmartHub 1.1.55: Apps sicherer verwalten\n\nEin Blick auf SmartHub 1.1.55: Das Update verbessert die App-Verwaltung, die WLAN- und NTP-Anzeige sowie den Neustart. HiveBus, KNX Bridge und HiveScope stehen gesammelt unter Tools bereit. Die Änderungen sind im Beitrag beschrieben.\n\nMehr erfahren: https://www.ehiv3.de/news-smarthub-1-1-55.html\n\n#eHive #SmartHub #SoftwareUpdate",
+    linkedinImage: "https://www.ehiv3.de/img/news/ehive-smarthub-appstore.png",
     image: "img/news/ehive-smarthub-appstore.png",
     imageAlt: "SmartHub App Store mit den verfügbaren eHive Apps",
     tags: ["Software","SmartHub","Update"]
@@ -85,6 +101,8 @@ window.EHIVE_NEWS = [
     title: "HiveBus: Modbus TCP und RTU gezielt prüfen",
     excerpt: "HiveBus findet Modbus-TCP-Geräte, prüft Unit-IDs und hilft bei der kontrollierten Diagnose von Registern und RS485-Verbindungen.",
     href: "https://www.ehiv3.de/news-hivebus-modbus-diagnose.html",
+    linkedinText: "HiveBus: Modbus TCP und RTU gezielt prüfen\n\nModbus-Verbindungen gezielt prüfen: HiveBus unterstützt bei der Suche nach Modbus-TCP-Geräten, bei Unit-IDs und bei der Diagnose von Registern und RS485-Verbindungen. Wir zeigen die Oberfläche und den kontrollierten Einsatz auf eHive One.\n\nMehr erfahren: https://www.ehiv3.de/news-hivebus-modbus-diagnose.html\n\n#eHive #Modbus #Diagnose",
+    linkedinImage: "https://www.ehiv3.de/img/news/hivebus-original.png",
     image: "img/news/hivebus-original.png",
     imageAlt: "Originaloberfläche von HiveBus mit Modbus-TCP-Suche, Geräteprüfung und Registerdiagnose",
     tags: ["App","Modbus","Diagnose"]
@@ -95,6 +113,8 @@ window.EHIVE_NEWS = [
     title: "HiveScope: Geräte im Netzwerk schneller finden",
     excerpt: "HiveScope macht Geräte, offene Dienste und mögliche evcc-Kandidaten im lokalen Netzwerk sichtbar – übersichtlich, direkt auf eHive One und als Open-Source-App.",
     href: "https://www.ehiv3.de/news-hivescope-netzwerkscanner.html",
+    linkedinText: "HiveScope: Geräte im Netzwerk schneller finden\n\nWelche Geräte sind im lokalen Netzwerk erreichbar? HiveScope macht Geräte, offene Dienste und mögliche evcc-Kandidaten sichtbar. Die Open-Source-App läuft direkt auf eHive One und unterstützt bei der Vorbereitung der Einrichtung.\n\nMehr erfahren: https://www.ehiv3.de/news-hivescope-netzwerkscanner.html\n\n#eHive #HiveScope #evcc",
+    linkedinImage: "https://www.ehiv3.de/img/news/social/hivescope-oberflaeche-scan.png",
     image: "img/news/hivescope-oberflaeche-scan.webp",
     imageAlt: "HiveScope: Geräte im Netzwerk schneller finden",
     tags: ["Software","HiveScope","Open Source"]
@@ -105,6 +125,8 @@ window.EHIVE_NEWS = [
     title: "eHive One für Elektrofachbetriebe: Fernwartung statt unnötiger Anfahrt",
     excerpt: "Browser-SSH oder direkter SSH-Zugang vom eigenen Rechner: eHive One hilft Elektrofachbetrieben, Diagnose und Anpassungen aus der Ferne zu erledigen und unnötige Kundentermine zu vermeiden.",
     href: "https://www.ehiv3.de/news-ehive-fuer-elektrofachbetriebe-fernwartung.html",
+    linkedinText: "eHive One für Elektrofachbetriebe: Fernwartung statt unnötiger Anfahrt\n\nDiagnose aus der Ferne kann unnötige Anfahrten vermeiden. Im Beitrag zeigen wir Elektrofachbetrieben den Browser-SSH-Zugang und den direkten SSH-Zugriff auf eHive One sowie die Voraussetzungen für einen abgesicherten Fernzugriff.\n\nMehr erfahren: https://www.ehiv3.de/news-ehive-fuer-elektrofachbetriebe-fernwartung.html\n\n#eHive #Elektrohandwerk #Fernwartung",
+    linkedinImage: "https://www.ehiv3.de/img/news/social/ehive-electrician-remote-service.png",
     image: "img/news/ehive-electrician-remote-service.webp",
     imageAlt: "Elektrofachkraft arbeitet am Laptop und greift aus der Ferne auf einen eHive One im Schaltschrank eines Hauses mit Photovoltaik und Wallbox zu",
     tags: ["Elektrofachbetrieb","Fernwartung","SSH"]
@@ -115,6 +137,8 @@ window.EHIVE_NEWS = [
     title: "charge&go kommt: Werde unkompliziert zum öffentlichen Ladeparkbetreiber",
     excerpt: "Mit charge&go entwickeln wir eine neue eHive App für den unkomplizierten Einstieg in den öffentlichen Ladebetrieb. Bald ist es so weit – interessierte Tester können sich schon jetzt melden.",
     href: "https://www.ehiv3.de/news-charge-and-go-ladepark.html",
+    linkedinText: "charge&go kommt: Werde unkompliziert zum öffentlichen Ladeparkbetreiber\n\nEin Ausblick auf charge&go: Mit der geplanten eHive App wollen wir den Einstieg in den öffentlichen Ladebetrieb erleichtern. Der Beitrag beschreibt die Idee und die Suche nach interessierten Testern. Es handelt sich um eine Vorschau.\n\nMehr erfahren: https://www.ehiv3.de/news-charge-and-go-ladepark.html\n\n#eHive #Ladeinfrastruktur #Elektromobilität",
+    linkedinImage: "https://www.ehiv3.de/img/news/charge-and-go-public-wallbox-v5.png",
     image: "img/news/charge-and-go-public-wallbox-v5.png",
     imageAlt: "Elektroauto auf einem einzelnen, schlicht umrandeten Ladeplatz direkt vor einer öffentlich zugänglichen Wallbox an einem modernen Gewerbestandort",
     tags: ["Vorschau","charge&go","Ladepark"]
@@ -125,6 +149,8 @@ window.EHIVE_NEWS = [
     title: "§ 14a EnWG und § 9 EEG: Warum Energiesysteme jetzt zusammenspielen müssen",
     excerpt: "Neue Vorgaben treffen auf PV, Speicher, Wallbox und Wärmepumpe. Wir ordnen die wichtigsten Fakten ein und zeigen, wo eHive One beim lokalen, herstellerübergreifenden Energiemanagement ansetzt.",
     href: "https://www.ehiv3.de/news-14a-enwg-9-eeg-smartes-energiemanagement.html",
+    linkedinText: "§ 14a EnWG und § 9 EEG: Warum Energiesysteme jetzt zusammenspielen müssen\n\nPV, Speicher, Wallbox und Wärmepumpe müssen als System zusammenspielen. Unser Beitrag ordnet § 14a EnWG und § 9 EEG ein und beschreibt Ansatzpunkte für lokales Energiemanagement mit eHive One. Die konkrete Umsetzung ist anlagenabhängig und fachlich zu planen.\n\nMehr erfahren: https://www.ehiv3.de/news-14a-enwg-9-eeg-smartes-energiemanagement.html\n\n#eHive #Energiemanagement #Elektrohandwerk",
+    linkedinImage: "https://www.ehiv3.de/products/ehive-one.png",
     image: "products/ehive-one.png",
     imageAlt: "§ 14a EnWG und § 9 EEG: Warum Energiesysteme jetzt zusammenspielen müssen",
     tags: ["Energiemanagement","§ 14a EnWG","§ 9 EEG"]
@@ -135,6 +161,8 @@ window.EHIVE_NEWS = [
     title: "chargeLedger: sauberere Abrechnung, bessere Kosten und neues Archiv",
     excerpt: "chargeLedger hat ein großes Update bekommen: klarerer MID-Hinweis, km-Stand, neue Kostenlogik mit Strompreispauschale, PV-/Einspeisetarif und Grundgebühr sowie manuelle und automatische Uploads ins Archiv.",
     href: "https://www.ehiv3.de/news-chargeledger-update-juli-2026.html",
+    linkedinText: "chargeLedger: sauberere Abrechnung, bessere Kosten und neues Archiv\n\nDas chargeLedger-Update vom Juli 2026 im Überblick: klarerer MID-Hinweis, Kilometerstand, überarbeitete Kostenoptionen und neue Archivfunktionen. Wir zeigen die Änderungen an der Abrechnung und an der PDF-Vorschau.\n\nMehr erfahren: https://www.ehiv3.de/news-chargeledger-update-juli-2026.html\n\n#eHive #chargeLedger #Elektromobilität",
+    linkedinImage: "https://www.ehiv3.de/img/news/chargeledger-main-juli-2026.png",
     image: "img/news/chargeledger-main-juli-2026.png",
     imageAlt: "Aktuelle chargeLedger Ansicht mit Abrechnung, Kostenoptionen und PDF-Vorschau",
     tags: ["Software","chargeLedger","Update"]
@@ -145,6 +173,8 @@ window.EHIVE_NEWS = [
     title: "chargeLedger ist verfügbar",
     excerpt: "chargeLedger ist jetzt verfügbar: Monatsabrechnungen für Elektrofahrzeuge mit PDF-Vorschau, Versand und Archiv-Anbindungen direkt aus eHive heraus.",
     href: "https://www.ehiv3.de/news-chargeledger.html",
+    linkedinText: "chargeLedger ist verfügbar\n\nLadevorgänge monatlich zusammenstellen: chargeLedger ergänzt eHive One um Abrechnungen mit PDF-Vorschau, Versand und Archiv-Anbindungen. Der Beitrag zur Veröffentlichung stellt die Anwendung und ihren Ablauf vor.\n\nMehr erfahren: https://www.ehiv3.de/news-chargeledger.html\n\n#eHive #chargeLedger #Ladeabrechnung",
+    linkedinImage: "https://www.ehiv3.de/products/ehive-one.png",
     image: "products/ehive-one.png",
     imageAlt: "chargeLedger ist verfügbar",
     tags: ["Software","Verfügbar"]
@@ -155,6 +185,8 @@ window.EHIVE_NEWS = [
     title: "eHive One beim evcc Community Treffen 2026",
     excerpt: "Wir waren beim evcc Community Treffen in Osnabrück dabei, haben eHive One und unsere Apps vorgestellt und erlebt, wie stark Open Source funktioniert, wenn Praxis, Entwicklung und Community zusammenkommen.",
     href: "https://www.ehiv3.de/news-evcc-community-treffen-2026.html",
+    linkedinText: "eHive One beim evcc Community Treffen 2026\n\nUnser Rückblick auf das evcc Community Treffen 2026 in Osnabrück: Wir haben eHive One und unsere Apps vorgestellt und Erfahrungen mit der Community ausgetauscht. Im Beitrag teilen wir Eindrücke vom Treffen.\n\nMehr erfahren: https://www.ehiv3.de/news-evcc-community-treffen-2026.html\n\n#eHive #evcc #OpenSource",
+    linkedinImage: "https://www.ehiv3.de/products/ehive-one.png",
     image: "img/news/evcc-community-treffen-2026-gruppe.jpg",
     imageAlt: "Teilnehmende des evcc Community Treffens 2026 vor dem ORV Osnabrück",
     tags: ["Community","evcc","Open Source"]
@@ -165,6 +197,8 @@ window.EHIVE_NEWS = [
     title: "Appstore ist integriert",
     excerpt: "Der Appstore ist mittlerweile in den SmartHub integriert. Apps und Erweiterungen können dort sichtbar gemacht, eingeordnet und mit Status sowie Metadaten angezeigt werden.",
     href: "https://www.ehiv3.de/news-appstore-integration.html",
+    linkedinText: "Appstore ist integriert\n\nAnwendungen an einem Ort verwalten: Der Appstore ist in den SmartHub integriert. Der Beitrag zeigt, wie Apps und Erweiterungen mit Status und Metadaten in der eHive-Oberfläche zusammengeführt werden.\n\nMehr erfahren: https://www.ehiv3.de/news-appstore-integration.html\n\n#eHive #SmartHub #OpenSource",
+    linkedinImage: "https://www.ehiv3.de/products/ehive-one.png",
     image: "img/news/ehive-smarthub-app-uebersicht.png",
     imageAlt: "SmartHub App-Übersicht mit installierten Apps in der linken Navigation",
     tags: ["Plattform","Vision","Erweiterungen"]
@@ -175,6 +209,8 @@ window.EHIVE_NEWS = [
     title: "tenantLedger: Mietstrom endlich einfach",
     excerpt: "tenantLedger führt Wohnungen, Zähler, PV- und Netzanteile sowie Preisbestandteile vom Messwert bis zur kontrollierbaren PDF-Vorschau zusammen.",
     href: "https://www.ehiv3.de/news-tenantledger-mieterstrom.html",
+    linkedinText: "tenantLedger: Mietstrom endlich einfach\n\nVom Messwert zur kontrollierbaren PDF-Vorschau: tenantLedger führt Wohnungen, Zähler, PV- und Netzanteile sowie Preisbestandteile zusammen. Wir zeigen den Ablauf der Mieterstrom-Abrechnung auf eHive One.\n\nMehr erfahren: https://www.ehiv3.de/news-tenantledger-mieterstrom.html\n\n#eHive #Mieterstrom #tenantLedger",
+    linkedinImage: "https://www.ehiv3.de/img/news/tenantledger-original.png",
     image: "img/news/tenantledger-original.png",
     imageAlt: "Originaloberfläche von tenantLedger mit Mieterstromstruktur, Monatsabrechnung, PV-Netz-Aufteilung und PDF-Vorschau",
     tags: ["App","Mieterstrom","Abrechnung"]
@@ -185,6 +221,8 @@ window.EHIVE_NEWS = [
     title: "News jetzt an einem Ort",
     excerpt: "Mit dem neuen News-Bereich bündeln wir Änderungen an Website, Shop und Dokumentation an einer festen Stelle.",
     href: "https://www.ehiv3.de/news-updates-hub.html",
+    linkedinText: "News jetzt an einem Ort\n\nÄnderungen an Website, Shop und Dokumentation gebündelt nachlesen: Im eHive-Newsbereich sammeln wir Beiträge zu Anwendungen, Funktionen und Projekten. Hier stellen wir den Bereich und seine Struktur vor.\n\nMehr erfahren: https://www.ehiv3.de/news-updates-hub.html\n\n#eHive #Neuigkeiten #Energiemanagement",
+    linkedinImage: "https://www.ehiv3.de/products/ehive-one.png",
     image: "products/ehive-one.png",
     imageAlt: "News jetzt an einem Ort",
     tags: ["Website","Updates"]
@@ -195,6 +233,8 @@ window.EHIVE_NEWS = [
     title: "wattRadar: Energieflüsse und Lastverläufe sichtbar machen",
     excerpt: "wattRadar zeigt PV, Hausverbrauch, Netz, Speicher und Ladepunkte als zeitliche Verläufe und Energiefluss.",
     href: "https://www.ehiv3.de/news-wattradar-energiefluesse.html",
+    linkedinText: "wattRadar: Energieflüsse und Lastverläufe sichtbar machen\n\nEnergieflüsse und Lastverläufe nachvollziehen: wattRadar stellt PV, Hausverbrauch, Netz, Speicher und Ladepunkte als zeitliche Verläufe und Energiefluss dar. Der Beitrag zeigt die Anwendung und ihre Ansichten.\n\nMehr erfahren: https://www.ehiv3.de/news-wattradar-energiefluesse.html\n\n#eHive #Monitoring #Energiemanagement",
+    linkedinImage: "https://www.ehiv3.de/img/news/wattradar-original.png",
     image: "img/news/wattradar-original.png",
     imageAlt: "Originaloberfläche von wattRadar mit Kennzahlen sowie Diagrammen für Speicherfüllstand, Photovoltaik und Verbraucher",
     tags: ["App","Monitoring","Energiefluss"]
@@ -205,6 +245,8 @@ window.EHIVE_NEWS = [
     title: "TunnelManager: geschützter Fernzugriff auf eHive One",
     excerpt: "TunnelManager stellt ausgewählte lokale Weboberflächen über einen geschützten Zugang bereit, ohne eHive One direkt freizugeben.",
     href: "https://www.ehiv3.de/news-tunnelmanager-fernzugriff.html",
+    linkedinText: "TunnelManager: geschützter Fernzugriff auf eHive One\n\nGezielter Fernzugriff auf lokale Anwendungen: TunnelManager stellt ausgewählte Weboberflächen über einen geschützten Zugang bereit. Der Beitrag zeigt den Ablauf und die Konfiguration auf eHive One.\n\nMehr erfahren: https://www.ehiv3.de/news-tunnelmanager-fernzugriff.html\n\n#eHive #Fernzugriff #TunnelManager",
+    linkedinImage: "https://www.ehiv3.de/img/news/tunnelmanager-original.png",
     image: "img/news/tunnelmanager-original.png",
     imageAlt: "Originaloberfläche des TunnelManager mit Tunnelstatus, geschützter Adresse und QR-Code",
     tags: ["App","Fernzugriff","Sicherheit"]
@@ -215,6 +257,8 @@ window.EHIVE_NEWS = [
     title: "ioManager: digitale Signale erkennen und zeitlich prüfen",
     excerpt: "ioManager zeigt HIGH- und LOW-Zustände digitaler Eingänge und macht Schaltverläufe für Diagnose und Energiemanagement sichtbar.",
     href: "https://www.ehiv3.de/news-iomanager-signale.html",
+    linkedinText: "ioManager: digitale Signale erkennen und zeitlich prüfen\n\nDigitale Eingänge im zeitlichen Verlauf verstehen: ioManager zeigt HIGH- und LOW-Zustände und macht Schaltverläufe für Diagnose und Energiemanagement sichtbar. Im Beitrag zeigen wir die Oberfläche und ihre Einordnung.\n\nMehr erfahren: https://www.ehiv3.de/news-iomanager-signale.html\n\n#eHive #DigitaleEingänge #Energiemanagement",
+    linkedinImage: "https://www.ehiv3.de/img/news/iomanager-original.png",
     image: "img/news/iomanager-original.png",
     imageAlt: "Originaloberfläche von ioManager mit aktuellem LOW-Zustand und zeitlichem Signalverlauf",
     tags: ["App","Digitale Eingänge","§ 14a EnWG"]
