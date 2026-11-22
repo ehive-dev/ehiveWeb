@@ -1177,6 +1177,12 @@ Viele Grüße`
       if (!card) return;
 
       const productId = select.getAttribute("data-variant-select");
+      const requestedVariant = new URLSearchParams(location.search).get("variant");
+      const product = findProduct(productId);
+      if (product?.variants?.some(variant => variant.id === requestedVariant)
+        && Array.from(select.options).some(option => option.value === requestedVariant)) {
+        select.value = requestedVariant;
+      }
       const qtyInput = card.querySelector("[data-qty-input]");
       const slot = card.querySelector("[data-paypal-slot]");
 
@@ -1187,6 +1193,10 @@ Viele Grüße`
         const qty = qtyInput ? qtyInput.value : 1;
         const p = findProduct(productId);
         const v = p && p.variants ? p.variants.find(x => x.id === variantId) : null;
+        const price = card.querySelector("[data-product-price]");
+        if (price && Number.isFinite(v?.price)) {
+          price.textContent = new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(v.price);
+        }
 
         // Optional: pass a visible option value to PayPal (tracking)
         const extra = v ? { on0: "variant", os0: v.label } : undefined;

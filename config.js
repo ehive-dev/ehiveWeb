@@ -51,9 +51,9 @@ window.EHIVE_SHOP_CONFIG = {
     // Replace the placeholder IDs.
     hostedButtons: {
       // eHive One variants
-      // Button price checked against PayPal's public form: 319 EUR.
+      // Button price checked against PayPal's public form on 2026-11-22: 369 EUR.
       "ehive-one-no-license": "4EM9UUJZRTK8U",
-      // Button price checked against PayPal's public form: 389 EUR.
+      // Button price checked against PayPal's public form on 2026-11-22: 449 EUR.
       "ehive-one-with-license": "SNKJV66HSBEMC",
 
       // Add-ons (examples)
@@ -79,8 +79,8 @@ window.EHIVE_SHOP_CONFIG = {
           "CE / EMV / RoHS (gemäß Planung/Zertifizierung)"
         ],
         variants: [
-          { id: "ehive-one-no-license", label: "Ohne Lizenz", soldOut: false },
-          { id: "ehive-one-with-license", label: "Mit evcc", soldOut: false }
+          { id: "ehive-one-no-license", label: "Ohne Lizenz", mpn: "EHIVE-ONE-BASE", price: 369, soldOut: false },
+          { id: "ehive-one-with-license", label: "Mit evcc", mpn: "EHIVE-ONE-EVCC", price: 449, soldOut: false }
         ]
       }
     ],

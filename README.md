@@ -48,3 +48,27 @@ Setze in `config.js` am besten **absolute** URLs (mit https://…), z. B.:
 - Videos für die Homepage sollten vor dem Commit webtauglich komprimiert werden.
 - Vor dem Push kann `powershell -ExecutionPolicy Bypass -File tools/check-site.ps1` fehlende Assets, fehlende H1 und falsches PayPal-Laden prüfen.
 - Für neue Website-News und Releases gibt es die Kurzanleitung in `NEWS_PUBLISHING.md`.
+
+
+## Produktdaten für Google Merchant Center
+
+Öffentlicher Feed: `https://www.ehiv3.de/google-products.xml` (RSS 2.0 / Google-Namensraum).
+Die beiden Varianten haben eigene Shoplinks mit vorausgewählter Variante.
+Preise und Verfügbarkeit stammen aus `catalog.products[].variants` in `config.js`.
+Nach Änderungen `node tools/build-product-feed.cjs` ausführen; `node tools/build-product-feed.cjs --check` prüft den Stand.
+Die Datei wird mit der Website veröffentlicht. Google ruft die veröffentlichte Datei im im Merchant Center eingestellten Zeitplan ab.
+Der Abruf bei Google aktualisiert die Datei nicht selbst: Preis- und Bestandsänderungen müssen im Katalog gepflegt, neu generiert und veröffentlicht werden.
+Versand und Rückgabebedingungen werden im Merchant Center konfiguriert und müssen zum Shop passen.
+
+### Hersteller-Artikelnummern (MPN)
+
+Am 22.11.2026 auf ausdrücklichen Wunsch des Herstellers für Feed und Dokumentation festgelegt:
+
+| Hersteller | Artikelnummer (MPN) | Produktvariante | Feed-ID / Shop-Variante |
+|---|---|---|---|
+| eHive | EHIVE-ONE-BASE | eHive One ohne evcc-Lizenz | ehive-one-no-license |
+| eHive | EHIVE-ONE-EVCC | eHive One mit evcc-Lizenz | ehive-one-with-license |
+
+Diese Artikelnummern werden dauerhaft für die jeweilige Variante verwendet und nicht wegen Preisänderungen neu vergeben.
+Es sind Hersteller-Artikelnummern, keine EAN/GTIN. Eine GTIN wurde nicht vergeben und wird im Feed nicht behauptet.
+Die Zahlen in `config.js`, Shop- und Produkt-Markup wurden am 22.11.2026 mit den öffentlich abrufbaren PayPal-Produktformularen abgeglichen: 369,00 EUR ohne Lizenz und 449,00 EUR mit Lizenz. PayPal-Button-IDs und Zahlungskonfiguration wurden dabei nicht geändert.

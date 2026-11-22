@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
+  <channel>
+    <title>eHive Produkte</title>
+    <link>https://www.ehiv3.de/shop.html</link>
+    <description>eHive One – Produktdaten für Google Merchant Center</description>
+    <item>
+      <g:id>ehive-one-no-license</g:id>
+      <g:title>eHive One – evcc Hardware für die Hutschiene ohne evcc-Lizenz</g:title>
+      <g:description>Kompakte Hardwareplattform für lokales Energiemanagement auf der Hutschiene. Ethernet, RS485, Digitaleingang und USB-C; Versorgung über 12–30 V DC oder PoE. Variante ohne mitgekauften evcc-Sponsortoken. Kompatible Wallbox, Zähler und weitere Geräte werden passend zur Anlage eingerichtet.</g:description>
+      <g:link>https://www.ehiv3.de/shop.html?variant=ehive-one-no-license</g:link>
+      <g:image_link>https://www.ehiv3.de/products/ehive-one.png</g:image_link>
+      <g:availability>in_stock</g:availability>
+      <g:price>369.00 EUR</g:price>
+      <g:condition>new</g:condition>
+      <g:brand>eHive</g:brand>
+      <g:mpn>EHIVE-ONE-BASE</g:mpn>
+      <g:product_type>Elektronik &gt; Energiemanagement &gt; Hutschienen-Computer</g:product_type>
+    </item>
+    <item>
+      <g:id>ehive-one-with-license</g:id>
+      <g:title>eHive One – evcc Hardware für die Hutschiene mit evcc-Lizenz</g:title>
+      <g:description>Kompakte Hardwareplattform für lokales Energiemanagement auf der Hutschiene. Ethernet, RS485, Digitaleingang und USB-C; Versorgung über 12–30 V DC oder PoE. Variante mit evcc-Lizenz. Kompatible Wallbox, Zähler und weitere Geräte werden passend zur Anlage eingerichtet.</g:description>
+      <g:link>https://www.ehiv3.de/shop.html?variant=ehive-one-with-license</g:link>
+      <g:image_link>https://www.ehiv3.de/products/ehive-one.png</g:image_link>
+      <g:availability>in_stock</g:availability>
+      <g:price>449.00 EUR</g:price>
+      <g:condition>new</g:condition>
+      <g:brand>eHive</g:brand>
+      <g:mpn>EHIVE-ONE-EVCC</g:mpn>
+      <g:product_type>Elektronik &gt; Energiemanagement &gt; Hutschienen-Computer</g:product_type>
+    </item>
+  </channel>
+</rss>
