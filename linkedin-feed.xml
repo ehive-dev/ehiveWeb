@@ -6,6 +6,23 @@
     <description>Ausschließlich ausdrücklich freigegebene LinkedIn-Texte, Bilder und Artikel-Links.</description>
     <language>de-DE</language>
     <atom:link href="https://www.ehiv3.de/linkedin-feed.xml" rel="self" type="application/rss+xml"/>
+    <item>
+      <title>Mieterstrom: Solarstrom für alle</title>
+      <link>https://www.ehiv3.de/news-mieterstrom-solarstrom-fuer-alle.html</link>
+      <guid isPermaLink="true">https://www.ehiv3.de/news-mieterstrom-solarstrom-fuer-alle.html</guid>
+      <pubDate>Sun, 22 Nov 2026 15:06:13 GMT</pubDate>
+      <description>Mieterstrom: Solarstrom für alle
 
+Mehr Solarstrom im Mehrfamilienhaus nutzen: Wir zeigen, wie Vermieter Eigenverbrauch, Bestandstechnik und abgestimmtes Laden zusammendenken können. Mit einem Rechner lassen sich die eigenen Annahmen durchspielen.
+
+Mehr erfahren: https://www.ehiv3.de/news-mieterstrom-solarstrom-fuer-alle.html
+
+#eHive #Mieterstrom #Energiemanagement</description>
+      <enclosure url="https://www.ehiv3.de/img/news/mieterstrom-solarstrom-fuer-alle.png?v=20261118-clean" length="78459" type="image/png"/>
+      <category domain="https://www.ehiv3.de/linkedin-approval">approved</category>
+      <category>Mieterstrom</category>
+      <category>Vermieter</category>
+      <category>Lastmanagement</category>
+    </item>
   </channel>
 </rss>
