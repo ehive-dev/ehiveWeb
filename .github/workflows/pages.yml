@@ -24,6 +24,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Build news RSS feed
+        run: node tools/build-news-feed.cjs
+
       - name: Test savings models
         run: node --test tests/*.test.cjs
 

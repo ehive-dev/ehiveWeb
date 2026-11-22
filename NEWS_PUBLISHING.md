@@ -8,8 +8,7 @@ Der News-Bereich ist so aufgebaut, dass Startseite und [news.html](./news.html) 
 2. Die neue URL in `news-data.js` ganz oben eintragen
 3. Die neue URL in `sitemap.xml` ergänzen
 4. `linkedinText` (vollständiger Beitrag mit Link und Hashtags) und `linkedinImage` (öffentliche PNG-/JPEG-URL) ergänzen
-5. `node tools/build-news-feed.cjs` ausführen und `node --test tests/*.test.cjs` prüfen
-6. Committen und nach `main` pushen
+5. Änderungen prüfen, committen und nach `main` pushen. GitHub Pages erzeugt den Newsfeed vor den Tests und dem Deployment automatisch neu. Die XML-Datei muss dafür nicht manuell gepflegt werden.
 
 ## Aufbau der Karten
 
@@ -72,4 +71,6 @@ Der Feed allein veröffentlicht nichts. Eine Make-/LinkedIn-Verbindung oder Auto
 Ein erster Abruf darf auch nicht unbemerkt die 22 bestehenden Meldungen als neue Posts veröffentlichen.
 Die Website-Karten verwenden weiterhin `excerpt` und `image`; Änderungen an LinkedIn-Texten oder PNG-/JPEG-Varianten verändern das Seitenlayout nicht.
 
-Bei Änderungen an Texten/Bildern die RSS-Datei mit `node tools/build-news-feed.cjs` neu generieren. `--check` prüft die Übereinstimmung, die Tests verhindern die Veröffentlichung einer veralteten Datei.
+Bei jeder Veröffentlichung erzeugt der Schritt „Build news RSS feed“ in `.github/workflows/pages.yml` den Feed automatisch aus den aktuellen Newsdaten. Anschließend prüfen die Tests den erzeugten Feed; nur bei erfolgreichen Tests wird die Website veröffentlicht. Die erzeugte Datei wird nicht automatisch in das Git-Repository zurückgeschrieben.
+
+Für eine lokale Vorschau oder lokale Tests kann der Feed weiterhin mit `node tools/build-news-feed.cjs` erzeugt werden. Danach `node --test tests/*.test.cjs` ausführen. `node tools/build-news-feed.cjs --check` prüft, ob die lokal vorhandene XML-Datei den aktuellen Daten entspricht.
