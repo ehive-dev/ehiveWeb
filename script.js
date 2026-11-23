@@ -2452,6 +2452,7 @@ function initSystemReportForm() {
     form.elements.city.value = report.city || "";
     form.elements.email.value = ownership.email || "";
     form.elements.title.value = report.title || "";
+    form.elements.rating.value = Number.isInteger(report.rating) && report.rating >= 1 && report.rating <= 5 ? String(report.rating) : "";
     if (componentsField) componentsField.value = report.components || "";
     const softwareEntries = splitReportEntries(report.software);
     softwareAppFields.forEach((field) => {
@@ -2543,7 +2544,14 @@ function initSystemReportForm() {
         const openHint = document.createElement("span");
         openHint.className = "system-report-card-open-hint";
         openHint.textContent = "Beitrag";
-        previewCopy.append(meta, heading, facts, openHint);
+        previewCopy.append(meta, heading);
+        if (Number.isInteger(report.rating) && report.rating >= 1 && report.rating <= 5) {
+          const rating = document.createElement("p");
+          rating.className = "system-report-card-rating";
+          rating.textContent = `${"★".repeat(report.rating)}${"☆".repeat(5 - report.rating)} · ${report.rating} von 5 Sternen`;
+          previewCopy.appendChild(rating);
+        }
+        previewCopy.append(facts, openHint);
         preview.appendChild(previewCopy);
         card.appendChild(preview);
 
