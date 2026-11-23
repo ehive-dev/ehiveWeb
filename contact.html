@@ -17,7 +17,7 @@
   <title>Kontakt | eHive One</title>
   <link rel="canonical" href="https://www.ehiv3.de/contact.html" />
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css?v=20261123-support-1" />
 </head>
 <body>
 
@@ -30,6 +30,43 @@
     <div class="section-title">
       <h1>Kontakt</h1>
       <p>Allgemeine Fragen, Kaufberatung oder technische Unterstützung.</p>
+    </div>
+    <div class="ai-question-block" id="ki-support">
+      <h2>Erste Hilfe mit dem KI-Assistenten</h2>
+      <p>Fragen zu eHive One, evcc oder zur Einrichtung? Beschreibe kurz dein Problem und nenne die betroffene App, Hersteller und Modell oder die genaue Fehlermeldung.</p>
+      <form class="ai-compatibility-form support-form" data-ai-compatibility-form data-support-form>
+        <label for="supportTopic">Worum geht es?</label>
+        <select id="supportTopic" name="topic" required>
+          <option value="">Bitte auswählen</option>
+          <option value="hardware">Hardware und Geräte verbinden</option>
+          <option value="setup">Einrichtung und Netzwerk</option>
+          <option value="software">evcc, SmartHub oder eHive-App</option>
+          <option value="other">Andere Frage</option>
+        </select>
+        <fieldset data-hardware-fields hidden disabled>
+          <legend>Welche Komponenten sind beteiligt?</legend>
+          <p>Nenne die betroffenen Geräte, z. B. Wallbox, Wechselrichter, Speicher oder Zähler. Hersteller und Modell kannst du eintragen oder als Typenschild fotografieren.</p>
+          <div data-components></div>
+          <button class="btn" type="button" data-add-component>Weitere Komponente hinzufügen</button>
+        </fieldset>
+        <div class="support-grid">
+          <div><label for="supportVersion">Softwarestand <span>(optional)</span></label><input id="supportVersion" name="version" maxlength="120" placeholder="z. B. evcc-Version oder SmartHub-Version"></div>
+          <div><label for="supportError">Fehlermeldung <span>(optional)</span></label><input id="supportError" name="error" maxlength="500" placeholder="Möglichst den genauen Wortlaut angeben"></div>
+        </div>
+        <label for="supportAiQuestion">Deine Frage</label>
+        <textarea id="supportAiQuestion" name="device" rows="4" minlength="3" maxlength="2000" placeholder="Was möchtest du einrichten? Was funktioniert nicht? Was hast du bereits ausprobiert?" required></textarea>
+        <p>Bis zu 3 Fragen pro Stunde und 10 pro Tag je Internetanschluss.</p>
+        <p class="support-source-note">Wir suchen zuerst in der offiziellen evcc-Dokumentation und anschließend in den GitHub Discussions von evcc. Die Antwort enthält die verwendeten Quellen.</p>
+        <p data-support-preview hidden>Lokale Vorschau: Du kannst das Formular und die Fotoauswahl ausprobieren. Das Absenden wird nach Veröffentlichung der Supportfunktion freigeschaltet.</p>
+        <button class="btn primary" type="submit">Frage mit Geräteangaben stellen</button>
+      </form>
+      <div class="ai-compatibility-result" data-ai-compatibility-result hidden aria-live="polite">
+        <p class="ai-compatibility-status" data-ai-compatibility-status></p>
+        <div data-ai-compatibility-answer></div>
+        <div class="ai-compatibility-sources" data-ai-compatibility-sources></div>
+      </div>
+      <p>Die KI kann Fehler machen. Gib keine Passwörter oder persönlichen Daten ein. Hinweise zur Verarbeitung findest du im <a href="datenschutz.html">Datenschutz</a>.</p>
+      <p>Wenn deine Frage offenbleibt, schreib an <a href="mailto:support@ehiv3.de?subject=%5BSupport%5D%20Anfrage">support@ehiv3.de</a>. Hilfreich sind Seriennummer, Softwarestand, genaue Fehlermeldung und bereits getestete Schritte.</p>
     </div>
     <p><strong>Allgemeine Fragen und Kaufberatung</strong><br/>
       <a data-mail-template="general" href="mailto:kontakt@ehiv3.de?subject=%5BSales%5D%20Anfrage">kontakt@ehiv3.de</a>
@@ -45,7 +82,8 @@
 <div data-include="footer"></div>
 
 <script src="config.js"></script>
-<script src="script.js?v=20261110-knx-release"></script>
+<script src="support.js?v=20261123-support-1"></script>
+<script src="script.js?v=20261123-support-1"></script>
 
 </body>
 </html>

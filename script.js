@@ -2129,7 +2129,7 @@ Viele Grüße`
 })();
 function initAiCompatibilityForm() {
   const endpoint = "https://ehive-ai-worker.ehive.workers.dev/question";
-  const answerCacheKey = "ehive-ai-answer-cache-v1";
+  const answerCacheKey = "ehive-ai-answer-cache-v2";
   const answerCacheMaxAge = 7 * 24 * 60 * 60 * 1000;
   const answerCacheLimit = 20;
 
@@ -2197,7 +2197,7 @@ function initAiCompatibilityForm() {
   document.querySelectorAll("[data-ai-compatibility-form]").forEach((form) => {
     form.addEventListener("submit", async (event) => {
       event.preventDefault();
-      const input = form.querySelector('input[name="device"]');
+      const input = form.querySelector('[name="device"]');
       const button = form.querySelector('button[type="submit"]');
       const block = form.closest(".ai-question-block");
       const result = block?.querySelector("[data-ai-compatibility-result]");
@@ -2240,13 +2240,13 @@ function initAiCompatibilityForm() {
       };
 
       if (result) result.hidden = false;
-      const cached = findCachedAnswer(device);
+      const cached = form.hasAttribute("data-support-form") ? null : findCachedAnswer(device);
       if (cached) {
         renderAnswer(cached.payload, true);
         return;
       }
 
-      if (status) status.textContent = "Kompatibilität wird geprüft …";
+      if (status) status.textContent = "Deine Frage wird geprüft …";
       window.eHiveTrack?.("ai_question_started");
       if (answer) answer.replaceChildren();
       if (sources) sources.replaceChildren();
@@ -2256,14 +2256,19 @@ function initAiCompatibilityForm() {
       }
 
       try {
-        const response = await fetch(endpoint, {
+        const support = form.buildSupportRequest ? await form.buildSupportRequest() : null;
+        if (form.supportPreview) {
+          if (status) status.textContent = "Die Angaben sind vollständig. In dieser lokalen Vorschau werden noch keine Fragen oder Fotos gesendet.";
+          return;
+        }
+        const response = await fetch(support ? endpoint.replace("/question", "/support-question") : endpoint, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ question: device, visitorId: getVisitorId() })
+          body: JSON.stringify({ question: device, visitorId: getVisitorId(), ...(support ? { support } : {}) })
         });
         const payload = await response.json();
         if (!response.ok) throw new Error(payload.error || "Die Anfrage ist fehlgeschlagen.");
-        cacheAnswer(device, payload);
+        if (!support) cacheAnswer(device, payload);
         renderAnswer(payload);
         window.eHiveTrack?.("ai_question_answered");
       } catch (error) {
