@@ -1,5 +1,24 @@
 window.EHIVE_NEWS = [
   {
+    date: "2026-11-23",
+    dateLabel: "23. November 2026",
+    title: "Deine Daten bleiben bei dir: eHive ohne Cloudzwang",
+    excerpt: "Warum wir auf lokale Steuerung setzen: Deine Daten bleiben bei dir. Du kannst eHive One vom Internet trennen und deine lokalen Funktionen weiter nutzen. Fernzugriff bleibt deine Entscheidung.",
+    href: "https://www.ehiv3.de/news-deine-daten-bleiben-bei-dir.html",
+    linkedinApproved: false,
+    linkedinApprovedAt: null,
+    linkedinApprovalHash: null,
+    linkedinText: "Deine Daten bleiben bei dir: eHive ohne Cloudzwang\n\nWarum wir auf lokale Steuerung setzen: Deine Daten bleiben bei dir. Du kannst eHive One vom Internet trennen und deine lokalen Funktionen weiter nutzen. Fernzugriff bleibt deine Entscheidung.\n\nLokal verarbeiten, selbst entscheiden: Im Beitrag erklären wir auch kurz den optionalen Fernzugriff und Zero Trust.\n\nMehr erfahren: https://www.ehiv3.de/news-deine-daten-bleiben-bei-dir.html\n\n#eHive #Datenschutz #Energiemanagement #ZeroTrust",
+    linkedinImage: "https://www.ehiv3.de/products/ehive-one.png",
+    image: "products/ehive-one.png",
+    imageAlt: "eHive One für lokale Steuerung und Datenhaltung",
+    tags: [
+        "Datenschutz",
+        "Offline",
+        "Zero Trust"
+    ]
+},
+  {
     date: "2026-11-18",
     dateLabel: "18. November 2026",
     title: "Mieterstrom: Solarstrom für alle",

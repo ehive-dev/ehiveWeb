@@ -65,7 +65,7 @@ test('Later approval uses approval time while retaining article URL and GUID', (
 test('Changed approved content, invalid date or missing fingerprint fails closed', () => {
   const item = approve(readNews()[0]);
   assert(isLinkedinApproved(item));
-  for (const change of [{ title: 'Changed title' }, { linkedinText: 'Changed text' }, { linkedinImage: 'https://www.ehiv3.de/products/ehive-one.png' }, { linkedinApprovedAt: null }, { linkedinApprovedAt: 'invalid' }, { linkedinApprovalHash: null }]) {
+  for (const change of [{ title: 'Changed title' }, { linkedinText: 'Changed text' }, { linkedinImage: item.linkedinImage + '?changed=1' }, { linkedinApprovedAt: null }, { linkedinApprovedAt: 'invalid' }, { linkedinApprovalHash: null }]) {
     assert(!buildLinkedinFeed([{ ...item, ...change }]).includes('<item>'), JSON.stringify(change));
   }
 });
