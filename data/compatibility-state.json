@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "lastSuccessfulUpdate": "2026-11-10",
+  "lastSuccessfulUpdate": "2026-11-24",
   "source": {
     "repository": "https://github.com/evcc-io/docs",
     "branch": "main",
     "directory": "templates/release/de",
-    "commit": "f39334a7a5582e74b0c627911d2fd266994e4263",
+    "commit": "04680b13d98b665550d1c36c4849ec02d2517099",
     "deviceIndex": "https://docs.evcc.io/llms-devices.txt",
     "deviceIndexSha256": "af8844530b46cbd0b15872da60f6a5ef5414b223c3450d9edea749fd860603ac"
   },
