@@ -1,4 +1,19 @@
 window.EHIVE_NEWS = [
+{
+    date: "2026-11-26",
+    dateLabel: "26. November 2026",
+    title: "Der neue SmartHub: schicker, schneller, sicherer",
+    excerpt: "Vertraut bedienen, intuitiver ans Ziel: SmartHub 1.1.77 bringt ein stimmigeres Design, mehr Schutz und bessere Speicherverwaltung auf eHive One.",
+    href: "https://www.ehiv3.de/news-smarthub-schicker-schneller-sicherer.html",
+    linkedinApproved: false,
+    linkedinApprovedAt: null,
+    linkedinApprovalHash: null,
+    linkedinText: "Der neue SmartHub: schicker, schneller, sicherer\n\nSchicker, schneller und sicherer war unser Ziel. Im Alltag bleibt die Bedienung vertraut – alles wirkt nur intuitiver. Dazu kommen eine aktualisierte technische Basis, konsequenterer Schutz und eine überarbeitete Speicherverwaltung.\n\nMehr erfahren: https://www.ehiv3.de/news-smarthub-schicker-schneller-sicherer.html\n\n#eHive #SmartHub #Energiemanagement",
+    linkedinImage: "https://www.ehiv3.de/img/news/smarthub-1-1-77-uebersicht.png",
+    image: "img/news/smarthub-1-1-77-uebersicht.png",
+    imageAlt: "SmartHub 1.1.77 mit App-Navigation und vertrauter evcc-Oberfläche",
+    tags: ["SmartHub", "Software", "Update"]
+  },
   {
     date: "2026-11-23",
     dateLabel: "23. November 2026",
