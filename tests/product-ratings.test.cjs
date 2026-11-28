@@ -14,7 +14,7 @@ test('adds the same valid aggregate to both actual product structures and preser
   if(original.offers)assert.deepEqual(target.offers,original.offers);
   if(original.hasVariant)assert.deepEqual(target.hasVariant,original.hasVariant);
   assert.equal(original.aggregateRating,undefined);
-  assert.match(html,/data-product-ratings/);
+  assert.doesNotMatch(html,/data-product-ratings|<script[^>]+src="product-ratings\.js/);
  }
 });
 test('does not emit invalid or empty ratings',()=>{
