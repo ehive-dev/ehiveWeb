@@ -19,7 +19,7 @@ Die Geräte in den Hutschienenmontagen stammen aus den freigestellten Originalda
 Die App-Einblendungen verwenden Ausschnitte der Original-Screenshots.
 
 - `ehive-one-hutschiene-frontal-smarthub.webp` stammt aus `eHive_One_Hutschiene_Front_SmartHub_v3.1.png` und zeigt die App-Auswahl aus der [SmartHub-Originalaufnahme](../smarthub-1-1-77-uebersicht.png).
-- `ehive-one-hutschiene-klemmen-ladeplanung.webp` stammt aus `eHive_One_Hutschiene_Klemmen_Ladeplanung_v3.1.png` und enthält den Dialog aus dem [Original-Screenshot der Ladeplanung](ladeplan.webp). Copyright (c) 2023 evcc-io. [MIT-Lizenz](LICENSE-evcc-docs.txt).
+- `ehive-one-hutschiene-klemmen-ladeplanung.webp` stammt aus `eHive_One_Hutschiene_Klemmen_Ladeplanung_v3.1.png`. Die Geräteansicht `eHive_v133_4.png` ist vergrößert und an der Beschriftung ausgerichtet. Daneben steht der Dialog aus dem [Original-Screenshot der Ladeplanung](ladeplan.webp). Copyright (c) 2023 evcc-io. [MIT-Lizenz](LICENSE-evcc-docs.txt).
 - `ehive-one-hutschiene-ethernet-wattradar.webp` stammt aus `eHive_One_Hutschiene_Ethernet_wattRadar_v3.1.png` und zeigt die [wattRadar-Originalaufnahme](../wattradar-original.png).
 
 Displays und Geräterahmen stammen aus den Original-WebP-Dateien des offiziellen Media-Kits. Die PNG-Motive liegen im oben genannten Produktbilderordner. Copyright (c) 2021 Michael Geers. [Media-Kit](https://github.com/evcc-io/evcc.io/tree/a75b4cdeaabf8f64af398701cb2aa481491367d0/static/media-kit/screenshots) · [MIT-Lizenz](LICENSE-evcc-media-kit.txt).
