@@ -14,3 +14,8 @@ Copyright (c) 2023 evcc-io. MIT-Lizenz: siehe LICENSE-evcc-docs.txt.
 `ehive-one-hutschiene-aktuell.jpg`: weboptimierte Fassung von `15_Produktunterlagen/Übergabe/8_Produktbilder/eHive_One_Hutschiene_Schraegansicht_v1.0.png`, aktuelles eHive-Produktmotiv vom 28.11.2026.
 
 `ehive-one-hutschiene-v2.jpg`: weboptimierte Fassung von `eHive_One_Hutschiene_Schraegansicht_v1.1.png`; per integrierter Bildbearbeitung am 28.11.2026 durchgehende Hutschiene und leicht unscharfer Hintergrund ergänzt. Produktmotiv bleibt im Fokus.
+
+Die beiden Hutschienenmotive vom 28.11.2026 wurden mit ImageGen anhand der eHive-Produktrenderings der Revision v133 erstellt. Die PNG-Originale liegen unter `15_Produktunterlagen/Übergabe/8_Produktbilder/`.
+
+- `ehive-one-im-kleinverteiler.webp` zeigt das Motiv aus `eHive_One_Hutschiene_Kleinverteiler_v2.0.png`. Vorlage war `eHive_v133_10.png`.
+- `ehive-one-auf-freier-hutschiene.webp` zeigt das Motiv aus `eHive_One_Hutschiene_ohne_Verteiler_v2.0.png`. Vorlagen waren `eHive_v133_10.png` und `eHive_v133_2.png`.
