@@ -9,9 +9,9 @@ window.EHIVE_NEWS = [
   "linkedinApprovedAt": null,
   "linkedinApprovalHash": null,
   "linkedinText": "Dein Energiesystem. Deine Herstellerwahl. Unsere Optimierung.\n\nFahrzeuge in die Energieplanung einbeziehen, Wärmepumpen lokal anbinden und kompatible Hersteller frei kombinieren: eHive verbindet dein Energiesystem. Mit integriertem Lastmanagement und dem Blick auf die Vorteile vorausschauender Optimierung.\n\nMehr erfahren: https://www.ehiv3.de/news-hems-freie-herstellerwahl-intelligente-optimierung.html\n\n#eHive #HEMS #Energiemanagement #Elektromobilität",
-  "linkedinImage": "https://www.ehiv3.de/products/ehive-one.png",
-  "image": "products/ehive-one.png",
-  "imageAlt": "eHive One für herstellerübergreifendes Energiemanagement",
+  "linkedinImage": "https://www.ehiv3.de/img/news/hems/herstellerwahl.png",
+  "image": "img/news/hems/herstellerwahl.svg",
+  "imageAlt": "eHive One verbindet Geräte verschiedener Hersteller zu einem gemeinsamen Energiesystem",
   "tags": [
     "HEMS",
     "Optimierung",
