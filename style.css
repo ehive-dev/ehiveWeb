@@ -3089,6 +3089,14 @@ body.lightbox-open{
   line-height: 1.04;
 }
 
+@media (max-width: 600px) {
+  .news-article h1,
+  .news-card h3 {
+    hyphens: auto;
+    overflow-wrap: anywhere;
+  }
+}
+
 .news-lead{
   margin: 0 0 26px;
   color: var(--muted);
