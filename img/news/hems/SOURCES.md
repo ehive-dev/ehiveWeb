@@ -10,3 +10,5 @@ Copyright (c) 2023 evcc-io. MIT-Lizenz: siehe LICENSE-evcc-docs.txt.
 - `waermepumpe.webp`: [src/content/docs/de/blog/2026/07/18/heatpump.webp](https://github.com/evcc-io/docs/blob/29f2d54c57f56b7eefbacd67e2be445e264f0e6f/src/content/docs/de/blog/2026/07/18/heatpump.webp)
 
 `herstellerwahl.svg`: eigene eHive-Illustration. Verbindungen zeigen die gemeinsame Integration, keine Rückspeisung aus dem Fahrzeug.
+
+`ehive-one-hutschiene-aktuell.jpg`: weboptimierte Fassung von `15_Produktunterlagen/Übergabe/8_Produktbilder/eHive_One_Hutschiene_Schraegansicht_v1.0.png`, aktuelles eHive-Produktmotiv vom 28.11.2026.
