@@ -1,5 +1,24 @@
 window.EHIVE_NEWS = [
 {
+  "date": "2026-11-28",
+  "dateLabel": "28. November 2026",
+  "title": "Dein Energiesystem. Deine Herstellerwahl. Unsere Optimierung.",
+  "excerpt": "Wie eHive Fahrzeuge, Wärmepumpen, PV und Hausbatterien verschiedener Hersteller verbindet – mit smarter Ladeplanung, integriertem Lastmanagement und dem Optimizer.",
+  "href": "https://www.ehiv3.de/news-hems-freie-herstellerwahl-intelligente-optimierung.html",
+  "linkedinApproved": false,
+  "linkedinApprovedAt": null,
+  "linkedinApprovalHash": null,
+  "linkedinText": "Dein Energiesystem. Deine Herstellerwahl. Unsere Optimierung.\n\nFahrzeuge in die Energieplanung einbeziehen, Wärmepumpen lokal anbinden und kompatible Hersteller frei kombinieren: eHive verbindet dein Energiesystem. Mit integriertem Lastmanagement und dem Blick auf die Vorteile vorausschauender Optimierung.\n\nMehr erfahren: https://www.ehiv3.de/news-hems-freie-herstellerwahl-intelligente-optimierung.html\n\n#eHive #HEMS #Energiemanagement #Elektromobilität",
+  "linkedinImage": "https://www.ehiv3.de/products/ehive-one.png",
+  "image": "products/ehive-one.png",
+  "imageAlt": "eHive One für herstellerübergreifendes Energiemanagement",
+  "tags": [
+    "HEMS",
+    "Optimierung",
+    "Lastmanagement"
+  ]
+},
+{
     date: "2026-11-26",
     dateLabel: "26. November 2026",
     title: "Der neue SmartHub: schicker, schneller, sicherer",
